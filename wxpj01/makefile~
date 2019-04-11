@@ -18,4 +18,4 @@ OBJECTS = $(TARGET:%.exe=%.o)
 	$(CXX) -o $(TARGET) $(OBJECTS) `wx-config --libs`
  
  clean:
-	@rm -f *.o $(TARGET)
+	rm -f *.o $(TARGET)
