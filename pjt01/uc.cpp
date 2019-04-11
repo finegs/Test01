@@ -103,7 +103,7 @@ DWORD WINAPI recvTask(void* pParam)
 	return 0;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
 	WSAData wsData = {0};
 	SOCKET sock;
