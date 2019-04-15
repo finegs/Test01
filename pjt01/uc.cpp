@@ -8,17 +8,19 @@
 #define IP_TARGET "127.0.0.1"
 
 BOOL bEnd = false;
+WORD srcPort,dstPort;
+
 
 SOCKET makeSocket(WORD wPort)
 {
 	SOCKET sock = (SOCKET)NULL;
-        SOCKADDR_IN addr = {0};
+    SOCKADDR_IN addr = {0};
 
-        sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-        if(sock == INVALID_SOCKET)
-        {
-                return (SOCKET)NULL;
-        }
+    sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if(sock == INVALID_SOCKET)
+    {
+        return (SOCKET)NULL;
+    }
 
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(wPort);
@@ -84,6 +86,10 @@ DWORD WINAPI recvTask(void* pParam)
 		}
 
 		buf[iRet] = '\0';
+        if(srcPort != htons(recvAddr.sin_port))
+        {
+            printf("\n");
+        }
 		printf("[R] [%s:%d] : %s", inet_ntoa(recvAddr.sin_addr), htons(recvAddr.sin_port), buf);
 		fflush(stdout);
 
@@ -115,8 +121,8 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	wSrcPort = (WORD)atoi(argv[1]);
-	wDstPort = (WORD)atoi(argv[2]);
+	wSrcPort = srcPort = (WORD)atoi(argv[1]);
+	wDstPort = dstPort = (WORD)atoi(argv[2]);
 
 	WSAStartup(MAKEWORD(2,2), &wsData);
 
