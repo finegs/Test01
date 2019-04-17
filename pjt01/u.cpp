@@ -7,8 +7,82 @@
 #include <winsock.h>  /* for WSAGetLastError() */
 #include <stdlib.h>   /* for exit() */
 
+#define INITIAL_SIZE 1024
+
 void DieWithError(const char *errorMessage)
 {
     fprintf(stderr,"%s: %d\n", errorMessage, WSAGetLastError());
     exit(1);
 }
+
+struct Buffer
+{
+	void* data;
+	int next;
+	size_t size;
+}
+
+struct Buffer* new_buffer(size_t data_len = INITIAL_SIZE)
+{
+	struct Buffer* b = malloc(sizeof(Buffer));
+
+	b->data = malloc(INITIAL_SIZE);
+	b->size = INITIAL_SIZE;
+	b->next = 0;
+
+	return b;
+}
+
+void reserve_space(Buffer* b, size_t bytes)
+{
+	if((b->next + bytes) > b->size)
+	{
+		b->data = realloc(b->data, b->size*2);
+		b->size *= 2;
+	}
+}
+
+void serialize_int(int x, Buffer* b)
+{
+	x = htonl(x);
+
+	reserve_space(b, sizeof(int));
+
+	memcpy(((char*)b->data) + b->next, &x, sizeof(int));
+	b->next += sizeof(int);
+}
+	
+class Packet 
+{
+		int senderId;
+		int sequenceNumber;
+		char data[MaxDataSize];
+	public:
+		unsigned char* serialize();
+		void deserialize(unsigned char* message);
+};
+
+struct SerializedPacket {
+	int senderId;
+	int sequenceNumber;
+	char data[MaxDataSize];
+} __attribute__((packed));
+
+
+void* Packet::serialize()
+{
+	struct *SerializedPacket* s = new SerializedPacket();
+	s->senderId = htonl(this->senderId);
+	s->sequenceNumber = htonl(this->sequenceNumber);
+	memcpy(s->data, this->data, MaxDataSize);
+	return s;
+}
+
+void Packet::deserialize(void* message)
+{
+	struct SerializedPacket* s =  (struct SerializedPacket*)message;
+	this->senderId = ntohl(s->senderId);
+	this->sequenceNumber = ntohl(s->sequenceNumber);
+	memcpy(this->data, s->data, MaxDataSize);
+}
+
