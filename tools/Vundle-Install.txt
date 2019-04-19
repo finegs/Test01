@@ -1,0 +1,17 @@
+## Referece URL : https://github.com/VundleVim/Vundle.vim/wiki/Vundle-for-Windows
+1. Install git
+2. Install curl
+3. Install Chocolately
+4. Configure _vimrc
+	set rtp+=$VIM/vimfiles/bundle/Vundle.vim             #runtimepath
+
+	call vundle#begin()
+
+	Plugin 'VundleVim/Vundle.vim'
+	Bundle 'majutsushi/tagbar.git'
+
+	call vundle#end()
+
+
+
+   
