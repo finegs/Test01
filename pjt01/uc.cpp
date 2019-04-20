@@ -205,7 +205,7 @@ int main(int argc, char* argv[])
 		//HANDLE hThread = CreateThread(NULL, 0, rcvTask, (void*)sock, 0, NULL);
 		std::thread recv = std::thread(rcvTask, &sock);
 
-		while(1)
+		while(!bEnd)
 		{
 			if(!sendData(&sock, wDstPort, sndBuf, sndBufLen))
 				break;

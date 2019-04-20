@@ -1,6 +1,9 @@
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
+#include <iostream>
+#include <unordered_map>
 
+#if 0
 struct data {
 	int nr;
 	char const* value;
@@ -33,4 +36,9 @@ int main(int argc, char* argv[])
 
 	return EXIT_SUCCESS;
 }
+
+#endif
+
+
+
 
