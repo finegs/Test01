@@ -10,8 +10,8 @@ APP_DIR  := $(BUILD)/apps
 #TARGET   := s.exe
 TARGET   := test01.exe
 
-INCLUDE  := -Iinclude/ 
-INCLUDE  += -I./
+INCLUDE  := -Iinclude 
+INCLUDE  += -I.
 
 SKIP_FILE := $(wildcard Test*.cpp)
 #SKIP_FILE += c.cpp

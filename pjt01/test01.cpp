@@ -42,6 +42,16 @@ template<typename T> T Array<T>::at(size_t x) const
     return mElems[x];
 }
 
+template<typename T> T& Array<T>::operator[](size_t x)
+{
+//    if(x>=mSize) throw std::out_of_range("Array<T>::[]");
+    while(x>=mSize)
+    {
+        resize(mSize*2+x);
+    }
+    return mElems[x];
+}
+
 template<typename T> void Array<T>::set(size_t x, const T& val)
 {
      while(x>=mSize) {
@@ -51,16 +61,18 @@ template<typename T> void Array<T>::set(size_t x, const T& val)
      mElems[x] = val;
 }
 
-
 int main(int argc,char* argv[])
 {
     Array<int> ma;
 
     for(size_t i=0;i<10;i++)
-        ma.set(i, i*100);
+    {
+        //ma.set(i, i*100);
+        ma[i] = i+100;
+    }
 
     for(size_t i=0;i<10;i++)
-        std::cout << ma.at(i) << ", ";
+        std::cout << ma[i] << ", ";
     std::cout << std::endl;
 
     return EXIT_SUCCESS;

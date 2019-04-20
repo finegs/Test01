@@ -12,6 +12,7 @@ class Array
         Array(const Array<T>& src) = delete;
 
         T at(size_t x) const;
+        T& operator[](size_t x);
 
         void set(size_t x, const T& val);
 
