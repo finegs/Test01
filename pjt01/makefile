@@ -1,14 +1,18 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -Wall -Wextra -Werror
+CXXFLAGS := -std=c++17 -Wall -Wextra
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 LDFLAGS  := -lws2_32 -pthread
 BUILD    := ./build
 OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/apps
 #TARGET   := s.exe
-TARGET   := uc.exe
-INCLUDE  := -Iinclude/
+TARGET   := test01.exe
+
+INCLUDE  := -Iinclude/ 
+INCLUDE  += -I./
+
 SKIP_FILE := $(wildcard Test*.cpp)
 #SKIP_FILE += c.cpp
 SKIP_FILE += s.cpp c.cpp s1.cpp
@@ -21,9 +25,11 @@ SRC      :=                      \
 SRC		:= $(filter-out $(SKIP_FILE) , $(SRC))
 
 #OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+#OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 OBJECTS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
+#OBJECTS += $(OBJ_DIR)/test01.o
 
-all: build $(APP_DIR)/$(TARGET) release_this
+all: init $(APP_DIR)/$(TARGET) deploy_current
 
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
@@ -35,7 +41,7 @@ $(APP_DIR)/$(TARGET): $(OBJECTS)
 
 .PHONY: all build clean debug release
 
-build:
+init:
 	@mkdir -p $(APP_DIR)
 	@mkdir -p $(OBJ_DIR)
 
@@ -45,7 +51,7 @@ debug: all
 release: CXXFLAGS += -O2
 release: all
 
-release_this:
+deploy_current:
 	@cp $(APP_DIR)/$(TARGET) $(TARGET)
 	@echo copy from $(APP_DIR)/$(TARGET) to $(TARGET)
 

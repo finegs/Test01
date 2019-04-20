@@ -3,7 +3,7 @@
 #include <iostream>
 #include <unordered_map>
 
-#if 0
+#if 1
 struct data {
 	int nr;
 	char const* value;
@@ -38,7 +38,4 @@ int main(int argc, char* argv[])
 }
 
 #endif
-
-
-
 
