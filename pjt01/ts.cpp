@@ -1,11 +1,10 @@
 // Server program 
-#include <errno.h> 
-#include <signal.h> 
-#include <stdio.h> 
-#include <stdlib.h> 
-#include <strings.h> 
+#include <cerrno> 
+#include <csignal> 
+#include <cstdio> 
+#include <cstdlib> 
+#include <cstring> 
 
-#include <unistd.h> 
 
 #if ( defined(WIN32) || defined(_WIN32) || defined(__WIN32) || defined(__MINGW) )
 
@@ -15,6 +14,7 @@
 
 #else
 
+#include <unistd.h> 
 #include <arpa/inet.h> 
 #include <sys/socket.h> 
 
@@ -37,7 +37,7 @@ int max(int x, int y)
     else
         return y; 
 } 
-int main() 
+int main(int argc, char* argv[]) 
 { 
     int listenfd, connfd, udpfd, nready, maxfdp1; 
     char buffer[MAXLINE]; 
@@ -134,7 +134,8 @@ int initudp(int port)
 int handleServer(int port) 
 {
     int BUF_LEN = 8192;
-    int rdsocks, udpsock;
+	int rdsocks, udpsock;
+	//fd_set rdsocks, udpsock;
     int max, res;
     char* buff;
 
@@ -169,7 +170,7 @@ int handleServer(int port)
 	            max = tcpsock;
 	    }
 	
-	    if( select(max+1, &rdsocks, NULL, NULL, NULL) == SOCKET_ERROR )
+	    if( select(max+1, (fd_set*)&rdsocks, NULL, NULL, NULL) == SOCKET_ERROR )
 	    {
 	        perror("Select error");
 	        WSACleanup();
