@@ -22,6 +22,7 @@
 #define DEFAULT_COUNT       20
 #define DEFAULT_PORT        5150
 #define DEFAULT_BUFFER      2048
+#define DEFAULT_SND_DELAY   3000
 #define DEFAULT_MESSAGE     "\'A test message from client\'"
  
 
@@ -31,6 +32,7 @@ char  szServer[128],                          // Server to connect to
 int   iPort     = DEFAULT_PORT;    // Port on server to connect to
 DWORD dwCount   = DEFAULT_COUNT; // Number of times to send message
 BOOL  bSendOnly = FALSE;                        // Send data only; don't receive
+DWORD nSndDelay = DEFAULT_SND_DELAY;            // Send Delay Secs
 
 // Function: usage:
 // Description: Print usage information and exit
@@ -42,11 +44,10 @@ void usage()
     printf("       -p:x      Remote port to send to\n");
     printf("       -s:IP     Server's IP address or hostname\n");
     printf("       -n:x      Number of times to send message\n");
+    printf("       -d:d      Send messages delay in milliseconds(default : 3000ms)\n");
     printf("       -o        Send messages only; don't receive\n");
     printf("\n");
 }
-
- 
 
 // Function: ValidateArgs
 // Description:
@@ -78,7 +79,6 @@ void ValidateArgs(int argc, char **argv)
                     break;
 
                 case 'n':       // Number of times to send message
-
                     if (strlen(argv[i]) > 3)
                         dwCount = atol(&argv[i][3]);
 
@@ -86,6 +86,12 @@ void ValidateArgs(int argc, char **argv)
 
                 case 'o':       // Only send message; don't receive
                     bSendOnly = TRUE;
+                    break;
+
+                case 'd':       // Send Delay Mils
+                    if(strlen(argv[i]) > 3)
+                        nSndDelay = atol(&argv[i][3]); 
+
                     break;
 
                 default:
@@ -156,7 +162,6 @@ int main(int argc, char **argv)
     // "aaa.bbb.ccc.ddd" it's a hostname, so try to resolve it
     if (server.sin_addr.s_addr == INADDR_NONE)
     {
-
         host = gethostbyname(szServer);
         if (host == NULL)
         {
@@ -213,17 +218,17 @@ int main(int argc, char **argv)
             printf("recv() is OK. Received %d bytes: %s\n", ret, szBuffer);
         }
 
-        if(dwCount ==0)
+        if(dwCount == 0)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(5000)); 
+            std::this_thread::sleep_for(std::chrono::milliseconds(nSndDelay)); 
         }
     }
 
  
     if(closesocket(sClient) == 0)
-            printf("closesocket() is OK!\n");
+       printf("closesocket() is OK!\n");
     else
-            printf("closesocket() failed with error code %d\n", WSAGetLastError());
+       printf("closesocket() failed with error code %d\n", WSAGetLastError());
 
 
     if (WSACleanup() == 0)

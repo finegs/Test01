@@ -45,7 +45,6 @@ LPSOCKET_INFORMATION SocketArray[FD_SETSIZE];
  
 
 int main(int argc, char **argv)
-
 {
 
    SOCKET ListenSocket;
@@ -98,7 +97,6 @@ int main(int argc, char **argv)
    InternetAddr.sin_family = AF_INET;
    InternetAddr.sin_addr.s_addr = htonl(INADDR_ANY);
    InternetAddr.sin_port = htons(srcPort);
- 
 
    if (bind(ListenSocket, (PSOCKADDR) &InternetAddr, sizeof(InternetAddr)) == SOCKET_ERROR)
    {
@@ -195,8 +193,6 @@ int main(int argc, char **argv)
          }
       }
 
- 
-
       // Check each socket for Read and Write notification until the number
       // of sockets in Total is satisfied
       for (i = 0; Total > 0 && i < TotalSockets; i++)
@@ -239,8 +235,6 @@ int main(int argc, char **argv)
                }
             }
          }
-
- 
 
          // If the WriteSet is marked on this socket then this means the internal
          // data buffers are available for more data
