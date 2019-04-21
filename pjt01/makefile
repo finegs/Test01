@@ -1,14 +1,14 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -Wall -Wextra -Werror
-CXXFLAGS := -std=c++17 -Wall -Wextra
+CXXFLAGS := -std=c++17 -Wall -Wextra -Wunused-parameter
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 LDFLAGS  := -lws2_32 -pthread
 BUILD    := ./build
 OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/apps
 #TARGET   := s.exe
-TARGET   := test01.exe
+TARGET   := tc.exe
 
 INCLUDE  := -Iinclude 
 INCLUDE  += -I.

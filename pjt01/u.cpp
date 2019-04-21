@@ -20,11 +20,11 @@ struct Buffer
 	void* data;
 	int next;
 	size_t size;
-}
+};
 
 struct Buffer* new_buffer(size_t data_len = INITIAL_SIZE)
 {
-	struct Buffer* b = malloc(sizeof(Buffer));
+	struct Buffer* b = (struct Buffer*)malloc(sizeof(Buffer));
 
 	b->data = malloc(INITIAL_SIZE);
 	b->size = INITIAL_SIZE;
@@ -54,6 +54,8 @@ void serialize_int(int x, Buffer* b)
 	
 class Packet 
 {
+    public:
+        static size_t MaxDataSize 
 		int senderId;
 		int sequenceNumber;
 		char data[MaxDataSize];
