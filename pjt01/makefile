@@ -9,7 +9,7 @@ BUILD    := build
 OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/apps
 #TARGET   := s.exe
-TARGET   := uc.exe
+TARGET   := test01.exe
 #DEFAULT_TARGET   := ts2.exe
 #
 #ifeq ($(1) '')
@@ -66,6 +66,7 @@ deploy_current:
 	@echo copy from $(APP_DIR)/$(TARGET) to $(TARGET)
 
 clean:
-	-@rm -rvf $(OBJ_DIR)/*
-	-@rm -rvf $(APP_DIR)/*
-	-@rm -vf $(TARGET)
+	-@rm -r -v -f $(OBJ_DIR)/*
+#	-@rm -rvf $(OBJ_DIR)/*
+	-@rm -r -v -f $(APP_DIR)/*
+	-@rm -v -f $(TARGET)

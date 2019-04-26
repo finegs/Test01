@@ -1,11 +1,13 @@
 #if 1
 
-#include <functional>
 #include <queue>
 #include <vector>
 #include <cstdlib>
 #include <iostream>
 #include <cstring>
+#include <functional>
+#include <map>
+#include <unordered_map>
 
 class AA {
     private:
@@ -24,12 +26,21 @@ template<typename T> void print_queue(T& q) {
     }
     std::cout << std::endl;
 
-    AA a("a", "aaa");
-//    std::cout << a.getName() << a.getDesc() << std::endl;
+    AA a("a", "aa");
+    std::cout << "a : Name=" << a.getName() << ", Desc=" << a.getDesc() << std::endl;
+    const std::string& name = a.getName();
+    std::cout << name;
+
+
+    std::string s1("aaa");
+    s1.append(" bbb");
+
+    std::hash<std::string> hash_fn;
+    std::cout << "s1.c_str() = " << s1.c_str() << ", Hash="<< hash_fn(s1) << std::endl;
+
 }
 
-int main(int argc, char* argv[]) {
-
+void test01(int argc, char* argv[]) {
     int n;
     int* arr;
 
@@ -69,6 +80,42 @@ int main(int argc, char* argv[]) {
 
 
     std::cout << "3^1=" << (3^1) << std::endl;
+
+
+    delete[] arr;
+    arr = nullptr;
+}
+
+void print_map(const std::string& msg, std::unordered_map<std::string, std::string>& u) {
+    std::cout << "Title : " << msg << std::endl;
+    std::cout << "<-----------------" << std::endl;
+    for(const auto& n:u) {
+        std::cout << "Key : [" << n.first << "], Value : [" << n.second << "]" << std::endl;
+    }
+    std::cout << "----------------->" << std::endl;
+}
+
+
+void test02() {
+    std::unordered_map<std::string, std::string> u = { { "a1", "bb"},
+                                                        {"a2", "bb2"},
+                                                        {"a3", "bb3"}};
+                                                        
+    print_map("1. ", u);
+
+    u["a1"] = "cc";
+    u["a2"] = "bbb2";
+
+    print_map("2. ", u);
+
+}
+
+
+int main(int argc, char* argv[]) {
+    
+
+    test01(argc, argv);
+    test02();
 
     return EXIT_SUCCESS;
 
