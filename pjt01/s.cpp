@@ -236,3 +236,4 @@ my::Msg* popSendQueue()
 	sendQueue.pop();
 	return m;
 }
+
