@@ -13,16 +13,19 @@ WORD srcPort,dstPort;
 
 struct Msg
 {
+
+	public:
+		static uint32_t G_SEQ;
 	public:
 		Msg() : seq(++G_SEQ) 
 		{
 			memset(buf, '\0', sizeof(char)*G_BUF_LEN);
 		}
 	public:
-		static uint32_t G_SEQ;
 		uint32_t seq;
 		char buf[G_BUF_LEN];
 };
+
 
 unsigned char* marshal(const Msg* msg, unsigned char* buf)
 {

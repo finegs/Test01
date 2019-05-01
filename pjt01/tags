@@ -1,0 +1,73 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Buffer	.\u.cpp	/^struct Buffer$/;"	s	file:
+DieWithError	.\u.cpp	/^void DieWithError(const char *errorMessage)$/;"	f
+G_BUF_LEN	.\uc.cpp	9;"	d	file:
+G_SEQ	.\uc.cpp	/^		static uint32_t G_SEQ;$/;"	m	struct:Msg	file:
+G_SEQ	.\uc.cpp	/^uint32_t Msg::G_SEQ = 0;$/;"	m	class:Msg	file:
+INITIAL_SIZE	.\u.cpp	10;"	d	file:
+IP_TARGET	.\uc.cpp	8;"	d	file:
+MAXRECVSTRING	.\s.cpp	29;"	d	file:
+MSGBUFSIZE	.\listener.cpp	28;"	d	file:
+Msg	.\s.cpp	/^			Msg(const my::Msg& _msg) : msg(_msg.msg), from_addr(_msg.from_addr) {}$/;"	f	class:my::Msg
+Msg	.\s.cpp	/^			Msg(const my::Msg&& _msg)  : msg(std::move(_msg.msg)), from_addr(std::move(_msg.from_addr)) {}$/;"	f	class:my::Msg
+Msg	.\s.cpp	/^			Msg(const std::string& _msg, struct sockaddr_in* _from_addr) $/;"	f	class:my::Msg
+Msg	.\s.cpp	/^	class Msg$/;"	c	namespace:my	file:
+Msg	.\uc.cpp	/^		Msg() : seq(++G_SEQ) $/;"	f	struct:Msg
+Msg	.\uc.cpp	/^struct Msg$/;"	s	file:
+Packet	.\u.cpp	/^class Packet $/;"	c	file:
+SerializedPacket	.\u.cpp	/^struct SerializedPacket {$/;"	s	file:
+bEnd	.\uc.cpp	/^BOOL bEnd = false;$/;"	v
+buf	.\uc.cpp	/^		char buf[G_BUF_LEN];$/;"	m	struct:Msg	file:
+comp_dat	.\t.cpp	/^int comp_dat(void const* a, void const* b)$/;"	f
+dat	.\t.cpp	/^} dat[] = { {1, "Foo"}$/;"	v	typeref:struct:data
+data	.\t.cpp	/^struct data {$/;"	s	file:
+data	.\u.cpp	/^		char data[MaxDataSize];$/;"	m	class:Packet	file:
+data	.\u.cpp	/^	char data[MaxDataSize];$/;"	m	struct:SerializedPacket	file:
+data	.\u.cpp	/^	void* data;$/;"	m	struct:Buffer	file:
+deserialize	.\u.cpp	/^void Packet::deserialize(void* message)$/;"	f	class:Packet
+dstPort	.\uc.cpp	/^WORD srcPort,dstPort;$/;"	v
+from_addr	.\s.cpp	/^			struct sockaddr_in* from_addr;$/;"	m	class:my::Msg	typeref:struct:my::Msg::sockaddr_in	file:
+getCMsg	.\s.cpp	/^			const std::string& getCMsg() const { return msg; }$/;"	f	class:my::Msg
+getFromAddr	.\s.cpp	/^			struct sockaddr_in* getFromAddr() const { return from_addr; }$/;"	f	class:my::Msg
+handleRecv	.\c.cpp	/^void handleRecv(int sock)$/;"	f
+handle_recv	.\s.cpp	/^void handle_recv(int sock)$/;"	f
+handle_send	.\s.cpp	/^void handle_send(int sock)$/;"	f
+main	.\c.cpp	/^int main(int argc, char *argv[])$/;"	f
+main	.\listener.cpp	/^int main(int argc, char *argv[])$/;"	f
+main	.\s.cpp	/^int main(int argc, char *argv[])$/;"	f
+main	.\sender.cpp	/^int main(int argc, char *argv[])$/;"	f
+main	.\t.cpp	/^int main(int argc, char* argv[])$/;"	f
+main	.\uc.cpp	/^int main(int argc, char* argv[])$/;"	f
+makeSocket	.\uc.cpp	/^SOCKET makeSocket(WORD wPort)$/;"	f
+marshal	.\uc.cpp	/^unsigned char* marshal(const Msg* msg, unsigned char* buf)$/;"	f
+msg	.\s.cpp	/^			std::string msg;$/;"	m	class:my::Msg	file:
+my	.\s.cpp	/^namespace my$/;"	n	file:
+new_buffer	.\u.cpp	/^struct Buffer* new_buffer(size_t data_len = INITIAL_SIZE)$/;"	f
+next	.\u.cpp	/^	int next;$/;"	m	struct:Buffer	file:
+nr	.\t.cpp	/^	int nr;$/;"	m	struct:data	file:
+operator =	.\s.cpp	/^			Msg& operator=(Msg& o)$/;"	f	class:my::Msg
+operator =	.\s.cpp	/^			Msg& operator=(Msg&& o)$/;"	f	class:my::Msg
+popSendQueue	.\s.cpp	/^my::Msg* popSendQueue()$/;"	f
+pushSendQueue	.\s.cpp	/^void pushSendQueue(my::Msg* msg)$/;"	f
+rcvTask	.\uc.cpp	/^DWORD WINAPI rcvTask(void* pParam)$/;"	f
+reserve_space	.\u.cpp	/^void reserve_space(Buffer* b, size_t bytes)$/;"	f
+sendData	.\uc.cpp	/^BOOL sendData(void* pParam, WORD wDstPort, unsigned char* sndBuf, size_t sndBufLen)$/;"	f
+sendQueueCV	.\s.cpp	/^std::condition_variable sendQueueCV;$/;"	v
+sendQueueMtx	.\s.cpp	/^std::mutex sendQueueMtx;$/;"	v
+senderId	.\u.cpp	/^		int senderId;$/;"	m	class:Packet	file:
+senderId	.\u.cpp	/^	int senderId;$/;"	m	struct:SerializedPacket	file:
+seq	.\uc.cpp	/^		uint32_t seq;$/;"	m	struct:Msg	file:
+sequenceNumber	.\u.cpp	/^		int sequenceNumber;$/;"	m	class:Packet	file:
+sequenceNumber	.\u.cpp	/^	int sequenceNumber;$/;"	m	struct:SerializedPacket	file:
+serialize	.\u.cpp	/^void* Packet::serialize()$/;"	f	class:Packet
+serialize_int	.\u.cpp	/^void serialize_int(int x, Buffer* b)$/;"	f
+size	.\u.cpp	/^	size_t size;$/;"	m	struct:Buffer	file:
+srcPort	.\uc.cpp	/^WORD srcPort,dstPort;$/;"	v
+unmarshal	.\uc.cpp	/^Msg* unmarshal(unsigned char* buf, Msg* msg = nullptr)$/;"	f
+value	.\t.cpp	/^	char const* value;$/;"	m	struct:data	file:
+~Msg	.\s.cpp	/^			~Msg() $/;"	f	class:my::Msg

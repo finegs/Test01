@@ -1,5 +1,6 @@
-#include <stdlib.h>
-#include <stdio.h>
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
 
 struct data {
 	int nr;
@@ -10,10 +11,10 @@ struct data {
 	,{4, "World"}
 	};
 
-int comp_dat(void const* a, void const* b)
+int comp_dat(const void* a, const void * b)
 {
-	struct data const* l = (struct data const*)a;
-	struct data const* r = (struct data const*)b;
+	const data* l = (const data*)a;
+	const data* r = (const data*)b;
 	if(l->nr < r->nr) return -1;
 	else if(l->nr > r->nr) return 1;
 	else return 0;
@@ -21,8 +22,8 @@ int comp_dat(void const* a, void const* b)
 
 int main(int argc, char* argv[])
 {
-	struct data key = { .nr = 3 };
-	struct data const* res = (struct data const*)bsearch(&key, dat, sizeof(dat)/sizeof(dat[0]), sizeof(dat[0]), comp_dat);
+	data key = { .nr = 3 };
+	const data* res = (const data*)bsearch(&key, dat, sizeof(dat)/sizeof(dat[0]), sizeof(dat[0]), comp_dat);
 
 	if(res) {
 		printf("No %d : %s\n", res->nr, res->value);
