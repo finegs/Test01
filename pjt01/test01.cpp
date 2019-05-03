@@ -8,6 +8,7 @@
 #include <functional>
 #include <map>
 #include <unordered_map>
+#include <type_traits>
 
 class AA {
     private:
@@ -15,6 +16,21 @@ class AA {
         std::string desc;
     public:
         AA(const char* _name, const char* _desc) : name(_name), desc(_desc) {}
+        AA(const AA& o) : name(o.name), desc(o.name) {}
+        AA(AA&& o)  : name(std::move(o.name)), desc(std::move(o.desc)) {}
+        AA& operator=(const AA& o) 
+        {
+            name = o.name;
+            desc = o.desc;
+            return *this;
+        }
+        AA& operator=(AA&& o) 
+        {
+            name = std::move(o.name);
+            desc = std::move(o.desc);
+            return *this;
+        }
+
         const std::string& getName() { return name; }
         const std::string& getDesc() { return desc; }
 };
@@ -112,10 +128,13 @@ void test02() {
 
 
 int main(int argc, char* argv[]) {
-    
 
     test01(argc, argv);
     test02();
+
+    std::cout << "std::is_void<void>::value is " << std::is_void<void>::value << std::endl;
+    std::cout << "std::is_integral<short>::value is " << std::is_integral<short>::value << std::endl;
+    std::cout << std::is_integral<short>::value;
 
     return EXIT_SUCCESS;
 
