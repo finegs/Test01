@@ -105,7 +105,7 @@ int main(int argc, char* argv[])
 
 #endif
 
-#if 1
+#if 0
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -163,4 +163,36 @@ int main(int argc, char* argv[])
 	return EXIT_SUCCESS;
 
 }
+#endif
+
+#if 1
+
+#include <iostream>
+#include <tuple>
+
+int main(int argc, char* argv[]) 
+{
+    std::tuple<int, char> foo(10, 'x');
+    auto bar = std::make_tuple("test", 3.1, 14, 'y');
+
+    std::get<2>(bar) = 100;
+
+    int myint; char mychar;
+
+    std::tie(myint, mychar) = foo;
+    std::tie(std::ignore, std::ignore, myint, mychar) = bar;
+
+    mychar = std::get<3>(bar);
+
+    std::get<0>(foo) = std::get<2>(bar);
+    std::get<1>(foo) = mychar;
+
+
+    std::cout << "foo contains : ";
+    std::cout << std::get<0>(foo) << ' ';
+    std::cout << std::get<1>(foo) << '\n';
+
+    return EXIT_SUCCESS;
+}
+
 #endif
