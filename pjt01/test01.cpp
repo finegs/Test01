@@ -1,3 +1,150 @@
+#if 1
+
+#include <queue>
+#include <vector>
+#include <cstdlib>
+#include <iostream>
+#include <cstring>
+#include <functional>
+#include <map>
+#include <unordered_map>
+#include <type_traits>
+
+class AA {
+    private:
+        std::string name;
+        std::string desc;
+    public:
+        AA(const char* _name, const char* _desc) : name(_name), desc(_desc) {}
+        AA(const AA& o) : name(o.name), desc(o.name) {}
+        AA(AA&& o)  : name(std::move(o.name)), desc(std::move(o.desc)) {}
+        AA& operator=(const AA& o) 
+        {
+            name = o.name;
+            desc = o.desc;
+            return *this;
+        }
+        AA& operator=(AA&& o) 
+        {
+            name = std::move(o.name);
+            desc = std::move(o.desc);
+            return *this;
+        }
+
+        const std::string& getName() { return name; }
+        const std::string& getDesc() { return desc; }
+};
+
+template<typename T> void print_queue(T& q) {
+    while(!q.empty()) {
+        std::cout << q.top() << " ";
+        q.pop();
+    }
+    std::cout << std::endl;
+
+    AA a("a", "aa");
+    std::cout << "a : Name=" << a.getName() << ", Desc=" << a.getDesc() << std::endl;
+    const std::string& name = a.getName();
+    std::cout << name;
+
+
+    std::string s1("aaa");
+    s1.append(" bbb");
+
+    std::hash<std::string> hash_fn;
+    std::cout << "s1.c_str() = " << s1.c_str() << ", Hash="<< hash_fn(s1) << std::endl;
+
+}
+
+void test01(int argc, char* argv[]) {
+    int n;
+    int* arr;
+
+    if(argc>1) {
+        n = argc;
+        arr = new int[n];
+        memset(arr, 0, sizeof(int)*n);
+        for(int i = 0;i < n;i++) *(arr+i) = std::atoi(argv[i]);
+    }
+    else {
+        n = 10;
+        arr = new int[n];
+        
+        int i=0;
+        for(int n : {1, 8, 5, 6, 3, 4, 0, 9, 7, 2}) *(arr+i++) = n;
+    }
+
+    std::priority_queue<int> q;
+
+    for(int i = 0;i < n;i++) q.push(arr[i]);
+
+    print_queue(q);
+
+    std::priority_queue<int, std::vector<int>, std::greater<int>> q2;
+
+    for(int i = 0;i < n;i++) q2.push(arr[i]);
+
+    print_queue(q2);
+
+    auto cmp = [](int left, int right) { return (left^1) < (right^1);};
+
+    std::priority_queue<int, std::vector<int>, decltype(cmp)> q3(cmp);
+
+    for(int i = 0;i < n;i++) q3.push(arr[i]);
+
+    print_queue(q3);
+
+
+    std::cout << "3^1=" << (3^1) << std::endl;
+
+
+    delete[] arr;
+    arr = nullptr;
+}
+
+void print_map(const std::string& msg, std::unordered_map<std::string, std::string>& u) {
+    std::cout << "Title : " << msg << std::endl;
+    std::cout << "<-----------------" << std::endl;
+    for(const auto& n:u) {
+        std::cout << "Key : [" << n.first << "], Value : [" << n.second << "]" << std::endl;
+    }
+    std::cout << "----------------->" << std::endl;
+}
+
+
+void test02() {
+    std::unordered_map<std::string, std::string> u = { { "a1", "bb"},
+                                                        {"a2", "bb2"},
+                                                        {"a3", "bb3"}};
+                                                        
+    print_map("1. ", u);
+
+    u["a1"] = "cc";
+    u["a2"] = "bbb2";
+
+    print_map("2. ", u);
+
+}
+
+
+int main(int argc, char* argv[]) {
+
+    test01(argc, argv);
+    test02();
+
+    std::cout << "std::is_void<void>::value is " << std::is_void<void>::value << std::endl;
+    std::cout << "std::is_integral<short>::value is " << std::is_integral<short>::value << std::endl;
+    std::cout << std::is_integral<short>::value;
+
+    return EXIT_SUCCESS;
+
+}
+
+
+#endif
+
+
+#if 0
 #include <iostream>
 #include <test01.hpp>
 
@@ -77,3 +224,6 @@ int main(int argc,char* argv[])
 
     return EXIT_SUCCESS;
 }
+
+#endif
+

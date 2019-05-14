@@ -75,6 +75,7 @@ SOCKET makeSocket(WORD wPort)
 	SOCKET sock = (SOCKET)NULL;
     SOCKADDR_IN addr = {0};
 
+
     sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if(sock == INVALID_SOCKET)
     {

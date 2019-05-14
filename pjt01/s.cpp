@@ -95,10 +95,10 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    multicastIP = argv[1];        /* First arg: Multicast IP address (dotted quad) */
-    multicastPort = atoi(argv[2]);/* Second arg: Multicast port */
+    multicastIP = argv[1];                              /* First arg: Multicast IP address (dotted quad) */
+    multicastPort = atoi(argv[2]);                      /* Second arg: Multicast port */
 
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) /* Load Winsock 2.2 DLL */
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)      /* Load Winsock 2.2 DLL */
     {
         fprintf(stderr, "WSAStartup() failed");
         exit(1);
@@ -172,25 +172,26 @@ void handle_recv(int sock)
 
 	while(1)
 	{
-			struct sockaddr_in* cli_addr;
-			int cli_addr_len = 0;
-			if(NULL == (cli_addr = (struct sockaddr_in*)malloc(cli_addr_len = sizeof(struct sockaddr_in))))
-			{
-        		DieWithError("SVR : handleRecv return with error : fail to malloc sizeof(struct sockaddr_in)");
-				return;
-			}	
-			if((recvStringLen = recvfrom(sock, recvString, recvStringLen, 0, 
-											(struct sockaddr*)cli_addr, &cli_addr_len)) < 0)
-			{
-				DieWithError("SVR : recvfrom in handleRecv is failed, then DiewithError : ");
-				break;
-			}
-			printf("SVR : handleRecv : %s, client=%s\n", recvString, inet_ntoa(cli_addr->sin_addr));
-			// Check 'exit' command from client
-			if(strcmp("exit", recvString) == 0) break;
+		struct sockaddr_in* cli_addr;
+		int cli_addr_len = 0;
+		if(NULL == (cli_addr = 
+            (struct sockaddr_in*)malloc(cli_addr_len = sizeof(struct sockaddr_in))))
+		{
+        	    DieWithError("SVR : handleRecv return with error : fail to malloc sizeof(struct sockaddr_in)");
+		        return;
+		}	
 
-			my::Msg* m = new my::Msg(recvString, cli_addr);
-			pushSendQueue(m);
+		if((recvStringLen = recvfrom(sock, recvString, recvStringLen, 0, (struct sockaddr*)cli_addr, &cli_addr_len)) < 0)
+		{
+		        DieWithError("SVR : recvfrom in handleRecv is failed, then DiewithError : ");
+		        break;
+		}
+
+		printf("SVR : handleRecv : %s, client=%s\n", recvString, inet_ntoa(cli_addr->sin_addr));
+		// Check 'exit' command from client
+		if(strcmp("exit", recvString) == 0) break;
+		my::Msg* m = new my::Msg(recvString, cli_addr);
+		pushSendQueue(m);
 	}	
 	delete[] recvString;
 	recvString = nullptr;
@@ -204,11 +205,11 @@ void handle_send(int sock)
 		my::Msg* msg = popSendQueue();
 		if(!msg) continue;
        	if (sendto(sock, 
-						msg->getCMsg().c_str(),
-					   	msgLen = strlen(msg->getCMsg().c_str()), 
-						0, 
-						(struct sockaddr*)msg->getFromAddr(), 
-						 sizeof(msg->getFromAddr())) != msgLen)
+	        msg->getCMsg().c_str(),
+	        msgLen = strlen(msg->getCMsg().c_str()), 
+		0, 
+		(struct sockaddr*)msg->getFromAddr(), 
+		sizeof(msg->getFromAddr())) != msgLen)
 		{
         	DieWithError("sendto() sent a different number of bytes than expected");
 		}
@@ -235,3 +236,4 @@ my::Msg* popSendQueue()
 	sendQueue.pop();
 	return m;
 }
+
