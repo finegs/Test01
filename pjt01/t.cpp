@@ -12,7 +12,15 @@
 #include <iostream>
 #include <tuple>
 
+#include <u.hpp>
+
+// aa bb vc
+
+//#pragma clang diagnostic ignored "-Wunused"
+
+
 int main(int argc, char* argv[]) 
+//int main(int /*argc*/, char* /*argv[]*/) 
 {
     std::tuple<int, char> foo(10, 'x');
     auto bar = std::make_tuple("test", 3.1, 14, 'y');
@@ -33,6 +41,7 @@ int main(int argc, char* argv[])
     std::cout << "foo contains : ";
     std::cout << std::get<0>(foo) << ' ';
     std::cout << std::get<1>(foo) << '\n';
+
 
     return EXIT_SUCCESS;
 }
@@ -192,6 +201,7 @@ int main(int argc, char* argv[])
     cout << "after remove(9), push_heap: ";
     for(auto i:v) cout << i << " ";
     cout << endl;
+
 	return EXIT_SUCCESS;
 
 }

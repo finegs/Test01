@@ -7,20 +7,13 @@
 #include <winsock.h>  /* for WSAGetLastError() */
 #include <stdlib.h>   /* for exit() */
 
-#define INITIAL_SIZE 1024
+#include <u.hpp>
 
 void DieWithError(const char *errorMessage)
 {
     fprintf(stderr,"%s: %d\n", errorMessage, WSAGetLastError());
     exit(1);
 }
-
-struct Buffer
-{
-	void* data;
-	int next;
-	size_t size;
-};
 
 struct Buffer* new_buffer(size_t data_len = INITIAL_SIZE)
 {
@@ -52,24 +45,6 @@ void serialize_int(int x, Buffer* b)
 	b->next += sizeof(int);
 }
 	
-class Packet 
-{
-    public:
-        static size_t MaxDataSize 
-		int senderId;
-		int sequenceNumber;
-		char data[MaxDataSize];
-	public:
-		unsigned char* serialize();
-		void deserialize(unsigned char* message);
-};
-
-struct SerializedPacket {
-	int senderId;
-	int sequenceNumber;
-	char data[MaxDataSize];
-} __attribute__((packed));
-
 
 void* Packet::serialize()
 {
