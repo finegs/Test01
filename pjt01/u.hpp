@@ -26,8 +26,8 @@ class Packet
         Packet();
         ~Packet();
 	public:
-		unsigned char* serialize();
-		void deserialize(unsigned char* message);
+		void* serialize();
+		void deserialize(void* message);
 };
 
 struct SerializedPacket {

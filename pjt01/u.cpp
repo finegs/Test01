@@ -15,12 +15,12 @@ void DieWithError(const char *errorMessage)
     exit(1);
 }
 
-struct Buffer* new_buffer(size_t data_len = INITIAL_SIZE)
+struct Buffer* new_buffer(size_t data_len)
 {
 	struct Buffer* b = (struct Buffer*)malloc(sizeof(Buffer));
 
-	b->data = malloc(INITIAL_SIZE);
-	b->size = INITIAL_SIZE;
+	b->data = malloc(data_len);
+	b->size = data_len;
 	b->next = 0;
 
 	return b;
@@ -44,11 +44,12 @@ void serialize_int(int x, Buffer* b)
 	memcpy(((char*)b->data) + b->next, &x, sizeof(int));
 	b->next += sizeof(int);
 }
-	
+
+const size_t Packet::MaxDataSize = INITIAL_SIZE;
 
 void* Packet::serialize()
 {
-	struct *SerializedPacket* s = new SerializedPacket();
+	struct SerializedPacket* s = new SerializedPacket();
 	s->senderId = htonl(this->senderId);
 	s->sequenceNumber = htonl(this->sequenceNumber);
 	memcpy(s->data, this->data, MaxDataSize);
