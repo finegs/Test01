@@ -15,6 +15,7 @@ struct Buffer
 
 struct Buffer* new_buffer(size_t data_len = INITIAL_SIZE);
 void reserve_space(Buffer* b, size_t bytes);
+
 void serialize_int(int x, Buffer* b);
 
 class Packet
@@ -35,6 +36,7 @@ class Packet
 };
 
 struct SerializedPacket {
+
 	public:
 		int senderId;
 		int sequenceNumber;
@@ -42,6 +44,7 @@ struct SerializedPacket {
 	public:
 		SerializedPacket();
 		~SerializedPacket();
+
 } __attribute__((packed));
 
 

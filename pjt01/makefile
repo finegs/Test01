@@ -1,27 +1,32 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
-#CXXFLAGS := -Wall -Wextra -Werror
+CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -Wno-unused-parameter
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 LDFLAGS  := -lws2_32 -pthread
 BUILD    := build
-OBJ_DIR  := $(BUILD)/objects
-APP_DIR  := $(BUILD)/apps
+OBJ_DIR  := $(BUILD)\objects
+APP_DIR  := $(BUILD)\apps
 #TARGET   := s.exe
 TARGET   := t.exe
-INCLUDE  := -Iinclude/
+INCLUDE  := -Iinclude -I.
 SKIP_FILE := $(wildcard Test*.cpp)
 #SKIP_FILE += c.cpp
 SKIP_FILE += s.cpp c.cpp s1.cpp
-SRC      :=                      \
-	$(wildcard src/module1/*.cpp) \
-	$(wildcard src/module2/*.cpp) \
-	$(wildcard src/module3/*.cpp) \
-	$(wildcard src/*.cpp)         \
+#SRC      :=                      \
+	$(wildcard src\module1\*.cpp) \
+	$(wildcard src\module2\*.cpp) \
+	$(wildcard src\module3\*.cpp) \
+	$(wildcard src\*.cpp)         \
 	$(wildcard *.cpp)
-SRC		:= $(filter-out $(SKIP_FILE) , $(SRC))
+#SRC		:= $(filter-out $(SKIP_FILE) , $(SRC))
 
-#OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
-OBJECTS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
+SRC 	:= $(TARGET:%.exe=%.cpp)
+SRC		+= u.cpp
+
+
+#OBJS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+#OBJS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
+OBJS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 all: build $(APP_DIR)/$(TARGET) release_this
 
@@ -29,9 +34,9 @@ $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 
-$(APP_DIR)/$(TARGET): $(OBJECTS)
+$(APP_DIR)/$(TARGET): $(OBJS)
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(APP_DIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) 
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
 
 .PHONY: all build clean debug release
 
@@ -50,6 +55,6 @@ release_this:
 	@echo copy from $(APP_DIR)/$(TARGET) to $(TARGET)
 
 clean:
-	-@rm -rvf $(OBJ_DIR)/*
-	-@rm -rvf $(APP_DIR)/*
-	-@rm -vf $(TARGET)
+	-@rm -rf $(OBJ_DIR)/*
+	-@rm -rf $(APP_DIR)/*
+	-@rm -rf $(TARGET)
