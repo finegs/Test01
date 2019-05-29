@@ -47,6 +47,15 @@ void serialize_int(int x, Buffer* b)
 
 const size_t Packet::MaxDataSize = INITIAL_SIZE;
 
+SerializedPacket::SerializedPacket() : senderId(-1), sequenceNumber(-1) {
+    data = new char[Packet::MaxDataSize];
+}
+
+SerializedPacket::~SerializedPacket() {
+    delete[] data;
+    data = nullptr;
+}
+
 void* Packet::serialize()
 {
 	struct SerializedPacket* s = new SerializedPacket();

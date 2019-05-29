@@ -1,5 +1,134 @@
 #if 1
 
+#include <cstring>
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <sstream>
+#include <utility>
+
+#define MY_DEBUG 1
+
+class MyClz {
+    private:
+        std::string id;
+        std::string value;
+        std::string desc;
+
+    public:
+        MyClz() : id(""), value(""), desc("") {}
+        MyClz(const std::string& _id, const std::string& _value) : id(_id), value(_value) {}
+        MyClz(const MyClz& o) : id(o.id), value(o.value), desc(o.desc) {}
+        MyClz(MyClz&& o) : id(std::move(o.id)), value(std::move(o.value)), desc(std::move(o.desc)) {}
+        MyClz& operator=(const MyClz& o) {
+            if(this==&o) return *this;
+            id = o.id;
+            value = o.value;
+            desc = o.desc;
+            return *this;
+        }
+        MyClz& operator=(MyClz&& o) {
+            if(this==&o) return *this;
+            id = std::move(o.id);
+            value = std::move(o.value);
+            desc = std::move(o.desc);
+            return *this;
+        }
+
+        friend std::ostream& operator<<(std::ostream& os, const MyClz& o) {
+            os << "{\"" << o.id << "\", \"" << o.value << "\", \"" << o.desc << "\"}" << std::endl;
+            return os;
+        }
+//        MyClz(std::string&& _id, std::string&& _value) 
+//                : id(std::forward<std::string>(_id)), value(std::forward<std::string>(_value)) {} ;
+        ~MyClz() = default;
+
+    public:
+        struct MyClzComparator {
+            bool operator() (const MyClz& a, const MyClz& b) const {
+                return a.id < b.id;
+            }
+        };
+};
+
+std::unordered_map<std::string, MyClz> m1;
+
+bool IS_DEBUG = false;
+
+//#ifdef MY_DEBUG
+//bool IS_DEBUG = true;
+//#endif
+
+// 0. Initialize Program Parameters
+void initArgs(int argc, char* argv[]) {
+    for(int i = 1;i < argc;i++) {
+        if(!strcmp("-d", argv[i])) {
+            IS_DEBUG = true;
+        }
+    }
+}
+
+
+int main(int argc, char* argv[]) {
+
+    std::string line;
+    std::stringstream ss;
+    std::string key, value;
+    bool bExit = false;
+
+    // 0. Initialize Program Parameters
+    initArgs(argc, argv); 
+
+    do {
+        line = "";
+        std::getline(std::cin, line);
+
+     if (("-quit" == line || "-QUIT" == line || "-exit" == line || "-EXIT" == line)) {
+         std::cout << "Are you sure to quit? (Y/N)" << std::endl;
+
+         std::getline(std::cin, line);
+
+         if("Y"==line||"y"==line) {
+             bExit = true;
+             break;
+         }
+         line.clear();
+         continue;
+     }
+     else if("-p" == line || "-P" == line) {
+         for(auto iter = m1.cbegin();iter != m1.cend();iter++) {
+             std::cout << iter->second << std::endl;
+         }
+         line.clear();
+        continue;
+     }
+
+     ss.str(line);
+     ss >> key >> value;
+
+    if (IS_DEBUG)
+        std::cout << "Size = " << m1.size() << ", Key = " << key << ", Value = " << value << std::endl;
+
+     MyClz c(key, value);
+
+     m1[key] = c;
+
+     line.clear();
+
+    } while(!bExit);
+
+    system("pause");
+
+    return EXIT_SUCCESS;
+}
+
+
+#endif
+
+
+
+#if 0
+
 #include <iostream>
 #include <vector>
 #include <initializer_list>
