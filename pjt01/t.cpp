@@ -69,6 +69,10 @@ void initArgs(int argc, char* argv[]) {
         if(!strcmp("-d", argv[i])) {
             IS_DEBUG = true;
         }
+        else if(!strcmp("--version", argv[i])) {
+            std::cout << "version : " << VERSION << std::endl;
+            exit(EXIT_SUCCESS);
+        }
     }
 }
 
