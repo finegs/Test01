@@ -4,8 +4,8 @@ CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -Wno-unused-parameter
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 LDFLAGS  := -lws2_32 -pthread
 BUILD    := build
-OBJ_DIR  := $(BUILD)\objects
-APP_DIR  := $(BUILD)\apps
+OBJ_DIR  := $(BUILD)/objects
+APP_DIR  := $(BUILD)/apps
 #TARGET   := s.exe
 TARGET   := t.exe
 INCLUDE  := -Iinclude -I.
