@@ -87,37 +87,37 @@ int main(int argc, char* argv[]) {
         line = "";
         std::getline(std::cin, line);
 
-     if (("-quit" == line || "-QUIT" == line || "-exit" == line || "-EXIT" == line)) {
-         std::cout << "Are you sure to quit? (Y/N)" << std::endl;
-
-         std::getline(std::cin, line);
-
-         if("Y"==line||"y"==line) {
-             bExit = true;
-             break;
-         }
-         line.clear();
-         continue;
-     }
-     else if("-p" == line || "-P" == line) {
-         for(auto iter = m1.cbegin();iter != m1.cend();iter++) {
-             std::cout << iter->second << std::endl;
-         }
-         line.clear();
-        continue;
-     }
-
-     ss.str(line);
-     ss >> key >> value;
-
-    if (IS_DEBUG)
-        std::cout << "Size = " << m1.size() << ", Key = " << key << ", Value = " << value << std::endl;
-
-     MyClz c(key, value);
-
-     m1[key] = c;
-
-     line.clear();
+        if (("-quit" == line || "-QUIT" == line || "-exit" == line || "-EXIT" == line)) {
+	            std::cout << "Are you sure to quit? (Y/N)" << std::endl;
+	
+	            std::getline(std::cin, line);
+	
+	        if("Y"==line||"y"==line) {
+	            bExit = true;
+	            break;
+	        }
+	        line.clear();
+	        continue;
+        }
+	     else if("-p" == line || "-P" == line) {
+	         for(auto iter = m1.cbegin();iter != m1.cend();iter++) {
+	             std::cout << iter->second << std::endl;
+	         }
+	         line.clear();
+	        continue;
+	     }
+	
+	     ss.str(line);
+	     ss >> key >> value;
+	
+	    if (IS_DEBUG)
+	        std::cout << "Size = " << m1.size() << ", Key = " << key << ", Value = " << value << std::endl;
+	
+	     MyClz c(key, value);
+	
+	     m1[key] = c;
+	
+	     line.clear();
 
     } while(!bExit);
 
