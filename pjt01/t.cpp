@@ -9,6 +9,8 @@
 
 #define MY_DEBUG 1
 
+#define VERSION "v1.0.0_20190602_b02"
+
 class MyClz {
     private:
         std::string id;
