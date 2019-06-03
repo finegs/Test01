@@ -80,28 +80,32 @@ int main(int argc, char* argv[]) {
     initArgs(argc, argv); 
 
     do {
-        line = "";
+        line = key = value = "";
+		ss.clear();
+
         std::getline(std::cin, line);
 
-     if (("-quit" == line || "-QUIT" == line || "-exit" == line || "-EXIT" == line)) {
-         std::cout << "Are you sure to quit? (Y/N)" << std::endl;
+     	if (("-quit" == line || "-QUIT" == line || "-exit" == line || "-EXIT" == line)) {
+        	std::cout << "Are you sure to quit? (Y/N)" << std::endl;
 
-         std::getline(std::cin, line);
+        	std::getline(std::cin, line);
 
-         if("Y"==line||"y"==line) {
-             bExit = true;
-             break;
-         }
-         line.clear();
-         continue;
-     }
-     else if("-p" == line || "-P" == line) {
-         for(auto iter = m1.cbegin();iter != m1.cend();iter++) {
-             std::cout << iter->second << std::endl;
-         }
-         line.clear();
-        continue;
-     }
+	    	if("Y"==line||"y"==line) {
+   	        	bExit = true;
+   	        	break;
+   		    }
+        	continue;
+     	}
+     	else if("-p" == line || "-P" == line) {
+       		for(auto iter = m1.cbegin();iter != m1.cend();iter++) {
+            	std::cout << iter->second << std::endl;
+         	}
+        	continue;
+     	}
+		else if("-clear" == line) {
+			system("clear");
+			continue;
+		}
 
      ss.str(line);
      ss >> key >> value;
@@ -112,8 +116,6 @@ int main(int argc, char* argv[]) {
      MyClz c(key, value);
 
      m1[key] = c;
-
-     line.clear();
 
     } while(!bExit);
 
