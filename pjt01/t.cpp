@@ -6,8 +6,13 @@
 #include <unordered_map>
 #include <sstream>
 #include <utility>
+#include <vector>
+
+#include <u.hpp>
 
 #define MY_DEBUG 1
+
+#define VERSION "v1.0.0_20190602_b02"
 
 class MyClz {
     private:
@@ -35,10 +40,16 @@ class MyClz {
             return *this;
         }
 
+		void setDesc(std::string& newDesc) {
+			desc = std::forward<std::string>(newDesc);
+		}
+
         friend std::ostream& operator<<(std::ostream& os, const MyClz& o) {
-            os << "{\"" << o.id << "\", \"" << o.value << "\", \"" << o.desc << "\"}" << std::endl;
+            os << "{\"" << o.id << "\", \"" << o.value << "\", \"" << o.desc << "\"}";
             return os;
         }
+
+		static void printCRUDUsage(); 
 //        MyClz(std::string&& _id, std::string&& _value) 
 //                : id(std::forward<std::string>(_id)), value(std::forward<std::string>(_value)) {} ;
         ~MyClz() = default;
@@ -55,67 +66,147 @@ std::unordered_map<std::string, MyClz> m1;
 
 bool IS_DEBUG = false;
 
+void MyClz::printCRUDUsage() {
+	std::cout << "\t>> [I] Usage :  -qQeE : Quit/Exit, -iI : Insert, -dD : Delete, -pP : Print, -cC : Clear )" << std::endl;
+}
+
+void cls() {
+	system("cls");
+}
+
 //#ifdef MY_DEBUG
 //bool IS_DEBUG = true;
 //#endif
 
 // 0. Initialize Program Parameters
-void initArgs(int argc, char* argv[]) {
+int initArgs(int argc, char* argv[]) {
+	int rc = EXIT_SUCCESS;
     for(int i = 1;i < argc;i++) {
-        if(!strcmp("-d", argv[i])) {
+        if(!strcmp("-d", argv[i]) || !strcmp("-D", argv[i])) {
             IS_DEBUG = true;
         }
+		else if(!strcmp("-v", argv[i])) {
+			rc = EXIT_OTHERS;
+			std::cout << argv[0] << " Version : " << VERSION << std::endl;
+		}
     }
+	return rc;
 }
 
 
 int main(int argc, char* argv[]) {
 
+	int rc;
     std::string line;
     std::stringstream ss;
-    std::string key, value;
+	std::string cmd;
+    std::string key, value, desc;
+	std::vector<std::string> params;
+
     bool bExit = false;
+	rc = EXIT_SUCCESS;
 
     // 0. Initialize Program Parameters
-    initArgs(argc, argv); 
+    if(EXIT_SUCCESS != (rc = initArgs(argc, argv))) {
+		return rc;
+	}
 
     do {
-        line = key = value = "";
+        line = cmd = key = value = desc = "";
 		ss.clear();
+		params.clear();
 
+		std::cout << "cmd << "; std::cout.flush();
         std::getline(std::cin, line);
 
-     	if (("-quit" == line || "-QUIT" == line || "-exit" == line || "-EXIT" == line)) {
-        	std::cout << "Are you sure to quit? (Y/N)" << std::endl;
+		ss.str(line);
+		while(true) {
+			cmd = "";
+			ss >> cmd;
+			if(cmd.size() < 1) break;
+			params.push_back(cmd);
+		}
+//		while('\n' != ss.peek()) {
+//			ss >> key;
+//			ss.get(); 
+//			params.push_back(key); 
+//			std::cout << "(" << key << ")" << std::endl; 
+//		}
+		cmd = params.at(0);
 
-        	std::getline(std::cin, line);
+		cls();
 
-	    	if("Y"==line||"y"==line) {
+     	if ("-q" == cmd || "-Q" == cmd || "-quit" == cmd || "-QUIT" == cmd || "-exit" == cmd || "-EXIT" == cmd) {
+			if(params.size() > 1 && "-i" == params[1]) {
+        		std::cout << "\t>> [I] Exit.." << std::endl;
+				bExit = true;
+				continue;
+			}
+        	std::cout << "\t>> [I] Are you sure to quit? (Y/N)" << std::endl;
+
+        	std::getline(std::cin, cmd);
+
+	    	if("Y"== cmd||"y"== cmd) {
    	        	bExit = true;
    	        	break;
    		    }
-        	continue;
      	}
-     	else if("-p" == line || "-P" == line) {
-       		for(auto iter = m1.cbegin();iter != m1.cend();iter++) {
-            	std::cout << iter->second << std::endl;
+     	else if("-p" == cmd || "-P" == cmd || "-print" == cmd || "-PRINT" == cmd) {
+			if(m1.empty()) {
+				std::cout << "\t>> [E] m1 is emtpy" << std::endl;
+				continue;
+			}
+			int i = 0;
+       		for(auto iter = m1.cbegin();iter != m1.cend();iter++, i++) {
+            	std::cout << "\t\t[" << i << "] = " << iter->second << std::endl;
          	}
-        	continue;
      	}
-		else if("-clear" == line) {
-			system("clear");
-			continue;
+		else if("-c" == cmd || "-C" == cmd || "-clear" == cmd || "-CLEAR" == cmd) {
+			cls();
+		}
+		else if ("-I" == cmd || "-i" == cmd) {
+			if(params.size() > 0) key = params[1];
+			if(params.size() > 1) value = params[2];
+			if(params.size() > 2) desc = params[3];
+
+			MyClz c(key, value);
+			c.setDesc(desc);
+
+			if (IS_DEBUG)
+	       		std::cout << "\t>> [D] m1.size= " << m1.size() << ", Data= " << c << std::endl;
+	
+		    m1[key] = c;
+		}
+		else if ("-d" == cmd || "-D" == cmd) {
+
+			if(params.size() > 1) key = params[1];
+			
+			if(key.length() < 1) {
+				std::cout << "\t>> [E] key is empty" << std::endl;
+				continue;
+			}
+
+			int cnt = 0;
+			if(IS_DEBUG) {
+				std::cout << "\t>> [I] Found Count : " << m1.count(key) << std::endl;
+				for(auto iter = m1.find(key);iter != m1.end();iter++) {
+					std::cout << "\t\t(" << cnt++ << "),  m1[" << iter->first << "] = " << iter->second << std::endl; 
+				}
+			}
+			m1.erase(key);
+
+			if (IS_DEBUG) {
+	       		std::cout << "\t>> [D] Deleted count = " << cnt << ", m1.size = " << m1.size() << std::endl;
+			}
+		}
+		else if("-h" == cmd || "-H" == cmd || "-help" == cmd|| "-HELP" == cmd) {
+			MyClz::printCRUDUsage();
+		}
+		else {
+			std::cout << "\t>> [E] Unsupported command : " << key << std::endl;
+			MyClz::printCRUDUsage();
 		}
 
-     ss.str(line);
-     ss >> key >> value;
-
-    if (IS_DEBUG)
-        std::cout << "Size = " << m1.size() << ", Key = " << key << ", Value = " << value << std::endl;
-
-     MyClz c(key, value);
-
-     m1[key] = c;
 
     } while(!bExit);
 
