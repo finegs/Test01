@@ -9,6 +9,15 @@ APP_DIR  := $(BUILD)/apps
 #TARGET   := s.exe
 TARGET   := t.exe
 INCLUDE  := -Iinclude -I.
+
+BOOST_HOME := c:/Programs/boost/1_69_0
+BOOST_INC := $(BOOST_HOME)/include/boost-1_69
+BOOST_LIB := $(BOOST_HOME)/lib
+
+INCLUDE +=  -I$(BOOST_INC)
+LDFLAGS +=  -L$(BOOST_LIB)
+
+
 SKIP_FILE := $(wildcard Test*.cpp)
 #SKIP_FILE += c.cpp
 SKIP_FILE += s.cpp c.cpp s1.cpp
@@ -22,7 +31,6 @@ SKIP_FILE += s.cpp c.cpp s1.cpp
 
 SRC 	:= $(TARGET:%.exe=%.cpp)
 SRC		+= u.cpp
-
 
 #OBJS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 #OBJS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
