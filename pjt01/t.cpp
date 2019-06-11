@@ -1,5 +1,92 @@
 #if 1
 
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <time.h>
+#include <math.h>
+#include <vector>
+#include <set>
+
+#if 1
+int isPrime(int n) {
+	int j;
+	if(n==2 || n==3) return n;
+	for(j=sqrt(n);j>1;--j) {
+		if(n%j==0) return 0;
+	}
+	return n;
+}
+int frequency_of_prime(int n, std::set<int>& s) {
+	int i;
+	int freq = n-1;
+	for(i=2;i<=n;++i)
+		if(isPrime(i))
+			s.emplace(i);
+
+//		for(j=sqrt(i);j>1;--j)
+//			if(i%j==0) { 
+//				--freq; break; 
+//			}
+//			else {
+//				if(s.count(i) < 1)
+//					s.emplace(i);
+//			}
+
+	return freq;
+}
+#endif
+
+
+int main() {
+#if 0	
+	char str[] = "This is a sample string.";
+
+	char* pch;
+	printf("Looking for the 's' character in \"%s\" ....\n", str);
+
+	pch = strchr(str, 's');
+
+	while(pch) {
+		printf("found at %lld\n", pch-str+1);
+		pch=strchr(pch+1, 's');
+	}
+
+
+	char* pch;
+	char str[] = "Example string";
+	pch = (char*)memchr(str, 'p', strlen(str));
+	if(pch)
+		printf("'p' found at position %lld.\n", pch-str+1);
+	else
+		printf("'p' not found .\n");
+
+#endif
+
+	clock_t t;
+	int f;
+	std::set<int> s;
+
+	t = clock();
+	printf("Calculating...\n");
+	f = frequency_of_prime(999999, s);
+	printf("The number of primes than 100,000 is : %d\n", f);
+	t = clock() - t;
+
+	printf("Prime Numbres\n");
+	int i = 0, m = 10;
+	for(auto iter = s.cbegin();iter != s.cend() && m > 0;++iter, i++, --m) {
+		printf("[%d] = %d\n", i, *iter);
+	}
+
+	printf("It took me %ld clicks (%f seconds). \n", t, ((float)t)/CLOCKS_PER_SEC);
+
+	return EXIT_SUCCESS;
+}
+#endif
+
+#if 0
+
 #include <cstring>
 #include <iostream>
 #include <string>
@@ -304,6 +391,82 @@ int main(int argc, char* argv[]) {
 
 
 #endif
+
+#if 0
+
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+class MyData {
+		private:
+				int a;
+				std::string b;
+		public:
+				MyData() : a(-1), b("") {}
+				MyData(int _a, const char* _b) : a(_a), b(_b) {}
+				MyData(int _a, const std::string& _b) : a(_a), b(_b) {} 
+
+				MyData(const MyData& o) : a(o.a), b(o.b) {}
+				MyData(MyData&& o) : a(o.a), b(std::move(o.b)) { std::cout << "## MyData(MyData&&)} " << std::endl; }
+
+				MyData& operator=(const MyData& o) {
+						if(this==&o) return *this;
+						a = o.a;
+						b = o.b;
+						return *this;
+				}
+				MyData& operator=(MyData&& o) {
+						if(this==&o) return *this;
+						a = o.a;
+						b = std::move(o.b);
+						return *this;
+				}
+
+				friend std::ostream& operator<<(std::ostream& os, const MyData& o)  {
+						os << "{ this = " << &o << ", a = " << o.a << ", b = " << o.b << "}";
+						return os;
+				}
+
+				const std::string& getB() {  return b; }
+
+				template<typename T>
+				static void checkB(T&& _b) {
+					std::cout << "&b  = " << &_b 
+								<< ", b = " << _b << std::endl;
+				}
+
+				template<typename T>
+				static void checkMyData(T&& d) {
+					std::cout << " &d =" << &d 
+								<< ", d = " << d  << std::endl;
+				}
+
+};
+
+
+int main() {
+		MyData a(-100, " This is b  !!!!! ######## ");
+
+		std::cout << "1-1, " << a << std::endl;
+		std::cout << "1-2, " << a << std::endl;
+
+		MyData::checkB(a.getB());
+
+		std::cout << "2. " << a << std::endl;
+
+		MyData::checkMyData(a);
+
+		std::cout << "3. " << a << std::endl;
+
+		return EXIT_SUCCESS;
+}
+
+		 
+#endif
+
+
 
 
 
