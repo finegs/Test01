@@ -39,6 +39,10 @@ class MyClz {
             return *this;
         }
 
+        void setDesc(const std::string& newDesc) {
+            desc = newDesc;
+        }
+
         friend std::ostream& operator<<(std::ostream& os, const MyClz& o) {
             os << "{\"" << o.id << "\", \"" << o.value << "\", \"" << o.desc << "\"}" << std::endl;
             return os;
@@ -81,48 +85,48 @@ int main(int argc, char* argv[]) {
 
     std::string line;
     std::stringstream ss;
-    std::string key, value;
+    std::string key, value, desc;
     bool bExit = false;
 
     // 0. Initialize Program Parameters
     initArgs(argc, argv); 
 
     do {
-        line = "";
+        line = key = value = desc = "";
+        ss.str("");
+        ss.clear();
         std::getline(std::cin, line);
 
         if (("-quit" == line || "-QUIT" == line || "-exit" == line || "-EXIT" == line)) {
-	            std::cout << "Are you sure to quit? (Y/N)" << std::endl;
+	        std::cout << "Are you sure to quit? (Y/N)" << std::endl;
 	
-	            std::getline(std::cin, line);
+	        std::getline(std::cin, line);
 	
 	        if("Y"==line||"y"==line) {
 	            bExit = true;
 	            break;
 	        }
-	        line.clear();
 	        continue;
         }
-	     else if("-p" == line || "-P" == line) {
-	         for(auto iter = m1.cbegin();iter != m1.cend();iter++) {
+	    else if("-p" == line || "-P" == line || "-print" == line || "--print" == line) {
+	        for(auto iter = m1.cbegin();iter != m1.cend();iter++) {
 	             std::cout << iter->second << std::endl;
-	         }
-	         line.clear();
+	        }
 	        continue;
-	     }
+	    }
 	
-	     ss.str(line);
-	     ss >> key >> value;
+	    ss.str(line);
+	    ss >> key >> value;
+        if(ss.get()) ss >> desc;
 	
 	    if (IS_DEBUG)
-	        std::cout << "Size = " << m1.size() << ", Key = " << key << ", Value = " << value << std::endl;
+	        std::cout << "Line = " << line << ", Size = " << m1.size() << ", Key = " << key << ", Value = " << value << std::endl;
 	
-	     MyClz c(key, value);
+	    MyClz c(key, value);
+        if(desc.size()) c.setDesc(desc);
 	
-	     m1[key] = c;
+	    m1[key] = c;
 	
-	     line.clear();
-
     } while(!bExit);
 
     system("pause");
