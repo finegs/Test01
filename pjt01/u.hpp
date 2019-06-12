@@ -6,6 +6,8 @@
 
 #define VERSION_U "v1.0.0_20190602_b01"
 
+#define EXIT_OTHERS 2
+
 void DieWithError(const char* errorMessage);
 
 struct Buffer

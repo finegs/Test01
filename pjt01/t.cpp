@@ -1,3 +1,126 @@
+#if 0
+#include <iostream>
+#include <string>
+#include <cstdio>
+
+void f1();
+void f2();
+
+int main() {
+    f2();
+}
+
+void f2() {
+    std::ios::syn_with_stdio(false);
+    std::cout << "a\n";
+    std::printf("b\n");
+    std::cout<<"c\n";
+}
+
+void f1() {
+    double n;
+    while(std::cout << "Please, enter a number\n"
+            && !(std::cin>>n)) {
+        std::cin.clear();
+        std::string line;
+        std::getline(std::cin, line);
+        std::cout << "I am sorry, but '" << line << "' is not a number\n";
+    }
+
+    std::cout << "Thank you for enterring the number " << n <<  '\n';
+}
+
+
+#endif
+
+
+#if 0
+
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <time.h>
+#include <math.h>
+#include <vector>
+#include <set>
+
+#if 1
+int isPrime(int n) {
+	int j;
+	if(n==2 || n==3) return n;
+	for(j=sqrt(n);j>1;--j) {
+		if(n%j==0) return 0;
+	}
+	return n;
+}
+int frequency_of_prime(int n, std::set<int>& s) {
+	int i;
+	int freq = n-1;
+	for(i=2;i<=n;++i)
+		if(isPrime(i))
+			s.emplace(i);
+
+//		for(j=sqrt(i);j>1;--j)
+//			if(i%j==0) { 
+//				--freq; break; 
+//			}
+//			else {
+//				if(s.count(i) < 1)
+//					s.emplace(i);
+//			}
+
+	return freq;
+}
+#endif
+
+
+int main() {
+#if 0	
+	char str[] = "This is a sample string.";
+
+	char* pch;
+	printf("Looking for the 's' character in \"%s\" ....\n", str);
+
+	pch = strchr(str, 's');
+
+	while(pch) {
+		printf("found at %lld\n", pch-str+1);
+		pch=strchr(pch+1, 's');
+	}
+
+
+	char* pch;
+	char str[] = "Example string";
+	pch = (char*)memchr(str, 'p', strlen(str));
+	if(pch)
+		printf("'p' found at position %lld.\n", pch-str+1);
+	else
+		printf("'p' not found .\n");
+
+#endif
+
+	clock_t t;
+	int f;
+	std::set<int> s;
+
+	t = clock();
+	printf("Calculating...\n");
+	f = frequency_of_prime(999999, s);
+	printf("The number of primes than 100,000 is : %d\n", f);
+	t = clock() - t;
+
+	printf("Prime Numbres\n");
+	int i = 0, m = 10;
+	for(auto iter = s.cbegin();iter != s.cend() && m > 0;++iter, i++, --m) {
+		printf("[%d] = %d\n", i, *iter);
+	}
+
+	printf("It took me %ld clicks (%f seconds). \n", t, ((float)t)/CLOCKS_PER_SEC);
+
+	return EXIT_SUCCESS;
+}
+#endif
+
 #if 1
 
 #include <cstring>
@@ -6,8 +129,96 @@
 #include <unordered_map>
 #include <sstream>
 #include <utility>
+#include <vector>
+#include <functional>
+
+#ifndef __MY_IPC
+#define __MY_IPC
+
+#include <boost/interprocess/managed_shared_memory.hpp>
+#include <boost/interprocess/containers/map.hpp>
+#include <boost/interprocess/allocators/allocator.hpp>
+
+class MyIPC {
+	public:
+		static int TEST_MAP_SIZE;
+	public:
+		static int testIPC(int _mapSize = TEST_MAP_SIZE);
+};
+
+int MyIPC::TEST_MAP_SIZE = 100;
+
+int MyIPC::testIPC(int _mapSize) {
+   using namespace boost::interprocess;
+
+   //Remove shared memory on construction and destruction
+   struct shm_remove
+   {
+      shm_remove() { shared_memory_object::remove("MySharedMemory"); }
+      ~shm_remove(){ shared_memory_object::remove("MySharedMemory"); }
+   } remover;
+
+   //Shared memory front-end that is able to construct objects
+   //associated with a c-string. Erase previous shared memory with the name
+   //to be used and create the memory segment at the specified address and initialize resources
+   managed_shared_memory segment
+      (create_only
+      ,"MySharedMemory" //segment name
+      ,65536);          //segment size in bytes
+
+   //Note that map<Key, MappedType>'s value_type is std::pair<const Key, MappedType>,
+   //so the allocator must allocate that pair.
+   typedef int    KeyType;
+   typedef float  MappedType;
+   typedef std::pair<const int, float> ValueType;
+
+   //Alias an STL compatible allocator of for the map.
+   //This allocator will allow to place containers
+   //in managed shared memory segments
+   typedef allocator<ValueType, managed_shared_memory::segment_manager>
+      ShmemAllocator;
+
+   //Alias a map of ints that uses the previous STL-like allocator.
+   //Note that the third parameter argument is the ordering function
+   //of the map, just like with std::map, used to compare the keys.
+   typedef map<KeyType, MappedType, std::less<KeyType>, ShmemAllocator> MyMap;
+
+   //Initialize the shared memory STL-compatible allocator
+   ShmemAllocator alloc_inst (segment.get_segment_manager());
+
+   //Construct a shared memory map.
+   //Note that the first parameter is the comparison function,
+   //and the second one the allocator.
+   //This the same signature as std::map's constructor taking an allocator
+   MyMap *mymap =
+      segment.construct<MyMap>("MyMap")      		//object name
+                                 (std::less<int>() //first  ctor parameter
+                                 ,alloc_inst);     //second ctor parameter
+
+   //Insert data in the map
+   for(int i = 0; i < _mapSize; ++i){
+      //mymap->insert(std::pair<const int, float>(i, (float)i));
+//      mymap->[i] = (float)i*i;
+	  (*mymap).emplace(i, (float)i*i);
+   }
+
+
+   // Get Data in the map
+   float vf = .0;
+   for(int i = 0;i < _mapSize;++i) {
+	//   std::cout << "mymap[" << i << "] : " << mymap->find(i)->first << std::endl;
+	vf = (float)(*mymap)[i];	
+	std::cout << "mymap[" << i << "] = " 
+		   << vf
+		   << ", match= " << std::boolalpha << (vf == (float)i*i) << std::endl;
+   }
+   return 0;	
+}
+
+#endif
 
 #include <u.hpp>
+#include <uu1.hpp>
 
 #define MY_DEBUG 1
 
@@ -42,13 +253,20 @@ class MyClz {
         void setDesc(const std::string& newDesc) {
             desc = newDesc;
         }
+//
+//		void setDesc(std::string& newDesc) {
+//			desc = std::forward<std::string>(newDesc);
+//		}
 
         friend std::ostream& operator<<(std::ostream& os, const MyClz& o) {
-            os << "{\"" << o.id << "\", \"" << o.value << "\", \"" << o.desc << "\"}" << std::endl;
+            os << "{\"" << o.id << "\", \"" << o.value << "\", \"" << o.desc << "\"}";
             return os;
         }
+
+		static void printCRUDUsage(); 
 //        MyClz(std::string&& _id, std::string&& _value) 
 //                : id(std::forward<std::string>(_id)), value(std::forward<std::string>(_value)) {} ;
+		static void testFibo(int n = 255);
         ~MyClz() = default;
 
     public:
@@ -59,74 +277,198 @@ class MyClz {
         };
 };
 
+
 std::unordered_map<std::string, MyClz> m1;
 
 bool IS_DEBUG = false;
+
+void MyClz::printCRUDUsage() {
+	std::cout << "\t>> [I] Usage :  -qQeE : Quit/Exit, -iI : Insert, -dD : Delete, -pP : Print, -cC : Clear )" << std::endl;
+}
+
+void MyClz::testFibo(int n) {
+
+	int x, y, z, cnt;
+
+//	while(1) {
+		cnt = 0;
+		x = 0;
+		y = 1;
+
+		do {
+			printf("[%d] : %d%s", cnt, x, (cnt % 5 == 0 ? "\n" : " ,"));
+			z = x + y;
+			x = y;
+			y = z;
+		} while(cnt++ < n);
+//	}
+}
+
+void cls() {
+	system("cls");
+}
 
 //#ifdef MY_DEBUG
 //bool IS_DEBUG = true;
 //#endif
 
 // 0. Initialize Program Parameters
-void initArgs(int argc, char* argv[]) {
+int initArgs(int argc, char* argv[]) {
+	int rc = EXIT_SUCCESS;
     for(int i = 1;i < argc;i++) {
-        if(!strcmp("-d", argv[i])) {
+        if(!strcmp("-d", argv[i]) || !strcmp("-D", argv[i])) {
             IS_DEBUG = true;
         }
-        else if(!strcmp("--version", argv[i])) {
-            std::cout << "version : " << VERSION << std::endl;
-            exit(EXIT_SUCCESS);
+        else if(!strcmp("-v", argv[i]) || !strcmp("--version", argv[i])) {
+            rc = EXIT_OTHERS;
+            std::cout << argv[0] << " Version : " << VERSION << std::endl;
         }
     }
+	return rc;
 }
 
 
 int main(int argc, char* argv[]) {
 
+	int rc;
     std::string line;
     std::stringstream ss;
+	std::string cmd;
     std::string key, value, desc;
+	std::vector<std::string> params;
+
     bool bExit = false;
+	rc = EXIT_SUCCESS;
 
     // 0. Initialize Program Parameters
-    initArgs(argc, argv); 
+    if(EXIT_SUCCESS != (rc = initArgs(argc, argv))) {
+		return rc;
+	}
 
     do {
-        line = key = value = desc = "";
-        ss.str("");
-        ss.clear();
+
+        line = cmd = key = value = desc = "";
+		ss.clear();
+		params.clear();
+
+		std::cout << "cmd << "; std::cout.flush();
         std::getline(std::cin, line);
 
-        if (("-quit" == line || "-QUIT" == line || "-exit" == line || "-EXIT" == line)) {
-	        std::cout << "Are you sure to quit? (Y/N)" << std::endl;
+		ss.str(line);
+		while(true) {
+			cmd = "";
+			ss >> cmd;
+			if(cmd.size() < 1) break;
+			params.push_back(cmd);
+		}
+//		while('\n' != ss.peek()) {
+//			ss >> key;
+//			ss.get(); 
+//			params.push_back(key); 
+//			std::cout << "(" << key << ")" << std::endl; 
+//		}
+		cmd = params.at(0);
+
+		cls();
+
+     	if ("-q" == cmd || "-Q" == cmd || "-quit" == cmd || "-QUIT" == cmd || "-exit" == cmd || "-EXIT" == cmd) {
+			if(params.size() > 1 && "-i" == params[1]) {
+        		std::cout << "\t>> [I] Exit.." << std::endl;
+				bExit = true;
+				continue;
+			}
+        	std::cout << "\t>> [I] Are you sure to quit? (Y/N)" << std::endl;
+
+        	std::getline(std::cin, cmd);
+
+	    	if("Y"== cmd||"y"== cmd) {
+   	        	bExit = true;
+   	        	break;
+   		    }
+     	}
+     	else if("-p" == cmd || "-P" == cmd || "-print" == cmd || "-PRINT" == cmd) {
+			if(m1.empty()) {
+				std::cout << "\t>> [E] m1 is emtpy" << std::endl;
+				continue;
+			}
+			int i = 0;
+       		for(auto iter = m1.cbegin();iter != m1.cend();iter++, i++) {
+            	std::cout << "\t\t[" << i << "] = " << iter->second << std::endl;
+         	}
+     	}
+		else if("-c" == cmd || "-C" == cmd || "-clear" == cmd || "-CLEAR" == cmd) {
+			cls();
+		}
+		else if ("-I" == cmd || "-i" == cmd) {
+			if(params.size() > 0) key = params[1];
+			if(params.size() > 1) value = params[2];
+			if(params.size() > 2) desc = params[3];
+
+			MyClz c(key, value);
+			c.setDesc(desc);
+
+			if (IS_DEBUG)
+	       		std::cout << "\t>> [D] m1.size= " << m1.size() << ", Data= " << c << std::endl;
 	
-	        std::getline(std::cin, line);
-	
-	        if("Y"==line||"y"==line) {
-	            bExit = true;
-	            break;
-	        }
-	        continue;
-        }
-	    else if("-p" == line || "-P" == line || "-print" == line || "--print" == line) {
-	        for(auto iter = m1.cbegin();iter != m1.cend();iter++) {
-	             std::cout << iter->second << std::endl;
-	        }
-	        continue;
-	    }
-	
-	    ss.str(line);
-	    ss >> key >> value;
-        if(ss.get()) ss >> desc;
-	
-	    if (IS_DEBUG)
-	        std::cout << "Line = " << line << ", Size = " << m1.size() << ", Key = " << key << ", Value = " << value << std::endl;
-	
-	    MyClz c(key, value);
-        if(desc.size()) c.setDesc(desc);
-	
-	    m1[key] = c;
-	
+		    m1[key] = c;
+		}
+		else if ("-d" == cmd || "-D" == cmd) {
+
+			if(params.size() > 1) key = params[1];
+			
+			if(key.length() < 1) {
+				std::cout << "\t>> [E] key is empty" << std::endl;
+				continue;
+			}
+
+			int cnt = 0;
+			if(IS_DEBUG) {
+				std::cout << "\t>> [I] Found Count : " << m1.count(key) << std::endl;
+				for(auto iter = m1.find(key);iter != m1.end();iter++) {
+					std::cout << "\t\t(" << cnt++ << "),  m1[" << iter->first << "] = " << iter->second << std::endl; 
+				}
+			}
+			m1.erase(key);
+
+			if (IS_DEBUG) {
+	       		std::cout << "\t>> [D] Deleted count = " << cnt << ", m1.size = " << m1.size() << std::endl;
+			}
+		}
+		else if("-h" == cmd || "-H" == cmd || "-help" == cmd|| "-HELP" == cmd) {
+			MyClz::printCRUDUsage();
+		}
+		else if("-t00" == cmd || "-T00" == cmd) {
+			
+			int mSize = MyIPC::TEST_MAP_SIZE;
+			if(params.size()>1) mSize = atoi(params[1].c_str());
+
+			std::cout << "IPC Test : " << "MyIPC::testIPC("<< mSize << ") " << std::endl;
+
+			MyIPC::testIPC(mSize);
+
+//			int i = 0;
+//			std::cout << "params.size = " << params.size() << std::endl;
+//			for(const auto& iter = params.cbegin(); iter != paarams.cend();iter++) {
+//				std::cout << "params[" << i++ << "] = " <<  params[i] << std::endl;
+//			}
+		}
+		else if("-t01" == cmd || "-t01" == cmd) {
+			MyUU1 u;
+			std::cout << u << std::endl;
+		}
+		else if("-t02" == cmd || "-T02" == cmd) {
+			MyClz m;
+			
+			if (params.size() > 1)
+				m.testFibo(atoi(params[1].c_str()));
+			else
+				m.testFibo();
+		}
+		else {
+			std::cout << "\t>> [E] Unsupported command : " << key << std::endl;
+			MyClz::printCRUDUsage();
+		}
+
     } while(!bExit);
 
     system("pause");
@@ -137,6 +479,79 @@ int main(int argc, char* argv[]) {
 
 #endif
 
+#if 0
+
+#include <cstdio>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+class MyData {
+		private:
+				int a;
+				std::string b;
+		public:
+				MyData() : a(-1), b("") {}
+				MyData(int _a, const char* _b) : a(_a), b(_b) {}
+				MyData(int _a, const std::string& _b) : a(_a), b(_b) {} 
+
+				MyData(const MyData& o) : a(o.a), b(o.b) {}
+				MyData(MyData&& o) : a(o.a), b(std::move(o.b)) { std::cout << "## MyData(MyData&&)} " << std::endl; }
+
+				MyData& operator=(const MyData& o) {
+						if(this==&o) return *this;
+						a = o.a;
+						b = o.b;
+						return *this;
+				}
+				MyData& operator=(MyData&& o) {
+						if(this==&o) return *this;
+						a = o.a;
+						b = std::move(o.b);
+						return *this;
+				}
+
+				friend std::ostream& operator<<(std::ostream& os, const MyData& o)  {
+						os << "{ this = " << &o << ", a = " << o.a << ", b = " << o.b << "}";
+						return os;
+				}
+
+				const std::string& getB() {  return b; }
+
+				template<typename T>
+				static void checkB(T&& _b) {
+					std::cout << "&b  = " << &_b 
+								<< ", b = " << _b << std::endl;
+				}
+
+				template<typename T>
+				static void checkMyData(T&& d) {
+					std::cout << " &d =" << &d 
+								<< ", d = " << d  << std::endl;
+				}
+
+};
+
+
+int main() {
+		MyData a(-100, " This is b  !!!!! ######## ");
+
+		std::cout << "1-1, " << a << std::endl;
+		std::cout << "1-2, " << a << std::endl;
+
+		MyData::checkB(a.getB());
+
+		std::cout << "2. " << a << std::endl;
+
+		MyData::checkMyData(a);
+
+		std::cout << "3. " << a << std::endl;
+
+		return EXIT_SUCCESS;
+}
+
+		 
+#endif
 
 
 #if 0
@@ -145,7 +560,7 @@ int main(int argc, char* argv[]) {
 #include <vector>
 #include <initializer_list>
  
-template <class T>
+emplate <class T>
 struct S {
     std::vector<T> v;
     S(std::initializer_list<T> l) : v(l) {

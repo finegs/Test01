@@ -1,6 +1,6 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
-CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -Wno-unused-parameter
+CXXFLAGS := -std=c++1y -Wall -Wextra -Werror -Wno-unused-parameter
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 LDFLAGS  := -lws2_32 -pthread
 BUILD    := build
@@ -9,6 +9,15 @@ APP_DIR  := $(BUILD)/apps
 #TARGET   := s.exe
 TARGET   := t.exe
 INCLUDE  := -Iinclude -I.
+
+BOOST_HOME := G:/Programs/boost/boost
+BOOST_INC := $(BOOST_HOME)/../boost_inc
+BOOST_LIB := $(BOOST_HOME)/lib
+
+INCLUDE +=  -I$(BOOST_INC)
+LDFLAGS +=  -L$(BOOST_LIB)
+
+
 SKIP_FILE := $(wildcard Test*.cpp)
 #SKIP_FILE += c.cpp
 SKIP_FILE += s.cpp c.cpp s1.cpp
@@ -22,7 +31,6 @@ SKIP_FILE += s.cpp c.cpp s1.cpp
 
 SRC 	:= $(TARGET:%.exe=%.cpp)
 SRC		+= u.cpp
-
 
 #OBJS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 #OBJS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
