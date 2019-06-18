@@ -329,6 +329,7 @@ int initArgs(int argc, char* argv[]) {
 
 
 int main(int argc, char* argv[]) {
+	 
 
 	int rc;
     std::string line;
@@ -361,12 +362,7 @@ int main(int argc, char* argv[]) {
 			if(cmd.size() < 1) break;
 			params.push_back(cmd);
 		}
-//		while('\n' != ss.peek()) {
-//			ss >> key;
-//			ss.get(); 
-//			params.push_back(key); 
-//			std::cout << "(" << key << ")" << std::endl; 
-//		}
+
 		cmd = params.at(0);
 
 		cls();
@@ -463,6 +459,14 @@ int main(int argc, char* argv[]) {
 				m.testFibo(atoi(params[1].c_str()));
 			else
 				m.testFibo();
+		}
+		else if("-t03" == cmd || "-T03" == cmd) {
+			if(params.size() < 3) continue;
+			int base = matoi(params[1].c_str());
+			int exp = matoi(params[2].c_str());
+
+			std::cout << "mypow(" << base << ", " << exp << ") = " << mypow(base, exp) << std::endl;
+
 		}
 		else {
 			std::cout << "\t>> [E] Unsupported command : " << key << std::endl;
