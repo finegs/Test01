@@ -10,7 +10,7 @@ APP_DIR  := $(BUILD)/apps
 TARGET   := t.exe
 INCLUDE  := -Iinclude -I.
 
-BOOST_HOME := G:/Programs/boost/boost
+#BOOST_HOME := G:/Programs/boost/boost
 BOOST_INC := $(BOOST_HOME)/../boost_inc
 BOOST_LIB := $(BOOST_HOME)/lib
 
