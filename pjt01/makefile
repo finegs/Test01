@@ -30,7 +30,7 @@ SKIP_FILE += s.cpp c.cpp s1.cpp
 #SRC		:= $(filter-out $(SKIP_FILE) , $(SRC))
 
 SRC 	:= $(TARGET:%.exe=%.cpp)
-SRC		+= u.cpp
+SRC		+= u.cpp mipc.cpp
 
 #OBJS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 #OBJS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
