@@ -3,8 +3,7 @@
 #include <unordered_map>
 #include <algorithm>
 
-#include <uu1.hpp>
-
+#include "uu1.hpp"
 
 void MyUU1::test04() {
 //std::unordered_map<std::string, std::string> mm = 
@@ -25,4 +24,23 @@ void MyUU1::test04() {
 	std::for_each(mm.begin(), mm.end(), [&](auto& it) {
 		std::cout << "[" << n++ << "] " << it.first << ", " << it.second << std::endl;
 	});
-}
+};
+
+
+
+int MyUU1::matoi(const char* s) {
+	int n = 0;
+	bool ne = false;
+	if('-' == s[0]) { ne = true;s++; }
+	while(s[0] != '\0' && '0' <= s[0] && '9' >= s[0]) {
+		n = 10*n + (*s - '0');
+		s++;
+	}
+	n = (ne ? -1 : 1) * n;
+	return n;
+};
+
+void MyUU1::makeLogEntry(void* p) {
+	std::cout << "[D] " << p << std::endl;
+};
+

@@ -9,7 +9,6 @@
 
 #include <mipc.hpp>
 
-
 //using namespace std;
 
 
@@ -74,13 +73,101 @@ int MyIPC::testIPC(int _mapSize) {
    // Get Data in the map
    float vf = .0;
    for(int i = 0;i < _mapSize;++i) {
-	//   std::cout << "mymap[" << i << "] : " << mymap->find(i)->first << std::endl;
-	vf = (float)(*mymap)[i];	
-	std::cout << "mymap[" << i << "] = " 
+		//   std::cout << "mymap[" << i << "] : " << mymap->find(i)->first << std::endl;
+		vf = (float)(*mymap)[i];	
+		std::cout << "mymap[" << i << "] = " 
 		   << vf
 		   << ", match= " << std::boolalpha << (vf == (float)i*i) << std::endl;
    }
 
 
    return 0;	
-}
+};
+
+int MyIPC::testIPCMapFile(int argc, char* argv[], std::vector<std::string>& params) {
+
+   using namespace boost::interprocess;
+
+   //Define file names
+   const char *FileName  = "file.bin";
+   const std::size_t FileSize = 10000;
+
+   bool isSvr = std::end(params) != std::find_if(std::begin(params), std::end(params), [&](std::string& s) {
+		   if("-s"==s||"-S" == s) return true;
+		   return false;
+		});
+
+//   if(argc == 1){ //Parent process executes this
+   if(isSvr){ //Parent process executes this
+      {  //Create a file
+         file_mapping::remove(FileName);
+         std::filebuf fbuf;
+         fbuf.open(FileName, std::ios_base::in | std::ios_base::out
+                              | std::ios_base::trunc | std::ios_base::binary);
+         //Set the size
+         fbuf.pubseekoff(FileSize-1, std::ios_base::beg);
+         fbuf.sputc(0);
+      }
+
+      //Remove on exit
+      struct file_remove
+      {
+         file_remove(const char *FileName)
+            : FileName_(FileName) {}
+         ~file_remove(){ file_mapping::remove(FileName_); }
+         const char *FileName_;
+      } remover(FileName);
+
+      //Create a file mapping
+      file_mapping m_file(FileName, read_write);
+
+      //Map the whole file with read-write permissions in this process
+      mapped_region region(m_file, read_write);
+
+      //Get the address of the mapped region
+      void * addr       = region.get_address();
+      std::size_t size  = region.get_size();
+
+      //Write all the memory to 1
+      std::memset(addr, 1, size);
+
+      //Launch child process
+      std::string s(argv[0]); s += " child ";
+      if(0 != std::system(s.c_str()))
+         return 1;
+   }
+   else{  //Child process executes this
+      {  //Open the file mapping and map it as read-only
+         file_mapping m_file(FileName, read_only);
+
+         mapped_region region(m_file, read_only);
+
+         //Get the address of the mapped region
+         void * addr       = region.get_address();
+         std::size_t size  = region.get_size();
+
+         //Check that memory was initialized to 1
+         const char *mem = static_cast<char*>(addr);
+         for(std::size_t i = 0; i < size; ++i)
+            if(*mem++ != 1)
+               return 1;   //Error checking memory
+      }
+      {  //Now test it reading the file
+         std::filebuf fbuf;
+         fbuf.open(FileName, std::ios_base::in | std::ios_base::binary);
+
+         //Read it to memory
+         std::vector<char> vect(FileSize, 0);
+         fbuf.sgetn(&vect[0], std::streamsize(vect.size()));
+
+         //Check that memory was initialized to 1
+         const char *mem = static_cast<char*>(&vect[0]);
+         for(std::size_t i = 0; i < FileSize; ++i)
+            if(*mem++ != 1)
+               return 1;   //Error checking memory
+      }
+   }
+
+	return EXIT_SUCCESS;
+};
+

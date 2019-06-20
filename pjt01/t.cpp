@@ -133,11 +133,9 @@ int main() {
 #include <functional>
 #include <algorithm>
 
-#include <u.hpp>
-#include <uu1.hpp>
-#include <mipc.hpp>
-
-#include <u.hpp>
+#include "u.hpp"
+#include "uu1.hpp"
+#include "mipc.hpp"
 
 #define MY_DEBUG 1
 
@@ -232,7 +230,7 @@ void cls() {
 //#endif
 
 // 0. Initialize Program Parameters
-int initArgs(int argc, char* argv[]) {
+int initArgs(int argc, char* argv[], std::vector<std::string>& params) {
 	int rc = EXIT_SUCCESS;
     for(int i = 1;i < argc;i++) {
         if(!strcmp("-d", argv[i]) || !strcmp("-D", argv[i])) {
@@ -242,6 +240,10 @@ int initArgs(int argc, char* argv[]) {
             rc = EXIT_OTHERS;
             std::cout << argv[0] << " Version : " << VERSION << std::endl;
         }
+		else {
+			// added by SGK 20190620  : 
+			params.emplace_back(argv[i]);
+		}
     }
 	return rc;
 }
@@ -260,9 +262,21 @@ int main(int argc, char* argv[]) {
 	rc = EXIT_SUCCESS;
 
     // 0. Initialize Program Parameters
-    if(EXIT_SUCCESS != (rc = initArgs(argc, argv))) {
+    if(EXIT_SUCCESS != (rc = initArgs(argc, argv, params))) {
 		return rc;
 	}
+
+
+	if(std::end(params) != std::find_if(std::begin(params), std::end(params), [&](std::string& s) { 
+			if ("-t05" == s || "-T05" == s) 
+			 	return true; 
+			else 
+				return false;
+		})) { 
+		MyIPC::testIPCMapFile(argc, argv, params);
+		return EXIT_SUCCESS;
+	}	
+
 
     do {
 
@@ -360,6 +374,7 @@ int main(int argc, char* argv[]) {
 
 			MyIPC::testIPC(mSize);
 
+
 //			int i = 0;
 //			std::cout << "params.size = " << params.size() << std::endl;
 //			for(const auto& iter = params.cbegin(); iter != paarams.cend();iter++) {
@@ -380,14 +395,17 @@ int main(int argc, char* argv[]) {
 		}
 		else if("-t03" == cmd || "-T03" == cmd) {
 			if(params.size() < 3) continue;
-			int base = matoi(params[1].c_str());
-			int exp = matoi(params[2].c_str());
+			int base = MyUU1::matoi(params[1].c_str());
+			int exp = MyUU1::matoi(params[2].c_str());
 
-			std::cout << "mypow(" << base << ", " << exp << ") = " << mypow(base, exp) << std::endl;
+			std::cout << "MyUU1::mypow(" << base << ", " << exp << ") = " << MyUU1::mypow(base, exp) << std::endl;
 
 		}
 		else if("-t04" == cmd|| "-T04" == cmd) {
 			MyUU1::test04();
+		}
+		else if("-t05" == cmd|| "-T05" == cmd) {
+			MyIPC::testIPCMapFile(argc, argv, params);
 		}
 		else {
 			std::cout << "\t>> [E] Unsupported command : " << key << std::endl;
