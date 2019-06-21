@@ -44,6 +44,12 @@ class MyUU1 {
 			os << "{" << o.age << ", " << o.name << ", " << o.desc << "}";
 			return os;
 		}
+		
+	public:
+		static constexpr int mypow(int base, int exp) noexcept;
+		static void test04();
+		static int matoi(const char* s);
+		static void makeLogEntry(void* p);
 };
 
 
@@ -59,12 +65,10 @@ class Bond : public Investment {
 class RealEstate : public Investment {
 };
 
-void makeLogEntry(void* ptr) {
-	std::cout << "[D] " << ptr << std::endl;
-}
+
 
 auto delInvmt = [](Investment* pInvestment) {
-	makeLogEntry(pInvestment);
+	MyUU1::makeLogEntry(pInvestment);
 	delete pInvestment;
 };
 template<typename ... Ts>
@@ -88,20 +92,6 @@ makeInvestment(Ts&& ... params) {
 	return pInv;
 };
 
-constexpr
-int mypow(int base, int exp) noexcept {
-	return (exp == 0 ? 1 : base * pow(base, exp -1));
-}
 
-int matoi(const char* s) {
-	int n = 0;
-	bool ne = false;
-	if('-' == s[0]) { ne = true;s++; }
-	while(s[0] != '\0' && '0' <= s[0] && '9' >= s[0]) {
-		n = 10*n + (*s - '0');
-		s++;
-	}
-	n = (ne ? -1 : 1) * n;
-	return n;
-}
+
 #endif
