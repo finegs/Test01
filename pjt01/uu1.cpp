@@ -26,10 +26,10 @@ void MyUU1::test04() {
 	});
 };
 
-constexpr
-int MyUU1::mypow(int base, int exp) noexcept {
-	return (exp == 0 ? 1 : base * MyUU1::mypow(base, exp -1));
-};
+//constexpr
+//int MyUU1::mypow(int base, int exp) noexcept {
+//	return (exp == 0 ? 1 : base * MyUU1::mypow(base, exp -1));
+//};
 
 
 int MyUU1::matoi(const char* s) {

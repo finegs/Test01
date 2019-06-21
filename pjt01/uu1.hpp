@@ -46,7 +46,9 @@ class MyUU1 {
 		}
 		
 	public:
-		static constexpr int mypow(int base, int exp) noexcept;
+		static constexpr int mypow(int base, int exp) noexcept {
+			return (exp == 0 ? 1 : base * MyUU1::mypow(base, exp -1));
+		};
 		static void test04();
 		static int matoi(const char* s);
 		static void makeLogEntry(void* p);
