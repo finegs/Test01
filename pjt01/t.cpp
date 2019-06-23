@@ -245,7 +245,7 @@ int main(int argc, char* argv[]) {
 		else if("-h" == cmd || "-H" == cmd || "-help" == cmd|| "-HELP" == cmd) {
 			MyClz::printCRUDUsage();
 		}
-		else if("-t00" == cmd || "-T00" == cmd) {
+		else if("-u00" == cmd || "-T00" == cmd) {
 			
 			int mSize = MyIPC::TEST_MAP_SIZE;
 			if(params.size()>1) mSize = atoi(params[1].c_str());
@@ -582,7 +582,7 @@ int main()
 
 #include <u.hpp>
 
-// aa bb vc
+// ua bb vc
 
 //#pragma clang diagnostic ignored "-Wunused"
 
