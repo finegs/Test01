@@ -3,11 +3,11 @@
 /* 1.  Changed header files.                                                   */
 /* 2.  Used WSAGetLastError() instead of perror().                             */ 
 
-#include <stdio.h>    /* for fprintf() */
+#include <cstdio>    /* for fprintf() */
 #include <winsock.h>  /* for WSAGetLastError() */
-#include <stdlib.h>   /* for exit() */
+#include <cstdlib>   /* for exit() */
 
-#include "u.hpp"
+#include <u.hpp>
 
 void DieWithError(const char *errorMessage)
 {

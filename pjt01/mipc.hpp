@@ -20,5 +20,4 @@ class MyIPC {
 		static int testIPCMapFile(int argc, char* argv[], std::vector<std::string>& params);
 };
 
-
 #endif

@@ -1,6 +1,7 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
-CXXFLAGS := -std=c++1y -Wall -Wextra -Werror -Wno-unused-parameter
+#CXXFLAGS := -std=c++1y -Wall -Wextra -Werror -Wno-unused-parameter
+CXXFLAGS := -std=c++1y -Wall -Wextra -Wno-unused-parameter
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 LDFLAGS  := -lws2_32 -pthread
 BUILD    := build
@@ -8,7 +9,7 @@ OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/apps
 #TARGET   := s.exe
 TARGET   := t.exe
-INCLUDE  := -Iinclude -I.
+INCLUDE  := -I. -Iinc -Iinclude
 
 #BOOST_HOME := G:/Programs/boost/boost
 BOOST_INC := $(BOOST_HOME)/../boost_inc
@@ -36,7 +37,7 @@ SRC		+= u.cpp mipc.cpp uu1.cpp
 #OBJS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
 OBJS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
-all: build $(APP_DIR)/$(TARGET) release_this
+all: mkdirs $(APP_DIR)/$(TARGET) release_this
 
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
@@ -46,9 +47,9 @@ $(APP_DIR)/$(TARGET): $(OBJS)
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
 
-.PHONY: all build clean debug release
+.PHONY: all mkdirs clean debug release
 
-build:
+mkdirs:
 	@mkdir -p $(APP_DIR)
 	@mkdir -p $(OBJ_DIR)
 

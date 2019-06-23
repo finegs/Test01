@@ -51,5 +51,4 @@ struct SerializedPacket {
 
 } __attribute__((packed));
 
-
 #endif
