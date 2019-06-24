@@ -7,6 +7,13 @@
 #include <utility>
 #include <memory>
 #include <exception>
+#include <unordered_map>
+
+enum MyTestCodeEnum {
+	TC01,
+	TC02,
+	TC03
+};
 
 class MyUU1 {
 	private:
@@ -44,14 +51,22 @@ class MyUU1 {
 			os << "{" << o.age << ", " << o.name << ", " << o.desc << "}";
 			return os;
 		}
-		
+
 	public:
-		static constexpr int mypow(int base, int exp) noexcept {
-			return (exp == 0 ? 1 : base * MyUU1::mypow(base, exp -1));
-		};
 		static void test04();
+		static constexpr int mypow(int base, int exp) noexcept {
+			return (exp == 0 ? 1 : base * MyUU1::mypow(base, exp -1)); 
+		}
 		static int matoi(const char* s);
-		static void makeLogEntry(void* p);
+		static void makeLogEntry(void* ptr);
+		static void testCode(const std::string& strNum);
+		static void registerTestEnumCode(std::string& strCode, MyTestCodeEnum& e);
+		static void unregisterTestEnumCode(std::string& strCode);
+		static void initTestEnumMap();
+
+	private:
+		static std::unordered_map<std::string, MyTestCodeEnum> testCodeEnumMap;
+
 };
 
 
@@ -90,10 +105,7 @@ makeInvestment(Ts&& ... params) {
 		throw std::exception("Unsupported Investment Type");
 	}
 
-
 	return pInv;
 };
-
-
 
 #endif
