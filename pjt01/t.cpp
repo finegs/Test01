@@ -133,9 +133,9 @@ int main() {
 #include <functional>
 #include <algorithm>
 
-#include "u.hpp"
-#include "uu1.hpp"
-#include "mipc.hpp"
+#include <u.hpp>
+#include <uu1.hpp>
+#include <mipc.hpp>
 
 #define MY_DEBUG 1
 
@@ -243,6 +243,7 @@ int initArgs(int argc, char* argv[], std::vector<std::string>& params) {
 		else {
 			// added by SGK 20190620  : 
 			params.emplace_back(argv[i]);
+
 		}
     }
 	return rc;
@@ -383,6 +384,8 @@ int main(int argc, char* argv[]) {
 		}
 		else if("-t01" == cmd || "-t01" == cmd) {
 			MyUU1 u;
+
+
 			std::cout << u << std::endl;
 		}
 		else if("-t02" == cmd || "-T02" == cmd) {
@@ -503,7 +506,7 @@ int main() {
 #include <vector>
 #include <initializer_list>
  
-emplate <class T>
+template <class T>
 struct S {
     std::vector<T> v;
     S(std::initializer_list<T> l) : v(l) {
