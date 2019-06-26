@@ -3,11 +3,11 @@
 /* 1.  Changed header files.                                                   */
 /* 2.  Used WSAGetLastError() instead of perror().                             */ 
 
-#include <stdio.h>    /* for fprintf() */
+#include <cstdio>    /* for fprintf() */
 #include <winsock.h>  /* for WSAGetLastError() */
-#include <stdlib.h>   /* for exit() */
+#include <cstdlib>   /* for exit() */
 
-#define INITIAL_SIZE 1024
+#include <u.hpp>
 
 void DieWithError(const char *errorMessage)
 {
@@ -15,19 +15,12 @@ void DieWithError(const char *errorMessage)
     exit(1);
 }
 
-struct Buffer
-{
-	void* data;
-	int next;
-	size_t size;
-};
-
-struct Buffer* new_buffer(size_t data_len = INITIAL_SIZE)
+struct Buffer* new_buffer(size_t data_len)
 {
 	struct Buffer* b = (struct Buffer*)malloc(sizeof(Buffer));
 
-	b->data = malloc(INITIAL_SIZE);
-	b->size = INITIAL_SIZE;
+	b->data = malloc(data_len);
+	b->size = data_len;
 	b->next = 0;
 
 	return b;
@@ -51,29 +44,21 @@ void serialize_int(int x, Buffer* b)
 	memcpy(((char*)b->data) + b->next, &x, sizeof(int));
 	b->next += sizeof(int);
 }
-	
-class Packet 
-{
-    public:
-        static size_t MaxDataSize 
-		int senderId;
-		int sequenceNumber;
-		char data[MaxDataSize];
-	public:
-		unsigned char* serialize();
-		void deserialize(unsigned char* message);
-};
 
-struct SerializedPacket {
-	int senderId;
-	int sequenceNumber;
-	char data[MaxDataSize];
-} __attribute__((packed));
+const size_t Packet::MaxDataSize = INITIAL_SIZE;
 
+SerializedPacket::SerializedPacket() : senderId(-1), sequenceNumber(-1) {
+    data = new char[Packet::MaxDataSize];
+}
+
+SerializedPacket::~SerializedPacket() {
+    delete[] data;
+    data = nullptr;
+}
 
 void* Packet::serialize()
 {
-	struct *SerializedPacket* s = new SerializedPacket();
+	struct SerializedPacket* s = new SerializedPacket();
 	s->senderId = htonl(this->senderId);
 	s->sequenceNumber = htonl(this->sequenceNumber);
 	memcpy(s->data, this->data, MaxDataSize);
