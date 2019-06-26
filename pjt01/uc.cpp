@@ -78,6 +78,7 @@ SOCKET makeSocket(WORD wPort)
 	SOCKET sock = (SOCKET)NULL;
     SOCKADDR_IN addr = {0};
 
+
     sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if(sock == INVALID_SOCKET)
     {
@@ -208,7 +209,7 @@ int main(int argc, char* argv[])
 		//HANDLE hThread = CreateThread(NULL, 0, rcvTask, (void*)sock, 0, NULL);
 		std::thread recv = std::thread(rcvTask, &sock);
 
-		while(1)
+		while(!bEnd)
 		{
 			if(!sendData(&sock, wDstPort, sndBuf, sndBufLen))
 				break;
@@ -230,3 +231,4 @@ int main(int argc, char* argv[])
 
 	return EXIT_SUCCESS;
 }
+
