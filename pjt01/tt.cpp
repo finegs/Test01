@@ -165,7 +165,6 @@ void draw_c_slide(int x, int y, int h_slide_length, int v_slide_length)
  
 
 void draw_rectangle(int c, int r, int x, int y)
-
 {
 
     int i, j;
@@ -230,7 +229,6 @@ void draw_rectangle(int c, int r, int x, int y)
  
 
 void draw_line(int x, int y, int h_slide_length, int v_slide_length)
-
 {
 
     int i, j;
