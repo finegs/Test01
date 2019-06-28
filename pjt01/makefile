@@ -30,11 +30,14 @@ CXXFLAGS  += -Wno-unused-parameter
 INC_PATH  += -I.
 INC_PATH  += -Iinc    
 
-LDFLAGS   := -lws2_32
+
+LDFLAGS   :=
+LDFLAGS   += -lm
 LDFLAGS   += -pthread
+LDFLAGS   += -lws2_32
 LDFLAGS   += -lwsock32
 
-LIB_PATH  :=
+LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
 
 ################## BOOST #################################
 
@@ -70,8 +73,8 @@ $(OBJ_DIR)/%.o: %.cpp
 $(APP_DIR)/$(TARGET): $(OBJS)
 	@mkdir -p $(@D)
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
-#	$(CXX) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
-	$(CXX) -o $@ $(LIB_PATH) $(LDFLAGS) $(OBJS) 
+#   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
+	$(CXX) -o $@ $(LIB_PATH) $(OBJS) $(LDFLAGS)
  
 ##########################################################
 
