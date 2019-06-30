@@ -7,7 +7,7 @@
 #include <winsock2.h>  /* for WSAGetLastError() */
 #include <cstdlib>   /* for exit() */
 
-#include <u.hpp>
+#include "inc/u.hpp"
 
 void DieWithError(const char *errorMessage)
 {

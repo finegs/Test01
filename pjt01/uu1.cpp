@@ -5,6 +5,9 @@
 #include <utility>
 #include <exception>
 #include <sstream>
+#include <functional>
+#include <thread>
+#include <chrono>
 
 #include "inc/uu1.hpp"
 
@@ -33,7 +36,7 @@ void MyUU1::initTestEnumMap() {
 
 void MyUU1::test04() {
 //std::unordered_map<std::string, std::string> mm = 
-	std::unordered_multimap<std::string, std::string> mm = 
+	std::unordered_multimap<std::string, std::string> mm1 = 
 		{{"1", "0000"}, 
 			{"1", "00"}, 
 			{"1", "11"}, 
@@ -41,13 +44,13 @@ void MyUU1::test04() {
 			{"3", "33"}, 
 			{"4", "44"}};
 
-	auto range = mm.equal_range("2");
+	auto range = mm1.equal_range("2");
 	for(auto it = range.first;it != range.second;++it) {
 		std::cout << it->first << ' ' << it->second << '\n';
 	}
 
 	int n = 0;
-	std::for_each(mm.begin(), mm.end(), [&](auto& it) {
+	std::for_each(mm1.begin(), mm1.end(), [&](auto& it) {
 		std::cout << "[" << n++ << "] " << it.first << ", " << it.second << std::endl;
 	});
 };
@@ -81,19 +84,23 @@ T createT(Args&&... args) {
 	return T(std::forward<Args>(args)...);
 };
 
-class MyData01 {
+class My {
 	private:
 		int a;
 		std::string b;
 		float c;
 	public:
-		MyData01() : a(-1), b(""), c(-1) {}
-		MyData01(int _a, const std::string& _b, float _c) : a(_a), b(_b), c(_c) {}
-		friend std::ostream& operator<<(std::ostream& os, const MyData01& o);
+		My() : a(-1), b(""), c(-1) {}
+		My(int _a, const std::string& _b, float _c) : a(_a), b(_b), c(_c) {}
+		friend std::ostream& operator<<(std::ostream& os, const My& o);
+
+		const int getA() const { return a; }
+		const std::string& getB() const { return b; };
+		const float getC() const { return c; }
 
 };
 
-std::ostream& operator<<(std::ostream& os, const MyData01& o) {
+std::ostream& operator<<(std::ostream& os, const My& o) {
 	os << "(" << o.a << ", " << o.b << ", " << o.c << ")";
 	return os;
 }
@@ -112,10 +119,37 @@ void MyUU1::testCode(const std::string& strCode) {
 
 				int a = createT<int>();
 				int b = createT<int>(12);
-				MyData01 d1 = createT<MyData01>(1, "aaa", 3.8);
+
+				int c = createT<int>(1+1+3+3+4);
+				My d1 = createT<My>(1, "aaa", 3.8);
 
 				std::cout << "d1 :" << d1 << std::endl;
-				
+
+				std::function<int(int)> ff01 = [&](int tId) {
+					using namespace std::chrono_literals;
+					std::string line;
+					bool run = true;
+					while(run) {
+						std::cout << tId << " # function<int(void)> is running." << std::endl;
+						std::cout << tId << " # enter command : ( -q : quit )" << std::endl;
+						std::cin >> line;
+						std::cin.clear();
+
+						if("-q" == line || "-exit" == line) { run = false; continue; }
+						std::cout << tId << " # your command : " << line << std::endl;
+
+						std::this_thread::sleep_for(100ms);
+						system("pause");
+
+					};
+					std::cout << tId << " # thread is done. "<< std::endl;
+					return EXIT_SUCCESS;
+				};
+
+				for (int i = 0;i < 3;i++) {
+					std::thread t(ff01, i);
+				}
+						
 			}
 		break;
 		case TC02:
@@ -137,3 +171,4 @@ void MyUU1::testCode(const std::string& strCode) {
 	std::cout << "test : " << strCode << " is done. " << std::endl;
 
 };
+

@@ -22,7 +22,7 @@ class MyUU1 {
 		std::string desc;
 
 	public:
-		MyUU1() : age(-1), name(""), desc("") {}
+		MyUU1() : age(-1) {}
 		MyUU1(int _age, const std::string& _name, const std::string& _desc)
 			: age(_age), name(_name), desc(_desc) {}
 		MyUU1(const MyUU1& o) : age(o.age), name(o.name), desc(o.desc) {}
