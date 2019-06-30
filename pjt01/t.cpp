@@ -10,10 +10,10 @@
 #include <functional>
 #include <algorithm>
 
-#include <aa.hpp>
-#include <u.hpp>
-#include <uu1.hpp>
-#include <mipc.hpp>
+#include "inc/aa.hpp"
+#include "inc/u.hpp"
+#include "inc/uu1.hpp"
+#include "inc/mipc.hpp"
 
 #define MY_DEBUG 1
 
@@ -61,8 +61,6 @@ class MyClz {
         }
 
 		static void printCRUDUsage(); 
-//        MyClz(std::string&& _id, std::string&& _value) 
-//                : id(std::forward<std::string>(_id)), value(std::forward<std::string>(_value)) {} ;
 		static void testFibo(int n = 255);
         ~MyClz() = default;
 
