@@ -1,0 +1,7 @@
+*~
+*.exe
+*.o
+*.swo
+tags
+*.swo
+*.swp

@@ -4,7 +4,7 @@
 /* 2.  Used WSAGetLastError() instead of perror().                             */ 
 
 #include <cstdio>    /* for fprintf() */
-#include <winsock.h>  /* for WSAGetLastError() */
+#include <winsock2.h>  /* for WSAGetLastError() */
 #include <cstdlib>   /* for exit() */
 
 #include <u.hpp>
