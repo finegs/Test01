@@ -35,7 +35,6 @@ class MyClz {
             id = o.id;
             value = o.value;
             desc = o.desc;
-
             return *this;
         }
         MyClz& operator=(MyClz&& o) {
