@@ -2,6 +2,8 @@
 #ifndef __U_HPP
 #define __U_HPP
 
+#include <string>
+
 #define INITIAL_SIZE 1024
 
 #define VERSION_U "v1.0.0_20190602_b01"
@@ -51,4 +53,53 @@ struct SerializedPacket {
 
 } __attribute__((packed));
 
+class MyClz {
+	private:
+
+	std::string id;
+	std::string name;
+	std::string desc;
+
+	public:
+	MyClz() : id(""), name(""), desc("") {}
+	MyClz(const std::string& _id, const std::string& _name, const std::string& _desc) : id(_id), name(_name), desc(_desc) {}
+	
+
+};
+
+class My {
+	private:
+		int a;
+		std::string b;
+		float c;
+	public:
+		My() : a(-1), b(""), c(-1) {}
+		My(int _a, const std::string& _b, float _c) : a(_a), b(_b), c(_c) {}
+		My(const My& o) : a(o.a), b(o.b), c(o.c) {}
+		My(My&& o) : a(o.a), b(std::move(o.b)), c(o.c) {}
+
+		My& operator=(const My& o) {
+			if(this==&o) return *this;
+			a = o.a;
+			b = o.b;
+			c = o.c;
+			return *this;
+		}
+
+		My& operator=(My&& o) {
+			if(this==&o) return *this;
+			a = o.a;
+			b = std::move(o.b);
+			c = o.c;
+
+			return *this;
+		}
+		friend std::ostream& operator<<(std::ostream& os, const My& o);
+		friend std::istream& operator>>(std::istream& os, My& o);
+
+		const int getA() const { return a; }
+		const std::string& getB() const { return b; };
+		const float getC() const { return c; }
+
+};
 #endif

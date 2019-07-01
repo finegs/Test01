@@ -19,88 +19,13 @@
 
 #define VERSION "v1.0.0_20190602_b02"
 
-class MyClz {
-    private:
-        std::string id;
-        std::string value;
-        std::string desc;
-
-    public:
-        MyClz() : id(""), value(""), desc("") {}
-        MyClz(const std::string& _id, const std::string& _value) : id(_id), value(_value) {}
-        MyClz(const MyClz& o) : id(o.id), value(o.value), desc(o.desc) {}
-        MyClz(MyClz&& o) : id(std::move(o.id)), value(std::move(o.value)), desc(std::move(o.desc)) {}
-        MyClz& operator=(const MyClz& o) {
-            if(this==&o) return *this;
-            id = o.id;
-            value = o.value;
-            desc = o.desc;
-            return *this;
-        }
-        MyClz& operator=(MyClz&& o) {
-            if(this==&o) return *this;
-            id = std::move(o.id);
-            value = std::move(o.value);
-            desc = std::move(o.desc);
-            return *this;
-        }
-
-        void setDesc(const std::string& newDesc) {
-            desc = newDesc;
-        }
-
-		//		template<std::string>
-//		void setDesc(std::string&& newDesc) {
-//			desc = std::forward<std::string>(newDesc);
-//		}
-
-        friend std::ostream& operator<<(std::ostream& os, const MyClz& o) {
-            os << "{\"" << o.id << "\", \"" << o.value << "\", \"" << o.desc << "\"}";
-            return os;
-        }
-
-		static void printCRUDUsage(); 
-		static void testFibo(int n = 255);
-        ~MyClz() = default;
-
-    public:
-        struct MyClzComparator {
-            bool operator() (const MyClz& a, const MyClz& b) const {
-                return a.id < b.id;
-            }
-        };
-};
-
+extern void cls();
 
 std::unordered_map<std::string, MyClz> m1;
 
 bool IS_DEBUG = false;
 
-void MyClz::printCRUDUsage() {
-	std::cout << "\t>> [I] Usage :  -qQeE : Quit/Exit, -iI : Insert, -dD : Delete, -pP : Print, -cC : Clear )" << std::endl;
-}
 
-void MyClz::testFibo(int n) {
-
-	int x, y, z, cnt;
-
-//	while(1) {
-		cnt = 0;
-		x = 0;
-		y = 1;
-
-		do {
-			printf("[%d] : %d%s", cnt, x, (cnt % 5 == 0 ? "\n" : " ,"));
-			z = x + y;
-			x = y;
-			y = z;
-		} while(cnt++ < n);
-//	}
-}
-
-void cls() {
-	system("cls");
-}
 
 //#ifdef MY_DEBUG
 //bool IS_DEBUG = true;
@@ -243,7 +168,7 @@ int main(int argc, char* argv[]) {
 		else if("-h" == cmd || "-H" == cmd || "-help" == cmd|| "-HELP" == cmd) {
 			MyClz::printCRUDUsage();
 		}
-		else if("-u00" == cmd || "-T00" == cmd) {
+		else if("-t00" == cmd || "-T00" == cmd) {
 			
 			int mSize = MyIPC::TEST_MAP_SIZE;
 			if(params.size()>1) mSize = atoi(params[1].c_str());

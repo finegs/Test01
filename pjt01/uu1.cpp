@@ -78,32 +78,10 @@ void MyUU1::makeLogEntry(void* p) {
 };
 
 using std::initializer_list;
-
 template<typename T, typename... Args>
 T createT(Args&&... args) {
 	return T(std::forward<Args>(args)...);
 };
-
-class My {
-	private:
-		int a;
-		std::string b;
-		float c;
-	public:
-		My() : a(-1), b(""), c(-1) {}
-		My(int _a, const std::string& _b, float _c) : a(_a), b(_b), c(_c) {}
-		friend std::ostream& operator<<(std::ostream& os, const My& o);
-
-		const int getA() const { return a; }
-		const std::string& getB() const { return b; };
-		const float getC() const { return c; }
-
-};
-
-std::ostream& operator<<(std::ostream& os, const My& o) {
-	os << "(" << o.a << ", " << o.b << ", " << o.c << ")";
-	return os;
-}
 
 void MyUU1::testCode(const std::string& strCode) {
 	MyTestCodeEnum& e = testCodeEnumMap[strCode];
@@ -111,45 +89,7 @@ void MyUU1::testCode(const std::string& strCode) {
 	switch(e) {
 		case TC01:
 			{
-				// TODO : TC01
-#if 0
-				auto r = std::minmax({1, 100});
-				std::cout << "std::minmax(1, 100), min = " << r.first << ", max=" << r.second << std::endl;
-#endif
-
-				int a = createT<int>();
-				int b = createT<int>(12);
-
-				int c = createT<int>(1+1+3+3+4);
-				My d1 = createT<My>(1, "aaa", 3.8);
-
-				std::cout << "d1 :" << d1 << std::endl;
-
-				std::function<int(int)> ff01 = [&](int tId) {
-					using namespace std::chrono_literals;
-					std::string line;
-					bool run = true;
-					while(run) {
-						std::cout << tId << " # function<int(void)> is running." << std::endl;
-						std::cout << tId << " # enter command : ( -q : quit )" << std::endl;
-						std::cin >> line;
-						std::cin.clear();
-
-						if("-q" == line || "-exit" == line) { run = false; continue; }
-						std::cout << tId << " # your command : " << line << std::endl;
-
-						std::this_thread::sleep_for(100ms);
-						system("pause");
-
-					};
-					std::cout << tId << " # thread is done. "<< std::endl;
-					return EXIT_SUCCESS;
-				};
-
-				for (int i = 0;i < 3;i++) {
-					std::thread t(ff01, i);
-				}
-						
+				MyUU1::testCInWithAsyncReader();
 			}
 		break;
 		case TC02:
@@ -171,4 +111,49 @@ void MyUU1::testCode(const std::string& strCode) {
 	std::cout << "test : " << strCode << " is done. " << std::endl;
 
 };
+
+void testCInWithAsyncReader() {
+				// TODO : TC01
+#if 0
+				auto r = std::minmax({1, 100});
+				std::cout << "std::minmax(1, 100), min = " << r.first << ", max=" << r.second << std::endl;
+#endif
+
+				int a = createT<int>();
+				int b = createT<int>(12);
+
+				int c = createT<int>(1+1+3+3+4);
+				My d1 = createT<My>(1, "aaa", 3.8);
+
+				std::cout << "a : " << a << std::endl;
+				std::cout << "b : " << b << std::endl;
+				std::cout << "c : " << c << std::endl;
+				std::cout << "d1 : " << d1 << std::endl;
+
+				std::function<int(int)> ff01 = [&](int tId) {
+					using namespace std::chrono_literals;
+					std::string line;
+					bool run = true;
+					while(run) {
+						std::cin.clear();
+						std::cout << tId << " # function<int(void)> is running." << std::endl;
+						std::cout << tId << " # enter command : ( -q : quit )";
+						std::cout.flush();
+					//	std::cin >> line;
+						std::cin.clear();
+
+						if("-q" == line || "-exit" == line) { run = false; continue; }
+						std::cout << tId << " # your command : " << line << std::endl;
+
+						std::this_thread::sleep_for(100ms);
+					//	system("pause");
+					};
+					std::cout << tId << " # thread is done. "<< std::endl;
+					return EXIT_SUCCESS;
+				};
+
+				for (int i = 0;i < 1;i++) {
+					std::thread t(ff01, i);
+				}
+}
 

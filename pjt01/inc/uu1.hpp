@@ -63,6 +63,7 @@ class MyUU1 {
 		static void registerTestEnumCode(std::string& strCode, MyTestCodeEnum& e);
 		static void unregisterTestEnumCode(std::string& strCode);
 		static void initTestEnumMap();
+		static void testCInWithAsyncReader();
 
 	private:
 		static std::unordered_map<std::string, MyTestCodeEnum> testCodeEnumMap;
