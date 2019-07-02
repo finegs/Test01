@@ -6,7 +6,7 @@
 #include <exception>
 #include <sstream>
 
-#include "uu1.hpp"
+#include "inc/uu1.hpp"
 
 // create MyUU1::testCodeEnumMap field
 std::unordered_map<std::string, MyTestCodeEnum> MyUU1::testCodeEnumMap;

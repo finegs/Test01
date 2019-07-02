@@ -10,10 +10,10 @@
 #include <functional>
 #include <algorithm>
 
-#include <aa.hpp>
-#include <u.hpp>
-#include <uu1.hpp>
-#include <mipc.hpp>
+#include "inc/u.hpp"
+#include "inc/aa.hpp"
+#include "inc/uu1.hpp"
+#include "inc/mipc.hpp"
 
 #define MY_DEBUG 1
 
