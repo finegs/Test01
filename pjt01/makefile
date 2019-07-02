@@ -34,7 +34,7 @@ INC_PATH  += -Iinc
 LDFLAGS   :=
 LDFLAGS   += -lm
 LDFLAGS   += -pthread
-LDFLAGS   += -lws2_32
+#LDFLAGS   += -lws2_32
 LDFLAGS   += -lwsock32
 
 LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib

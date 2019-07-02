@@ -1,9 +1,9 @@
-#if 1
-
+#if __unix__
 
 #include <iostream>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+//#elif defined (_WIN32) || (WIN32)
 #include <cstdio>
 
 using namespace std;
@@ -32,8 +32,7 @@ int main()
 
 #endif
 
-
-#if 0
+//#if defined(__SM__) && defined(__unix__)
 // ============================================================================
 //     Author: K Perkins
 //     Date:   Oct 3, 2013
@@ -218,4 +217,4 @@ void* Consume(void* arg)
     return 0;
 }// http://programmingnotes.org/
 
-#endif
+//#endif
