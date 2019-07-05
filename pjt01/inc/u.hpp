@@ -66,14 +66,23 @@ class MyClz {
         MyClz& operator=(const MyClz& o);
         MyClz& operator=(MyClz&& o);
 
-        void setDesc(const std::string& newDesc);
+	public:
 
-        friend std::ostream& operator<<(std::ostream& os, const MyClz& o);
+  MyClz();
+	MyClz(const std::string& _id, const std::string& _name, const std::string& _desc = "");
+    MyClz(const MyClz& o);
+    MyClz(MyClz&& o);
+    MyClz& operator=(const MyClz& o);
+    MyClz& operator=(MyClz&& o); 
 
-		static void printCRUDUsage(); 
-		static void testFibo(int n = 255);
-        ~MyClz() = default;
+	void setDesc(const std::string&);
 
+	friend std::ostream& operator<<(std::ostream& os, const MyClz& o);
+	friend std::istream& operator>>(std::istream& is, MyClz& o);
+
+	static void printCRUDUsage(); 
+	static void testFibo(int n = 255);
+    ~MyClz();
     public:
         struct MyClzComparator;
 };
@@ -109,7 +118,7 @@ class My {
 		friend std::istream& operator>>(std::istream& os, My& o);
 
 		const int& getA() const { return a; }
-		const std::string& getB() { return b; };
+		const std::string& getB() const { return b; };
 		const float& getC() const { return c; }
 
 };

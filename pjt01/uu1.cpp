@@ -97,7 +97,11 @@ void MyUU1::testCode(const std::string& strCode) {
 		case TC02:
 			{
 				// TODO : TC02
+<<<<<<< HEAD
+				MyUU1::testAsync01(2);
+=======
 				MyUU1::testCode01();
+>>>>>>> refs/remotes/origin/master
 			}
 		break;
 		case TC03:
@@ -115,6 +119,44 @@ void MyUU1::testCode(const std::string& strCode) {
 
 };
 
+<<<<<<< HEAD
+void MyUU1::testAsync01(int threadCnt) {
+	std::function<int(int)> ff01 = [&](int tId) {
+		using namespace std::chrono_literals;
+		std::string line;
+		bool run = true;
+		while(run) {
+			std::cin.clear();
+			std::cout << tId << " # function<int(void)> is running." << std::endl;
+			std::cout << tId << " # enter command : ( -q : quit )";
+			std::cout.flush();
+
+		    	
+				
+			std::cin >> line;
+
+			if("-q" == line || "-exit" == line) { run = false; continue; }
+			std::cout << tId << " # your command : " << line << std::endl;
+
+			std::this_thread::sleep_for(100ms);
+		//	system("pause");
+		};
+		std::cout << tId << " # thread is done. "<< std::endl;
+		return EXIT_SUCCESS;
+	};
+
+	for (int i = 0;i < threadCnt;i++) {
+		std::thread t(ff01, i);
+	}
+}
+
+void MyUU1::testLList() {
+
+}
+
+void MyUU1::testCInWithAsyncReader() {
+				// TODO : TC01
+=======
 void MyUU1::testCode01() {
 	// TODO : 
 			std::function<int(int)> ff01 = [&](int tId) {
@@ -151,6 +193,7 @@ void MyUU1::testCode01() {
 
 void MyUU1::testCInWithAsyncReader() {
 	// TODO : TC01
+>>>>>>> refs/remotes/origin/master
 #if 0
 	auto r = std::minmax({1, 100});
 	std::cout << "std::minmax(1, 100), min = " << r.first << ", max=" << r.second << std::endl;
