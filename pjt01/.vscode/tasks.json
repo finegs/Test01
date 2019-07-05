@@ -10,9 +10,22 @@
             "args": [
                 "-g",
                 "-DDEBUG",
+                "-I",
+                "inc",
+                "-I",
+                "C:/Programs/boost/boost_inc",
                 "-o",
-                "tt.exe",
-                "tt.cpp"
+                "t.exe",
+                "t.cpp",
+                "u.cpp",
+                "uu1.cpp",
+                "mipc.cpp",
+                "-L",
+                "C:/Programs/boost/boost/lib",
+                "-L",
+                ".",
+                "-lm",
+                "-lws2_32"
             ],
             "group": {
                 "kind": "build",
