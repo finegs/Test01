@@ -3,7 +3,6 @@
 #define __U_HPP
 
 #include <string>
-
 #define INITIAL_SIZE 1024
 
 #define VERSION_U "v1.0.0_20190602_b01"
@@ -54,11 +53,18 @@ struct SerializedPacket {
 } __attribute__((packed));
 
 class MyClz {
-	private:
+    private:
+        std::string id;
+        std::string value;
+        std::string desc;
 
-	std::string id;
-	std::string name;
-	std::string desc;
+    public:
+        MyClz();
+        MyClz(const std::string& _id, const std::string& _value, const std::string& _desc = "");
+        MyClz(const MyClz& o);
+		MyClz(MyClz&& o) ;
+        MyClz& operator=(const MyClz& o);
+        MyClz& operator=(MyClz&& o);
 
 	public:
 
@@ -77,7 +83,6 @@ class MyClz {
 	static void printCRUDUsage(); 
 	static void testFibo(int n = 255);
     ~MyClz();
-
     public:
         struct MyClzComparator;
 };
