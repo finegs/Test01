@@ -66,6 +66,7 @@ class MyUU1 {
 		static void testCInWithAsyncReader();
 		static void testAsync01(int threadCount);
 		static void testLList();
+		static void testCode01(int threadCount);
 
 	private:
 		static std::unordered_map<std::string, MyTestCodeEnum> testCodeEnumMap;

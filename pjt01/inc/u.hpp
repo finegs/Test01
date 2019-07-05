@@ -52,39 +52,33 @@ struct SerializedPacket {
 
 } __attribute__((packed));
 
-class MyClz {
-    private:
-        std::string id;
-        std::string value;
-        std::string desc;
+class MyClz
+{
+private:
+	std::string id;
+	std::string value;
+	std::string desc;
 
-    public:
-        MyClz();
-        MyClz(const std::string& _id, const std::string& _value, const std::string& _desc = "");
-        MyClz(const MyClz& o);
-		MyClz(MyClz&& o) ;
-        MyClz& operator=(const MyClz& o);
-        MyClz& operator=(MyClz&& o);
+public:
+	MyClz();
+	MyClz(const std::string &_id, const std::string &_value, const std::string &_desc = "");
+	MyClz(const MyClz &o);
+	MyClz(MyClz &&o);
+	MyClz &operator=(const MyClz &o);
+	MyClz &operator=(MyClz &&o);
+	~MyClz() = default;
 
-	public:
+public:
+	void setDesc(const std::string &);
 
-  MyClz();
-	MyClz(const std::string& _id, const std::string& _name, const std::string& _desc = "");
-    MyClz(const MyClz& o);
-    MyClz(MyClz&& o);
-    MyClz& operator=(const MyClz& o);
-    MyClz& operator=(MyClz&& o); 
+	friend std::ostream &operator<<(std::ostream &os, const MyClz &o);
+	friend std::istream &operator>>(std::istream &is, MyClz &o);
 
-	void setDesc(const std::string&);
-
-	friend std::ostream& operator<<(std::ostream& os, const MyClz& o);
-	friend std::istream& operator>>(std::istream& is, MyClz& o);
-
-	static void printCRUDUsage(); 
+	static void printCRUDUsage();
 	static void testFibo(int n = 255);
-    ~MyClz();
-    public:
-        struct MyClzComparator;
+
+public:
+	struct MyClzComparator;
 };
 
 class My {
