@@ -75,52 +75,45 @@ void Packet::deserialize(void* message)
 	memcpy(this->data, s->data, MaxDataSize);
 }
 
+MyClz::MyClz() : id(""), name(""), desc("") {}
+MyClz::MyClz(const std::string& _id, const std::string& _name, const std::string& _desc) : id(_id), name(_name), desc(_desc) {}
+MyClz::MyClz(const MyClz& o) : id(o.id), name(o.name), desc(o.desc) {}
+MyClz::MyClz(MyClz&& o) : id(std::move(o.id)), name(std::move(o.name)), desc(std::move(o.desc)) {}
+MyClz& MyClz::operator=(const MyClz& o) {
+      if(this==&o) return *this;
+      id = o.id;
+      name = o.name;
+      desc = o.desc;
+      return *this;
+}
 
-class MyClz {
-    private:
-        std::string id;
-        std::string value;
-        std::string desc;
+MyClz& MyClz::operator=(MyClz&& o) {
+     if(this==&o) return *this;
+     id = std::move(o.id);
+     name = std::move(o.name);
+     desc = std::move(o.desc);
+     return *this;
+}
 
-    public:
-        MyClz() : id(""), value(""), desc("") {}
-        MyClz(const std::string& _id, const std::string& _value) : id(_id), value(_value) {}
-        MyClz(const MyClz& o) : id(o.id), value(o.value), desc(o.desc) {}
-        MyClz(MyClz&& o) : id(std::move(o.id)), value(std::move(o.value)), desc(std::move(o.desc)) {}
-        MyClz& operator=(const MyClz& o) {
-            if(this==&o) return *this;
-            id = o.id;
-            value = o.value;
-            desc = o.desc;
-            return *this;
-        }
-        MyClz& operator=(MyClz&& o) {
-            if(this==&o) return *this;
-            id = std::move(o.id);
-            value = std::move(o.value);
-            desc = std::move(o.desc);
-            return *this;
-        }
+void MyClz::setDesc(const std::string& newDesc) {
+    desc = newDesc;
+}
 
-        void setDesc(const std::string& newDesc) {
-            desc = newDesc;
-        }
+std::ostream& operator<<(std::ostream& os, const MyClz& o) {
+    os << "{\"" << o.id << "\", \"" << o.name << "\", \"" << o.desc << "\"}";
+    return os;
+}
 
-        friend std::ostream& operator<<(std::ostream& os, const MyClz& o) {
-            os << "{\"" << o.id << "\", \"" << o.value << "\", \"" << o.desc << "\"}";
-            return os;
-        }
+std::istream& operator>>(std::istream& is, MyClz& o) {
+  is >> o.id >> o.name >> o.desc;
+  return is;
+}
 
-		static void printCRUDUsage(); 
-		static void testFibo(int n = 255);
-        ~MyClz() = default;
-
-    public:
-        struct MyClzComparator {
-            bool operator() (const MyClz& a, const MyClz& b) const {
-                return a.id < b.id;
-            }
-        };
+MyClz::~MyClz() = default;
+struct	MyClz::MyClzComparator {
+    bool operator() (const MyClz& a, const MyClz& b) const {
+        return a.id < b.id;
+    }
 };
 
 void MyClz::printCRUDUsage() {
