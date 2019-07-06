@@ -67,6 +67,8 @@ class MyUU1 {
 		static void testAsync01(int threadCount);
 		static void testLList();
 		static void testCode01(int threadCount);
+		static void testCode02();
+		static void print2Arr(int (*arrp)[2], int n);
 
 	private:
 		static std::unordered_map<std::string, MyTestCodeEnum> testCodeEnumMap;

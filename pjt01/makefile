@@ -1,6 +1,5 @@
 ######################  Init All Variables ###############################################
-CXX      := -g++
-#CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
+CXX      := g++ #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++1y -Wall -Wextra -Werror -Wno-unused-parameter
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 BUILD     := build

@@ -10,8 +10,8 @@
 #include <chrono>
 #include <list>
 
-#include "inc/u.hpp"
-#include "inc/uu1.hpp"
+#include "u.hpp"
+#include "uu1.hpp"
 
 // create MyUU1::testCodeEnumMap field
 std::unordered_map<std::string, MyTestCodeEnum> MyUU1::testCodeEnumMap;
@@ -84,6 +84,15 @@ template<typename T, typename... Args>
 T createT(Args&&... args) {
 	return T(std::forward<Args>(args)...);
 };
+
+
+void MyUU1::print2Arr(int (*arrp)[2], int n) {
+	for (int i = 0;i<n;i++) {
+		printf("arr=0x%p, **arr=%d\n", arrp, **arrp);
+		arrp++;
+	}
+}
+	
 
 void MyUU1::testCode(const std::string& strCode) {
 	MyTestCodeEnum& e = testCodeEnumMap[strCode];
@@ -182,6 +191,25 @@ void MyUU1::testCode01(int threadCount) {
 			for (std::thread& t : tList) {
 				t.join();
 			}
+}
+
+void MyUU1::testCode02() {
+	int arr[][2] = {{1, 2},{3,4},{5,6},{7,8},{9,10}};
+
+	int (*arrp)[2] = arr;
+
+	printf("Before\n");
+
+	print2Arr(arrp, 5);
+
+	printf("After\n");
+
+	arrp = arr;
+
+	for (int i = 0;i<5;i++) {
+		printf("arr=0x%p, **arr=%d\n", arrp, **arrp);
+		arrp++;
+	}
 }
 
 void MyUU1::testCInWithAsyncReader() {

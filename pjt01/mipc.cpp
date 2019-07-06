@@ -7,7 +7,7 @@
 #include <boost/interprocess/containers/map.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
 
-#include "inc/mipc.hpp"
+#include "mipc.hpp"
 
 //using namespace std;
 

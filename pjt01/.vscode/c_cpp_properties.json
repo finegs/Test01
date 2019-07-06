@@ -6,7 +6,7 @@
                 "_DEBUG",
                 "UNICODE"
             ],
-            "compilerPath": "D:/Programs/msys64/mingw64/bin/g++.exe",
+            "compilerPath": "${MINGW_HOME}/bin/g++.exe",
             "intelliSenseMode": "gcc-x64",
             "browse": {
                 "path": [

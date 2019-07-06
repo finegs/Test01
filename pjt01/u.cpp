@@ -9,7 +9,7 @@
 #include <cstdlib>   /* for exit() */
 #include <string>
 
-#include "inc/u.hpp"
+#include "u.hpp"
 
 void DieWithError(const char *errorMessage)
 {
