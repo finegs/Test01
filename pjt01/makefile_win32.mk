@@ -2,9 +2,9 @@
 CXX      := g++ #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++1y -Wall -Wextra -Werror -Wno-unused-parameter
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
-BUILD     := build
-APP_DIR   := $(BUILD)\\apps
-OBJ_DIR   := $(BUILD)\\objects
+BUILD     := $(CMD)/build
+APP_DIR   := $(BUILD)/apps
+OBJ_DIR   := $(BUILD)/objects
 
 ifeq ($(strip $(TARGET)),)
 	TARGET  := t.exe
@@ -85,9 +85,9 @@ $(APP_DIR)\\$(TARGET): $(OBJS)
 ##########             Make Directory to store obj, target files ######################
 mkdirs:
 	@echo making dir : $(APP_DIR)
-	-@mkdir $(APP_DIR)
+	if not exist $(APP_DIR) -@mkdir $(APP_DIR)
 	@echo making dir : $(OBJ_DIR)
-	-@mkdir $(OBJ_DIR)
+	if not exist $(OBJ_DIR) -@mkdir $(OBJ_DIR)
 
 ##########################################################
 
@@ -110,9 +110,9 @@ release_this:
 
 ##########            Clean Target, Object and Current Path Target Files    #########################
 clean:
-	-@del /s /q $(OBJ_DIR)\\*
-	-@del /s /q $(APP_DIR)\\*
-	-@del /s /q $(TARGET)
+	@rm $(OBJ_DIR)/*.*
+	@rm $(APP_DIR)/*.*
+	@rm $(TARGET)/*.*
 
 ##########################################################
 
