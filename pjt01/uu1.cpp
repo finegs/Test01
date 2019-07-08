@@ -194,6 +194,7 @@ void MyUU1::testCode01(int threadCount) {
 }
 
 void MyUU1::testCode02() {
+
 	int arr[][2] = {{1, 2},{3,4},{5,6},{7,8},{9,10}};
 
 	int (*arrp)[2] = arr;

@@ -10,10 +10,10 @@
 #include <functional>
 #include <algorithm>
 
-#include "inc/aa.hpp"
-#include "inc/u.hpp"
-#include "inc/uu1.hpp"
-#include "inc/mipc.hpp"
+#include "aa.hpp"
+#include "u.hpp"
+#include "uu1.hpp"
+#include "mipc.hpp"
 
 #define MY_DEBUG 1
 
@@ -504,7 +504,7 @@ int main()
 #include <iostream>
 #include <tuple>
 
-#include "inc/u.hpp"
+#include "u.hpp"
 
 // ua bb vc
 

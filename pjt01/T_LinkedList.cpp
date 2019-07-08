@@ -1,4 +1,4 @@
-#include "inc/T_LinkedList.hpp"
+#include "T_LinkedList.hpp"
 
 
 Node* sll_createNode(ElementType newData)

@@ -1,4 +1,4 @@
-#include "inc/aa.hpp"
+#include "aa.hpp"
 #include <boost/mpi.hpp>
 #include <iostream>
 

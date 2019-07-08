@@ -10,30 +10,7 @@
 #include <unordered_map>
 #include <type_traits>
 
-class AA {
-    private:
-        std::string name;
-        std::string desc;
-    public:
-        AA(const char* _name, const char* _desc) : name(_name), desc(_desc) {}
-        AA(const AA& o) : name(o.name), desc(o.name) {}
-        AA(AA&& o)  : name(std::move(o.name)), desc(std::move(o.desc)) {}
-        AA& operator=(const AA& o) 
-        {
-            name = o.name;
-            desc = o.desc;
-            return *this;
-        }
-        AA& operator=(AA&& o) 
-        {
-            name = std::move(o.name);
-            desc = std::move(o.desc);
-            return *this;
-        }
-
-        const std::string& getName() { return name; }
-        const std::string& getDesc() { return desc; }
-};
+#include "test01.hpp"
 
 template<typename T> void print_queue(T& q) {
     while(!q.empty()) {
@@ -42,17 +19,17 @@ template<typename T> void print_queue(T& q) {
     }
     std::cout << std::endl;
 
-    AA a("a", "aa");
-    std::cout << "a : Name=" << a.getName() << ", Desc=" << a.getDesc() << std::endl;
-    const std::string& name = a.getName();
-    std::cout << name;
-
-
-    std::string s1("aaa");
-    s1.append(" bbb");
-
-    std::hash<std::string> hash_fn;
-    std::cout << "s1.c_str() = " << s1.c_str() << ", Hash="<< hash_fn(s1) << std::endl;
+//    AA a("a", "aa");
+//    std::cout << "a : Name=" << a.getName() << ", Desc=" << a.getDesc() << std::endl;
+//    const std::string& name = a.getName();
+//    std::cout << name;
+//
+//
+//    std::string s1("aaa");
+//    s1.append(" bbb");
+//
+//    std::hash<std::string> hash_fn;
+//    std::cout << "s1.c_str() = " << s1.c_str() << ", Hash="<< hash_fn(s1) << std::endl;
 
 }
 

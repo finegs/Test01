@@ -6,15 +6,26 @@
                 "_DEBUG",
                 "UNICODE"
             ],
+            "includePath" : [
+                ".",
+                "${MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++",
+                "${MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include",
+                "${MINGW_HOME}/x86_64-w64-mingw32/include",
+                "${BOOST_INC}"
+            ],
             "compilerPath": "${MINGW_HOME}/bin/g++.exe",
             "intelliSenseMode": "gcc-x64",
             "browse": {
                 "path": [
-                    "${workspaceFolder}"
+                    "${workspaceFolder}",
+                    "${MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++",
+                    "${MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include",
+                    "${MINGW_HOME}/x86_64-w64-mingw32/include",
+                    "${BOOST_INC}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
-            }
+            }  
         }
     ],
     "version": 4

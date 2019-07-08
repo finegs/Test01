@@ -2,35 +2,76 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "2.0.0",
+    "runner": "terminal",
+    "BOOST_INC": "G:/Programs/boost/boost_inc",
+    "BOOST_LIB": "G:/Programs/boost/boost/lib",
+    "windows": {
+      "command": "powershell",
+      "args": [ "-Command" ]
+    },
+    "linux": {
+      "command": "sh",
+      "args": [ "-c" ]
+    },
+    "osx": {
+      "command": "sh",
+      "args": [ "-c" ]
+    },
+    "presentation": {
+        "reveal": "always"
+    },
     "tasks": [
         {
-            "label": "build test",
+            "label": "make clean",
+            "command": "make",
+            "type": "shell",
+            "args": [
+                "tc=win32",
+                "clean"
+            ]
+        },
+        {
+            "label": "build batch",
+            "command": "build.bat",
+            "type": "shell",
+            "args": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "make all",
+            "command": "make",
+            "type": "shell",
+            "args": ["-f",
+            "makefile_win32.mk"],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "build task",
             "type": "shell",
             "command": "g++",
             "args": [
                 "-g",
                 "-DDEBUG",
-                "-I",
-                "inc",
-                "-I",
-                "${BOOST_INC}",
+                "-Iinc",
+                "-I${BOOST_INC}",
                 "-o",
-                "t.exe",
+                "${workspaceFolder}\tt.exe",
                 "t.cpp",
                 "u.cpp",
                 "uu1.cpp",
                 "mipc.cpp",
-                "-L",
-                "${BOOST_LIB}",
-                "-L",
-                ".",
+                "-L${BOOST_LIB}",
+                "-L.",
                 "-lm",
                 "-lws2_32"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "group": "build"
         }
     ]
 }
