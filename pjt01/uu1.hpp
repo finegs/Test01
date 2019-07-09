@@ -21,6 +21,8 @@ class MyUU1 {
 		std::string name;
 		std::string desc;
 
+		static bool checkPrime(unsigned int);
+
 	public:
 		MyUU1() : age(-1) {}
 		MyUU1(int _age, const std::string& _name, const std::string& _desc)
@@ -68,7 +70,9 @@ class MyUU1 {
 		static void testLList();
 		static void testCode01(int threadCount);
 		static void testCode02();
+		static void testCode03();
 		static void print2Arr(int (*arrp)[2], int n);
+		static unsigned int findLessThanEqualPrime(unsigned int n);
 
 	private:
 		static std::unordered_map<std::string, MyTestCodeEnum> testCodeEnumMap;

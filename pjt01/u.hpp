@@ -69,6 +69,12 @@ public:
 	~MyClz() = default;
 
 public:
+	std::string getId() const { return id; }
+	std::string getValue() const { return value;}
+	std::string getDesc() const { return desc;}
+	const std::string& getCId() const { return id; }
+	const std::string& getCValue() const { return value;}
+	const std::string& getCDesc() const { return desc;} 
 	void setDesc(const std::string &);
 
 	friend std::ostream &operator<<(std::ostream &os, const MyClz &o);
@@ -79,6 +85,8 @@ public:
 
 public:
 	struct MyClzComparator;
+	struct MyClzHash;
+	struct MyClzEqual;
 };
 
 class My {
@@ -116,4 +124,5 @@ class My {
 		const float& getC() const { return c; }
 
 };
+
 #endif

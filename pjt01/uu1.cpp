@@ -9,6 +9,7 @@
 #include <thread>
 #include <chrono>
 #include <list>
+#include <cmath>
 
 #include "u.hpp"
 #include "uu1.hpp"
@@ -74,6 +75,25 @@ int MyUU1::matoi(const char* s) {
 	n = (ne ? -1 : 1) * n;
 	return n;
 };
+
+bool MyUU1:: checkPrime(unsigned int n) {
+	int j;
+	if(n==2 || n==3) return true;
+	// if(PRIME[n] == 1) return n; // Prime
+	// if(PRIME[n] == 2) return 0; // Non Prime
+	for(int j=sqrt(n);j>1;--j) {
+		if(n%j==0) return false;
+	}
+	// PRIME[n] = 1;
+	return true;
+}
+
+unsigned int MyUU1::findLessThanEqualPrime(unsigned int n) {
+	for (size_t i = n; i > 1; i--) 	{
+		if(checkPrime(i)) return i;
+	}
+	return 0;
+}
 
 void MyUU1::makeLogEntry(void* p) {
 	std::cout << "[D] " << p << std::endl;
@@ -211,6 +231,10 @@ void MyUU1::testCode02() {
 		printf("arr=0x%p, **arr=%d\n", arrp, **arrp);
 		arrp++;
 	}
+}
+
+void MyUU1::testCode03() {
+	
 }
 
 void MyUU1::testCInWithAsyncReader() {

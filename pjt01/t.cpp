@@ -170,12 +170,7 @@ int main(int argc, char* argv[]) {
 		}
 		else if("-t00" == cmd || "-T00" == cmd) {
 			
-			int mSize = MyIPC::TEST_MAP_SIZE;
-			if(params.size()>1) mSize = atoi(params[1].c_str());
-
-			std::cout << "IPC Test : " << "MyIPC::testIPC("<< mSize << ") " << std::endl;
-
-			MyIPC::testIPC(mSize);
+			MyIPC::testIPC(argc, argv);
 
 //			int i = 0;
 //			std::cout << "params.size = " << params.size() << std::endl;
@@ -278,14 +273,7 @@ void f1() {
 #include <set>
 
 #if 1
-int isPrime(int n) {
-	int j;
-	if(n==2 || n==3) return n;
-	for(j=sqrt(n);j>1;--j) {
-		if(n%j==0) return 0;
-	}
-	return n;
-}
+
 int frequency_of_prime(int n, std::set<int>& s) {
 	int i;
 	int freq = n-1;

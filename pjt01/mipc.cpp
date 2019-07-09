@@ -10,12 +10,24 @@
 #include "mipc.hpp"
 
 //using namespace std;
-
-
 int MyIPC::TEST_MAP_SIZE = 100;
 
-int MyIPC::testIPC(int _mapSize) {
+int MyIPC::testIPC(int argc, char* argv[]) {
    using namespace boost::interprocess;
+
+   int _mapSize = TEST_MAP_SIZE;
+   int segmentSize = 65536;
+
+   // parse argument
+   for(int i = 0;i<argc;i++) {
+      if("-S" == argv[i] || "--size" == argv[i]) {
+         if(argc < (i+1)) {
+            std::cerr << "illegal argument : " << argv[i];
+            exit(-1);
+         }
+         _mapSize = atoi(argv[i+1]);
+      }
+   }
 
    //Remove shared memory on construction and destruction
    struct shm_remove
@@ -30,7 +42,7 @@ int MyIPC::testIPC(int _mapSize) {
    managed_shared_memory segment
       (create_only
       ,"MySharedMemory" //segment name
-      ,65536);          //segment size in bytes
+      ,segmentSize);          //segment size in bytes
 
    //Note that map<Key, MappedType>'s value_type is std::pair<const Key, MappedType>,
    //so the allocator must allocate that pair.
@@ -62,13 +74,18 @@ int MyIPC::testIPC(int _mapSize) {
                                  (std::less<int>() //first  ctor parameter
                                  ,alloc_inst);     //second ctor parameter
 
+   if(!mymap) {
+      std::cerr << "MyMap allocating failed : size = " << _mapSize 
+                     << ", segmentSize = " << segmentSize; 
+      exit(-2);
+   }
+
    //Insert data in the map
    for(int i = 0; i < _mapSize; ++i){
       //mymap->insert(std::pair<const int, float>(i, (float)i));
 //      mymap->[i] = (float)i*i;
 	  (*mymap).emplace(i, (float)i*i);
    }
-
 
    // Get Data in the map
    float vf = .0;
@@ -79,8 +96,6 @@ int MyIPC::testIPC(int _mapSize) {
 		   << vf
 		   << ", match= " << std::boolalpha << (vf == (float)i*i) << std::endl;
    }
-
-
    return 0;	
 };
 
@@ -170,4 +185,3 @@ int MyIPC::testIPCMapFile(int argc, char* argv[], std::vector<std::string>& para
 
 	return EXIT_SUCCESS;
 };
-

@@ -8,6 +8,7 @@
 #include <winsock2.h>  /* for WSAGetLastError() */
 #include <cstdlib>   /* for exit() */
 #include <string>
+#include <functional>
 
 #include "u.hpp"
 
@@ -113,6 +114,18 @@ struct	MyClz::MyClzComparator {
     bool operator() (const MyClz& a, const MyClz& b) const {
         return a.id < b.id;
     }
+};
+
+struct MyClz::MyClzHash {
+	std::size_t operator() (const MyClz& o) const noexcept {
+		return std::hash<std::string>{}(o.id);
+	}
+};
+
+struct MyClz::MyClzEqual {
+	bool operator() (const MyClz& a, const MyClz& b) const {
+		return a.id == b.id;
+	}
 };
 
 
