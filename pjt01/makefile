@@ -62,14 +62,18 @@ all: mkdirs $(APP_DIR)/$(TARGET) release_this
 
 #################             Compile            ######
 $(OBJ_DIR)/%.o: %.cpp
-	@mkdir -p $(@D)
+	if [ ! -d $(@D) ]; then \
+		mkdir -p $(@D);     \
+	fi
 	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $@ -c $<
 
 ##########################################################
 
 ##########          Link               ######
 $(APP_DIR)/$(TARGET): $(OBJS)
-	@mkdir -p $(@D)
+	if [ ! -d $(@D) ]; then \
+		mkdir -p $(@D);     \
+	fi
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
 #   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
 	$(CXX) -o $@ $(LIB_PATH) $(OBJS) $(LDFLAGS)
@@ -83,9 +87,12 @@ $(APP_DIR)/$(TARGET): $(OBJS)
 
 ##########             Make Directory to store obj, target files ######################
 mkdirs:
-	@mkdir -p $(APP_DIR)
-	@mkdir -p $(OBJ_DIR)
-
+	if [ ! -d "$(APP_DIR)" ]; then \
+		mkdir -p "$(APP_DIR)";     \
+	fi
+	if [ ! -d "$(OBJ_DIR)" ]; then \
+		mkdir -p "$(OBJ_DIR)";     \
+	fi
 ##########################################################
 
 debug: CXXFLAGS += -DDEBUG -g
@@ -101,15 +108,15 @@ release: all
 ##########            Copy Target File to current path for easy to test run #########################
 release_this:
 	@cp $(APP_DIR)/$(TARGET) $(TARGET)
-	@echo copy from $(APP_DIR)/$(TARGET) to $(TARGET)
+	@echo cp from $(APP_DIR)/$(TARGET) to $(TARGET)
 
 ##########################################################
 
 ##########            Clean Target, Object and Current Path Target Files    #########################
 clean:
-	-@rm -rf $(OBJ_DIR)/*
-	-@rm -rf $(APP_DIR)/*
-	-@rm -rf $(TARGET)
+	@rm -rf $(OBJ_DIR)/*.*
+	@rm -rf $(APP_DIR)/*.*
+	@rm $(TARGET)
 
 ##########################################################
 

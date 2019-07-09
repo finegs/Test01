@@ -2,7 +2,7 @@
 CXX      := g++ #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++1y -Wall -Wextra -Werror -Wno-unused-parameter
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
-BUILD     := $(CMD)/build
+BUILD     := build
 APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
 
@@ -35,42 +35,45 @@ LDFLAGS   += -pthread
 LDFLAGS   += -lws2_32
 #LDFLAGS   += -lwsock32
 
-LIB_PATH  := -L$(MINGW_HOME)\\x86_64-w64-mingw32\\lib
+LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
 
 ################## BOOST #################################
 
 #BOOST_HOME := G:/Programs/boost/boost
-BOOST_INC := $(BOOST_HOME)\\..\\boost_inc
-BOOST_LIB := $(BOOST_HOME)\\lib
+BOOST_INC := $(BOOST_HOME)/../boost_inc
+BOOST_LIB := $(BOOST_HOME)/lib
 
 INC_PATH  += -I$(BOOST_INC)
 LIB_PATH  += -L$(BOOST_LIB)
 
-
 ##########################################################
 
 #OBJS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
-OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)\\%.o)
+OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 ##########################################################
 
 #################  all (Default)      ######
 
-all: mkdirs $(APP_DIR)\\$(TARGET) release_this
+all: mkdirs $(APP_DIR)/$(TARGET) release_this
 
 ##########################################################
 
+
 #################             Compile            ######
-$(OBJ_DIR)\\%.o: %.cpp
-	-@mkdir $(@D)
+$(OBJ_DIR)/%.o: %.cpp
+	if [ ! -d $(@D) ]; then \
+		mkdir -p $(@D);     \
+	fi
 	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $@ -c $<
 
 ##########################################################
 
 ##########          Link               ######
-$(APP_DIR)\\$(TARGET): $(OBJS)
-	echo making dir : $(@D)
-	if not exist $(@D) mkdir $(@D)
+$(APP_DIR)/$(TARGET): $(OBJS)
+	if [ ! -d $(@D) ]; then \
+		mkdir -p $(@D);     \
+	fi
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
 #   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
 	$(CXX) -o $@ $(LIB_PATH) $(OBJS) $(LDFLAGS)
@@ -84,11 +87,12 @@ $(APP_DIR)\\$(TARGET): $(OBJS)
 
 ##########             Make Directory to store obj, target files ######################
 mkdirs:
-	@echo making dir : $(APP_DIR)
-	if not exist $(APP_DIR) -@mkdir $(APP_DIR)
-	@echo making dir : $(OBJ_DIR)
-	if not exist $(OBJ_DIR) -@mkdir $(OBJ_DIR)
-
+	if [ ! -d "$(APP_DIR)" ]; then \
+		mkdir -p "$(APP_DIR)";     \
+	fi
+	if [ ! -d "$(OBJ_DIR)" ]; then \
+		mkdir -p "$(OBJ_DIR)";     \
+	fi
 ##########################################################
 
 debug: CXXFLAGS += -DDEBUG -g
@@ -103,16 +107,16 @@ release: all
 
 ##########            Copy Target File to current path for easy to test run #########################
 release_this:
-	-@copy $(APP_DIR)\\$(TARGET) $(TARGET)
-	@echo copy from $(APP_DIR)\\$(TARGET) to $(TARGET)
+	@cp $(APP_DIR)/$(TARGET) $(TARGET)
+	@echo cp from $(APP_DIR)/$(TARGET) to $(TARGET)
 
 ##########################################################
 
 ##########            Clean Target, Object and Current Path Target Files    #########################
 clean:
-	@rm $(OBJ_DIR)/*.*
-	@rm $(APP_DIR)/*.*
-	@rm $(TARGET)/*.*
+	@rm -rf $(OBJ_DIR)/*.*
+	@rm -rf $(APP_DIR)/*.*
+	@rm $(TARGET)
 
 ##########################################################
 
