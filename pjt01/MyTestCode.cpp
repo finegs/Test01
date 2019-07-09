@@ -7,29 +7,39 @@
 
 using uint = unsigned int;
 
-enum class Direction : int { Left = 0, Right = 1, Up = 2, Down = 3, Null = 4 };
+enum class Direction : int
+{
+    Left = 0,
+    Right = 1,
+    Up = 2,
+    Down = 3,
+    Null = 4
+};
 
-class RectData {
-    private:
-        uint width;
-        uint height;
-        std::vector<uint> datas;
-        uint total;
-    public:
+class RectData
+{
+private:
+    uint width;
+    uint height;
+    std::vector<uint> datas;
+    uint total;
+
+public:
     RectData();
     RectData(uint _width, uint _height);
 
     size_t hash() const;
-    bool operator==(const RectData& o) const;
-    bool operator==(const RectData* o) const;
+    bool operator==(const RectData &o) const;
+    bool operator==(const RectData *o) const;
 
     struct KeyHash;
     struct KeyEqual;
 };
 
-RectData::RectData(uint _width, uint _height) 
-        : width(_width), height(_height), datas(_width*_height, 0) {
-        total = _width * _height;
+RectData::RectData(uint _width, uint _height)
+    : width(_width), height(_height), datas(_width * _height, 0)
+{
+    total = _width * _height;
 }
 
 RectData::RectData() : RectData(0u, 0u)
@@ -53,40 +63,38 @@ struct RectData::KeyHash
         return o.hash();
     }
 
-    std::size_t operator()(const RectData* o) const {
+    std::size_t operator()(const RectData *o) const
+    {
         return o->hash();
     }
 };
 
 struct RectData::KeyEqual
 {
-    std::size_t operator()(const RectData& a, const RectData& b) const
+    std::size_t operator()(const RectData &a, const RectData &b) const
     {
         return a == b;
     }
 
-    std::size_t operator()(const RectData* a, const RectData* b) const
+    std::size_t operator()(const RectData *a, const RectData *b) const
     {
         return *a == *b;
     }
 };
 
-bool RectData::operator==(const RectData& o) const
+bool RectData::operator==(const RectData &o) const
 {
-    if(this == &o) return true;
-    return (width == o.width) 
-        && (height == o.height)
-        && (datas == o.datas);
+    if (this == &o)
+        return true;
+    return (width == o.width) && (height == o.height) && (datas == o.datas);
 }
 
-bool RectData::operator==(const RectData* o) const
+bool RectData::operator==(const RectData *o) const
 {
-    if(this==o) return true;
-    return (width == o->width) 
-        && (height == o->height)
-        && (datas == o->datas);
+    if (this == o)
+        return true;
+    return (width == o->width) && (height == o->height) && (datas == o->datas);
 }
-
 
 using namespace std;
 
