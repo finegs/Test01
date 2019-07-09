@@ -1,3 +1,40 @@
+#if 1
+
+
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+void foo(int a) {}
+void goo(int& a) { a = 0; }
+
+template<typename F, typename A>
+void lockAndCall(F f, A& a) {
+	f(a);
+}
+
+template<typename F, typename A>
+void lockAndCall(F f, const A& a) {
+	f(a);
+}
+
+int main(int argc, char* argv[]) {
+	int x = 10;
+
+	lockAndCall(foo, 0);
+	lockAndCall(goo, x);
+
+	cout << x << endl;
+
+	return EXIT_SUCCESS;
+}
+
+#endif
+
+
+
+#if 0
 // Server program 
 #include <cerrno> 
 #include <csignal> 
@@ -206,3 +243,6 @@ int handleServer(int port)
     return EXIT_SUCCESS;
 
 }
+
+
+#endif
