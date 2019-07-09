@@ -10,10 +10,10 @@
 #include <functional>
 #include <algorithm>
 
-#include "inc/aa.hpp"
-#include "inc/u.hpp"
-#include "inc/uu1.hpp"
-#include "inc/mipc.hpp"
+#include "aa.hpp"
+#include "u.hpp"
+#include "uu1.hpp"
+#include "mipc.hpp"
 
 #define MY_DEBUG 1
 
@@ -25,76 +25,82 @@ std::unordered_map<std::string, MyClz> m1;
 
 bool IS_DEBUG = false;
 
-
-
 //#ifdef MY_DEBUG
 //bool IS_DEBUG = true;
 //#endif
 
 // 0. Initialize Program Parameters
-int initArgs(int argc, char* argv[], std::vector<std::string>& params) {
+int initArgs(int argc, char *argv[], std::vector<std::string> &params)
+{
 	int rc = EXIT_SUCCESS;
-    for(int i = 1;i < argc;i++) {
-        if(!strcmp("-d", argv[i]) || !strcmp("-D", argv[i])) {
-            IS_DEBUG = true;
-        }
-        else if(!strcmp("-v", argv[i]) || !strcmp("--version", argv[i])) {
-            rc = EXIT_OTHERS;
-            std::cout << argv[0] << " Version : " << VERSION << std::endl;
-        }
-		else {
-			// added by SGK 20190620  : 
-			params.emplace_back(argv[i]);
-
+	for (int i = 1; i < argc; i++)
+	{
+		if (!strcmp("-d", argv[i]) || !strcmp("-D", argv[i]))
+		{
+			IS_DEBUG = true;
 		}
-    }
+		else if (!strcmp("-v", argv[i]) || !strcmp("--version", argv[i]))
+		{
+			rc = EXIT_OTHERS;
+			std::cout << argv[0] << " Version : " << VERSION << std::endl;
+		}
+		else
+		{
+			// added by SGK 20190620  :
+			params.emplace_back(argv[i]);
+		}
+	}
 	return rc;
 }
 
-int main(int argc, char* argv[]) {
-	 
+int main(int argc, char *argv[])
+{
 
 	int rc;
-    std::string line;
-    std::stringstream ss;
+	std::string line;
+	std::stringstream ss;
 	std::string cmd;
-    std::string key, value, desc;
+	std::string key, value, desc;
 	std::vector<std::string> params;
 
-    bool bExit = false;
+	bool bExit = false;
 	rc = EXIT_SUCCESS;
 
-    // 0. Initialize Program Parameters
-    if(EXIT_SUCCESS != (rc = initArgs(argc, argv, params))) {
+	// 0. Initialize Program Parameters
+	if (EXIT_SUCCESS != (rc = initArgs(argc, argv, params)))
+	{
 		return rc;
 	}
 
-
-	if(std::end(params) != std::find_if(std::begin(params), std::end(params), [&](std::string& s) { 
-			if ("-t05" == s || "-T05" == s) 
-			 	return true; 
-			else 
+	if (std::end(params) != std::find_if(std::begin(params), std::end(params), [&](std::string &s) {
+			if ("-t05" == s || "-T05" == s)
+				return true;
+			else
 				return false;
-		})) { 
+		}))
+	{
 		MyIPC::testIPCMapFile(argc, argv, params);
 		return EXIT_SUCCESS;
-	}	
+	}
 
+	do
+	{
 
-    do {
-
-        line = cmd = key = value = desc = "";
+		line = cmd = key = value = desc = "";
 		ss.clear();
 		params.clear();
 
-		std::cout << "cmd << "; std::cout.flush();
-        std::getline(std::cin, line);
+		std::cout << "cmd << ";
+		std::cout.flush();
+		std::getline(std::cin, line);
 
 		ss.str(line);
-		while(true) {
+		while (true)
+		{
 			cmd = "";
 			ss >> cmd;
-			if(cmd.size() < 1) break;
+			if (cmd.size() < 1)
+				break;
 			params.push_back(cmd);
 		}
 
@@ -102,134 +108,153 @@ int main(int argc, char* argv[]) {
 
 		cls();
 
-     	if ("-q" == cmd || "-Q" == cmd || "-quit" == cmd || "-QUIT" == cmd || "-exit" == cmd || "-EXIT" == cmd) {
-			if(params.size() > 1 && "-i" == params[1]) {
-        		std::cout << "\t>> [I] Exit.." << std::endl;
+		if ("-q" == cmd || "-Q" == cmd || "-quit" == cmd || "-QUIT" == cmd || "-exit" == cmd || "-EXIT" == cmd)
+		{
+			if (params.size() > 1 && "-i" == params[1])
+			{
+				std::cout << "\t>> [I] Exit.." << std::endl;
 				bExit = true;
 				continue;
 			}
-        	std::cout << "\t>> [I] Are you sure to quit? (Y/N)" << std::endl;
+			std::cout << "\t>> [I] Are you sure to quit? (Y/N)" << std::endl;
 
-        	std::getline(std::cin, cmd);
+			std::getline(std::cin, cmd);
 
-	    	if("Y"== cmd||"y"== cmd) {
-   	        	bExit = true;
-   	        	break;
-   		    }
-     	}
-     	else if("-p" == cmd || "-P" == cmd || "-print" == cmd || "-PRINT" == cmd) {
-			if(m1.empty()) {
+			if ("Y" == cmd || "y" == cmd)
+			{
+				bExit = true;
+				break;
+			}
+		}
+		else if ("-p" == cmd || "-P" == cmd || "-print" == cmd || "-PRINT" == cmd)
+		{
+			if (m1.empty())
+			{
 				std::cout << "\t>> [E] m1 is emtpy" << std::endl;
 				continue;
 			}
 			int i = 0;
-       		for(auto iter = m1.cbegin();iter != m1.cend();iter++, i++) {
-            	std::cout << "\t\t[" << i << "] = " << iter->second << std::endl;
-         	}
-     	}
-		else if("-c" == cmd || "-C" == cmd || "-clear" == cmd || "-CLEAR" == cmd) {
+			for (auto iter = m1.cbegin(); iter != m1.cend(); iter++, i++)
+			{
+				std::cout << "\t\t[" << i << "] = " << iter->second << std::endl;
+			}
+		}
+		else if ("-c" == cmd || "-C" == cmd || "-clear" == cmd || "-CLEAR" == cmd)
+		{
 			cls();
 		}
-		else if ("-I" == cmd || "-i" == cmd) {
-			if(params.size() > 0) key = params[1];
-			if(params.size() > 1) value = params[2];
-			if(params.size() > 2) desc = params[3];
+		else if ("-I" == cmd || "-i" == cmd)
+		{
+			if (params.size() > 0)
+				key = params[1];
+			if (params.size() > 1)
+				value = params[2];
+			if (params.size() > 2)
+				desc = params[3];
 
 			MyClz c(key, value);
 			c.setDesc(desc);
 
 			if (IS_DEBUG)
-	       		std::cout << "\t>> [D] m1.size= " << m1.size() << ", Data= " << c << std::endl;
-	
-		    m1[key] = c;
-		}
-		else if ("-d" == cmd || "-D" == cmd) {
+				std::cout << "\t>> [D] m1.size= " << m1.size() << ", Data= " << c << std::endl;
 
-			if(params.size() > 1) key = params[1];
-			
-			if(key.length() < 1) {
+			m1[key] = c;
+		}
+		else if ("-d" == cmd || "-D" == cmd)
+		{
+
+			if (params.size() > 1)
+				key = params[1];
+
+			if (key.length() < 1)
+			{
 				std::cout << "\t>> [E] key is empty" << std::endl;
 				continue;
 			}
 
 			int cnt = 0;
-			if(IS_DEBUG) {
+			if (IS_DEBUG)
+			{
 				std::cout << "\t>> [I] Found Count : " << m1.count(key) << std::endl;
-				for(auto iter = m1.find(key);iter != m1.end();iter++) {
-					std::cout << "\t\t(" << cnt++ << "),  m1[" << iter->first << "] = " << iter->second << std::endl; 
+				for (auto iter = m1.find(key); iter != m1.end(); iter++)
+				{
+					std::cout << "\t\t(" << cnt++ << "),  m1[" << iter->first << "] = " << iter->second << std::endl;
 				}
 			}
 			m1.erase(key);
 
-			if (IS_DEBUG) {
-	       		std::cout << "\t>> [D] Deleted count = " << cnt << ", m1.size = " << m1.size() << std::endl;
+			if (IS_DEBUG)
+			{
+				std::cout << "\t>> [D] Deleted count = " << cnt << ", m1.size = " << m1.size() << std::endl;
 			}
 		}
-		else if("-h" == cmd || "-H" == cmd || "-help" == cmd|| "-HELP" == cmd) {
+		else if ("-h" == cmd || "-H" == cmd || "-help" == cmd || "-HELP" == cmd)
+		{
 			MyClz::printCRUDUsage();
 		}
-		else if("-t00" == cmd || "-T00" == cmd) {
-			
-			int mSize = MyIPC::TEST_MAP_SIZE;
-			if(params.size()>1) mSize = atoi(params[1].c_str());
+		else if ("-t00" == cmd || "-T00" == cmd)
+		{
 
-			std::cout << "IPC Test : " << "MyIPC::testIPC("<< mSize << ") " << std::endl;
+			MyIPC::testIPC(argc, argv);
 
-			MyIPC::testIPC(mSize);
-
-//			int i = 0;
-//			std::cout << "params.size = " << params.size() << std::endl;
-//			for(const auto& iter = params.cbegin(); iter != paarams.cend();iter++) {
-//				std::cout << "params[" << i++ << "] = " <<  params[i] << std::endl;
-//			}
+			//			int i = 0;
+			//			std::cout << "params.size = " << params.size() << std::endl;
+			//			for(const auto& iter = params.cbegin(); iter != paarams.cend();iter++) {
+			//				std::cout << "params[" << i++ << "] = " <<  params[i] << std::endl;
+			//			}
 		}
-		else if("-t01" == cmd || "-t01" == cmd) {
+		else if ("-t01" == cmd || "-t01" == cmd)
+		{
 			MyUU1 u;
-
 
 			std::cout << u << std::endl;
 		}
-		else if("-t02" == cmd || "-T02" == cmd) {
+		else if ("-t02" == cmd || "-T02" == cmd)
+		{
 			MyClz m;
-			
+
 			if (params.size() > 1)
 				m.testFibo(atoi(params[1].c_str()));
 			else
 				m.testFibo();
 		}
-		else if("-t03" == cmd || "-T03" == cmd) {
-			if(params.size() < 3) continue;
+		else if ("-t03" == cmd || "-T03" == cmd)
+		{
+			if (params.size() < 3)
+				continue;
 			int base = MyUU1::matoi(params[1].c_str());
 			int exp = MyUU1::matoi(params[2].c_str());
 
 			std::cout << "MyUU1::mypow(" << base << ", " << exp << ") = " << MyUU1::mypow(base, exp) << std::endl;
-
 		}
-		else if("-t04" == cmd|| "-T04" == cmd) {
+		else if ("-t04" == cmd || "-T04" == cmd)
+		{
 			MyUU1::test04();
 		}
-		else if("-t05" == cmd|| "-T05" == cmd) {
+		else if ("-t05" == cmd || "-T05" == cmd)
+		{
 			MyIPC::testIPCMapFile(argc, argv, params);
 		}
-		else if("-tc"== cmd|| "-TC" == cmd) {
-			if(params.size() < 2) continue;
+		else if ("-tc" == cmd || "-TC" == cmd)
+		{
+			if (params.size() < 2)
+				continue;
 			MyUU1::testCode(params[1]);
 		}
-		else {
+		else
+		{
 			std::cout << "\t>> [E] Unsupported command : " << key << std::endl;
 			MyClz::printCRUDUsage();
 		}
 
-    } while(!bExit);
+	} while (!bExit);
 
-    system("pause");
+	system("pause");
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
-
 #endif
-
 
 #if 0
 #include <iostream>
@@ -263,9 +288,7 @@ void f1() {
     std::cout << "Thank you for enterring the number " << n <<  '\n';
 }
 
-
 #endif
-
 
 #if 0
 
@@ -278,14 +301,7 @@ void f1() {
 #include <set>
 
 #if 1
-int isPrime(int n) {
-	int j;
-	if(n==2 || n==3) return n;
-	for(j=sqrt(n);j>1;--j) {
-		if(n%j==0) return 0;
-	}
-	return n;
-}
+
 int frequency_of_prime(int n, std::set<int>& s) {
 	int i;
 	int freq = n-1;
@@ -353,7 +369,6 @@ int main() {
 	return EXIT_SUCCESS;
 }
 #endif
-
 
 #if 0
 
@@ -426,9 +441,7 @@ int main() {
 		return EXIT_SUCCESS;
 }
 
-		 
 #endif
-
 
 #if 0
 
@@ -504,7 +517,7 @@ int main()
 #include <iostream>
 #include <tuple>
 
-#include "inc/u.hpp"
+#include "u.hpp"
 
 // ua bb vc
 

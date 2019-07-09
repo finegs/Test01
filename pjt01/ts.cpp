@@ -219,7 +219,7 @@ int handleServer(int port)
 	        tcpsock = tcpsocks[i];            
 	        if( FD_ISSET(tcpsock, &rdsocks) )
 	        {
-	            printf("Socket %d is ready \n", tcpsock);
+	            printf("Socket %lld is ready \n", tcpsock);
 	            // process tcp message
 	        }
 	    }
@@ -229,7 +229,7 @@ int handleServer(int port)
 	        int ret = 0;
 	        res = recvfrom(udpsock, buff, sizeof(buff), 0, (struct sockaddr*)&udpclient, &lenaddr);
             buff[res] = '\0';
-            printf("recvfrom : %s:%d, msg=%s\n", inet_ntoa(udpclient.sin_addr), htons(udpclient.sin_port), buff);
+            printf("recvfrom : %s:%lld, msg=%s\n", inet_ntoa(udpclient.sin_addr), htons(udpclient.sin_port), buff);
 	        // process udp message...
 //	        if( setup tcp connection is requested )
 //	        {

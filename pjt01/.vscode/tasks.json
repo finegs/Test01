@@ -1,0 +1,80 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "runner": "terminal",
+    "windows": {
+      "command": "cmd",
+      "args": [ "/C" ]
+    },
+    "linux": {
+      "command": "sh",
+      "args": [ "-c" ]
+    },
+    "osx": {
+      "command": "sh",
+      "args": [ "-c" ]
+    },
+    "presentation": {
+        "reveal": "always"
+    },
+    "tasks": [
+        {
+            "label": "make clean",
+            "command": "make",
+            "type": "shell",
+            "args": [
+                "tc=win32",
+                "clean"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "build batch",
+            "command": "cmd",
+            "type": "shell",
+            "args": ["build.bat"],
+            "group": "build",
+        },
+        {
+            "label": "make all",
+            "command": "make",
+            "type": "shell",
+            "args": [
+                "-f",
+                "makefile"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group" : {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "build task",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-DDEBUG",
+                "-Iinc",
+                "-I${BOOST_INC}",
+                "-o",
+                "${workspaceFolder}\tt.exe",
+                "t.cpp",
+                "u.cpp",
+                "uu1.cpp",
+                "mipc.cpp",
+                "-L${BOOST_LIB}",
+                "-L.",
+                "-lm",
+                "-lws2_32"
+            ],
+            "group": "build"
+        }
+    ]
+}

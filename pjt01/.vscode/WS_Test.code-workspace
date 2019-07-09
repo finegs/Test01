@@ -1,0 +1,12 @@
+	{
+	"folders": [
+		{
+			"path": "${workspaceFolder}"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"vector": "cpp"
+		}
+	}
+}
