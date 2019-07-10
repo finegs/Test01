@@ -3,6 +3,8 @@
 #define __U_HPP
 
 #include <string>
+#include <set>
+#include <memory>
 #define INITIAL_SIZE 1024
 
 #define VERSION_U "v1.0.0_20190602_b01"
@@ -163,5 +165,33 @@ namespace my
 			struct sockaddr_in* from_addr;
 	};
 }
+
+class Door;
+class Room {
+	public:
+	std::shared_ptr<Door> door1 = {};
+	std::shared_ptr<Door> door2 = {};
+	~Room() = default;
+};
+
+class Door {
+public:
+	const std::weak_ptr<Room> roomA;
+	const std::weak_ptr<Room> roomB;
+
+	Door(std::shared_ptr<Room> roomA, std::shared_ptr<Room> roomB);
+	~Door() = default;
+};
+
+class World {
+	public:
+	std::set<std::shared_ptr<Room>> rooms = {};
+	World();
+
+	~World() = default;
+
+	static int doTest();
+};
+
 
 #endif

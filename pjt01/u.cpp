@@ -10,6 +10,7 @@
 #include <string>
 #include <functional>
 
+
 #include "u.hpp"
 
 void DieWithError(const char *errorMessage)
@@ -164,4 +165,43 @@ std::istream& operator>>(std::istream& is, My& o) {
 
 void cls() {
 	system("cls");
+}
+
+Door::Door(std::shared_ptr<Room> roomA, std::shared_ptr<Room> roomB) 
+		: roomA(roomA), roomB(roomB) {
+	roomA->door1 = roomB->door1 = std::shared_ptr<Door>(this);
+}
+
+World::World()
+{
+	auto newRoom = std::make_shared<Room>();
+	rooms.insert(newRoom);
+	auto anotherNewRoom = std::make_shared<Room>();
+	rooms.insert(anotherNewRoom);
+
+	new Door(newRoom, anotherNewRoom);
+}
+
+int World::doTest()
+{
+	World w;
+
+	return 0;
+}
+
+template<typename T>
+struct map_init_helper
+{
+	T& data;
+	map_init_helper(T& t) : data(d) {}
+	map_init_helper& operator() (typename T::key_type const& Key, typename T:value_type const& value)
+	{
+		data[key] = value;
+		return *this;
+	}
+};
+
+template<typename T> map_init_helper<T> map_init(T& item)
+{
+	return map_init_helper<T>(item);
 }

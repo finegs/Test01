@@ -1,7 +1,5 @@
 ######################  Init All Variables ###############################################
-CXX      := g++ #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
-#CXXFLAGS := -std=c++1y -Wall -Wextra -Werror -Wno-unused-parameter
-#LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
+CXX      := g++ 
 BUILD     := build
 APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
@@ -20,7 +18,11 @@ SKIP_FILE += s.cpp
 SKIP_FILE += c.cpp
 SKIP_FILE += s1.cpp
 
+#CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
+#CXXFLAGS := -std=c++1y -Wall -Wextra -Werror -Wno-unused-parameter
+#LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 CXXFLAGS  := -std=c++17
+
 CXXFLAGS  += -Wall
 CXXFLAGS  += -Wextra
 CXXFLAGS  += -Wno-unused-parameter
@@ -38,8 +40,6 @@ LDFLAGS   += -lws2_32
 LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
 
 ################## BOOST #################################
-
-#BOOST_HOME := G:/Programs/boost/boost
 BOOST_INC := $(BOOST_HOME)/../boost_inc
 BOOST_LIB := $(BOOST_HOME)/lib
 
@@ -48,31 +48,28 @@ LIB_PATH  += -L$(BOOST_LIB)
 
 
 ##########################################################
-
-#OBJS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
 OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
-
 ##########################################################
 
 #################  all (Default)      ######
 
-all: mkdirs $(APP_DIR)/$(TARGET) release_this
+all: $(TARGET)
 
 ##########################################################
 
 #################             Compile            ######
 $(OBJ_DIR)/%.o: %.cpp
-	if [ ! -d $(@D) ]; then \
-		mkdir -p $(@D);     \
+	-@if [ ! -d "$(@D)" ]; then \
+		mkdir -p "$(@D)";       \
 	fi
 	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $@ -c $<
 
 ##########################################################
 
 ##########          Link               ######
-$(APP_DIR)/$(TARGET): $(OBJS)
-	if [ ! -d $(@D) ]; then \
-		mkdir -p $(@D);     \
+$(TARGET): $(OBJS)
+	-@if [ ! -d "$(@D)" ]; then \
+		mkdir -p "$(@D)";      \
 	fi
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
 #   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
@@ -87,10 +84,10 @@ $(APP_DIR)/$(TARGET): $(OBJS)
 
 ##########             Make Directory to store obj, target files ######################
 mkdirs:
-	if [ ! -d "$(APP_DIR)" ]; then \
+	-@if [ ! -d "$(APP_DIR)" ]; then \
 		mkdir -p "$(APP_DIR)";     \
 	fi
-	if [ ! -d "$(OBJ_DIR)" ]; then \
+	-@if [ ! -d "$(OBJ_DIR)" ]; then \
 		mkdir -p "$(OBJ_DIR)";     \
 	fi
 ##########################################################
@@ -107,19 +104,21 @@ release: all
 
 ##########            Copy Target File to current path for easy to test run #########################
 release_this:
-	@cp $(APP_DIR)/$(TARGET) $(TARGET)
-	@echo cp from $(APP_DIR)/$(TARGET) to $(TARGET)
+	cp $(TARGET) $(APP_DIR)/$(TARGET)
 
 ##########################################################
 
 ##########            Clean Target, Object and Current Path Target Files    #########################
 clean:
-	@rm -rf $(OBJ_DIR)/*.*
-	@rm -rf $(APP_DIR)/*.*
-	@rm $(TARGET)
+	-@echo Starting clean.
+	-@rm -rf "$(OBJ_DIR)"/*.*
+	-@rm -rf "$(APP_DIR)"/*.*
+	-@if [ -f "$(TARGET)" ]; then \
+		rm "$(TARGET)";     \
+	fi
+	-@echo Clean done.
 
 ##########################################################
 
 ###################################################################################
 ###################################################################################
-

@@ -39,6 +39,7 @@ void MyUU1::initTestEnumMap()
 	testCodeEnumMap.emplace("TC01", MyTestCodeEnum::TC01);
 	testCodeEnumMap.emplace("TC02", MyTestCodeEnum::TC02);
 	testCodeEnumMap.emplace("TC03", MyTestCodeEnum::TC03);
+	testCodeEnumMap.emplace("TC04", MyTestCodeEnum::TC04);
 };
 
 void MyUU1::test04()
@@ -147,22 +148,28 @@ void MyUU1::testCode(const std::string &strCode)
 	break;
 	case TC02:
 	{
-		// TODO : TC02
 		MyUU1::testAsync01(2);
 	}
 	break;
 	case TC03:
 	{
-		// TODO : TC03
+		MyUU1::testCode03();
+	}
+	break;
+	case TC04:
+	{
+		MyUU1::testCode04();
 	}
 	break;
 
 	default:
 	{
+	std::cout << "test : " << strCode << " is incomplete : Unknown Test : " << strCode << " (" << e << ")" << std::endl;
+	return;
 	}
 	}
 
-	std::cout << "test : " << strCode << " is done. " << std::endl;
+	std::cout << "test : " << strCode << "(" << e << ")" << " is done. " << std::endl;
 };
 
 void MyUU1::testAsync01(int threadCnt)
@@ -271,6 +278,11 @@ void MyUU1::testCode02()
 
 void MyUU1::testCode03()
 {
+}
+
+void MyUU1::testCode04()
+{
+	World::doTest();
 }
 
 void MyUU1::testCInWithAsyncReader()

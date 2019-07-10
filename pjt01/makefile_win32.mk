@@ -108,7 +108,7 @@ clean:
 	-@rm -rf $(OBJ_DIR)/*.*
 	-@rm -rf $(APP_DIR)/*.*
 	-@if [ -f "$(TARGET)" ]; then \
-		rm "$(TARGET)";		  \
+		rm "$(TARGET)";		 	  \
 	fi
 	-@echo clean done.
 
