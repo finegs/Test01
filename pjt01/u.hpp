@@ -125,4 +125,43 @@ class My {
 
 };
 
+
+namespace my
+{
+	class Msg // s.cpp Msg to communication
+	{
+		public:
+			Msg(const std::string& _msg, struct sockaddr_in* _from_addr) 
+					: msg(_msg), from_addr(_from_addr) {}
+			~Msg() 
+			{
+				delete from_addr;
+				from_addr = nullptr;
+			}
+			Msg(const my::Msg& _msg) : msg(_msg.msg), from_addr(_msg.from_addr) {}
+			Msg(const my::Msg&& _msg)  : msg(std::move(_msg.msg)), from_addr(std::move(_msg.from_addr)) {}
+
+			Msg& operator=(Msg& o)
+			{
+				if(this==&o) return *this;
+				msg = o.msg;
+				from_addr = o.from_addr;
+				return *this;
+			}
+			Msg& operator=(Msg&& o)
+			{
+				if(this==&o) return *this;
+				msg = std::move(o.msg);
+				from_addr = std::move(o.from_addr);
+				return *this;
+			}
+			const std::string& getCMsg() const { return msg; }
+			struct sockaddr_in* getFromAddr() const { return from_addr; }
+
+		private:
+			std::string msg;
+			struct sockaddr_in* from_addr;
+	};
+}
+
 #endif

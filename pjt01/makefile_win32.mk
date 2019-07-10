@@ -38,8 +38,6 @@ LDFLAGS   += -lws2_32
 LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
 
 ################## BOOST #################################
-
-#BOOST_HOME := G:/Programs/boost/boost
 BOOST_INC := $(BOOST_HOME)/../boost_inc
 BOOST_LIB := $(BOOST_HOME)/lib
 
@@ -47,22 +45,17 @@ INC_PATH  += -I$(BOOST_INC)
 LIB_PATH  += -L$(BOOST_LIB)
 
 ##########################################################
-
-#OBJS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
 OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
-
 ##########################################################
 
 #################  all (Default)      ######
-
-all: mkdirs $(APP_DIR)/$(TARGET) release_this
-
+all: mkdirs $(TARGET)
 ##########################################################
 
 
 #################             Compile            ######
 $(OBJ_DIR)/%.o: %.cpp
-	if [ ! -d $(@D) ]; then \
+	+@if [ ! -d $(@D) ]; then \
 		mkdir -p $(@D);     \
 	fi
 	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $@ -c $<
@@ -70,10 +63,7 @@ $(OBJ_DIR)/%.o: %.cpp
 ##########################################################
 
 ##########          Link               ######
-$(APP_DIR)/$(TARGET): $(OBJS)
-	if [ ! -d $(@D) ]; then \
-		mkdir -p $(@D);     \
-	fi
+$(TARGET): $(OBJS)
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
 #   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
 	$(CXX) -o $@ $(LIB_PATH) $(OBJS) $(LDFLAGS)
@@ -87,10 +77,10 @@ $(APP_DIR)/$(TARGET): $(OBJS)
 
 ##########             Make Directory to store obj, target files ######################
 mkdirs:
-	if [ ! -d "$(APP_DIR)" ]; then \
+	-@if [ ! -d "$(APP_DIR)" ]; then \
 		mkdir -p "$(APP_DIR)";     \
 	fi
-	if [ ! -d "$(OBJ_DIR)" ]; then \
+	-@if [ ! -d "$(OBJ_DIR)" ]; then \
 		mkdir -p "$(OBJ_DIR)";     \
 	fi
 ##########################################################
@@ -107,16 +97,20 @@ release: all
 
 ##########            Copy Target File to current path for easy to test run #########################
 release_this:
-	@cp $(APP_DIR)/$(TARGET) $(TARGET)
+	-@cp $(APP_DIR)/$(TARGET) $(TARGET)
 	@echo cp from $(APP_DIR)/$(TARGET) to $(TARGET)
 
 ##########################################################
 
 ##########            Clean Target, Object and Current Path Target Files    #########################
 clean:
-	@rm -rf $(OBJ_DIR)/*.*
-	@rm -rf $(APP_DIR)/*.*
-	@rm $(TARGET)
+	-@echo clean started
+	-@rm -rf $(OBJ_DIR)/*.*
+	-@rm -rf $(APP_DIR)/*.*
+	-@if [ -f "$(TARGET)" ]; then \
+		rm "$(TARGET)";		  \
+	fi
+	-@echo clean done.
 
 ##########################################################
 
