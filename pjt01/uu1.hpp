@@ -70,8 +70,8 @@ public:
 	static int matoi(const char *s);
 	static void makeLogEntry(void *ptr);
 	static void testCode(const std::string &strNum);
-	static void registerTestEnumCode(std::string &strCode, MyTestCodeEnum &e);
-	static void unregisterTestEnumCode(std::string &strCode);
+	static void registerTestEnumCode(const std::string& strCode, const MyTestCodeEnum &e);
+	static void unregisterTestEnumCode(const std::string& strCode);
 	static void initTestEnumMap();
 	static void testCInWithAsyncReader();
 	static void testAsync01(int threadCount);

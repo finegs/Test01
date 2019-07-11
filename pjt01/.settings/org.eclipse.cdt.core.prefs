@@ -1,0 +1,15 @@
+eclipse.preferences.version=1
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/CWD/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/CWD/operation=replace
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/CWD/value=D\:/Dev/git/Test01/pjt01/
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/MSYS_HOME/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/MSYS_HOME/operation=replace
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/MSYS_HOME/value=D\:/Programs/msys64
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/PATH/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/PATH/operation=replace
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/PATH/value=${MINGW_HOME}/bin;${MSYS_HOME}/bin;${MSYS_HOME}/usr/bin;D\:/Programs/Java/jdk1.8.0_112/bin/../jre/bin/server;D\:/Programs/Java/jdk1.8.0_112/bin/../jre/bin;D\:/Programs/Java/jdk1.8.0_112/bin/../jre/lib/amd64;%CMAKE_HOME%\\bin;%LLVM_ROOT%\\bin;%VIM%\\vim81;D\:\\Programs\\Python\\Python\\Scripts;D\:\\Programs\\Python\\Python;C\:\\tibco\\tibrv\\8.4\\bin;C\:\\Program Files\\Common Files\\Siemens\\Automation\\Simatic OAM\\bin;D\:\\Programs\\bin;D\:\\Programs\\Java\\jdk1.8.0_112\\bin;C\:\\ProgramData\\Oracle\\Java\\javapath;C\:\\Siemens\\Automation\\WinCC_OA\\3.15\\bin\\;C\:\\Program Files (x86)\\Microsoft SDKs\\TypeScript\\1.0\\;C\:\\Program Files\\Git\\cmd;C\:\\ProgramData\\chocolatey\\bin;C\:\\WINDOWS;C\:\\WINDOWS\\System32;C\:\\WINDOWS\\System32\\Wbem;C\:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C\:\\WINDOWS\\System32\\OpenSSH\\;C\:\\Program Files\\Git\\bin;D\:/Programs/msys64/mingw64/bin;C\:\\Users\\fineg\\AppData\\Local\\Microsoft\\WindowsApps;;D\:\\Programs\\MSVSCode\\bin;D\:\\Dev\\Tools\\eclipse\\eclipse-cpp-neon-2-win32-x86_64\\eclipse;${PATH}
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/PWD/delimiter=;
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/PWD/operation=replace
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/PWD/value=D\:/Dev/git/Test01/pjt01/
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/append=true
+environment/project/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027/appendContributed=false

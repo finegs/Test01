@@ -17,7 +17,7 @@
 // create MyUU1::testCodeEnumMap field
 std::unordered_map<std::string, MyTestCodeEnum> MyUU1::testCodeEnumMap;
 
-void MyUU1::registerTestEnumCode(std::string &strCode, MyTestCodeEnum &e)
+void MyUU1::registerTestEnumCode(const std::string& strCode, const MyTestCodeEnum& e)
 {
 	if (testCodeEnumMap.count(strCode))
 	{
@@ -29,17 +29,17 @@ void MyUU1::registerTestEnumCode(std::string &strCode, MyTestCodeEnum &e)
 	testCodeEnumMap.emplace(strCode, e);
 }
 
-void MyUU1::unregisterTestEnumCode(std::string &strCode)
+void MyUU1::unregisterTestEnumCode(const std::string &strCode)
 {
 	testCodeEnumMap.erase(strCode);
 };
 
 void MyUU1::initTestEnumMap()
 {
-	testCodeEnumMap.emplace("TC01", MyTestCodeEnum::TC01);
-	testCodeEnumMap.emplace("TC02", MyTestCodeEnum::TC02);
-	testCodeEnumMap.emplace("TC03", MyTestCodeEnum::TC03);
-	testCodeEnumMap.emplace("TC04", MyTestCodeEnum::TC04);
+	registerTestEnumCode("TC01", MyTestCodeEnum::TC01);
+	registerTestEnumCode("TC02", MyTestCodeEnum::TC02);
+	registerTestEnumCode("TC03", MyTestCodeEnum::TC03);
+	registerTestEnumCode("TC04", MyTestCodeEnum::TC04);
 };
 
 void MyUU1::test04()
@@ -60,9 +60,10 @@ void MyUU1::test04()
 	}
 
 	int n = 0;
-	std::for_each(mm1.begin(), mm1.end(), [&](auto &it) {
+	std::for_each(mm1.begin(), mm1.end(), [&](std::pair<std::string, std::string>& it) {
 		std::cout << "[" << n++ << "] " << it.first << ", " << it.second << std::endl;
 	});
+
 };
 
 //constexpr
@@ -164,12 +165,13 @@ void MyUU1::testCode(const std::string &strCode)
 
 	default:
 	{
-	std::cout << "test : " << strCode << " is incomplete : Unknown Test : " << strCode << " (" << e << ")" << std::endl;
-	return;
+		std::cout << "test : " << strCode << " is incomplete : Unknown Test : " << strCode << " (" << e << ")" << std::endl;
+		return;
 	}
 	}
 
-	std::cout << "test : " << strCode << "(" << e << ")" << " is done. " << std::endl;
+	std::cout << "test : " << strCode << "(" << e << ")"
+			  << " is done. " << std::endl;
 };
 
 void MyUU1::testAsync01(int threadCnt)
