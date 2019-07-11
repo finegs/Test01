@@ -44,8 +44,9 @@ int main(int argc, char *argv[])
     char *sendString;                 /* String to multicast */
     char *recvString;
     int multicastTTL;           /* TTL of multicast packets */
-    unsigned int sendStringLen; /* Length of string to multicast */
-    unsigned int recvStringLen;
+//    unsigned int sendStringLen; /* Length of string to multicast */
+    size_t sendStringLen; /* Length of string to multicast */
+    size_t recvStringLen;
     WSADATA wsaData; /* Structure for WinSock setup communication */
 
     if ((argc < 4) || (argc > 5)) /* Test for correct number of parameters */

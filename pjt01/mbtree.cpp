@@ -1,5 +1,7 @@
+#if 0
+
 #include <functional>
-#include "inc/mbtree.hpp"
+#include "mbtree.hpp"
 
 using namespace std;
 
@@ -22,3 +24,5 @@ class MBSTree {
 	public:
 		bool insert(T value);
 		bool traverse_pre_order(function<
+
+#endif

@@ -1,5 +1,6 @@
-#include "T_LinkedList.hpp"
+#if 0
 
+#include "T_LinkedList.hpp"
 
 Node* sll_createNode(ElementType newData)
 {
@@ -24,3 +25,4 @@ void sll_appendNode(Node** head, Node* newNode) {
 		while(NULL != tail && tail->
 
 
+#endif

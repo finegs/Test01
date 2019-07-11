@@ -103,6 +103,10 @@ class RealEstate : public Investment
 {
 };
 
+#endif
+
+#if 0
+
 auto delInvmt = [](Investment *pInvestment) {
 	MyUU1::makeLogEntry(pInvestment);
 	delete pInvestment;
@@ -130,6 +134,6 @@ makeInvestment(Ts &&... params)
 	}
 
 	return pInv;
-};
+}
 
 #endif
