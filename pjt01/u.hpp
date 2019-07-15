@@ -137,7 +137,7 @@ namespace my
 					: msg(_msg), from_addr(_from_addr) {}
 			~Msg() 
 			{
-				delete from_addr;
+				free(from_addr);
 				from_addr = nullptr;
 			}
 			Msg(const my::Msg& _msg) : msg(_msg.msg), from_addr(_msg.from_addr) {}
