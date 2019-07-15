@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 	//    recvString[recvStringLen] = '\0';
 		std::cout << "Your Msg : " << recvString << std::endl;    /* Print the received string */
 
-		my::Msg* m = new my::Msg(recvString.c_str(), NULL);
+		my::Msg* m = new my::Msg(recvString.c_str());
 		pushSendQueue(m);
 	}
     

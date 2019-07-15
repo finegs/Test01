@@ -61,7 +61,7 @@ int main(int argc, char **argv)
    DWORD SendBytes;
    DWORD RecvBytes;
 
-   int srcPort,dstPort;
+//   int srcPort,dstPort;
 
     if(argc > 2) {
         srcPort = atoi(argv[1]);
@@ -84,7 +84,6 @@ int main(int argc, char **argv)
  
 
    // Prepare a socket to listen for connections
-
    if ((ListenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
    {
       printf("WSASocket() failed with error %d\n", WSAGetLastError());

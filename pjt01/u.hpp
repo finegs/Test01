@@ -133,14 +133,8 @@ namespace my
 	class Msg // s.cpp Msg to communication
 	{
 		public:
-			Msg(const std::string& _msg, struct sockaddr_in* _from_addr) 
+			Msg(const std::string& _msg, struct sockaddr_in* _from_addr = nullptr) 
 					: msg(_msg), from_addr(_from_addr) {}
-			~Msg() 
-			{
-				free(from_addr);
-				from_addr = nullptr;
-			}
-			Msg(const my::Msg& _msg) : msg(_msg.msg), from_addr(_msg.from_addr) {}
 			Msg(const my::Msg&& _msg)  : msg(std::move(_msg.msg)), from_addr(std::move(_msg.from_addr)) {}
 
 			Msg& operator=(Msg& o)
@@ -159,6 +153,12 @@ namespace my
 			}
 			const std::string& getCMsg() const { return msg; }
 			struct sockaddr_in* getFromAddr() const { return from_addr; }
+			
+			~Msg() 
+			{
+				free(from_addr);
+				from_addr = nullptr;
+			}
 
 		private:
 			std::string msg;

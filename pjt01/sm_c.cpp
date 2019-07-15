@@ -2,7 +2,10 @@
 #include <stdio.h>
 #include <conio.h>
 #include <tchar.h>
+
+#ifdef _MSVC
 #pragma comment(lib, "user32.lib")
+#endif
 
 #define BUF_SIZE 256
 TCHAR szName[]=TEXT("Global\\MyFileMappingObject");

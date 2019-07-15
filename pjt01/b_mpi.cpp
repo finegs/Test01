@@ -1,3 +1,5 @@
+#if 0
+
 #include "aa.hpp"
 #include <boost/mpi.hpp>
 #include <iostream>
@@ -23,3 +25,5 @@ int main(int argc, char* argv[])
   MPI_Finalize();
   return 0;
 }
+
+#endif

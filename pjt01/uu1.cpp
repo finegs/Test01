@@ -32,7 +32,7 @@ void MyUU1::registerTestEnumCode(const std::string& strCode, const MyTestCodeEnu
 void MyUU1::unregisterTestEnumCode(const std::string &strCode)
 {
 	testCodeEnumMap.erase(strCode);
-};
+}
 
 void MyUU1::initTestEnumMap()
 {
@@ -40,7 +40,7 @@ void MyUU1::initTestEnumMap()
 	registerTestEnumCode("TC02", MyTestCodeEnum::TC02);
 	registerTestEnumCode("TC03", MyTestCodeEnum::TC03);
 	registerTestEnumCode("TC04", MyTestCodeEnum::TC04);
-};
+}
 
 void MyUU1::test04()
 {
@@ -56,15 +56,16 @@ void MyUU1::test04()
 	auto range = mm1.equal_range("2");
 	for (auto it = range.first; it != range.second; ++it)
 	{
-		std::cout << "(" << it->first << ' ' << it->second << ")" << '\n';
+		std::cout << it->first << ' ' << it->second << '\n';
 	}
 
 	int n = 0;
-	std::for_each(mm1.begin(), mm1.end(), [&](std::unordered_map<std::string, std::string>::value_type& vt) {
-		std::cout << "[" << n++ << "] " << vt.first << ", " << vt.second << std::endl;
+//	std::for_each(mm1.begin(), mm1.end(), [&](std::pair<std::string, std::string>& it) {
+	std::for_each(mm1.begin(), mm1.end(), [&](auto& it) {
+		std::cout << "[" << n++ << "] " << it.first << ", " << it.second << std::endl;
 	});
 
-};
+}
 
 //constexpr
 //int MyUU1::mypow(int base, int exp) noexcept {
@@ -87,7 +88,7 @@ int MyUU1::matoi(const char *s)
 	}
 	n = (ne ? -1 : 1) * n;
 	return n;
-};
+}
 
 bool MyUU1::checkPrime(unsigned int n)
 {
@@ -118,14 +119,14 @@ unsigned int MyUU1::findLessThanEqualPrime(unsigned int n)
 void MyUU1::makeLogEntry(void *p)
 {
 	std::cout << "[D] " << p << std::endl;
-};
+}
 
 using std::initializer_list;
 template <typename T, typename... Args>
 T createT(Args &&... args)
 {
 	return T(std::forward<Args>(args)...);
-};
+}
 
 void MyUU1::print2Arr(int (*arrp)[2], int n)
 {
@@ -172,7 +173,7 @@ void MyUU1::testCode(const std::string &strCode)
 
 	std::cout << "test : " << strCode << "(" << e << ")"
 			  << " is done. " << std::endl;
-};
+}
 
 void MyUU1::testAsync01(int threadCnt)
 {

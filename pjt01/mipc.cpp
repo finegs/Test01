@@ -104,7 +104,7 @@ int MyIPC::testIPC(int argc, char *argv[])
                 << ", match= " << std::boolalpha << (vf == (float)i * i) << std::endl;
    }
    return 0;
-};
+}
 
 int MyIPC::testIPCMapFile(int argc, char *argv[], std::vector<std::string> &params)
 {
@@ -195,4 +195,4 @@ int MyIPC::testIPCMapFile(int argc, char *argv[], std::vector<std::string> &para
    }
 
    return EXIT_SUCCESS;
-};
+}

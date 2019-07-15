@@ -22,13 +22,12 @@ void gotoxy(int x, int y);
 
 int main(void )
 {
-	char *slide="■", key=1;
+	char slide[] ="■", key=1;
 
     int x=1, y=1; //화면에출력될x, y의위치
 
     int h_slide_length=60, v_slide_length=19; //가로, 세로슬라이드길이
 
- 
 
     do{
 
