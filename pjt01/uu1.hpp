@@ -14,7 +14,8 @@ enum MyTestCodeEnum
 	TC01=1,
 	TC02,
 	TC03,
-	TC04
+	TC04,
+	TC05
 };
 
 class MyUU1
@@ -80,6 +81,7 @@ public:
 	static void testCode02();
 	static void testCode03();
 	static void testCode04();
+	static void testCode05();
 	static void print2Arr(int (*arrp)[2], int n);
 	static unsigned int findLessThanEqualPrime(unsigned int n);
 

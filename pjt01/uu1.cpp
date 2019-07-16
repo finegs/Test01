@@ -40,6 +40,7 @@ void MyUU1::initTestEnumMap()
 	registerTestEnumCode("TC02", MyTestCodeEnum::TC02);
 	registerTestEnumCode("TC03", MyTestCodeEnum::TC03);
 	registerTestEnumCode("TC04", MyTestCodeEnum::TC04);
+	registerTestEnumCode("TC05", MyTestCodeEnum::TC05);
 }
 
 void MyUU1::test04()
@@ -286,6 +287,10 @@ void MyUU1::testCode03()
 void MyUU1::testCode04()
 {
 	World::doTest();
+}
+
+void MyUU1::testCode05() {
+	
 }
 
 void MyUU1::testCInWithAsyncReader()

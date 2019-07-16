@@ -26,6 +26,7 @@ void sll_appendNode(Node** head, Node* newNode) {
 
 		tail->next = newNode;
 	}
+
 }
 
 void sll_insertNode(Node** current, Node* newNode) {
@@ -37,5 +38,56 @@ void sll_insertNewHead(Node** head, Node* newNode) {
 	if(null == head) return;
 	newNode->next = head;
 	*head = newNode;
+}
+
+void sll_removeNode(Node** head, Node* deleteNode) {
+	if(*head == nullptr || deleteNode == nullptr) return;
+	if(*head == deleteNode) {
+		Node* node = *head;
+		*head = *head->next;
+		free(node);
+	}
+	else {
+		Node* prev = node = *head;
+		while(node != NULL && node != deleteNode) {
+			prev = node;
+			node = node->next;
+		}
+		if(node) {
+			prev->next = node->next;
+			free(node);
+		}
+	}
+}
+
+void sll_clear(Node** head) {
+	Node* t = node = *head;
+	while(node != nullptr) {
+		t = node;
+		node = node->next;
+		delete t;
+	}
+
+	*head = t = node = nullptr;
+}
+
+size_t sll_size(Node* head) {
+	Node* n = head;
+	size_t size = 0;
+	
+
+	while(n != nullptr) {
+		n = n->next;
+		size++;
+	}
+	return size;
+}
+
+Node* sll_getNodeAt(Node** head, int location) {
+	Node* node = *head;
+	while(node && location-->0) {
+		node = node->next;
+	}
+	return node;
 }
 #endif
