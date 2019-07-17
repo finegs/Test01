@@ -249,6 +249,9 @@ int main(int argc, char *argv[])
 
 	} while (!bExit);
 
+#ifdef _WIN32
+	getch();
+#endif
 	system("pause");
 
 	return EXIT_SUCCESS;

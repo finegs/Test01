@@ -5,8 +5,23 @@
 
 #include <iostream>
 #include <cstdio>    /* for fprintf() */
+#include <cstdlib>
+#include <errno.h>
+
+#ifdef _WIN32
+    #ifndef _WIN32_WINNT 0x0501 // Windows XP 
+    #endif
 #include <winsock2.h>  /* for WSAGetLastError() */
+#include <Ws2tcpip.h>
+#else
+#include <sys/socket.h> // Socket Header
+#include <arpa/inet.h>  // Socket Inet
+#include <netdb.h>      // Needed for getaddrinfo() and freeaddrinfo()
+#include <unistd.h>     // Needed for close()
+#endif
+
 #include <cstdlib>   /* for exit() */
+#include <cstring>
 #include <string>
 #include <functional>
 
@@ -15,8 +30,36 @@
 
 void DieWithError(const char *errorMessage)
 {
+#ifdef _WIN32
     fprintf(stderr,"%s: %d\n", errorMessage, WSAGetLastError());
+#else
+	if(errorMessage)
+    	fprintf(stderr,"%s: %d\n", errorMessage, errno);
+	else
+//   	fprintf(stderr,"%s: %d\n", strerror(errno), errno);
+//    	fprintf(stderr,"Socket Failed : %m\n");
+    	perror("Socket Failed");
+#endif
     exit(1);
+}
+
+int closeSocket(SOCKET sock)
+{
+	int status = 0;
+#ifdef _WIN32
+	status = shutdown(sock, SD_BOTH);
+	if(status == 0) { status = closesocket(sock); }
+#else
+	status = shutdown(sock, SHUT_RDWR);
+	if(status == 0) { status = close(sock); }
+#endif
+
+	return status;
+}
+
+int shutdown(SOCKET sock, int opt) {
+	// TODO : shutdown should be implemented win/linux
+	return 0;
 }
 
 struct Buffer* new_buffer(size_t data_len)
@@ -164,7 +207,11 @@ std::istream& operator>>(std::istream& is, My& o) {
 }
 
 void cls() {
+#ifdef _WIN32
 	system("cls");
+#else
+	system("clear");
+#endif
 }
 
 Door::Door(std::shared_ptr<Room> roomA, std::shared_ptr<Room> roomB) 
