@@ -4,11 +4,50 @@ BUILD     := build
 APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
 
-ifeq ($(strip $(TARGET)),)
-	TARGET  := t.exe
+ifeq ($(OS),Windows_NT)
+	OSFLAG += -D WIN32
+	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+		OSFLAG += -D AMD64
+	endif
+	ifeq ($(PROCESSOR_ARCHITECTURE),x86)
+		OSFLAG += -D IA32
+	endif
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+		OSFLAG += -D LINUX
+	endif
+	ifeq ($(UNAME_S),Darwin)
+		OSFLAG += -D OSX
+	endif
+		UNAME_P := $(shell uname -p)
+	ifeq ($(UNAME_P),x86_64)
+		OSFLAG += -D AMD64
+	endif
+		ifneq ($(filter %86,$(UNAME_P)),)
+	OSFLAG += -D IA32
+		endif
+	ifneq ($(filter arm%,$(UNAME_P)),)
+		OSFLAG += -D ARM
+	endif
 endif
 
-SRC 	  := $(TARGET:%.exe=%.cpp)
+
+OSFLAG    := 
+ifeq ($(OS), Windows_NT)
+	OSFLAG += -D WIN32
+endif
+
+ifeq ($(strip $(TARGET)),)
+	TARGET  := t
+endif
+
+
+SRC 	  := $(TARGET:%=%.cpp)
+ifeq ($(OS), Windows_NT)
+	TARGET += .exe
+endif
+
 SRC_OTHER := u.cpp mipc.cpp uu1.cpp
 
 SRC       += $(SRC_OTHER)
@@ -34,7 +73,15 @@ INC_PATH  += -Iinc
 LDFLAGS   :=
 LDFLAGS   += -lm
 LDFLAGS   += -pthread
-LDFLAGS   += -lws2_32
+
+ifneq ($(OS), Windows_NT)
+	LDFLAGS += -lrt
+endif
+
+
+ifeq ($(OS), Windows_NT)
+	LDFLAGS   += -lws2_32
+endif
 #LDFLAGS   += -lwsock32
 
 LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib

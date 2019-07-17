@@ -11,6 +11,12 @@
 
 #define EXIT_OTHERS 2
 
+#ifdef _WIN32
+	#define SOCKET unsigned int
+#else
+	#define SOCKET int
+#endif
+
 void DieWithError(const char* errorMessage);
 
 struct Buffer
@@ -24,6 +30,9 @@ struct Buffer* new_buffer(size_t data_len = INITIAL_SIZE);
 void reserve_space(Buffer* b, size_t bytes);
 
 void serialize_int(int x, Buffer* b);
+
+int closeSocket(SOCKET sock);
+int shutdown(SOCKET sock, int opt);
 
 class Packet
 {
@@ -156,7 +165,7 @@ namespace my
 			
 			~Msg() 
 			{
-				delete from_addr;
+				free(from_addr);
 				from_addr = nullptr;
 			}
 
