@@ -291,7 +291,7 @@ void MyUU1::testCode04()
 void MyUU1::testCInWithAsyncReader()
 {
 
-#if 0
+#if 1
 	auto r = std::minmax({1, 100});
 	std::cout << "std::minmax(1, 100), min = " << r.first << ", max=" << r.second << std::endl;
 #endif
