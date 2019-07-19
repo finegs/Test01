@@ -1,4 +1,4 @@
-#if 1
+#if 0
 
 #include <queue>
 #include <vector>
@@ -18,19 +18,6 @@ template<typename T> void print_queue(T& q) {
         q.pop();
     }
     std::cout << std::endl;
-
-//    AA a("a", "aa");
-//    std::cout << "a : Name=" << a.getName() << ", Desc=" << a.getDesc() << std::endl;
-//    const std::string& name = a.getName();
-//    std::cout << name;
-//
-//
-//    std::string s1("aaa");
-//    s1.append(" bbb");
-//
-//    std::hash<std::string> hash_fn;
-//    std::cout << "s1.c_str() = " << s1.c_str() << ", Hash="<< hash_fn(s1) << std::endl;
-
 }
 
 void test01(int argc, char* argv[]) {
@@ -93,11 +80,11 @@ void test02() {
     std::unordered_map<std::string, std::string> u = { { "a1", "bb"},
                                                         {"a2", "bb2"},
                                                         {"a3", "bb3"}};
-                                                        
     print_map("1. ", u);
 
     u["a1"] = "cc";
     u["a2"] = "bbb2";
+	u.insert("aaaa", "bbbb");
 
     print_map("2. ", u);
 
@@ -121,7 +108,7 @@ int main(int argc, char* argv[]) {
 #endif
 
 
-#if 0
+#if 1
 #include <iostream>
 #include <test01.hpp>
 
