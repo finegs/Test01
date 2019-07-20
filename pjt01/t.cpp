@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <thread>
+#include <cstring>
 
 #include "aa.hpp"
 #include "u.hpp"
@@ -27,28 +28,24 @@ extern bool IS_UU1_EXIT;
 extern bool T_IS_DEBUG;
 
 std::unordered_map<std::string, MyClz> m1;
+bool bExit = false;
 
 //#ifdef MY_DEBUG
 //bool T_IS_DEBUG = true;
 //#endif
 
 // 0. Initialize Program Parameters
-int initArgs(int argc, char *argv[], std::vector<std::string> &params)
-{
+int initArgs(int argc, char *argv[], std::vector<std::string> &params) {
 	int rc = EXIT_SUCCESS;
-	for (int i = 1; i < argc; i++)
-	{
-		if (!strcmp("-d", argv[i]) || !strcmp("-D", argv[i]))
-		{
+	for (int i = 1; i < argc; i++) {
+		if (!strcmp("-d", argv[i]) || !strcmp("-D", argv[i])) {
 			T_IS_DEBUG = true;
 		}
-		else if (!strcmp("-v", argv[i]) || !strcmp("--version", argv[i]))
-		{
+		else if (!strcmp("-v", argv[i]) || !strcmp("--version", argv[i])) {
 			rc = EXIT_OTHERS;
 			std::cout << argv[0] << " Version : " << VERSION << std::endl;
 		}
-		else
-		{
+		else {
 			// added by SGK 20190620  :
 			params.emplace_back(argv[i]);
 		}
@@ -200,8 +197,7 @@ void handleUserInput(int argc, char* argv[]) {
 
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 
 	int rc;
 	std::string line;

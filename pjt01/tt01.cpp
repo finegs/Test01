@@ -98,7 +98,6 @@ int main(int argc, char* argv[]) {
 	f_display_obj(18);
 
 	return EXIT_SUCCESS;
-
 }
 
 #endif
