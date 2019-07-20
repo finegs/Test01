@@ -9,6 +9,9 @@
 
 #define VERSION_U "v1.0.0_20190602_b01"
 
+extern bool T_IS_DEBUG;
+extern bool T_IS_EXIT;
+
 #define EXIT_OTHERS 2
 
 #ifdef _WIN32

@@ -25,8 +25,10 @@
 #include <string>
 #include <functional>
 
-
 #include "u.hpp"
+
+bool T_IS_EXIT = false;
+bool T_IS_DEBUG = true;
 
 void DieWithError(const char *errorMessage)
 {

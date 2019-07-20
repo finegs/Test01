@@ -84,7 +84,12 @@ ifeq ($(OS), Windows_NT)
 endif
 #LDFLAGS   += -lwsock32
 
-LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
+
+ifeq ($(OS), Windows_NT)
+	LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
+else
+	LIB_PATH  := 
+endif
 
 ################## BOOST #################################
 BOOST_INC := $(BOOST_HOME)/../boost_inc
@@ -101,6 +106,7 @@ OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 #################  all (Default)      ######
 
 all: $(TARGET)
+
 
 ##########################################################
 
