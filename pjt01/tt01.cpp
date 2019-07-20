@@ -49,8 +49,23 @@ struct PrintNum {
 	}
 };
 
+using t_cb01 = std::function<void(int,char* [])>;
+
+std::unordered_map<int, t_cb01> funcMap;
+
+void t01(int argc, char* argv[]) {
+	std::cout << "t01" << std::endl;
+
+	for(int i = 0;i<argc;i++) {
+		std::cout << (i!=0 ? ", " : "") << "argv["<< i << "]="<< argv[i] << "\t"<<std::endl;
+	}
+}
 
 int main(int argc, char* argv[]) {
+	
+	funcMap.insert(std::make_pair<int, t_cb01>(1, t01));
+
+	funcMap[1](argc, argv);
 
 	T_IS_EXIT = false;
 	T_IS_DEBUG = false;
