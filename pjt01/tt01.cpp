@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 
 #endif
 
-#if 1
+#if 0
 
 #include <functional>
 #include <iostream>
@@ -99,5 +99,118 @@ int main(int argc, char* argv[]) {
 
 	return EXIT_SUCCESS;
 }
+
+#endif
+
+
+#if 0
+
+#include <iostream>
+#include <cstdlib>
+#include <cstdio>
+#include <string>
+#include <memory>
+
+
+using namespace std;
+
+class Entity {
+	private:
+		std::string m_Name;
+
+	public:
+		Entity() : m_Name("unknown") {}
+		~Entity() { cout << "~Entity() " << *this << endl; };
+		Entity(const std::string& name) : m_Name(name) {}
+		Entity(const Entity& o) : m_Name(o.m_Name) {}
+		Entity(Entity&& o) : m_Name(std::move(o.m_Name)) {}
+		Entity& operator=(const Entity& o) {
+			if(this==&o) return *this;
+			m_Name = o.m_Name;
+			return *this;
+		}
+		Entity& operator=(Entity&& o) {
+			if(this==&o) return *this;
+			m_Name = std::move(o.m_Name);
+			return *this;
+		}
+
+		const std::string& getName() const { return m_Name; }
+
+		friend
+		std::ostream& operator<<(std::ostream& os, const Entity& o) {
+			os << o.m_Name;
+			return os;
+		}
+};
+
+Entity*  newEntity(const std::string& name) {
+	Entity* e = new Entity(name);
+	cout << "newEntity : " << *e << endl;
+	return e;
+}
+
+
+int main(int argc, char* argv[]) {
+	
+	Entity* e;
+	{
+		Entity* ie = new Entity("bbbb");
+
+		e = ie;
+
+		cout << *ie << endl;
+
+		delete ie;
+	}
+
+	Entity* ee[10];
+	for(int i = 0;i <10;i++) {
+		ee[i] = new Entity("name_"s + i);
+	}
+
+	for(int i = 0;i <10;i++) {
+		cout << "ee[" << i << "] = " <<  *(ee[i]) << endl;
+	}
+
+	for(int i = 0;i <10;i++) {
+		delete ee[i];
+	}
+	
+	delete e;
+
+	cout << "==========" << endl;
+	cout << "main : " << newEntity("@@@@") << endl;
+
+	return EXIT_SUCCESS;
+}
+
+#endif
+
+#if 1
+
+// CPP program to illustrate assigning 
+// *char value to other variable 
+#include <iostream> 
+using namespace std; 
+
+int main() 
+{ 
+	// This initialization gives warning in C++. 
+	// "deprecated conversion from string constant 
+	// to 'char*'" 
+	char* str = "Hello"; 
+
+	char* str1 = "Hello"; // No warning 
+
+	// trying to modify const string literal 
+	// gives Runtime error 
+	str[1] = 'o'; 
+
+	cout << str << endl; 
+
+	return 0; 
+} 
+
 
 #endif
