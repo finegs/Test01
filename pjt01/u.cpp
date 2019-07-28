@@ -94,6 +94,19 @@ void serialize_int(int x, Buffer* b)
 	b->next += sizeof(int);
 }
 
+std::ostream& operator<<(std::ostream& os, const struct PacketHeader_& o) {
+	os << "0b";
+	os << o.b0;
+	os << o.b1;
+	os << o.b2;
+	os << o.b3;
+	os << o.b4;
+	os << o.b5;
+	os << o.b6;
+	os << o.b7;
+	return os;
+}
+
 const size_t Packet::MaxDataSize = INITIAL_SIZE;
 
 SerializedPacket::SerializedPacket() : senderId(-1), sequenceNumber(-1) {

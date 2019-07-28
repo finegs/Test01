@@ -42,7 +42,6 @@ ifeq ($(strip $(TARGET)),)
 	TARGET  := t
 endif
 
-
 SRC 	  := $(TARGET:%=%.cpp)
 ifeq ($(OS), Windows_NT)
 	TARGET += .exe

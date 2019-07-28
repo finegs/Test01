@@ -46,7 +46,11 @@ struct PacketHeader_ {
 	unsigned b5 : 1;
 	unsigned b6 : 1;
 	unsigned b7 : 1;
-} PacketHeader;
+
+	public:
+	friend std::ostream& operator<<(std::ostream& os, const struct PacketHeader_& o);
+};
+typedef struct PacketHeader_ PacketHeader;
 
 class Packet
 {
