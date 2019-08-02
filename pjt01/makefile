@@ -69,7 +69,7 @@ INC_PATH  += -I.
 INC_PATH  += -Iinc    
 
 
-LDFLAGS   :=
+LDFLAGS   := -lstdc++
 LDFLAGS   += -lm
 LDFLAGS   += -pthread
 

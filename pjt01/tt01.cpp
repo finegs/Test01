@@ -221,7 +221,7 @@ int main()
 
 #endif
 
-#if 1
+#if 0
 
 #include <stdio.h>
 #include <time.h>
@@ -279,3 +279,164 @@ int main(void)
 }
 
 #endif
+
+
+#if 0
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+	string a;
+
+	cout << "Input :"; cout.flush();
+	cin >> a;
+
+	cout << "Output :" << a << endl;
+
+	return EXIT_SUCCESS;
+}
+
+#endif
+
+
+#if 0
+
+
+#include <cstdio>
+#include <ctime>
+#include <cstdlib>
+#include <pthread.h>
+
+
+
+void* f(void* thr_data) {
+	volatile double d = 0;
+	for (int n = 0;n<10000;++n) {
+		for(int m=0;m<10000;++m) {
+			d += d*n*m;
+		}
+	}
+	return NULL;
+}
+
+int main(int argc, char* argv[]) {
+	struct timespec ts1, tw1;
+	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts1);
+	clock_gettime(CLOCK_MONOTONIC, &tw1);
+	clock_t t1 = clock();
+
+
+#ifdef WIN32 
+	thrd_t thr1, thr2; 
+#else
+	pthread_t thr1, thr2;
+#endif
+
+#ifdef WIN32
+	thrd_create(&thr1, f, NULL); 
+	thrd_create(&thr2, f, NULL);
+
+	thrd_join(thr1, NULL);
+	thrd_join(thr2, NULL);
+#else
+	pthread_create(&thr1, NULL, f, NULL); 
+	pthread_create(&thr2, NULL, f, NULL);
+
+	pthread_join(thr1, NULL);
+	pthread_join(thr2, NULL);
+#endif
+
+	struct timespec ts2, tw2;
+	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts2);
+	clock_gettime(CLOCK_MONOTONIC, &tw2);
+	clock_t t2 = clock();
+
+	double dur = 1000.0*(t2-t1)/CLOCKS_PER_SEC;
+	double posix_dur = 1000.0*ts2.tv_sec + 1e-6*ts2.tv_nsec
+					- (1000.0*ts1.tv_sec + 1e-6*ts1.tv_nsec);
+	double posix_wall = 1000.0*tw2.tv_sec + 1e-6*tw2.tv_nsec
+					- (1000.0*tw1.tv_sec + 1e-6*tw1.tv_nsec);
+
+	printf("CPU time used (per clock(): %.2f ms\n", dur);
+	printf("CPU time used (per clock_gettime()):%.2f ms\n", posix_dur);
+	printf("Wall time passed: %.2f ms\n", posix_wall);
+
+	return EXIT_SUCCESS;
+}
+
+
+#endif
+
+
+#if 1
+
+#include <cstdio>
+#include <cstdarg>
+
+void simple_printf(const char* fmt, ...) {
+	va_list args;
+	va_start(args, fmt);
+
+	bool var;
+	while(*fmt != '\0') {
+		if(*fmt == '%') {
+			var = true;
+		}
+		else if(var) {
+			switch(*fmt) {
+				case 'c':
+					printf("%c", va_arg(args, int));
+					++fmt;
+					var  = false;
+				break;
+				case 'd':
+					printf("%d", va_arg(args, int));
+					++fmt;
+					var  = false;
+				break;
+				case 'f':
+					printf("%f", va_arg(args, double));
+					++fmt;
+					var  = false;
+				break;
+				case 's':
+					printf("%s", va_arg(args, char*));
+					++fmt;
+					var  = false;
+				break;
+				default:
+				fprintf(stderr, "Unsuported variable character : %c\n", *fmt);		
+				break;
+			}
+		}
+		else {
+			printf("%c", va_arg(args, int));
+		}
+
+//		if(*fmt != 'd') {
+//			int i = va_arg(args, int);
+//			printf("%d\n", i);
+//		}
+//		else if(*fmt == 'c') {
+//			int c = va_args(args, int);
+//			printf("%c\n", c);
+//		}
+//		else if(*fmt=='f') {
+//			double d = va_arg(args, double);
+//			printf("%f\n", d);
+//		}
+		++fmt;
+	}
+
+	va_end(args);
+}
+
+int main(int argc, char* argv[]) {
+	simple_printf("%d --- %c --- %f --- %f", 3, 'a', 1.999, 42.5);
+}
+
+#endif
+
