@@ -227,7 +227,7 @@ int main(int argc, char *argv[]) {
 		return EXIT_SUCCESS;
 	}
 
-	std::thread cinReader = std::thread(handleUserInput);
+	std::thread cinReader = std::thread(handleUserInput, argc, argv);
 
 //#ifdef _WIN32
 //	system("pause");

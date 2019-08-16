@@ -9,15 +9,21 @@
 #include <errno.h>
 
 #ifdef _WIN32
-    #ifndef _WIN32_WINNT 0x0501 // Windows XP 
-    #endif
+
+#ifndef WINNT 
+#define WINNT 0x0501 /* Windows XP */ 
+#endif
+
 #include <winsock2.h>  /* for WSAGetLastError() */
 #include <Ws2tcpip.h>
+
 #else
+
 #include <sys/socket.h> // Socket Header
 #include <arpa/inet.h>  // Socket Inet
 #include <netdb.h>      // Needed for getaddrinfo() and freeaddrinfo()
 #include <unistd.h>     // Needed for close()
+
 #endif
 
 #include <cstdlib>   /* for exit() */
