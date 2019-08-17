@@ -24,9 +24,9 @@ else
 	ifeq ($(UNAME_P),x86_64)
 		OSFLAG += -D AMD64
 	endif
-		ifneq ($(filter %86,$(UNAME_P)),)
-	OSFLAG += -D IA32
-		endif
+	ifneq ($(filter %86,$(UNAME_P)),)
+		OSFLAG += -D IA32
+	endif
 	ifneq ($(filter arm%,$(UNAME_P)),)
 		OSFLAG += -D ARM
 	endif
@@ -46,9 +46,15 @@ ifeq ($(strip $(TARGET)),)
 		TARGET  := t
 		SRC := $(TARGET:%=%.cpp)
 	endif
+else
+	ifeq ($(OS), Windows_NT)
+		SRC := $(TARGET:%.exe=%.cpp)
+	else
+		SRC := $(TARGET:%=%.cpp)
+	endif
 endif
 
-#SRC 	  := $(TARGET:%=%.cpp)
+#SRC   := $(TARGET:%=%.cpp)
 
 SRC_OTHER := u.cpp mipc.cpp uu1.cpp
 
@@ -71,19 +77,25 @@ CXXFLAGS  += -Wno-unused-parameter
 INC_PATH  += -I.
 INC_PATH  += -Iinc    
 
+LFLAGS    :=
+LDFLAGS   :=
 
-LDFLAGS   := -lstdc++
+ifeq ($(OS), Windows_NT)
+#	LDFLAGS  := -Wl, -Bstatic
+    LDFLAGS  := -static
+	LDFLAGS  += -lws2_32
+#	LDFLAGS  += -Wl,-Bdynamic
+else
+	LDFLAGS  += -lrt
+endif
+
+
+#LDFLAGS  += -Wl,-Bdynamic
+LDFLAGS   += -lstdc++
 LDFLAGS   += -lm
 LDFLAGS   += -pthread
 
-ifneq ($(OS), Windows_NT)
-	LDFLAGS += -lrt
-endif
 
-
-ifeq ($(OS), Windows_NT)
-	LDFLAGS   += -lws2_32
-endif
 #LDFLAGS   += -lwsock32
 
 
@@ -139,10 +151,10 @@ $(TARGET): $(OBJS)
 
 ##########             Make Directory to store obj, target files ######################
 mkdirs:
-	-@if NOT EXIST "$(APP_DIR)"  .\
+	-@if NOT EXIST "$(APP_DIR)" .\
 		mkdir -p "$(APP_DIR)".     \
 	fi
-	-@if NOT EXIST "$(OBJ_DIR)" . \
+	-@if NOT EXIST "$(OBJ_DIR)" .\
 		mkdir -p "$(OBJ_DIR)".     \
 	fi
 ##########################################################
