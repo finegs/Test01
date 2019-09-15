@@ -1,0 +1,7 @@
+all:
+	@if [ -D aa ]
+		echo "aa is exist!!"
+	else
+		mkdir aa	
+		echo "aa is created"
+	endif

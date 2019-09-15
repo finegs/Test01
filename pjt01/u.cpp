@@ -9,15 +9,21 @@
 #include <errno.h>
 
 #ifdef _WIN32
-    #ifndef _WIN32_WINNT 0x0501 // Windows XP 
-    #endif
+
+#ifndef WINNT 
+#define WINNT 0x0501 /* Windows XP */ 
+#endif
+
 #include <winsock2.h>  /* for WSAGetLastError() */
 #include <Ws2tcpip.h>
+
 #else
+
 #include <sys/socket.h> // Socket Header
 #include <arpa/inet.h>  // Socket Inet
 #include <netdb.h>      // Needed for getaddrinfo() and freeaddrinfo()
 #include <unistd.h>     // Needed for close()
+
 #endif
 
 #include <cstdlib>   /* for exit() */
@@ -92,6 +98,19 @@ void serialize_int(int x, Buffer* b)
 
 	memcpy(((char*)b->data) + b->next, &x, sizeof(int));
 	b->next += sizeof(int);
+}
+
+std::ostream& operator<<(std::ostream& os, const struct PacketHeader_& o) {
+	os << "0b";
+	os << o.b0;
+	os << o.b1;
+	os << o.b2;
+	os << o.b3;
+	os << o.b4;
+	os << o.b5;
+	os << o.b6;
+	os << o.b7;
+	return os;
 }
 
 const size_t Packet::MaxDataSize = INITIAL_SIZE;

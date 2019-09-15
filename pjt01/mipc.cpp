@@ -1,6 +1,7 @@
 
 
 #include <cstring>
+#include <cstdlib>
 #include <iostream>
 #include <map>
 #include <mutex>
@@ -201,19 +202,22 @@ int MyIPC::testIPCMapFile(int argc, char *argv[], std::vector<std::string> &para
    return EXIT_SUCCESS;
 }
 
-std::string MyIPC::q_popCmd() {
-	std::lock_guard<std::mutex> guard(q_cmdQueue_mtx);
+std::string MyIPC::popCmd() {
+	std::lock_guard<std::mutex> guard(MyIPC::cmdQueue_mtx);
 	std::string cmd = MyIPC::cmdQueue.front();
-	cmdQueue.pop();
+	MyIPC::cmdQueue.pop();
 	return cmd;
 }
 
-void MyIPC::q_pushCmd(const std::string& newCmd) {
-	std::lock_guard<std::mutex> guard(q_cmdQueue_mtx);
+void MyIPC::pushCmd(const std::string& newCmd) {
+	std::lock_guard<std::mutex> guard(cmdQueue_mtx);
 	MyIPC::cmdQueue.push(newCmd);
 }
 
-bool MyIPC::q_empty() {
+bool MyIPC::isEmpty() {
 	return MyIPC::cmdQueue.empty();
 }
+
+std::queue<std::string> MyIPC::cmdQueue;
+std::mutex			    MyIPC::cmdQueue_mtx;
 

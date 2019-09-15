@@ -55,9 +55,7 @@ all: mkdirs $(TARGET)
 
 #################             Compile            ######
 $(OBJ_DIR)/%.o: %.cpp
-	+@if [ ! -d $(@D) ]; then \
-		mkdir -p $(@D);     \
-	fi
+	+@IF NOT EXIST $(@D). ( mkdir $(@D). )
 	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $@ -c $<
 
 ##########################################################
@@ -77,12 +75,8 @@ $(TARGET): $(OBJS)
 
 ##########             Make Directory to store obj, target files ######################
 mkdirs:
-	-@if [ ! -d "$(APP_DIR)" ]; then \
-		mkdir -p "$(APP_DIR)";     \
-	fi
-	-@if [ ! -d "$(OBJ_DIR)" ]; then \
-		mkdir -p "$(OBJ_DIR)";     \
-	fi
+	-@IF NOT EXIST "$(APP_DIR)". ( mkdir "$(APP_DIR)". )
+	-@IF NOT EXIST "$(OBJ_DIR)". ( mkdir "$(OBJ_DIR)". )
 ##########################################################
 
 debug: CXXFLAGS += -DDEBUG -g
@@ -107,10 +101,12 @@ clean:
 	-@echo clean started
 	-@rm -rf $(OBJ_DIR)/*.*
 	-@rm -rf $(APP_DIR)/*.*
-	-@if [ -f "$(TARGET)" ]; then \
-		rm "$(TARGET)";		 	  \
-	fi
+	-@IF EXIST $(TARGET). ( del $(TARGET). )
 	-@echo clean done.
+
+
+clean2:
+	-@IF EXIST $(TARGET). ( del $(TARGET). ) ELSE ( echo $(TARGET) is not exist~~ )
 
 ##########################################################
 
