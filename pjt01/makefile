@@ -5,6 +5,8 @@ APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
 
 ifeq ($(OS),Windows_NT)
+	RM = cmd /C del /Q /F
+	RRM = cmd /C rmdir /Q /S
 	OSFLAG += -D WIN32
 	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
 		OSFLAG += -D AMD64
@@ -13,6 +15,8 @@ ifeq ($(OS),Windows_NT)
 		OSFLAG += -D IA32
 	endif
 else
+	RM = rm -f
+	RRM = rm -f -r
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		OSFLAG += -D LINUX
@@ -178,11 +182,15 @@ release_this:
 ##########            Clean Target, Object and Current Path Target Files    #########################
 clean:
 	-@echo Starting clean.
-	-@rm -rf "$(OBJ_DIR)"/*.*
-	-@rm -rf "$(APP_DIR)"/*.*
-	-@if EXIST "$(TARGET)"  \
-		del /F "$(TARGET)".     \
-	fi
+	-@$(RM) "$(TARGET)"
+	-@$(RM) "$(OBJ_DIR)\*.*"
+	-@$(RM) "$(APP_DIR)\*.*"
+#
+#	-@rm -rf "$(OBJ_DIR)"/*.*
+#	-@rm -rf "$(APP_DIR)"/*.*
+#	-@if EXIST "$(TARGET)"  \
+#		del /F "$(TARGET)".     \
+#	fi
 	-@echo Clean done.
 
 ##########################################################
