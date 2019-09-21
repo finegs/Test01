@@ -3,8 +3,8 @@ CXX      := g++ #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++1y -Wall -Wextra -Werror -Wno-unused-parameter
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 BUILD     := build
-APP_DIR   := $(BUILD)/apps
-OBJ_DIR   := $(BUILD)/objects
+APP_DIR   := $(BUILD)\apps
+OBJ_DIR   := $(BUILD)\objects
 
 ifeq ($(strip $(TARGET)),)
 	TARGET  := t.exe
@@ -35,7 +35,7 @@ LDFLAGS   += -pthread
 LDFLAGS   += -lws2_32
 #LDFLAGS   += -lwsock32
 
-LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
+LIB_PATH  := -L$(MINGW_HOME)\x86_64-w64-mingw32\lib
 
 ################## BOOST #################################
 BOOST_INC := $(BOOST_HOME)/../boost_inc
@@ -106,7 +106,10 @@ clean:
 
 
 clean2:
-	-@IF EXIST $(TARGET). ( del $(TARGET). ) ELSE ( echo $(TARGET) is not exist~~ )
+	-@echo clean started
+	-@IF EXIST $(TARGET). ( del $(TARGET). ) 
+	-@IF EXIST $(OBJ_DIR). ( del $(OBJ_DIR)/* . ) ELSE ( echo $(OBJ_DIR) doesn't exist~~ )
+	-@echo clean done.
 
 ##########################################################
 
