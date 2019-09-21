@@ -389,26 +389,23 @@ void simple_printf(const char* fmt, ...) {
 			switch(*fmt) {
 				case 'c':
 					printf("%c", va_arg(args, int));
-					++fmt;
 					var  = false;
 				break;
 				case 'd':
 					printf("%d", va_arg(args, int));
-					++fmt;
 					var  = false;
 				break;
 				case 'f':
 					printf("%f", va_arg(args, double));
-					++fmt;
 					var  = false;
 				break;
 				case 's':
 					printf("%s", va_arg(args, char*));
-					++fmt;
 					var  = false;
 				break;
 				default:
-				fprintf(stderr, "Unsuported variable character : %c\n", *fmt);		
+					fprintf(stderr, "Unsuported variable character : %c\n", *fmt);		
+					var = false;
 				break;
 			}
 		}
@@ -427,7 +424,7 @@ void simple_printf(const char* fmt, ...) {
 //		else if(*fmt=='f') {
 //			double d = va_arg(args, double);
 //			printf("%f\n", d);
-//		}
+//		
 		++fmt;
 	}
 
@@ -435,7 +432,9 @@ void simple_printf(const char* fmt, ...) {
 }
 
 int main(int argc, char* argv[]) {
-	simple_printf("%d --- %c --- %f --- %f", 3, 'a', 1.999, 42.5);
+	const char* f =  "%d --- %c --- %f --- %f\n";
+	printf(f, 3, 'a', 1.999, 42.5);
+	simple_printf(f, 3, 'a', 1.999, 42.5);
 }
 
 #endif
