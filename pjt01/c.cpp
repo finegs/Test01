@@ -37,19 +37,19 @@ static void handleRecv(int sock); /* Handle Receive */
 
 int main(int argc, char *argv[])
 {
-    int sock;                         	/* Socket */
-    struct sockaddr_in multicastAddr; 	/* Multicast address */
-    char *multicastIP;                	/* IP Multicast address */
-    unsigned short multicastPort;     	/* Server port */
-    char *sendString;                 	/* String to multicast */
-//    char *recvString;
-    int multicastTTL;           		/* TTL of multicast packets */
-//    unsigned int sendStringLen; 		/* Length of string to multicast */
-    size_t sendStringLen; 				/* Length of string to multicast */
-//    size_t recvStringLen = 512;
-    WSADATA wsaData; 					/* Structure for WinSock setup communication */
+    int sock;                         /* Socket */
+    struct sockaddr_in multicastAddr; /* Multicast address */
+    char *multicastIP;                /* IP Multicast address */
+    unsigned short multicastPort;     /* Server port */
+    char *sendString;                 /* String to multicast */
+    char *recvString;
+    int multicastTTL;           /* TTL of multicast packets */
+//    unsigned int sendStringLen; /* Length of string to multicast */
+    size_t sendStringLen; /* Length of string to multicast */
+    size_t recvStringLen;
+    WSADATA wsaData; /* Structure for WinSock setup communication */
 
-    if ((argc < 4) || (argc > 5)) 		/* Test for correct number of parameters */
+    if ((argc < 4) || (argc > 5)) /* Test for correct number of parameters */
     {
         fprintf(stderr, "Usage:  %s <IP Address> <Port> <Send String> [<TTL>]\n",
                 argv[0]);

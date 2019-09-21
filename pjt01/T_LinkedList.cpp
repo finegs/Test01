@@ -1,4 +1,4 @@
-#if 1
+#if 0
 
 #include "T_LinkedList.hpp"
 
@@ -83,11 +83,4 @@ size_t sll_size(Node* head) {
 	return size;
 }
 
-Node* sll_getNodeAt(Node** head, int location) {
-	Node* node = *head;
-	while(node && location-->0) {
-		node = node->next;
-	}
-	return node;
-}
 #endif
