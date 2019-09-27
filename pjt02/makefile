@@ -1,13 +1,14 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
-#CXXFLAGS := -Wall -Wextra -Werror
+#CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
+CXXFLAGS := -std=c++17 -Wall -Wextra
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 LDFLAGS  := -lws2_32 -pthread
 BUILD    := build
 OBJ_DIR  := $(BUILD)\objects
 APP_DIR  := $(BUILD)\apps
 TARGET   := aa.exe
-INCLUDE  := -Iinclude/
+INCLUDE  := -I include
 SKIP_FILE := $(wildcard Test*.cpp)
 #SKIP_FILE += c.cpp
 SKIP_FILE += b.cpp c.cpp s1.cpp
@@ -55,13 +56,16 @@ release: all
 
 release_this:
 #	@copy /Y $(APP_DIR)/$(TARGET) $(TARGET)
-	@copy /Y $(APP_DIR)/$(TARGET) ./$(TARGET)
+	@copy /Y $(APP_DIR)\$(TARGET) $(TARGET)
 #	@echo copy from $(APP_DIR)/$(TARGET) to $(TARGET)
 
 clean:
 #	-@rm -rvf $(OBJ_DIR)/*
 #	-@rm -rvf $(APP_DIR)/*
 #	-@rm -vf $(TARGET)
+	@echo starting clean 
 	@IF EXIST $(OBJ_DIR) del /F /Q $(OBJ_DIR)\*
 	@IF EXIST $(APP_DIR) del /F /Q $(APP_DIR)\*
 	@IF EXIST $(TARGET) del /F /Q $(TARGET)
+	@echo complete clean
+
