@@ -6,3 +6,5 @@ tags
 *.swo
 *.swp
 /T/
+/*.obj/
+/*.tlog/
