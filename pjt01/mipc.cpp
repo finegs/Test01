@@ -1,8 +1,10 @@
 
 
 #include <cstring>
+#include <cstdlib>
 #include <iostream>
 #include <map>
+#include <mutex>
 
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/containers/map.hpp>
@@ -115,7 +117,9 @@ int MyIPC::testIPCMapFile(int argc, char *argv[], std::vector<std::string> &para
    const char *FileName = "file.bin";
    const std::size_t FileSize = 10000;
 
-   bool isSvr = std::end(params) != std::find_if(std::begin(params), std::end(params), [&](std::string &s) {
+   bool isSvr = std::end(params) != std::find_if(std::begin(params), 
+		   						std::end(params), 
+								[&](std::string &s) {
                    if ("-s" == s || "-S" == s)
                       return true;
                    return false;
@@ -150,14 +154,15 @@ int MyIPC::testIPCMapFile(int argc, char *argv[], std::vector<std::string> &para
 
       //Get the address of the mapped region
       void *addr = region.get_address();
-      std::size_t size = region.get_size();
+	  std::size_t size = region.get_size();
 
       //Write all the memory to 1
       std::memset(addr, 1, size);
 
       //Launch child process
       std::string s(argv[0]);
-      s += " child ";
+//      s += " child ";
+      s += " -S ";
       if (0 != std::system(s.c_str()))
          return 1;
    }
@@ -196,3 +201,23 @@ int MyIPC::testIPCMapFile(int argc, char *argv[], std::vector<std::string> &para
 
    return EXIT_SUCCESS;
 }
+
+std::string MyIPC::popCmd() {
+	std::lock_guard<std::mutex> guard(MyIPC::cmdQueue_mtx);
+	std::string cmd = MyIPC::cmdQueue.front();
+	MyIPC::cmdQueue.pop();
+	return cmd;
+}
+
+void MyIPC::pushCmd(const std::string& newCmd) {
+	std::lock_guard<std::mutex> guard(cmdQueue_mtx);
+	MyIPC::cmdQueue.push(newCmd);
+}
+
+bool MyIPC::isEmpty() {
+	return MyIPC::cmdQueue.empty();
+}
+
+std::queue<std::string> MyIPC::cmdQueue;
+std::mutex			    MyIPC::cmdQueue_mtx;
+

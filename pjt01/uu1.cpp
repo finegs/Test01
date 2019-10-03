@@ -13,6 +13,7 @@
 
 #include "u.hpp"
 #include "uu1.hpp"
+#include "mipc.hpp"
 
 // create MyUU1::testCodeEnumMap field
 std::unordered_map<std::string, MyTestCodeEnum> MyUU1::testCodeEnumMap;
@@ -27,6 +28,10 @@ void MyUU1::registerTestEnumCode(const std::string& strCode, const MyTestCodeEnu
 		throw std::runtime_error("MyUU1::registerTestEnumCode() : Duplicated TestCodeEnum , Code = " + strCode);
 	}
 	testCodeEnumMap.emplace(strCode, e);
+
+	if (T_IS_DEBUG)
+		std::cout << "[D] MyUU1::testCodeEnumMap.registerTestEnumCode" << strCode << ", " << e << std::endl;
+
 }
 
 void MyUU1::unregisterTestEnumCode(const std::string &strCode)
@@ -138,10 +143,12 @@ void MyUU1::print2Arr(int (*arrp)[2], int n)
 	}
 }
 
-void MyUU1::testCode(const std::string &strCode)
+void MyUU1::testCode(const std::string &strCode, int argc, char* argv[], std::vector<std::string>& params)
 {
-	MyTestCodeEnum &e = testCodeEnumMap[strCode];
-	std::cout << "test : " << strCode << " is initiated. " << std::endl;
+	MyTestCodeEnum e = testCodeEnumMap[strCode];
+
+	if (T_IS_DEBUG)
+		std::cout << "test : " << strCode << " is test : ["<< e << "] starting. " << std::endl;
 	switch (e)
 	{
 	case TC01:
@@ -151,7 +158,7 @@ void MyUU1::testCode(const std::string &strCode)
 	break;
 	case TC02:
 	{
-		MyUU1::testAsync01(2);
+		MyUU1::testCode01(1);
 	}
 	break;
 	case TC03:
@@ -164,6 +171,11 @@ void MyUU1::testCode(const std::string &strCode)
 		MyUU1::testCode04();
 	}
 	break;
+	case TC05:
+	{
+		 MyIPC::testIPCMapFile(argc, argv , params);
+	}
+	break;
 
 	default:
 	{
@@ -172,43 +184,9 @@ void MyUU1::testCode(const std::string &strCode)
 	}
 	}
 
-	std::cout << "test : " << strCode << "(" << e << ")"
+	if (T_IS_DEBUG)
+		std::cout << "test : " << strCode << " : [" << e << "]"
 			  << " is done. " << std::endl;
-}
-
-void MyUU1::testAsync01(int threadCnt)
-{
-	std::function<int(int)> ff01 = [&](int tId) {
-		using namespace std::chrono_literals;
-		std::string line;
-		bool run = true;
-		while (run)
-		{
-			std::cin.clear();
-			std::cout << tId << " # function<int(void)> is running." << std::endl;
-			std::cout << tId << " # enter command : ( -q : quit )";
-			std::cout.flush();
-
-			std::cin >> line;
-
-			if ("-q" == line || "-exit" == line)
-			{
-				run = false;
-				continue;
-			}
-			std::cout << tId << " # your command : " << line << std::endl;
-
-			std::this_thread::sleep_for(100ms);
-			//	system("pause");
-		};
-		std::cout << tId << " # thread is done. " << std::endl;
-		return EXIT_SUCCESS;
-	};
-
-	for (int i = 0; i < threadCnt; i++)
-	{
-		std::thread t(ff01, i);
-	}
 }
 
 void MyUU1::testLList()
@@ -216,7 +194,7 @@ void MyUU1::testLList()
 }
 
 // TODO : TC01
-void MyUU1::testCode01(int threadCount)
+void MyUU1::testCode01(int threadCnt)
 {
 	// TODO :
 	std::function<int(int)> ff01 = [&](int tId) {
@@ -246,8 +224,8 @@ void MyUU1::testCode01(int threadCount)
 		return EXIT_SUCCESS;
 	};
 
-	std::list<std::thread> tList(2);
-	for (int i = 0; i < 2; i++)
+	std::list<std::thread> tList(threadCnt);
+	for (int i = 0; i < threadCnt; i++)
 	{
 		tList.push_back(std::move(std::thread(ff01, i)));
 	}
@@ -296,7 +274,7 @@ void MyUU1::testCode05() {
 void MyUU1::testCInWithAsyncReader()
 {
 
-#if 0
+#if 1
 	auto r = std::minmax({1, 100});
 	std::cout << "std::minmax(1, 100), min = " << r.first << ", max=" << r.second << std::endl;
 #endif

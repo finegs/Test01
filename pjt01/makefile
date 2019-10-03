@@ -4,11 +4,62 @@ BUILD     := build
 APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
 
-ifeq ($(strip $(TARGET)),)
-	TARGET  := t.exe
+ifeq ($(OS),Windows_NT)
+	RM = cmd /C del /Q /F
+	RRM = cmd /C rmdir /Q /S
+	OSFLAG += -D WIN32
+	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
+		OSFLAG += -D AMD64
+	endif
+	ifeq ($(PROCESSOR_ARCHITECTURE),x86)
+		OSFLAG += -D IA32
+	endif
+else
+	RM = rm -f
+	RRM = rm -f -r
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+		OSFLAG += -D LINUX
+	endif
+	ifeq ($(UNAME_S),Darwin)
+		OSFLAG += -D OSX
+	endif
+		UNAME_P := $(shell uname -p)
+	ifeq ($(UNAME_P),x86_64)
+		OSFLAG += -D AMD64
+	endif
+	ifneq ($(filter %86,$(UNAME_P)),)
+		OSFLAG += -D IA32
+	endif
+	ifneq ($(filter arm%,$(UNAME_P)),)
+		OSFLAG += -D ARM
+	endif
 endif
 
-SRC 	  := $(TARGET:%.exe=%.cpp)
+
+OSFLAG    := 
+ifeq ($(OS), Windows_NT)
+	OSFLAG += -D WIN32
+endif
+
+ifeq ($(strip $(TARGET)),)
+	ifeq ($(OS), Windows_NT)
+		TARGET += t.exe
+		SRC:=$(TARGET:%.exe=%.cpp)
+	else
+		TARGET  := t
+		SRC := $(TARGET:%=%.cpp)
+	endif
+else
+	ifeq ($(OS), Windows_NT)
+		SRC := $(TARGET:%.exe=%.cpp)
+	else
+		SRC := $(TARGET:%=%.cpp)
+	endif
+endif
+
+#SRC   := $(TARGET:%=%.cpp)
+
 SRC_OTHER := u.cpp mipc.cpp uu1.cpp
 
 SRC       += $(SRC_OTHER)
@@ -30,14 +81,33 @@ CXXFLAGS  += -Wno-unused-parameter
 INC_PATH  += -I.
 INC_PATH  += -Iinc    
 
-
+LFLAGS    :=
 LDFLAGS   :=
+
+ifeq ($(OS), Windows_NT)
+#	LDFLAGS  := -Wl, -Bstatic
+    LDFLAGS  := -static
+	LDFLAGS  += -lws2_32
+#	LDFLAGS  += -Wl,-Bdynamic
+else
+	LDFLAGS  += -lrt
+endif
+
+
+#LDFLAGS  += -Wl,-Bdynamic
+LDFLAGS   += -lstdc++
 LDFLAGS   += -lm
 LDFLAGS   += -pthread
-LDFLAGS   += -lws2_32
+
+
 #LDFLAGS   += -lwsock32
 
-LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
+
+ifeq ($(OS), Windows_NT)
+	LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
+else
+	LIB_PATH  := 
+endif
 
 ################## BOOST #################################
 BOOST_INC := $(BOOST_HOME)/../boost_inc
@@ -55,12 +125,13 @@ OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 all: $(TARGET)
 
+
 ##########################################################
 
 #################             Compile            ######
 $(OBJ_DIR)/%.o: %.cpp
-	-@if [ ! -d "$(@D)" ]; then \
-		mkdir -p "$(@D)";       \
+	-@if NOT EXIST "$(@D)" . \
+		mkdir -p "$(@D)".       \
 	fi
 	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $@ -c $<
 
@@ -68,8 +139,8 @@ $(OBJ_DIR)/%.o: %.cpp
 
 ##########          Link               ######
 $(TARGET): $(OBJS)
-	-@if [ ! -d "$(@D)" ]; then \
-		mkdir -p "$(@D)";      \
+	-@if NOT EXIST "$(@D)" . \
+		mkdir -p "$(@D)".      \
 	fi
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
 #   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
@@ -84,11 +155,11 @@ $(TARGET): $(OBJS)
 
 ##########             Make Directory to store obj, target files ######################
 mkdirs:
-	-@if [ ! -d "$(APP_DIR)" ]; then \
-		mkdir -p "$(APP_DIR)";     \
+	-@if NOT EXIST "$(APP_DIR)" .\
+		mkdir -p "$(APP_DIR)".     \
 	fi
-	-@if [ ! -d "$(OBJ_DIR)" ]; then \
-		mkdir -p "$(OBJ_DIR)";     \
+	-@if NOT EXIST "$(OBJ_DIR)" .\
+		mkdir -p "$(OBJ_DIR)".     \
 	fi
 ##########################################################
 
@@ -111,11 +182,15 @@ release_this:
 ##########            Clean Target, Object and Current Path Target Files    #########################
 clean:
 	-@echo Starting clean.
-	-@rm -rf "$(OBJ_DIR)"/*.*
-	-@rm -rf "$(APP_DIR)"/*.*
-	-@if [ -f "$(TARGET)" ]; then \
-		rm "$(TARGET)";     \
-	fi
+	-@$(RM) "$(TARGET)"
+	-@$(RM) "$(OBJ_DIR)\*.*"
+	-@$(RM) "$(APP_DIR)\*.*"
+#
+#	-@rm -rf "$(OBJ_DIR)"/*.*
+#	-@rm -rf "$(APP_DIR)"/*.*
+#	-@if EXIST "$(TARGET)"  \
+#		del /F "$(TARGET)".     \
+#	fi
 	-@echo Clean done.
 
 ##########################################################

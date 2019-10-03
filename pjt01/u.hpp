@@ -9,7 +9,16 @@
 
 #define VERSION_U "v1.0.0_20190602_b01"
 
+extern bool T_IS_DEBUG;
+extern bool T_IS_EXIT;
+
 #define EXIT_OTHERS 2
+
+#ifdef _WIN32
+	#define SOCKET unsigned int
+#else
+	#define SOCKET int
+#endif
 
 void DieWithError(const char* errorMessage);
 
@@ -24,6 +33,24 @@ struct Buffer* new_buffer(size_t data_len = INITIAL_SIZE);
 void reserve_space(Buffer* b, size_t bytes);
 
 void serialize_int(int x, Buffer* b);
+
+int closeSocket(SOCKET sock);
+int shutdown(SOCKET sock, int opt);
+
+struct PacketHeader_ {
+	unsigned b0 : 1;
+	unsigned b1 : 1;
+	unsigned b2 : 1;
+	unsigned b3 : 1;
+	unsigned b4 : 1;
+	unsigned b5 : 1;
+	unsigned b6 : 1;
+	unsigned b7 : 1;
+
+	public:
+	friend std::ostream& operator<<(std::ostream& os, const struct PacketHeader_& o);
+};
+typedef struct PacketHeader_ PacketHeader;
 
 class Packet
 {

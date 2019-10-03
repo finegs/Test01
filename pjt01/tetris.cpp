@@ -49,95 +49,59 @@ int main(void )
 
 }
 
- 
+void draw_v_slide(int x, int y, int length, char *s) {
 
-void draw_v_slide(int x, int y, int length, char *s)
-
-{
-
-    int y_s=1; //y좌표시작
-
-    gotoxy(x,y_s);
-
-    draw_rectangle(1, length, x ,y_s);
-
-    gotoxy(x+2, y+1);
-
-    printf("%s", s);
-
-    gotoxy(x, length+3);
-
-    printf("%2d", y);
-
+    int y_s=1; //y좌표시작 
+    gotoxy(x,y_s); 
+    draw_rectangle(1, length, x ,y_s); 
+    gotoxy(x+2, y+1); 
+    printf("%s", s); 
+    gotoxy(x, length+3); 
+    printf("%2d", y); 
 }
 
- 
+ void draw_h_slide(int x, int y, int length, char *s) {
 
-void draw_h_slide(int x, int y, int length, char *s)
-
-{
-
-    int real_length=length/2;
-
-    int x_s=7; //x좌표시작
-
-    gotoxy(x_s,y);
-
-    draw_rectangle(real_length+1, 1, x_s, y);
-
-    gotoxy(x_s+x+3, y+1);
-
-    printf("%s", s);
-
-    gotoxy(5, y+2);
-
-    printf("%2d", x);
-
+    int real_length=length/2; 
+    int x_s=7; //x좌표시작 
+    gotoxy(x_s,y); 
+    draw_rectangle(real_length+1, 1, x_s, y); 
+    gotoxy(x_s+x+3, y+1); 
+    printf("%s", s); 
+    gotoxy(5, y+2); 
+    printf("%2d", x); 
 }
 
- 
-
-void draw_c_slide(int x, int y, int h_slide_length, int v_slide_length)
-
-{
+ void draw_c_slide(int x, int y, int h_slide_length, int v_slide_length) {
 
     int i, j;
 
     unsigned char a=0xa6, b[7]; //─│┌┐┘└
  
-
-    h_slide_length/=2;
+	h_slide_length/=2;
 
     for(i=1;i<7;i++)
-
         b[i]=0xa0+i;
  
-
     gotoxy(x, y);
 
     printf("%c%c", a, b[3]);
 
     for(i=x;i<h_slide_length+8;i++)
-
         printf("%c%c", a, b[1]);
 
     printf("%c%c", a, b[4]);
 
     printf("\n");
 
- 
-
-    for(i=y;i<v_slide_length+2;i++)
-
-    {
+    for(i=y;i<v_slide_length+2;i++) {
 
         gotoxy(x,y+i);
 
         printf("%c%c", a, b[2]);
 
-        for(j=x;j<h_slide_length+8;j++)
-
-            printf(" ");
+        for(j=x;j<h_slide_length+8;j++) 
+			printf(" ");
 
         printf("%c%c", a, b[2]);
 

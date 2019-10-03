@@ -11,11 +11,13 @@ void goo(int& a) { a = 0; }
 
 template<typename F, typename A>
 void lockAndCall(F f, A& a) {
+	std::cout << "(A& a)" << std::endl;
 	f(a);
 }
 
 template<typename F, typename A>
 void lockAndCall(F f, const A& a) {
+	std::cout << "(const A& a)" << std::endl;
 	f(a);
 }
 

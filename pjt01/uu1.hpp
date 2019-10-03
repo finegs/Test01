@@ -8,9 +8,9 @@
 #include <memory>
 #include <exception>
 #include <unordered_map>
+#include <vector>
 
-enum MyTestCodeEnum
-{
+enum MyTestCodeEnum {
 	TC01=1,
 	TC02,
 	TC03,
@@ -33,8 +33,7 @@ public:
 		: age(_age), name(_name), desc(_desc) {}
 	MyUU1(const MyUU1 &o) : age(o.age), name(o.name), desc(o.desc) {}
 	MyUU1(MyUU1 &&o) : age(o.age), name(std::move(o.name)), desc(std::move(o.desc)) {}
-	MyUU1 &operator=(const MyUU1 &o)
-	{
+	MyUU1 &operator=(const MyUU1 &o) {
 		if (this == &o)
 			return *this;
 
@@ -44,8 +43,7 @@ public:
 
 		return *this;
 	}
-	MyUU1 &operator=(MyUU1 &&o)
-	{
+	MyUU1 &operator=(MyUU1 &&o) {
 		if (this == &o)
 			return *this;
 
@@ -56,32 +54,30 @@ public:
 		return *this;
 	}
 
-	friend std::ostream &operator<<(std::ostream &os, const MyUU1 &o)
-	{
+	friend std::ostream &operator<<(std::ostream &os, const MyUU1 &o) {
 		os << "{" << o.age << ", " << o.name << ", " << o.desc << "}";
 		return os;
 	}
 
 public:
 	static void test04();
-	static constexpr int mypow(int base, int exp) noexcept
-	{
+	static constexpr int mypow(int base, int exp) noexcept {
 		return (exp == 0 ? 1 : base * MyUU1::mypow(base, exp - 1));
 	}
 	static int matoi(const char *s);
 	static void makeLogEntry(void *ptr);
-	static void testCode(const std::string &strNum);
+	static void testCode(const std::string &strNum, int argc, char* argv[], std::vector<std::string>& params);
 	static void registerTestEnumCode(const std::string& strCode, const MyTestCodeEnum &e);
 	static void unregisterTestEnumCode(const std::string& strCode);
 	static void initTestEnumMap();
 	static void testCInWithAsyncReader();
-	static void testAsync01(int threadCount);
 	static void testLList();
-	static void testCode01(int threadCount);
+	static void testCode01(int threadCnt);
 	static void testCode02();
 	static void testCode03();
 	static void testCode04();
 	static void testCode05();
+
 	static void print2Arr(int (*arrp)[2], int n);
 	static unsigned int findLessThanEqualPrime(unsigned int n);
 
@@ -89,20 +85,16 @@ private:
 	static std::unordered_map<std::string, MyTestCodeEnum> testCodeEnumMap;
 };
 
-class Investment
-{
+class Investment {
 };
 
-class Stock : public Investment
-{
+class Stock : public Investment {
 };
 
-class Bond : public Investment
-{
+class Bond : public Investment {
 };
 
-class RealEstate : public Investment
-{
+class RealEstate : public Investment {
 };
 
 #endif
