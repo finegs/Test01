@@ -24,6 +24,7 @@ int main()
 	double gpa1;
 	char grade1;
 	std::string name1;
+
 	std::tie(gpa1, grade1, name1) = get_student(1);
 
 
@@ -31,6 +32,13 @@ int main()
 				<< "GPA: " <<  gpa1 << ", "
 				<< "Grade: " << grade1 << ", "
 				<< "Name: " <<  name1 << "\n";
+
+	std::cout << "Set    Grade: " << grade1 << std::endl;
+
+	grade1 = 'G';
+
+	std::cout <<  "\tNew grade:" << grade1 << std::endl;
+
 
 	auto [gpa2, grade2, name2] = get_student(2);
 	

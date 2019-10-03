@@ -323,12 +323,10 @@ void FreeSocketInformation(DWORD Index)
 {
    LPSOCKET_INFORMATION SI = SocketArray[Index];
    DWORD i;
- 
 
    closesocket(SI->Socket);
    printf("Closing socket number %llu\n", SI->Socket);
    GlobalFree(SI);
- 
 
    // Squash the socket array
    for (i = Index; i < TotalSockets; i++)
