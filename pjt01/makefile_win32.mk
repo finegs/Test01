@@ -99,8 +99,8 @@ release_this:
 ##########            Clean Target, Object and Current Path Target Files    #########################
 clean:
 	-@echo clean started
-	-@rm -rf $(OBJ_DIR)/*.*
-	-@rm -rf $(APP_DIR)/*.*
+	-@del /q /s $(OBJ_DIR)\*.*
+	-@del /q /s $(APP_DIR)\*.*
 	-@IF EXIST $(TARGET). ( del $(TARGET). )
 	-@echo clean done.
 
