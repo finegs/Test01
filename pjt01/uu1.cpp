@@ -286,3 +286,4 @@ void MyUU1::testCInWithAsyncReader()
 	std::cout << "c : " << c << std::endl;
 	std::cout << "d1 : " << d1 << std::endl;
 }
+
