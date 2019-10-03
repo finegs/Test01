@@ -100,7 +100,7 @@ release_this:
 clean:
 	-@echo clean started
 	-@del /F /Q $(OBJ_DIR)\*.*
-	-@del /F /Q $(APP_DIR)/*.*
+	-@del /F /Q $(APP_DIR)\*.*
 	-@IF EXIST $(TARGET). ( del $(TARGET). )
 	-@echo clean done.
 
@@ -108,10 +108,8 @@ clean:
 clean2:
 	-@echo clean started
 	-@IF EXIST $(TARGET). ( del $(TARGET). ) 
-	-@IF EXIST $(OBJ_DIR). ( del $(OBJ_DIR)/* . ) ELSE ( echo $(OBJ_DIR) doesn't exist~~ )
+	-@IF EXIST $(OBJ_DIR). ( del $(OBJ_DIR)\* . ) ELSE ( echo $(OBJ_DIR) doesn't exist~~ )
 	-@echo clean done.
-
-##########################################################
 
 ###################################################################################
 
