@@ -5,8 +5,8 @@ APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
 
 ifeq ($(OS),Windows_NT)
-	RM = cmd /C del /Q /F
-	RRM = cmd /C rmdir /Q /S
+	RM = del /Q /F
+	RRM = rmdir /Q /S
 	OSFLAG += -D WIN32
 	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
 		OSFLAG += -D AMD64
