@@ -7,7 +7,7 @@ LDFLAGS  := -lws2_32 -pthread
 BUILD    := build
 OBJ_DIR  := $(BUILD)\objects
 APP_DIR  := $(BUILD)\apps
-TARGET   := aa.exe
+#TARGET   := aa.exe
 INCLUDE  := -I include
 SKIP_FILE := $(wildcard Test*.cpp)
 #SKIP_FILE += c.cpp
@@ -19,6 +19,23 @@ SRC      :=                      \
 	$(wildcard src/*.cpp)         \
 	$(wildcard *.cpp)
 SRC		:= $(filter-out $(SKIP_FILE) , $(SRC))
+
+ifeq ($(strip $(TARGET)),)
+	ifeq ($(OS), Windows_NT)
+		TARGET += aa.exe
+		SRC:=$(TARGET:%.exe=%.cpp)
+	else
+		TARGET  := aa
+		SRC := $(TARGET:%=%.cpp)
+	endif
+else
+	ifeq ($(OS), Windows_NT)
+		SRC := $(TARGET:%.exe=%.cpp)
+	else
+		SRC := $(TARGET:%=%.cpp)
+	endif
+endif
+
 
 #OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 OBJECTS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
