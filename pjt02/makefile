@@ -5,7 +5,7 @@ CXXFLAGS := -std=c++17 -Wall -Wextra
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 LDFLAGS  := -lws2_32 -pthread
 BUILD    := build
-OBJ_DIR  := $(BUILD)\objects
+OBJ_DIR  := $(BUILD)\objs
 APP_DIR  := $(BUILD)\apps
 #TARGET   := aa.exe
 INCLUDE  := -I include
@@ -81,8 +81,8 @@ clean:
 #	-@rm -rvf $(APP_DIR)/*
 #	-@rm -vf $(TARGET)
 	@echo starting clean 
-	@IF EXIST $(OBJ_DIR) del /F /Q $(OBJ_DIR)\*
-	@IF EXIST $(APP_DIR) del /F /Q $(APP_DIR)\*
+	@IF EXIST $(OBJ_DIR) del /S /F /Q $(OBJ_DIR)\*.o
+	@IF EXIST $(APP_DIR) del /S /F /Q $(APP_DIR)\$(TARGET)
 	@IF EXIST $(TARGET) del /F /Q $(TARGET)
 	@echo complete clean
 
