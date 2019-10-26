@@ -24,15 +24,19 @@ ifeq ($(strip $(TARGET)),)
 	ifeq ($(OS), Windows_NT)
 		TARGET += aa.exe
 		SRC:=$(TARGET:%.exe=%.cpp)
+		BLD:=WIN_BUILD
 	else
 		TARGET  := aa
 		SRC := $(TARGET:%=%.cpp)
+		BLD:=OTH_BUILD
 	endif
 else
 	ifeq ($(OS), Windows_NT)
 		SRC := $(TARGET:%.exe=%.cpp)
+		BLD:=WIN_BUILD
 	else
 		SRC := $(TARGET:%=%.cpp)
+		BLD:=OTH_BUILD
 	endif
 endif
 
@@ -40,18 +44,19 @@ endif
 #OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 OBJECTS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
 
-all: build $(APP_DIR)/$(TARGET) release_this
+#all: $(BLD) build $(APP_DIR)/$(TARGET) release_this
+all: $(BLD) $(APP_DIR)/$(TARGET) release_this
 
 
 #	@mkdir -p $(@D)
 $(OBJ_DIR)/%.o: %.cpp
-	@IF NOT EXIST $(@D) mkdir $(@D)
+#	@IF NOT EXIST $(@D) mkdir $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 
 
 #	@mkdir -p $(@D)
 $(APP_DIR)/$(TARGET): $(OBJECTS)
-	@IF NOT EXIST $(@D) mkdir $(@D)
+#	@IF NOT EXIST $(@D) mkdir $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(APP_DIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) 
 
 .PHONY: all build clean debug release
@@ -61,8 +66,21 @@ $(APP_DIR)/$(TARGET): $(OBJECTS)
 	#@mkdir -p $(OBJ_DIR)
 
 build:
-	@IF NOT EXIST $(APP_DIR) mkdir $(APP_DIR)
-	@IF NOT EXIST $(OBJ_DIR) mkdir $(OBJ_DIR)
+	ifeq ($(OS), Windows_NT)
+		IF NOT EXIST $(APP_DIR) mkdir $(APP_DIR)
+		IF NOT EXIST $(OBJ_DIR) mkdir $(OBJ_DIR)
+	else
+		md -p $(APP_DIR)
+		md -p $(OBJ_DIR)
+
+WIN_BUILD:
+	IF NOT EXIST $(APP_DIR) mkdir $(APP_DIR)
+	IF NOT EXIST $(OBJ_DIR) mkdir $(OBJ_DIR)
+
+OTH_BUILD:
+	mkdir -p $(APP_DIR)
+	mkdir -p $(OBJ_DIR)
+
 
 
 debug: CXXFLAGS += -DDEBUG -g
