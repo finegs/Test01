@@ -3,10 +3,22 @@ CXX      := -g++
 #CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
 CXXFLAGS := -std=c++17 -Wall -Wextra
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
-LDFLAGS  := -lws2_32 -pthread
+
+ifeq ($(OS), Windows_NT)
+	LDFLAGS  := -lws2_32 -pthread
+else
+	LDFLAGS  := -pthread
+endif
 BUILD    := build
-OBJ_DIR  := $(BUILD)\objs
-APP_DIR  := $(BUILD)\apps
+
+
+ifeq ($(OS), Windows_NT)
+	OBJ_DIR  := $(BUILD)\objs
+	APP_DIR  := $(BUILD)\apps
+else
+	OBJ_DIR  := $(BUILD)/objs
+	APP_DIR  := $(BUILD)/apps
+endif
 #TARGET   := aa.exe
 INCLUDE  := -I include
 SKIP_FILE := $(wildcard Test*.cpp)
@@ -24,28 +36,41 @@ ifeq ($(strip $(TARGET)),)
 	ifeq ($(OS), Windows_NT)
 		TARGET += aa.exe
 		SRC:=$(TARGET:%.exe=%.cpp)
-		BLD:=WIN_BUILD
+		BLD:=BUILD_WIN
+		CLN:=clean_win
+		release_app:=release_app_win
 	else
 		TARGET  := aa
 		SRC := $(TARGET:%=%.cpp)
-		BLD:=OTH_BUILD
+		BLD:=BUILD_OTH
+		CLN:=clean_oth
+		release_app:=release_app_oth
 	endif
 else
 	ifeq ($(OS), Windows_NT)
 		SRC := $(TARGET:%.exe=%.cpp)
-		BLD:=WIN_BUILD
+		BLD:=BUILD_WIN
+		CLN:=clean_win
+		release_app:=release_app_win
 	else
 		SRC := $(TARGET:%=%.cpp)
-		BLD:=OTH_BUILD
+		BLD:=BUILD_OTH
+		CLN:=clean_oth
+		release_app:=release_app_oth
 	endif
 endif
 
 
 #OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
-OBJECTS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
+
+ifeq ($(OS), Windows_NT)
+	OBJECTS := $(TARGET:%.exe=$(OBJ_DIR)/%.o)
+else
+	OBJECTS := $(TARGET:%=$(OBJ_DIR)/%.o)
+endif
 
 #all: $(BLD) build $(APP_DIR)/$(TARGET) release_this
-all: $(BLD) $(APP_DIR)/$(TARGET) release_this
+all: $(BLD) $(APP_DIR)/$(TARGET) $(release_app)
 
 
 #	@mkdir -p $(@D)
@@ -73,11 +98,11 @@ build:
 		md -p $(APP_DIR)
 		md -p $(OBJ_DIR)
 
-WIN_BUILD:
+BUILD_WIN:
 	IF NOT EXIST $(APP_DIR) mkdir $(APP_DIR)
 	IF NOT EXIST $(OBJ_DIR) mkdir $(OBJ_DIR)
 
-OTH_BUILD:
+BUILD_OTH:
 	mkdir -p $(APP_DIR)
 	mkdir -p $(OBJ_DIR)
 
@@ -89,12 +114,15 @@ debug: all
 release: CXXFLAGS += -O2
 release: all
 
-release_this:
-#	@copy /Y $(APP_DIR)/$(TARGET) $(TARGET)
+release_app_win:
 	@copy /Y $(APP_DIR)\$(TARGET) $(TARGET)
-#	@echo copy from $(APP_DIR)/$(TARGET) to $(TARGET)
 
-clean:
+release_app_oth:
+	@cp $(APP_DIR)/$(TARGET) $(TARGET)
+
+clean:$(CLN)
+
+clean_win:
 #	-@rm -rvf $(OBJ_DIR)/*
 #	-@rm -rvf $(APP_DIR)/*
 #	-@rm -vf $(TARGET)
@@ -102,5 +130,15 @@ clean:
 	@IF EXIST $(OBJ_DIR) del /S /F /Q $(OBJ_DIR)\*.o
 	@IF EXIST $(APP_DIR) del /S /F /Q $(APP_DIR)\$(TARGET)
 	@IF EXIST $(TARGET) del /F /Q $(TARGET)
+	@echo complete clean
+
+clean_oth:
+#	-@rm -rvf $(OBJ_DIR)/*
+#	-@rm -rvf $(APP_DIR)/*
+#	-@rm -vf $(TARGET)
+	@echo starting clean 
+	@rm -rf $(OBJ_DIR)/*.o
+	@rm -rf $(APP_DIR)/$(TARGET)
+	@rm -rf $(TARGET)
 	@echo complete clean
 
