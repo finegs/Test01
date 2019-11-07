@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <windows.h>
 
 
 using namespace std;
@@ -7,11 +9,11 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 
-if (argc > 0 )
-{
-	for(int i = 0;i<argc;i++) 
-		cout << "argv[" << i << "] = " << argv[i] << ((i < argc-1) ? " ," : "");
-}
+	if (argc > 0 )
+	{
+		for(int i = 0;i<argc;i++) 
+			cout << "argv[" << i << "] = " << argv[i] << ((i < argc-1) ? " ," : "");
+	}
 
 	cout << endl;
 	int a;
@@ -37,5 +39,14 @@ if (argc > 0 )
 	cout << endl;
 	cout << "~a : " << (~a) << endl;
     cout << "Hello World" << endl;
-    return 0;
+
+	string  aa("aabbcc");
+	
+	cout << aa << endl;
+
+
+	if(WM_LBUTTONDOWN)
+		printf("%d:%d\n", LOWORD(LPARAM), HIWORD(LPARAM));
+
+	return 0;
 }
