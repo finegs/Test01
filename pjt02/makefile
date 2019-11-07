@@ -60,21 +60,21 @@ else
 	endif
 endif
 
-SRC_EXIST := $( wildcard $(SRC) )
-#ifneq (,$(wildcard $(SRC)))
-ifeq ($( strip $(SRC_EXIST) ), )
-#	@echo ##### Source is $(SRC) #####
-#	-@echo Source is $(SRC)
-#else
-	#echo "CXX is gcc"
-	CXX:=-gcc
-	CXXFLAGS := -Wall -Wextra
-	ifeq ($(OS), Windows_NT)
-		SRC:=$(TARGET:%.exe=%.c)
-	else
-		SRC:=$(TARGET:%=%.c)
-	endif
-endif
+#SRC_EXIST := $( wildcard $(SRC) )
+##ifneq (,$(wildcard $(SRC)))
+#ifeq ($(strip $(SRC_EXIST)),)
+##	@echo ##### Source is $(SRC) #####
+##	-@echo Source is $(SRC)
+##else
+#	$(info "Source is $(SRC)")
+#	CXX:=-gcc
+#	CXXFLAGS := -Wall -Wextra
+#	ifeq ($(OS), Windows_NT)
+#		SRC:=$(TARGET:%.exe=%.c)
+#	else
+#		SRC:=$(TARGET:%=%.c)
+#	endif
+#endif
 
 
 #OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
