@@ -60,6 +60,22 @@ else
 	endif
 endif
 
+SRC_EXIST := $( wildcard $(SRC) )
+#ifneq (,$(wildcard $(SRC)))
+ifeq ($( strip $(SRC_EXIST) ), )
+#	@echo ##### Source is $(SRC) #####
+#	-@echo Source is $(SRC)
+#else
+	#echo "CXX is gcc"
+	CXX:=-gcc
+	CXXFLAGS := -Wall -Wextra
+	ifeq ($(OS), Windows_NT)
+		SRC:=$(TARGET:%.exe=%.c)
+	else
+		SRC:=$(TARGET:%=%.c)
+	endif
+endif
+
 
 #OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
@@ -74,10 +90,14 @@ all: $(BLD) $(APP_DIR)/$(TARGET) $(release_app)
 
 
 #	@mkdir -p $(@D)
-$(OBJ_DIR)/%.o: %.cpp
+#$(OBJ_DIR)/%.o: %.cpp
 #	@IF NOT EXIST $(@D) mkdir $(@D)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
+#	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 
+#	@mkdir -p $(@D)
+$(OBJECTS):
+#	@IF NOT EXIST $(@D) mkdir $(@D)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $(SRC)
 
 #	@mkdir -p $(@D)
 $(APP_DIR)/$(TARGET): $(OBJECTS)
