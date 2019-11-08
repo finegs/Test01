@@ -7,6 +7,8 @@
 #include <ctime>
 #include <iomanip>
 
+using namespace std;
+
 std::multiset<std::string> names;
 
 void log(const std::chrono::system_clock::time_point& tp, const std::string& msg)
@@ -33,16 +35,20 @@ int main(int argc, char* argv[])
 
  //   log(std::chrono::system_clock::now(), "main");
 
-    std::cout << "Hello World\n";
-
+    std::cout << "Hello World" << endl;
 
 	int x = 100;
 
-	[=]() { std::cout << "no mutable : " << x << std::endl; } ();
+//compie error 	[=]() { x = 100; std::cout << "no mutable : " << x << std::endl; } ();
+	[&]() { x = 100; std::cout << "no mutable : " << x << std::endl; } ();
 
 	[=]() mutable { x = 300; std::cout << "mutable : " << x << std::endl; x = 200; } ();
 
 	std::cout << x << std::endl;
+
+	std::string ss({'a','b','c'});
+
+	cout << ss << " length() = " << ss.length() << endl;
 
 	getchar();
 
