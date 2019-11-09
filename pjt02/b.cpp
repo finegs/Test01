@@ -5,21 +5,41 @@
 
 using namespace std;
 
+char array1[] = "Foo" "bar";
+
+char array2[] = {'F', 'o', 'o', 'b', 'a', 'r', '\0'};
+
+const char* s1 = "foo(\
+				Hello\
+				World\
+				) foo";
+
+
+const char* s2 = "\nHello\nWorld\n";
 
 int main(int argc, char* argv[])
 {
+	cout << s1 << endl;
+	cout << s2 << endl;
+	cout << array1 << endl;
+	cout << array2 << endl;
 
 	if (argc > 0 )
 	{
+		cout << "################################" << endl;
 		for(int i = 0;i<argc;i++) 
 			cout << "argv[" << i << "] = " << argv[i] << ((i < argc-1) ? " ," : "");
+
+		cout << "################################" << endl;
 	}
 
 	cout << endl;
 	int a;
+
 	if(argc > 1) {
 		a = atoi(argv[1]);
-	} else {
+	} 
+	else {
 		cout << "Enter a : "; std::cout.flush();
 		cin >> a;
 		cin.clear();
@@ -44,9 +64,8 @@ int main(int argc, char* argv[])
 	
 	cout << aa << endl;
 
-
-	if(WM_LBUTTONDOWN)
-		printf("%d:%d\n", LOWORD(LPARAM), HIWORD(LPARAM));
+//	if(WM_LBUTTONDOWN)
+//		printf("%d:%d\n", LOWORD(LPARAM), HIWORD(LPARAM));
 
 	return 0;
 }
