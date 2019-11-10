@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
-#include <cerror>
 
 typedef struct Test_Data
 {
@@ -11,15 +10,15 @@ typedef struct Test_Data
 }testData;
 
 
-testData tData[300];
+testData tData[1000000];
 
 int  parse(const char* file, testData* tData)
 {
 	FILE *pFile;
 	char *pStr;
 	char strTmp[255];
-	char *token;
-	int cnt = 0, colCnt = 0, ec;
+//	char *token;
+	int recCnt = 0, lineNo = 0;
 	errno_t ec;
 	int i=0;
 
@@ -27,25 +26,41 @@ int  parse(const char* file, testData* tData)
 	if(pFile) {
 		while(!feof(pFile))
 		{
-			pStr = fgets(strTmp, sizeof(strTmp), pFIle);
+			pStr = fgets(strTmp, sizeof(strTmp), pFile);
 
-			if(colCnt >= 2) {
+			if(lineNo >= 2) { // skip ignore columns
 				if(pStr == NULL) break;
 				sscanf(pStr, "%d,%[^,],%lf\n",
-						&tData[cnt].aa,
-						&tData[cnt].bb,
-						&tData[cnt].cc
+						&tData[recCnt].aa,
+						tData[recCnt].bb,
+						&tData[recCnt].cc
 					  );
-				cnt++;
+				recCnt++;
 			}
 			else
-				colCnt++;
+				lineNo++;
 		}
 		fclose(pFile);
 	}
 	else {
 		printf("Fail");
+		recCnt = (int)ec;
 	}
-	return cnt;
+	return recCnt;
+}
+
+
+int main(int argc, char* argv[])
+{
+
+	if(argc < 1) {
+		printf("Usage %s {file name}\n", argv[0]);
+		return 0;
+	}
+
+	int rc = parse(argv[1], tData);
+	if(!rc) printf("Error : %d\n", rc);
+	else { printf("Parse Count : %d\n", rc); }
+	return 0;
 }
 
