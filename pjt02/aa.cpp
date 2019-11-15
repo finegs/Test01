@@ -13,9 +13,11 @@ void log(const std::chrono::system_clock::time_point& tp, const std::string& msg
 {
     std::chrono::system_clock::duration se = tp.time_since_epoch();
     std::time_t nc = std::chrono::system_clock::to_time_t(tp);
+	
+	auto v = std::chrono::duration_cast<std::chrono::milliseconds>(se - std::chrono::duration_cast<std::chrono::seconds>(se));
+
     char a[3+1];
-	sprintf(a, "%03lld", 
-           std::chrono::duration_cast<std::chrono::milliseconds>(se - std::chrono::duration_cast<std::chrono::seconds>(se)));
+	sprintf(a, "%03lld", v.count());
     std::cout << std::put_time(std::localtime(&nc), "%F %T.") << a << " : " << msg << std::endl;
 }
 

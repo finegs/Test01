@@ -19,6 +19,7 @@ else
 	OBJ_DIR  := $(BUILD)/objs
 	APP_DIR  := $(BUILD)/apps
 endif
+
 #TARGET   := aa.exe
 INCLUDE  := -I include
 SKIP_FILE := $(wildcard Test*.cpp)
@@ -110,22 +111,23 @@ $(APP_DIR)/$(TARGET): $(OBJECTS)
 	#@mkdir -p $(APP_DIR)
 	#@mkdir -p $(OBJ_DIR)
 
-build:
-	ifeq ($(OS), Windows_NT)
-		IF NOT EXIST $(APP_DIR) mkdir $(APP_DIR)
-		IF NOT EXIST $(OBJ_DIR) mkdir $(OBJ_DIR)
-	else
-		md -p $(APP_DIR)
-		md -p $(OBJ_DIR)
+#build:
+#	ifeq ($(OS), Windows_NT)
+#		IF NOT EXIST $(APP_DIR) mkdir $(APP_DIR)
+#		IF NOT EXIST $(OBJ_DIR) mkdir $(OBJ_DIR)
+#	else
+#		md -p $(APP_DIR)
+#		md -p $(OBJ_DIR)
 
 BUILD_WIN:
-	IF NOT EXIST $(APP_DIR) mkdir $(APP_DIR)
-	IF NOT EXIST $(OBJ_DIR) mkdir $(OBJ_DIR)
+	@IF NOT EXIST $(BUILD) ( mkdir $(BUILD) )
+	@IF NOT EXIST $(APP_DIR) ( mkdir $(APP_DIR) )
+	@IF NOT EXIST $(OBJ_DIR) ( mkdir $(OBJ_DIR) )
 
 BUILD_OTH:
-	mkdir -p $(APP_DIR)
-	mkdir -p $(OBJ_DIR)
-
+	@mkdir -p $(BUILD)
+	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(APP_DIR)
 
 
 debug: CXXFLAGS += -DDEBUG -g
@@ -135,7 +137,7 @@ release: CXXFLAGS += -O2
 release: all
 
 release_app_win:
-	@copy /Y $(APP_DIR)\$(TARGET) $(TARGET)
+	copy /Y $(APP_DIR)\$(TARGET) $(TARGET)
 
 release_app_oth:
 	@cp $(APP_DIR)/$(TARGET) $(TARGET)
@@ -147,9 +149,9 @@ clean_win:
 #	-@rm -rvf $(APP_DIR)/*
 #	-@rm -vf $(TARGET)
 	@echo starting clean 
-	@IF EXIST $(OBJ_DIR) del /S /F /Q $(OBJ_DIR)\*.o
-	@IF EXIST $(APP_DIR) del /S /F /Q $(APP_DIR)\$(TARGET)
-	@IF EXIST $(TARGET) del /F /Q $(TARGET)
+	@IF EXIST $(OBJ_DIR) ( del /S /F /Q $(OBJ_DIR)\*.o )
+	@IF EXIST $(APP_DIR) ( del /S /F /Q $(APP_DIR)\$(TARGET) )
+	@IF EXIST $(TARGET) ( del /F /Q $(TARGET) )
 	@echo complete clean
 
 clean_oth:
