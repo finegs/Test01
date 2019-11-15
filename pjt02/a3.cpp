@@ -2,6 +2,8 @@
 #include <iostream>
 #include <unordered_map>
 #include <string>
+#include <fstream>
+#include <sstream>
 
 class Clz {
 	public:
@@ -24,13 +26,21 @@ class Clz {
 class Clz2 {
 	public:
 		Clz2() : key("__"), name("__") {}
-		Clz2(const std::string& _key, const std::string& _name) : key(_key), name(_name){ }
+		Clz2(const std::string& _key, const std::string& _name) : key(_key), name(_name){}
+		Clz2(const Clz2& o) : key(o.key) , name(o.name) {}
+		Clz2(Clz2& o) : key(std::move(o.key)), name(std::move(o.name)) {}
 		const Clz2& operator=(const Clz2& o) {
 			key = o.key; name = o.name;
 			return o;
 		}
+		const Clz2& operator=(Clz2& o) {
+			key=std::move(o.key);
+			name=std::move(o.name);
+			return *this;
+		}			
 
-		friend std::ostream& operator<<(std::ostream& os, const Clz2& o);
+		friend 
+		std::ostream& operator<<(std::ostream& os, const Clz2& o);
 
 		std::string getKey() { return key; }
 		std::string getName() { return name; }
@@ -39,17 +49,22 @@ class Clz2 {
 		std::string name;
 };
 
+
+std::ostream& operator<<(std::ostream& os, const Clz2& o) {
+	os << "(" << o.key << " = " << o.name << ")" << std::endl;
+	return os;
+}
+
+
 std::ostream& operator<<(std::ostream& os, const Clz& o) {
 	os << "(" << o.age << ", " << o.name << ")" << std::endl;
 	return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Clz2& o) {
-	os << "(" << o.key << " = " << o.name << ")" << std::endl;
-}
+
 
 int main(int argc, char* argv[]) {
-	std::unorderd_map<std::string, Clz2> m2;
+	std::unordered_map<std::string, Clz2> m2;
 	if (argc > 0) {
 		std::ifstream infs(argv[1]);
 		int count=0;
@@ -59,7 +74,7 @@ int main(int argc, char* argv[]) {
 			std::string line;
 			std::getline(infs, line);
 
-			std::istringstream iss(line);
+			std::stringstream iss(line);
 
 			std::string key;
 			std::string name;
@@ -67,7 +82,7 @@ int main(int argc, char* argv[]) {
 			std::getline(iss, key, ',');
 			std::getline(iss, name, ',');
 
-			m2.put({key, {key, name}});
+			m2.insert({key, {key, name}});
 		}
 	}
 

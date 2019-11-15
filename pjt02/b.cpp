@@ -19,6 +19,7 @@ const char* s2 = "\nHello\nWorld\n";
 
 int main(int argc, char* argv[])
 {
+#if 0
 	cout << s1 << endl;
 	cout << s2 << endl;
 	cout << array1 << endl;
@@ -34,6 +35,8 @@ int main(int argc, char* argv[])
 	}
 
 	cout << endl;
+#endif
+
 	int a;
 
 	if(argc > 1) {
