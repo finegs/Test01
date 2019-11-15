@@ -68,7 +68,7 @@ std::ostream& operator<<(std::ostream& os, const Clz& o) {
 int main(int argc, char* argv[]) {
 	std::unordered_map<std::string, Clz2> m2;
 	std::set<std::string> argset;
-	bool isDebug = false;
+	bool verbose = false;
 	char* inputFile;
 	for(int i = 1;i < argc;i++) {
 		argset.insert(std::string(argv[i]));
@@ -77,8 +77,11 @@ int main(int argc, char* argv[]) {
 		}		
 	}
 
-	if(argset.count("-D") > 0 || argset.count("-d") > 0) {
-		isDebug = true;
+	if(argset.count("-V") > 0
+			|| argset.count("-v") > 0 
+			|| argset.count("-D") > 0 
+			|| argset.count("-d") > 0) {
+		verbose = true;
 	}
 
 	if (inputFile) {
@@ -116,7 +119,7 @@ int main(int argc, char* argv[]) {
 	std::cout << "##### Start #############" << std::endl;
 
 	std::cout << "m.size()=" << m.size() << std::endl;
-	if(isDebug) {
+	if(verbose) {
 		std::cout << "m.content=" << std::endl;
 		int i = 0;
 		for(const auto& e : m) {
@@ -127,7 +130,7 @@ int main(int argc, char* argv[]) {
 
 	std::cout << "##### Start #############" << std::endl;
 	std::cout << "m2.size()=" << m2.size() << std::endl;
-	if(isDebug) {
+	if(verbose) {
 		std::cout << "m2.content= " << std::endl;
 		int i = 0;
 		for(const auto& e : m2) {

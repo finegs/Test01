@@ -2,7 +2,7 @@ CXX = g++
 
 TARGET=a3.exe
 
-all:clean $(TARGET)
+all:$(TARGET)
 
 #cppsrc = $(wildcard *.cpp)
 cppsrc = $(TARGET:.exe=.cpp)
@@ -19,4 +19,6 @@ $(TARGET): $(objs)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
 clean:
+	@echo start clean
 	@del /F /Q $(objs) $(TARGET)
+	@echo complete clean
