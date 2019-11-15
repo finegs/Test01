@@ -1,6 +1,8 @@
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <unordered_map>
+#include <set>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -65,8 +67,22 @@ std::ostream& operator<<(std::ostream& os, const Clz& o) {
 
 int main(int argc, char* argv[]) {
 	std::unordered_map<std::string, Clz2> m2;
-	if (argc > 0) {
-		std::ifstream infs(argv[1]);
+	std::set<std::string> argset;
+	bool isDebug = false;
+	char* inputFile;
+	for(int i = 1;i < argc;i++) {
+		argset.insert(std::string(argv[i]));
+		if(!strcmp("-in", argv[i]) && argc > i+1) {
+			inputFile = argv[i+1];	
+		}		
+	}
+
+	if(argset.count("-D") > 0 || argset.count("-d") > 0) {
+		isDebug = true;
+	}
+
+	if (inputFile) {
+		std::ifstream infs(inputFile);
 		int count=0;
 		infs>>count;
 		infs.ignore(1, '\n');
@@ -97,17 +113,28 @@ int main(int argc, char* argv[]) {
 	std::cout << m[1].age << " = " << m[1].name << std::endl;
 	std::cout << m[1].age << " = " << m[1].name << std::endl;
 
+	std::cout << "##### Start #############" << std::endl;
 
-	std::cout << "m1 is " << std::endl;
-	int i = 0;
-	for(const auto& e : m) {
-		std::cout << "[" << i++ << "] " <<  e.first << " = " << e.second << std::endl;
+	std::cout << "m.size()=" << m.size() << std::endl;
+	if(isDebug) {
+		std::cout << "m.content=" << std::endl;
+		int i = 0;
+		for(const auto& e : m) {
+			std::cout << "[" << i++ << "] " <<  e.first << " = " << e.second << std::endl;
+		}
 	}
+	std::cout << "##### End ###############" << std::endl;
 
-	std::cout << "m2 is " << std::endl;
-	i = 0;
-	for(const auto& e : m2) {
-		std::cout << "[" << i++ << "] " <<  e.first << " = " << e.second << std::endl;
+	std::cout << "##### Start #############" << std::endl;
+	std::cout << "m2.size()=" << m2.size() << std::endl;
+	if(isDebug) {
+		std::cout << "m2.content= " << std::endl;
+		int i = 0;
+		for(const auto& e : m2) {
+			std::cout << "[" << i++ << "] " <<  e.first << " = " << e.second << std::endl;
+		}
 	}
+	std::cout << "##### End ###############" << std::endl;
+
 	return 0;
 }

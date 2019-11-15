@@ -90,6 +90,11 @@ endif
 all: $(BLD) $(APP_DIR)/$(TARGET) $(release_app)
 
 
+
+#	@mkdir -p $(@D)
+$(APP_DIR)/$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(APP_DIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) 
+
 #	@mkdir -p $(@D)
 #$(OBJ_DIR)/%.o: %.cpp
 #	@IF NOT EXIST $(@D) mkdir $(@D)
@@ -100,24 +105,9 @@ $(OBJECTS):
 #	@IF NOT EXIST $(@D) mkdir $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $(SRC)
 
-#	@mkdir -p $(@D)
-$(APP_DIR)/$(TARGET): $(OBJECTS)
-#	@IF NOT EXIST $(@D) mkdir $(@D)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $(APP_DIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) 
 
-.PHONY: all build clean debug release
+.PHONY: clean all
 
-#build:
-	#@mkdir -p $(APP_DIR)
-	#@mkdir -p $(OBJ_DIR)
-
-#build:
-#	ifeq ($(OS), Windows_NT)
-#		IF NOT EXIST $(APP_DIR) mkdir $(APP_DIR)
-#		IF NOT EXIST $(OBJ_DIR) mkdir $(OBJ_DIR)
-#	else
-#		md -p $(APP_DIR)
-#		md -p $(OBJ_DIR)
 
 BUILD_WIN:
 	@IF NOT EXIST $(BUILD) ( mkdir $(BUILD) )
@@ -145,9 +135,6 @@ release_app_oth:
 clean:$(CLN)
 
 clean_win:
-#	-@rm -rvf $(OBJ_DIR)/*
-#	-@rm -rvf $(APP_DIR)/*
-#	-@rm -vf $(TARGET)
 	@echo starting clean 
 	@IF EXIST $(OBJ_DIR) ( del /S /F /Q $(OBJ_DIR)\*.o )
 	@IF EXIST $(APP_DIR) ( del /S /F /Q $(APP_DIR)\$(TARGET) )
@@ -155,12 +142,19 @@ clean_win:
 	@echo complete clean
 
 clean_oth:
-#	-@rm -rvf $(OBJ_DIR)/*
-#	-@rm -rvf $(APP_DIR)/*
-#	-@rm -vf $(TARGET)
 	@echo starting clean 
 	@rm -rf $(OBJ_DIR)/*.o
 	@rm -rf $(APP_DIR)/$(TARGET)
-	@rm -rf $(TARGET)
+	@rm -f $(TARGET)
 	@echo complete clean
+
+uninstall_win:
+	@echo starting $(@)
+	@if exist $(TARGET) ( del /F /Q $(TARGET))
+	@echo complete $(@)
+
+uninstall_oth:
+	@echo starting $(@)
+	@rm -f $(TARGET)
+	@echo complete $(@)
 
