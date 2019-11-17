@@ -63,12 +63,15 @@ std::ostream& operator<<(std::ostream& os, const Clz& o) {
 	return os;
 }
 
-char* mstrtok(char* _str, char* _delim) {
+char* mstrtok(char* _str, const char* _delim) {
 	static char* pstr;
+	static char bdelim;
 	const char* pdelim;
 
 	if(NULL == _str) {
 		_str = pstr;
+		if(*pstr)
+			*(_str-1)=bdelim;
 	}
 	else {
 		pstr = _str;
@@ -78,6 +81,7 @@ char* mstrtok(char* _str, char* _delim) {
 		pdelim = _delim;
 		while(*pdelim) {
 			if(*pstr == *pdelim) {
+				bdelim = *pdelim;
 				*pstr = '\0'; 
 				pstr++;
 				return _str;
@@ -108,6 +112,8 @@ int main(int argc, char* argv[]) {
 		if(!*str) break;
 		printf("[%d]=%s\n", i++, str);
 	}
+
+	printf("argv[2]=%s\n", ss);
 
 	return 0;
 
