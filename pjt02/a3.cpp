@@ -63,9 +63,55 @@ std::ostream& operator<<(std::ostream& os, const Clz& o) {
 	return os;
 }
 
+char* mstrtok(char* _str, char* _delim) {
+	static char* pstr;
+	const char* pdelim;
+
+	if(NULL == _str) {
+		_str = pstr;
+	}
+	else {
+		pstr = _str;
+	}
+
+	while(*pstr) {
+		pdelim = _delim;
+		while(*pdelim) {
+			if(*pstr == *pdelim) {
+				*pstr = '\0'; 
+				pstr++;
+				return _str;
+			}
+			pdelim++;
+		}
+		pstr++;
+	}
+	return _str;
+}
+
 
 
 int main(int argc, char* argv[]) {
+
+	int i = 0;
+	char *str, *ss;
+
+	if(argc < 2) {
+		printf("Usage : %s string delimeter\n", argv[0]);
+		return 0;
+	}
+
+	ss = argv[1];
+	str = NULL;
+	while(true) {
+		str = mstrtok(!i? ss : NULL, argv[2]);
+		if(!*str) break;
+		printf("[%d]=%s\n", i++, str);
+	}
+
+	return 0;
+
+#if 0
 	std::unordered_map<std::string, Clz2> m2;
 	std::set<std::string> argset;
 	bool verbose = false;
@@ -110,6 +156,7 @@ int main(int argc, char* argv[]) {
 	m.insert(std::make_pair<int, Clz>(1, Clz(1, "name")));
 	m.insert({2, {2, "name2"}});
 	m.insert({{3, {3, "name3"}},{4,{4,"name4"}}});
+	
 	Clz a = Clz(5, "ccc");
 	m.insert({a.age, a});
 
@@ -140,4 +187,6 @@ int main(int argc, char* argv[]) {
 	std::cout << "##### End ###############" << std::endl;
 
 	return 0;
+#endif
+
 }
