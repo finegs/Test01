@@ -6,6 +6,7 @@ all:$(TARGET)
 
 #cppsrc = $(wildcard *.cpp)
 cppsrc = $(TARGET:.exe=.cpp)
+cppsrc += mutil.cpp
 objs   =$(cppsrc:.cpp=.o)
 
 CFLAGS=-W -Wall

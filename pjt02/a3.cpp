@@ -7,6 +7,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "mutil.hpp"
+
 class Clz {
 	public:
 		int age;
@@ -63,38 +65,6 @@ std::ostream& operator<<(std::ostream& os, const Clz& o) {
 	return os;
 }
 
-char* mstrtok(char* _str, const char* _delim) {
-	static char* pstr;
-	static char bdelim;
-	const char* pdelim;
-
-	if(NULL == _str) {
-		_str = pstr;
-		if(*pstr)
-			*(_str-1)=bdelim;
-	}
-	else {
-		pstr = _str;
-	}
-
-	while(*pstr) {
-		pdelim = _delim;
-		while(*pdelim) {
-			if(*pstr == *pdelim) {
-				bdelim = *pdelim;
-				*pstr = '\0'; 
-				pstr++;
-				return _str;
-			}
-			pdelim++;
-		}
-		pstr++;
-	}
-	return _str;
-}
-
-
-
 int main(int argc, char* argv[]) {
 
 	int i = 0;
@@ -108,7 +78,7 @@ int main(int argc, char* argv[]) {
 	ss = argv[1];
 	str = NULL;
 	while(true) {
-		str = mstrtok(!i? ss : NULL, argv[2]);
+		str = mstrtok(!i ? ss : NULL, argv[2]);
 		if(!*str) break;
 		printf("[%d]=%s\n", i++, str);
 	}
