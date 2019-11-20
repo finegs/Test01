@@ -1,4 +1,6 @@
 /*
+ *
+https://fishpoint.tistory.com/2235?utm_source=dable
  *      dht22.c:
  *    Simple test program to test the wiringPi functions
  *    Based on the existing dht11.c
