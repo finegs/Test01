@@ -8,6 +8,8 @@
 #include <sstream>
 #include <chrono>
 
+#include "mutil.hpp"
+
 class Clz {
 	public:
 		int age;
@@ -64,11 +66,35 @@ std::ostream& operator<<(std::ostream& os, const Clz& o) {
 	return os;
 }
 
+<<<<<<< HEAD
 void log(const char* msg) {
 	std::cout << std::put_time(std::localtime(Îk
 }
-
+=======
 int main(int argc, char* argv[]) {
+
+	int i = 0;
+	char *str, *ss;
+>>>>>>> 2009b616a91c5287bdbf6f54a05049f9d917a3aa
+
+	if(argc < 2) {
+		printf("Usage : %s string delimeter\n", argv[0]);
+		return 0;
+	}
+
+	ss = argv[1];
+	str = NULL;
+	while(true) {
+		str = mstrtok(!i ? ss : NULL, argv[2]);
+		if(!*str) break;
+		printf("[%d]=%s\n", i++, str);
+	}
+
+	printf("argv[2]=%s\n", ss);
+
+	return 0;
+
+#if 0
 	std::unordered_map<std::string, Clz2> m2;
 	std::set<std::string> argset;
 	bool verbose = false;
@@ -113,6 +139,7 @@ int main(int argc, char* argv[]) {
 	m.insert(std::make_pair<int, Clz>(1, Clz(1, "name")));
 	m.insert({2, {2, "name2"}});
 	m.insert({{3, {3, "name3"}},{4,{4,"name4"}}});
+	
 	Clz a = Clz(5, "ccc");
 	m.insert({a.age, a});
 
@@ -143,4 +170,6 @@ int main(int argc, char* argv[]) {
 	std::cout << "##### End ###############" << std::endl;
 
 	return 0;
+#endif
+
 }
