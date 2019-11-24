@@ -1,58 +1,30 @@
-#include <iostream>
-#include <cstdlib>
-#include <string>
-#include <map>
-#include <set>
 #include <chrono>
-#include <ctime>
 #include <iomanip>
+#include <iostream>
+#include <string>
 
-std::multiset<std::string> names;
+using namespace std;
 
-void log(const std::chrono::system_clock::time_point& tp, const std::string& msg)
-{
-    std::chrono::system_clock::duration se = tp.time_since_epoch();
-    std::time_t nc = std::chrono::system_clock::to_time_t(tp);
-	
-	auto v = std::chrono::duration_cast<std::chrono::milliseconds>(se - std::chrono::duration_cast<std::chrono::seconds>(se));
-
-    char a[3+1];
-	sprintf(a, "%03lld", v.count());
-    std::cout << std::put_time(std::localtime(&nc), "%F %T.") << a << " : " << msg << std::endl;
+string getTimestamp() {
+  // get a precise timestamp as a string
+  const auto now = std::chrono::system_clock::now();
+  const auto nowAsTimeT = std::chrono::system_clock::to_time_t(now);
+  const auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+      now.time_since_epoch()) % 1000;
+  std::stringstream nowSs;
+  nowSs
+	  << std::put_time(std::localtime(&nowAsTimeT), "Y-m-d H:M:S")
+   //   << std::put_time(std::localtime(&nowAsTimeT), "%a %b %d %Y %T")
+      << '.' << std::setfill('0') << std::setw(3) << nowMs.count();
+  return nowSs.str();
 }
 
-template<typename T>
-void loadAndAdd(T&& name)
-{
-    auto now = std::chrono::system_clock::now();
-    log(now, "logAndAdd");
-    names.emplace(std::forward<T>(name));
-}
+int main(int argc,char* argv[]) {
 
+	cout << getTimestamp() << " ";
+	for(int i = 0;i<argc;i++) {
+		cout << "[" << i << "] = " << argv[i] << (i<=argc-1 ? "\n" : "");
+	}	
 
-int main(int argc, char* argv[])
-{
-
- //   log(std::chrono::system_clock::now(), "main");
-
-    std::cout << "Hello World\n";
-
-	for(int i = 0;i < argc;i++) 
-	{
-		std::cout << "argv["<<i<<"] = " << argv[i] << (i == argc ? "" : ", ");
-	}
-	std::cout << std::endl;
-
-
-	int x = 100;
-
-	[=]() { std::cout << "no mutable : " << x << std::endl; } ();
-
-	[=]() mutable { x = 300; std::cout << "mutable : " << x << std::endl; x = 200; } ();
-
-	std::cout << x << std::endl;
-
-	getchar();
-
-    return EXIT_SUCCESS;
+	return 0;
 }

@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <chrono>
 
 class Clz {
 	public:
@@ -63,7 +64,9 @@ std::ostream& operator<<(std::ostream& os, const Clz& o) {
 	return os;
 }
 
-
+void log(const char* msg) {
+	std::cout << std::put_time(std::localtime(Îk
+}
 
 int main(int argc, char* argv[]) {
 	std::unordered_map<std::string, Clz2> m2;
