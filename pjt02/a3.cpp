@@ -73,8 +73,36 @@ void log(const char* msg) {
 	std::cout << getTimestamp() << " " << msg << std::endl;
 }
 
-int main(int argc, char* argv[]) {
+int gcd(int a, int b) {
+	int tmp, n;
+	if(a<b) {
+		tmp = a;
+		a = b;
+		b = tmp;
+	}
+	
 
+	while(b!=0) {
+		n = a%b;
+		a = b;
+		b = n;
+	}
+
+	return a;
+}
+
+
+
+int main(int argc, char* argv[]) {
+	int a = atoi(argv[1]);
+	int b = atoi(argv[2]);
+
+	int result;
+	printf("a:%d, b:%d\n", a,b);
+	result = gcd(a,b);
+	printf("gcd : %d\n", result);
+
+#if 0
 	int i = 0, rc;
 
 	if(argc < 2) {
@@ -86,7 +114,6 @@ int main(int argc, char* argv[]) {
 	printf("%s %s %s\n", argv[i], !(rc = mstrcmp(argv[1], argv[2])) ? " = " :  rc < 0 ?  " < " : " > ", argv[2]);
 
 	
-#if 0
 	int i = 0;
 	char *str, *ss;
 	int i;
