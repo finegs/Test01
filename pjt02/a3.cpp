@@ -67,6 +67,18 @@ std::ostream& operator<<(std::ostream& os, const Clz& o) {
 
 int main(int argc, char* argv[]) {
 
+	int i = 0, rc;
+
+	if(argc < 2) {
+		printf("Usage : %s string1 string2\n", argv[0]);
+		return 0;
+	}
+
+
+	printf("%s %s %s\n", argv[i], !(rc = mstrcmp(argv[1], argv[2])) ? " = " :  rc < 0 ?  " < " : " > ", argv[2]);
+
+	
+#if 0
 	int i = 0;
 	char *str, *ss;
 
@@ -87,7 +99,6 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 
-#if 0
 	std::unordered_map<std::string, Clz2> m2;
 	std::set<std::string> argset;
 	bool verbose = false;
@@ -104,9 +115,10 @@ int main(int argc, char* argv[]) {
 			|| argset.count("-D") > 0 
 			|| argset.count("-d") > 0) {
 		verbose = true;
-	}
+	}	
 
 	if (inputFile) {
+
 		std::ifstream infs(inputFile);
 		int count=0;
 		infs>>count;
