@@ -6,8 +6,12 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <chrono>
+#include <vector>
 
 #include "mutil.hpp"
+
+using namespace std;
 
 class Clz {
 	public:
@@ -65,6 +69,10 @@ std::ostream& operator<<(std::ostream& os, const Clz& o) {
 	return os;
 }
 
+void log(const char* msg) {
+	std::cout << getTimestamp() << " " << msg << std::endl;
+}
+
 int main(int argc, char* argv[]) {
 
 	int i = 0, rc;
@@ -81,21 +89,39 @@ int main(int argc, char* argv[]) {
 #if 0
 	int i = 0;
 	char *str, *ss;
+	int i;
+	char *str;
+	size_t len;
+	std::vector<std::string> args;
 
 	if(argc < 2) {
 		printf("Usage : %s string delimeter\n", argv[0]);
 		return 0;
 	}
 
-	ss = argv[1];
 	str = NULL;
+	i = 0;
+	char* temp = (char*)malloc(len = strlen(argv[1])+1);
+	memset(temp, '\0', len);
+	strncpy(temp, argv[1], len-1);
+	cout << getTimestamp() << " [D] argv[1]=" << temp << endl;
 	while(true) {
-		str = mstrtok(!i ? ss : NULL, argv[2]);
+		str = mstrtok(!i ? temp : NULL, argv[2]);
+		//str = strtok(!i ? temp : NULL, argv[2]);
 		if(!*str) break;
-		printf("[%d]=%s\n", i++, str);
+		printf("\t[%d]=%s\n", i++, str);
+		args.push_back(std::string(str));
 	}
 
-	printf("argv[2]=%s\n", ss);
+	free(temp);
+	temp = NULL;
+
+	cout << getTimestamp() << " [D] Parsed Result : " << endl;
+	int j = 0;
+	for(std::string s : args) {
+		cout << "\t[" << j++ << "] = " << s << std::endl;
+	}
+	cout << endl;
 
 	return 0;
 
