@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
     std::cout << "Hello World\n";
 
 
-	int x = 100;
+    int x = 100;
 
 	[=]() { std::cout << "no mutable : " << x << std::endl; } ();
 
