@@ -110,7 +110,8 @@ int main(int argc,char* argv[]) {
 		cout << getTimestamp() << " ";
 		for(int i = 0;i<argc;i++) {
 			cout << "[" << i << "] = " << argv[i] << (i<=argc-1 ? "\n" : "");
-		}	
+		}
+
 	}
 
 	return 0;
