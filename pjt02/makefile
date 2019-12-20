@@ -101,7 +101,7 @@ release: CXXFLAGS += -O2
 release: all
 
 release_app_win:
-	copy /Y $(APP_DIR)\$(TARGET) $(TARGET)
+	@copy /Y $(APP_DIR)\$(TARGET) $(TARGET)
 
 release_app_oth:
 	@cp $(APP_DIR)/$(TARGET) $(TARGET)
@@ -109,13 +109,13 @@ release_app_oth:
 clean:$(CLN)
 
 clean_win:
-	@echo starting clean 
+	@echo "starting clean "
 	@del /F /Q *.o
 	@del /F /Q $(TARGET)
 #	-@IF EXIST $(OBJ_DIR) ( del /S /F /Q $(OBJ_DIR)\*.o )
 #	-@IF EXIST $(APP_DIR) ( del /S /F /Q $(APP_DIR)\$(TARGET) )
 #	-@IF EXIST $(TARGET) ( del /F /Q $(TARGET) )
-	@echo complete clean
+	@echo "complete clean"
 
 clean_oth:
 	@echo starting clean 
