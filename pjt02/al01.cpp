@@ -40,7 +40,7 @@ int main() {
 
 
 	int i = len1 - 1;
-	int j  =len2 - 2;
+	int j  =len2 - 1;
 
 	stack<int> st;
 
@@ -59,9 +59,10 @@ int main() {
 	stringstream ss;
 	while(!st.empty()) {
 		//cout << str1[st.top()];
-		ss<<str1[st.top()];
+		ss << str1[st.top()];
 		st.pop();
 	}
+	ss << '\0';
 	cout << ss.str() << endl;
 
 	return 0;

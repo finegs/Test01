@@ -14,7 +14,6 @@ using namespace std;
 int main(int argc,char* argv[]) {
 	unordered_map<string, string> argm;
 	std::vector<std::string> args;
-	
 
 	long sleepTime, sleepCount;
 
@@ -98,7 +97,6 @@ int main(int argc,char* argv[]) {
 			cout << "[" << i << "] = " << argv[i] << (i <= argc-1 ? ",": "\n");
 		}
 	}
-
 
 	
 	return 0;
