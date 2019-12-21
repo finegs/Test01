@@ -39,12 +39,14 @@ int main(int argc, char* argv[])
 
 	int x = 100;
 
+	std::cout << "init : " << x << std::endl;
+
 //compie error 	[=]() { x = 100; std::cout << "no mutable : " << x << std::endl; } ();
-	[&]() { x = 100; std::cout << "no mutable : " << x << std::endl; } ();
+	[&]() { x = 200; std::cout << "no mutable : " << x << std::endl; } ();
 
 	[=]() mutable { x = 300; std::cout << "mutable : " << x << std::endl; x = 200; } ();
 
-	std::cout << x << std::endl;
+	std::cout << "end : " << x << std::endl;
 
 	std::string ss({'a','b','c'});
 
