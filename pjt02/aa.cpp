@@ -10,23 +10,6 @@
 #include "mutil.hpp"
 using namespace std;
 
-#if 0
-
-string getTimestamp() {
-  // get a precise timestamp as a string
-  const auto now = std::chrono::system_clock::now();
-  const auto nowAsTimeT = std::chrono::system_clock::to_time_t(now);
-  const auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
-      now.time_since_epoch()) % 1000;
-  std::stringstream nowSs;
-  nowSs
-	  << std::put_time(std::localtime(&nowAsTimeT), "%Y-%m-%d %H:%M:%S")
-   //   << std::put_time(std::localtime(&nowAsTimeT), "%a %b %d %Y %T")
-      << '.' << std::setfill('0') << std::setw(3) << nowMs.count();
-  return nowSs.str();
-}
-
-#endif
 
 int main(int argc,char* argv[]) {
 	unordered_map<string, string> argm;
@@ -93,13 +76,15 @@ int main(int argc,char* argv[]) {
 		for (int i=0;!sleepCount || i< sleepCount;i++) {
 			cout << getTimestamp() << " ";
 			for(int i = 0;i<argc;i++) {
-				cout << "\t\t[" << i << "] = " << argv[i] << (i<=argc-1 ? "\n" : "");
-			}	
+				cout << " [" << i << "] = " << argv[i] << (i<=argc-1 ? "," : "");
+			}
+			cout << std::endl;
 
 			int j = 0;
-			cout << getTimestamp() << " args : " << endl;
+			cout << getTimestamp() << " args : ";
 			for(std::string s: args) {
-				std::cout << "\t[" << j++ << "] = " << s << ",";
+				std::cout << "[" << j << "] = " << s << (j <argc-1 ? "," : "");
+				j++;
 			}
 			cout << endl;
 
@@ -109,9 +94,10 @@ int main(int argc,char* argv[]) {
 	else {
 		cout << getTimestamp() << " ";
 		for(int i = 0;i<argc;i++) {
-			cout << "[" << i << "] = " << argv[i] << (i<=argc-1 ? "\n" : "");
-		}	
+			cout << "[" << i << "] = " << argv[i] << (i <= argc-1 ? ",": "\n");
+		}
 	}
 
+	
 	return 0;
 }

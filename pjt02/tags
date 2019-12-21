@@ -1,0 +1,119 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Clz	.\a3.cpp	/^		Clz() : age(0), name("") {}$/;"	f	class:Clz
+Clz	.\a3.cpp	/^		Clz(const Clz& o) : age(o.age), name(o.name) {}$/;"	f	class:Clz
+Clz	.\a3.cpp	/^		Clz(int age, const std::string& name) : age(age), name(name) {}$/;"	f	class:Clz
+Clz	.\a3.cpp	/^class Clz {$/;"	c	file:
+Clz2	.\a3.cpp	/^		Clz2() : key("__"), name("__") {}$/;"	f	class:Clz2
+Clz2	.\a3.cpp	/^		Clz2(Clz2& o) : key(std::move(o.key)), name(std::move(o.name)) {}$/;"	f	class:Clz2
+Clz2	.\a3.cpp	/^		Clz2(const Clz2& o) : key(o.key) , name(o.name) {}$/;"	f	class:Clz2
+Clz2	.\a3.cpp	/^		Clz2(const std::string& _key, const std::string& _name) : key(_key), name(_name){}$/;"	f	class:Clz2
+Clz2	.\a3.cpp	/^class Clz2 {$/;"	c	file:
+DHTPIN	.\rpi01.cpp	/^static int DHTPIN = 11;$/;"	v	file:
+Foo	.\a2.cpp	/^struct Foo {$/;"	s	file:
+MAXTIMINGS	.\rpi01.cpp	18;"	d	file:
+Test_Data	.\csvparser.cpp	/^typedef struct Test_Data$/;"	s	file:
+_MUTIL_HPP_	.\mutil.hpp	2;"	d
+aa	.\csvparser.cpp	/^	int aa;$/;"	m	struct:Test_Data	file:
+age	.\a3.cpp	/^		int age;$/;"	m	class:Clz	file:
+alarmFunc	.\tetris.cpp	/^void alarmFunc(int signal) {$/;"	f
+array1	.\b.cpp	/^char array1[] = "Foo" "bar";$/;"	v
+array2	.\b.cpp	/^char array2[] = {'F', 'o', 'o', 'b', 'a', 'r', '\\0'};$/;"	v
+bb	.\csvparser.cpp	/^	char bb[30];$/;"	m	struct:Test_Data	file:
+block	.\tetris.cpp	/^  block(char *shape, int gameWidth) {$/;"	f	class:block
+block	.\tetris.cpp	/^class block {$/;"	c	file:
+block0	.\tetris.cpp	/^  block0(int gameWidth) : $/;"	f	class:block0
+block0	.\tetris.cpp	/^class block0 : public block {$/;"	c	file:
+block2	.\tetris.cpp	/^  block2(int gameWidth) : $/;"	f	class:block2
+block2	.\tetris.cpp	/^class block2 : public block {$/;"	c	file:
+block7	.\tetris.cpp	/^  block7(int gameWidth) : $/;"	f	class:block7
+block7	.\tetris.cpp	/^class block7 : public block {$/;"	c	file:
+blockL	.\tetris.cpp	/^  blockL(int gameWidth) : $/;"	f	class:blockL
+blockL	.\tetris.cpp	/^class blockL : public block {$/;"	c	file:
+blockT	.\tetris.cpp	/^  blockT(int gameWidth) : $/;"	f	class:blockT
+blockT	.\tetris.cpp	/^class blockT : public block {$/;"	c	file:
+blockZ	.\tetris.cpp	/^  blockZ(int gameWidth) : $/;"	f	class:blockZ
+blockZ	.\tetris.cpp	/^class blockZ: public block {$/;"	c	file:
+block_	.\tetris.cpp	/^  block_(int gameWidth) : $/;"	f	class:block_
+block_	.\tetris.cpp	/^class block_ : public block {$/;"	c	file:
+blocks	.\tetris.cpp	/^  list<block *> blocks; \/\/ list of blocks$/;"	m	class:tetrisGame	file:
+canDown	.\tetris.cpp	/^  bool canDown(block *b) {$/;"	f	class:tetrisGame
+canLeft	.\tetris.cpp	/^  bool canLeft(block *b) {$/;"	f	class:tetrisGame
+canMove	.\tetris.cpp	/^  bool canMove(block *b, int deltaR, int deltaC) {$/;"	f	class:tetrisGame
+canRight	.\tetris.cpp	/^  bool canRight(block *b) {$/;"	f	class:tetrisGame
+cc	.\csvparser.cpp	/^	double cc;$/;"	m	struct:Test_Data	file:
+col	.\tetris.cpp	/^  int row, col; \/\/ position of left-upper corner of the block$/;"	m	class:block	file:
+col	.\tetris.cpp	/^  int row, col;$/;"	m	class:coord	file:
+coord	.\tetris.cpp	/^class coord {$/;"	c	file:
+data	.\a2.cpp	/^	int data = 10;$/;"	m	struct:Foo	file:
+dht22_dat	.\rpi01.cpp	/^static int dht22_dat[5] = {0,0,0,0,0};$/;"	v	file:
+displayBlock	.\tetris.cpp	/^  void displayBlock(WINDOW *win, bool yes=true) {$/;"	f	class:block
+f	.\a2.cpp	/^void f(int n1, int n2, int n3, const int& n4, int n5)$/;"	f
+g	.\a2.cpp	/^int g(int n1)$/;"	f
+gameHeight	.\tetris.cpp	/^  int gameWidth, gameHeight;$/;"	m	class:tetrisGame	file:
+gameWidth	.\tetris.cpp	/^  int gameWidth, gameHeight;$/;"	m	class:tetrisGame	file:
+getKey	.\a3.cpp	/^		std::string getKey() { return key; }$/;"	f	class:Clz2
+getName	.\a3.cpp	/^		std::string getName() { return name; }$/;"	f	class:Clz2
+getTimestamp	.\mutil.cpp	/^std::string getTimestamp() {$/;"	f
+get_student	.\a1.cpp	/^std::tuple<double, char, std::string> get_student(int id) $/;"	f
+key	.\a3.cpp	/^		std::string key;$/;"	m	class:Clz2	file:
+lcs	.\al01.cpp	/^int lcs[1001][1001];$/;"	v
+loadAndAdd	.\cc.cpp	/^void loadAndAdd(T&& name)$/;"	f
+log	.\a3.cpp	/^void log(const char* msg) {$/;"	f
+log	.\cc.cpp	/^void log(const std::chrono::system_clock::time_point& tp, const std::string& msg)$/;"	f
+log_cout_end	.\cc.cpp	/^void log_cout_end() { std::cout << std::endl; }$/;"	f
+log_ts_head	.\cc.cpp	/^void log_ts_head()$/;"	f
+main	.\a1.cpp	/^int main() $/;"	f
+main	.\a2.cpp	/^int main() $/;"	f
+main	.\a3.cpp	/^int main(int argc, char* argv[]) {$/;"	f
+main	.\aa.cpp	/^int main(int argc,char* argv[]) {$/;"	f
+main	.\al01.cpp	/^int main() {$/;"	f
+main	.\b.cpp	/^int main(int argc, char* argv[])$/;"	f
+main	.\c1.c	/^int main(int argc, char* argv[])$/;"	f
+main	.\c2.c	/^int main()$/;"	f
+main	.\c3.c	/^int main()$/;"	f
+main	.\cc.cpp	/^int main(int argc, char* argv[])$/;"	f
+main	.\csvparser.cpp	/^int main(int argc, char* argv[])$/;"	f
+main	.\rpi01.cpp	/^int main (void)$/;"	f
+main	.\t01.c	/^int main(void)$/;"	f
+main	.\tetris.cpp	/^int main() {$/;"	f
+mainwin	.\tetris.cpp	/^  WINDOW * mainwin;$/;"	m	class:tetrisGame	file:
+max	.\al01.cpp	7;"	d	file:
+moveDown	.\tetris.cpp	/^  void moveDown(WINDOW *win) {$/;"	f	class:block
+moveLeft	.\tetris.cpp	/^  void moveLeft(WINDOW *win) {$/;"	f	class:block
+moveRight	.\tetris.cpp	/^  void moveRight(WINDOW *win) {$/;"	f	class:block
+mstrcmp	.\mutil.cpp	/^int mstrcmp(const char* _arr1, const char* _arr2) {$/;"	f
+mstrtok	.\mutil.cpp	/^char* mstrtok(char* _str, const char* _delim) {$/;"	f
+name	.\a3.cpp	/^		std::string name;$/;"	m	class:Clz	file:
+name	.\a3.cpp	/^		std::string name;$/;"	m	class:Clz2	file:
+namespace	.\c3.c	/^using namespace;$/;"	v
+newBlock	.\tetris.cpp	/^block * newBlock(int which, int gameWidth) {$/;"	f
+operator <<	.\a3.cpp	/^std::ostream& operator<<(std::ostream& os, const Clz& o) {$/;"	f
+operator <<	.\a3.cpp	/^std::ostream& operator<<(std::ostream& os, const Clz2& o) {$/;"	f
+operator =	.\a3.cpp	/^		const Clz& operator=(const Clz& o) {$/;"	f	class:Clz
+operator =	.\a3.cpp	/^		const Clz2& operator=(Clz2& o) {$/;"	f	class:Clz2
+operator =	.\a3.cpp	/^		const Clz2& operator=(const Clz2& o) {$/;"	f	class:Clz2
+parse	.\csvparser.cpp	/^int  parse(const char* file, testData* tData)$/;"	f
+playGame	.\tetris.cpp	/^  void playGame() {$/;"	f	class:tetrisGame
+print_sum	.\a2.cpp	/^	void print_sum(int n1, int n2)$/;"	f	struct:Foo
+read_dht22_dat	.\rpi01.cpp	/^static int read_dht22_dat()$/;"	f	file:
+row	.\tetris.cpp	/^  int row, col; \/\/ position of left-upper corner of the block$/;"	m	class:block	file:
+row	.\tetris.cpp	/^  int row, col;$/;"	m	class:coord	file:
+s1	.\b.cpp	/^const char* s1 = "foo(\\$/;"	v
+s2	.\b.cpp	/^const char* s2 = "\\nHello\\nWorld\\n";$/;"	v
+setupWindow	.\tetris.cpp	/^  bool setupWindow() {$/;"	f	class:tetrisGame
+sizecvt	.\rpi01.cpp	/^static uint8_t sizecvt(const int read)$/;"	f	file:
+square	.\tetris.cpp	/^class square {$/;"	c	file:
+squares	.\tetris.cpp	/^  list<square> squares; \/\/ squares the block is made of$/;"	m	class:block	file:
+tData	.\csvparser.cpp	/^testData tData[1000000];$/;"	v
+testData	.\csvparser.cpp	/^}testData;$/;"	t	typeref:struct:Test_Data	file:
+testing_cpu	.\c1.c	/^int testing_cpu()$/;"	f
+tetrisGame	.\tetris.cpp	/^  tetrisGame(int width, int height) {$/;"	f	class:tetrisGame
+tetrisGame	.\tetris.cpp	/^class tetrisGame {$/;"	c	file:
+timeToMoveDown	.\tetris.cpp	/^  bool timeToMoveDown; \/\/ flag set in signal handler when time to move block down.$/;"	m	class:tetrisGame	file:
+what	.\tetris.cpp	/^  char what;$/;"	m	class:square	file:
+where	.\tetris.cpp	/^  coord where;$/;"	m	class:square	file:
