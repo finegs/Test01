@@ -39,7 +39,7 @@ SRC = $(SRC_INC)
 ifeq ($(OS), Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET += aa.exe
+		TARGET += al01.exe
 	endif
 
 	SRC+=$(TARGET:%.exe=%.cpp)
@@ -48,7 +48,7 @@ ifeq ($(OS), Windows_NT)
 	RELEASE_APP:=release_app_win
 else
 	ifeq ($(strip $(TARGET)),)
-		TARGET  := aa
+		TARGET  := al01
 	endif
 
 	SRC+=$(TARGET:%=%.cpp)
