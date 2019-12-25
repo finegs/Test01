@@ -32,6 +32,7 @@ int main(int argc,char* argv[]) {
 	unordered_map<string, string> argm;
 	std::vector<std::string> args;
 
+
 	long sleepTime, sleepCount;
 
 	sleepTime = 1000;
@@ -56,15 +57,16 @@ int main(int argc,char* argv[]) {
 
 			size_t len;
 			const char* delim = ", ";
+            char *context = NULL;
 			char* temp = (char*)malloc(len = strlen(argv[i+1])+1);
 			memset(temp, '\0', len);
 
-			strncpy(temp, argv[i+1], len-1);
+			strncpy_s(temp, len-1, argv[i+1], len-1);
 			std::cout << getTimestamp() << " temp is " << temp << std::endl;
-			char* token= strtok(temp, delim);
+			char* token= strtok_s(temp, delim, &context);
 			while(token) {
 				args.push_back(std::string(token));
-				token = strtok(NULL, delim);
+				token = strtok_s(NULL, delim,&context);
 			}
 
 			free(temp);

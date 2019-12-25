@@ -36,10 +36,14 @@ SKIP_FILE += b.cpp c.cpp s1.cpp
 #include other source files
 SRC = $(SRC_INC)
 
+TARGET_DEFAULT := t_hash
+
+
 ifeq ($(OS), Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET += aa.exe
+		TARGET:=$(TARGET_DEFAULT:%=%.exe)
+#		TARGET += aa.exe
 	endif
 
 	SRC+=$(TARGET:%.exe=%.cpp)
@@ -48,7 +52,8 @@ ifeq ($(OS), Windows_NT)
 	RELEASE_APP:=release_app_win
 else
 	ifeq ($(strip $(TARGET)),)
-		TARGET  := aa
+		TARGET:=$(TARGET_DEFAULT)
+#		TARGET  := aa
 	endif
 
 	SRC+=$(TARGET:%=%.cpp)
