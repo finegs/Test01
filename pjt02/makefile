@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
@@ -140,4 +141,5 @@ uninstall_oth:
 	@echo starting $(@)
 	@rm -f $(TARGET)
 	@echo complete $(@)
+
 
