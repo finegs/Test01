@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
