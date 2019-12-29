@@ -1,7 +1,8 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
-CXXFLAGS := -std=c++17 -Wall -Wextra
+#CXXFLAGS := -std=c++17 -Wall -Wextra
+CXXFLAGS := -std=c++17 -Wextra -g -DMYSTRTOK=1
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 
 ifeq ($(OS), Windows_NT)
@@ -61,6 +62,7 @@ endif
 #OBJECTS = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 OBJS    = $(SRC:%.cpp=%.o)
 
+
 #all
 all: $(TARGET)
 
@@ -109,13 +111,13 @@ release_app_oth:
 clean:$(CLN)
 
 clean_win:
-	@echo "starting clean "
+	@echo starting clean
 	@del /F /Q *.o
 	@del /F /Q $(TARGET)
 #	-@IF EXIST $(OBJ_DIR) ( del /S /F /Q $(OBJ_DIR)\*.o )
 #	-@IF EXIST $(APP_DIR) ( del /S /F /Q $(APP_DIR)\$(TARGET) )
 #	-@IF EXIST $(TARGET) ( del /F /Q $(TARGET) )
-	@echo "complete clean"
+	@echo complete clean
 
 clean_oth:
 	@echo starting clean 

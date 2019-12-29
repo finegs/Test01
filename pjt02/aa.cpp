@@ -10,8 +10,24 @@
 #include "mutil.hpp"
 using namespace std;
 
+#if MYSTRTOK > 0
+#define __str_tok mstrtok
+#else
+#define __str_tok strtok
+#endif
+
+void print_info() {
+#if MYSTRTOK > 0
+	printf("strtok is %s\n", "mstrtok");
+#else
+	printf("strtok is %s\n", "strtok");
+#endif
+}
 
 int main(int argc,char* argv[]) {
+
+	print_info();
+
 	unordered_map<string, string> argm;
 	std::vector<std::string> args;
 
@@ -42,12 +58,13 @@ int main(int argc,char* argv[]) {
 			char* temp = (char*)malloc(len = strlen(argv[i+1])+1);
 			memset(temp, '\0', len);
 
-			strncpy(temp, argv[i+1], len-1);
-			std::cout << getTimestamp() << " temp is " << temp << std::endl;
-			char* token= strtok(temp, delim);
+			strncpy(temp, argv[i+1], len);
+			std::cout << getTimestamp() << " temp is \"" << temp << "\"" << std::endl;
+			 
+			char* token= __str_tok(temp, delim);
 			while(token) {
 				args.push_back(std::string(token));
-				token = strtok(NULL, delim);
+				token = __str_tok(NULL, delim);
 			}
 
 			free(temp);

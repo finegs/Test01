@@ -10,7 +10,7 @@
 char* mstrtok(char* _str, const char* _delim) {
 	static char* pstr;
 //	static char bdelim;
-	const char* pdelim;
+	char* pdelim;
 	size_t len;
 
 	len = 0;
@@ -24,16 +24,23 @@ char* mstrtok(char* _str, const char* _delim) {
 	}
 
 	while(*pstr) {
-		pdelim = _delim;
+		pdelim =(char*)_delim;
 
 		while(*pdelim) {
-			if(len != 0 && *pstr == *pdelim) {
-//				bdelim = *pdelim;
-				*pstr = '\0'; 
+			if(*pstr == *pdelim) {
+				*pstr = '\0';
 				pstr++;
 				return _str;
 			}
 			pdelim++;
+//			if(len != 0 && *pstr == *pdelim) {
+//			if(*pstr == *pdelim) {
+//				bdelim = *pdelim;
+//				*pstr = '\0'; 
+//				pstr++;
+//				return _str;
+//			}
+//			pdelim++;
 		}
 		pstr++;
 		len++;
@@ -53,8 +60,6 @@ int mstrcmp(const char* _arr1, const char* _arr2) {
 	}
 	return 0;
 }
-
-
 
 std::string getTimestamp() {
   // get a precise timestamp as a string
