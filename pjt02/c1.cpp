@@ -29,7 +29,7 @@ int testing_cpu()
 int main(int argc, char* argv[])
 {
 
-	printf("testing_cpu()=%s\n", testing_cpu());
+	printf("testing_cpu()=%s\n", testing_cpu() ? "OK" : "NG");
 
 	return 0;
 }
