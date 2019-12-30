@@ -1,7 +1,7 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
-CXXFLAGS := -std=c++17 -Wall -Wextra
+CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1 -g
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 
 ifeq ($(OS), Windows_NT)
@@ -74,7 +74,7 @@ $(OBJS):$(SRC)
 
 #	@mkdir -p $(@D)
 $(TARGET):$(OBJS)
-	$(CXX) -o $@ $^ $(LDFLAGS) 
+	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS) 
 
 #	@mkdir -p $(@D)
 #$(OBJ_DIR)/%.o: %.cpp

@@ -8,7 +8,15 @@
 #include <vector>
 
 #include "mutil.hpp"
+
+#if USE_MSTR_TOK > 0
+#define __STRTOK mstrtok
+#else
+#define __STRTOK strtok
+#endif
+
 using namespace std;
+
 
 
 int main(int argc,char* argv[]) {
@@ -34,31 +42,45 @@ int main(int argc,char* argv[]) {
 
 			i++;
 		}
+		else if(!strcmp("-tt", argv[i])) {
+			char* tt = (char*)malloc(sizeof(char)*1);
+			memset(tt, '\0', 1);
+			std::cout << getTimestamp() << " {\"tt\":\"" << tt << "\"}" << endl;
+		}
 		else if (!strcmp("-a", argv[i]) && i+1 < argc) {
 			argm.insert({argv[i], argv[i+1]});
 
 			size_t len;
-			const char* delim = ", ";
-			char* temp = (char*)malloc(len = strlen(argv[i+1])+1);
-			memset(temp, '\0', len);
+			char* tdelim;
+			if(i+2<argc) {
+				tdelim = argv[i+2];
+			} else {
+				tdelim = ",";
+			}
 
-			strncpy(temp, argv[i+1], len-1);
-			std::cout << getTimestamp() << " temp is " << temp << std::endl;
-			char* token= strtok(temp, delim);
+			const char* delim = tdelim;
+			char* temp = (char*)malloc((len = strlen(argv[i+1]))+1);
+			memset(temp+len, '\0', 1);
+
+			strncpy(temp, argv[i+1], len);
+			std::cout << getTimestamp() << " {\"temp\":\"" << temp << "\"}"<< std::endl;
+			std::cout << getTimestamp() << " {\"delim\":\"" << delim <<"\"}"<< std::endl;
+			char* token= __STRTOK(temp, delim);
 			while(token) {
 				args.push_back(std::string(token));
-				token = strtok(NULL, delim);
+				token = __STRTOK(NULL, delim);
 			}
 
 			free(temp);
 			temp = token = NULL;
 
-			std::cout << getTimestamp() << " -a is " << std::endl;
-			int j = 0;
-			for(std::string s: args) {
-				std::cout << "\t[" << j++ << "] = " << s << ",";
+			std::cout << getTimestamp() << " {\"tokens\":[";
+			int j=0;
+			for(auto it = args.cbegin();it!=args.cend();it++) {
+				std::cout << ((j>0)? ", ":"") << "\"" << (*it) << "\"";
+				j++;
 			}
-			cout << endl;
+			cout << "]}"<<endl;
 
 			i++;
 		}
@@ -81,23 +103,25 @@ int main(int argc,char* argv[]) {
 			cout << std::endl;
 
 			int j = 0;
-			cout << getTimestamp() << " args : ";
-			for(std::string s: args) {
-				std::cout << "[" << j << "] = " << s << (j <argc-1 ? "," : "");
+			cout << getTimestamp() << " {\"args\":[";
+			for(auto it = args.cbegin();it!= args.cend();it++) {
+				if(j>0) std::cout << ", ";
+				std::cout << "\"" << (*it) << "\"";
 				j++;
 			}
-			cout << endl;
+			cout << "]}"<<endl;
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
 		}
 	}
 	else {
-		cout << getTimestamp() << " ";
+		cout << getTimestamp() << " { args:[";
 		for(int i = 0;i<argc;i++) {
-			cout << "[" << i << "] = " << argv[i] << (i <= argc-1 ? ",": "\n");
+			cout << (i>0?",":"") << "\"" << argv[i] << "\"";
 		}
+		cout << "]}"<<endl;
 	}
 
-	
+
 	return 0;
 }

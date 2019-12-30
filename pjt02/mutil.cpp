@@ -6,29 +6,28 @@
 #include <iomanip>
 #include <ctime>
 #include <cstdlib>
+#include <cstring>
 
 char* mstrtok(char* _str, const char* _delim) {
 	static char* pstr;
-//	static char bdelim;
+	static char* pstr_end;
 	const char* pdelim;
 	size_t len;
 
 	len = 0;
 	if(NULL == _str) {
 		_str = pstr;
-//		if(!*pstr) // replace previous null-terminator '\0' with previous delimeter
-//			*(pstr-1)=bdelim;
 	}
 	else {
 		pstr = _str;
+		pstr_end = pstr + strlen(pstr);
 	}
 
 	while(*pstr) {
 		pdelim = _delim;
 
 		while(*pdelim) {
-			if(len != 0 && *pstr == *pdelim) {
-//				bdelim = *pdelim;
+			if(*pstr == *pdelim) {
 				*pstr = '\0'; 
 				pstr++;
 				return _str;
@@ -38,6 +37,8 @@ char* mstrtok(char* _str, const char* _delim) {
 		pstr++;
 		len++;
 	}
+//	if(len==0) return NULL; 
+	if(len==0 && pstr == pstr_end) return NULL;
 	return _str;
 }
 
