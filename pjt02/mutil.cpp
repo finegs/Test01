@@ -95,34 +95,51 @@ char* getTimestamp2() {
 char* getTimestamp2() {
 	int rc;
 	static char* buf;
+	static size_t buf_len;
 	if(!buf) {
-		buf = (char*)malloc(sizeof(char)*80);
+		buf = (char*)malloc(sizeof(char)*35);
+		buf_len = strlen("2019-12-31 11:59:59.123456789") + 1;
+//		buf_len = strlen("2019-12-31 11:59:59.123456") + 1;
 	}
-	memset(buf, '\0', 80);
+	memset(buf, '\0', buf_len);
 
-	clockid_t clk_id = CLOCK_REALTIME;
-	const uint TIME_FMT = strlen("2019-12-31 11:59:59.123456789") + 1;
-	struct timespec ts, res;
-	clock_getres(clk_id, &res);
-	clock_gettime(clk_id, &ts);
+	struct timespec ts;
+//	clock_getres(CLOCK_REALTIME, &res);
+	clock_gettime(CLOCK_REALTIME, &ts);
 
-	if ((rc = timespec2str(buf, sizeof(buf), &ts)) != EXIT_SUCCESS) {
+	if ((rc = timespec2str(buf, buf_len, &ts)) != EXIT_SUCCESS) {
 		printf("timespec2str failed!, ec=%d\n", rc);
 	} else {
-		unsigned long resol = res.tv_sec * NANO + res.tv_nsec;
-//		printf("CLOCK_REALTIME: res=%ld ns, time=%s\n", resol, timestr);
-	}		
+//		unsigned long resol = res.tv_sec * NANO + res.tv_nsec;
+//		printf("CLOCK_REALTIME: res=%ld ns, time=%s\n", resol, buf);
+	}
 
 	return buf;
 }
 
 // buf needs to store 30 characters
 int timespec2str(char *buf, uint len, struct timespec *ts) {
+
+  time_t rawtime;
+  struct tm* timeinfo;
+
+  time (&rawtime);
+#if USE_LOCAL_TIME
+  timeinfo = localtime(&rawtime);
+#else
+  timeinfo = gmtime(&rawtime);
+#endif
+
+  strftime(buf, 35, "%Y-%m-%d %H:%M:%S", timeinfo);
+  snprintf(&buf[strlen(buf)], len, ".%09ld", ts->tv_nsec);
+
+#if 0
     int ret;
     struct tm t;
 
     _tzset();
-    if (localtime_r(&(ts->tv_sec), &t) == NULL) return 1;
+	localtime(&t);
+//    if (localtime_r(&(ts->tv_sec), &t) == NULL) return 1;
 
 //    ret = strftime(buf, len, "%F %T", &t);
     ret = strftime(buf, len, "%Y-%m-%d %H:%M:%S", &t);
@@ -131,6 +148,7 @@ int timespec2str(char *buf, uint len, struct timespec *ts) {
 
     ret = snprintf(&buf[strlen(buf)], len, ".%09ld", ts->tv_nsec);
     if (ret >= len) return 3;
+#endif
 
     return 0;
 }

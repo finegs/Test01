@@ -1,7 +1,7 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
-CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1
+CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1 -DUSE_LOCAL_TIME=true
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 
 ifeq ($(OS), Windows_NT)

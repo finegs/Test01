@@ -43,9 +43,10 @@ int main(int argc,char* argv[]) {
 			i++;
 		}
 		else if(!strcmp("-tt", argv[i])) {
-			char* tt = (char*)malloc(sizeof(char)*1);
-			memset(tt, '\0', 1);
-			std::cout << getTimestamp2() << " {\"timestamp\":\"" << tt << "\"}" << endl;
+		//	char* tt = (char*)malloc(sizeof(char)*1);
+		//	memset(tt, '\0', 1);
+			std::cout << getTimestamp() << " {\"timestamp\":\"" << getTimestamp() << "\"}" << endl;
+			std::cout << getTimestamp2() << " {\"timestamp2\":\"" << getTimestamp2() << "\"}" << endl;
 		}
 		else if (!strcmp("-a", argv[i]) && i+1 < argc) {
 			argm.insert({argv[i], argv[i+1]});
@@ -113,17 +114,16 @@ int main(int argc,char* argv[]) {
 		system("pause");
 
 		for (int i=0;!sleepCount || i< sleepCount;i++) {
-			cout << getTimestamp2() << " ";
+			cout << getTimestamp2() << " {\"argv\":[";
 			for(int i = 0;i<argc;i++) {
-				cout << " [" << i << "] = " << argv[i] << (i<=argc-1 ? "," : "");
+				cout << (i > 0 ? "," : "") << "\"" << argv[i] << "\"";
 			}
-			cout << std::endl;
+			cout << "]}" << endl;
 
 			int j = 0;
 			cout << getTimestamp2() << " {\"args\":[";
 			for(auto it = args.cbegin();it!= args.cend();it++) {
-				if(j>0) std::cout << ", ";
-				std::cout << "\"" << (*it) << "\"";
+				cout << (j>0? ",":"") << "\"" << (*it) << "\"";
 				j++;
 			}
 			cout << "]}"<<endl;
