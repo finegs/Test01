@@ -45,7 +45,7 @@ int main(int argc,char* argv[]) {
 		else if(!strcmp("-tt", argv[i])) {
 			char* tt = (char*)malloc(sizeof(char)*1);
 			memset(tt, '\0', 1);
-			std::cout << getTimestamp() << " {\"tt\":\"" << tt << "\"}" << endl;
+			std::cout << getTimestamp2() << " {\"timestamp\":\"" << tt << "\"}" << endl;
 		}
 		else if (!strcmp("-a", argv[i]) && i+1 < argc) {
 			argm.insert({argv[i], argv[i+1]});
@@ -63,8 +63,8 @@ int main(int argc,char* argv[]) {
 			memset(temp+len, '\0', 1);
 
 			strncpy(temp, argv[i+1], len);
-			std::cout << getTimestamp() << " {\"temp\":\"" << temp << "\"}"<< std::endl;
-			std::cout << getTimestamp() << " {\"delim\":\"" << delim <<"\"}"<< std::endl;
+			std::cout << getTimestamp2() << " {\"temp\":\"" << temp << "\"}"<< std::endl;
+			std::cout << getTimestamp2() << " {\"delim\":\"" << delim <<"\"}"<< std::endl;
 			char* token= __STRTOK(temp, delim);
 			while(token) {
 				args.push_back(std::string(token));
@@ -74,7 +74,7 @@ int main(int argc,char* argv[]) {
 			free(temp);
 			temp = token = NULL;
 
-			std::cout << getTimestamp() << " {\"tokens\":[";
+			std::cout << getTimestamp2() << " {\"tokens\":[";
 			int j=0;
 			for(auto it = args.cbegin();it!=args.cend();it++) {
 				std::cout << ((j>0)? ", ":"") << "\"" << (*it) << "\"";
@@ -84,6 +84,23 @@ int main(int argc,char* argv[]) {
 
 			i++;
 		}
+		else if(!strcmp("-ts", argv[i])) {
+			clockid_t clk_id = CLOCK_REALTIME;
+			const uint TIME_FMT = strlen("2019-12-31 11:59:59.123456789") + 1;
+			char timestr[TIME_FMT];
+			struct timespec ts, res;
+			clock_getres(clk_id, &res);
+			clock_gettime(clk_id, &ts);
+
+			if (timespec2str(timestr, sizeof(timestr), &ts) != 0) {
+				printf("timespec2str failed!\n");
+				return EXIT_FAILURE;
+			} else {
+				unsigned long resol = res.tv_sec * NANO + res.tv_nsec;
+				printf("CLOCK_REALTIME: res=%ld ns, time=%s\n", resol, timestr);
+				return EXIT_SUCCESS;
+			}		
+		}
 		else {
 			argm.insert({argv[i], argv[i]});
 		}
@@ -91,19 +108,19 @@ int main(int argc,char* argv[]) {
 	
 	auto search = argm.find("-t");
 	if(search != argm.end()) {
-		cout << getTimestamp() << " [I]" << " sleep time=" << sleepTime<< endl;
-		cout << getTimestamp() << " [I]" << " sleep count=" << sleepCount<< endl;
+		cout << getTimestamp2() << " [I]" << " sleep time=" << sleepTime<< endl;
+		cout << getTimestamp2() << " [I]" << " sleep count=" << sleepCount<< endl;
 		system("pause");
 
 		for (int i=0;!sleepCount || i< sleepCount;i++) {
-			cout << getTimestamp() << " ";
+			cout << getTimestamp2() << " ";
 			for(int i = 0;i<argc;i++) {
 				cout << " [" << i << "] = " << argv[i] << (i<=argc-1 ? "," : "");
 			}
 			cout << std::endl;
 
 			int j = 0;
-			cout << getTimestamp() << " {\"args\":[";
+			cout << getTimestamp2() << " {\"args\":[";
 			for(auto it = args.cbegin();it!= args.cend();it++) {
 				if(j>0) std::cout << ", ";
 				std::cout << "\"" << (*it) << "\"";
@@ -115,13 +132,12 @@ int main(int argc,char* argv[]) {
 		}
 	}
 	else {
-		cout << getTimestamp() << " { args:[";
+		cout << getTimestamp2() << " { args:[";
 		for(int i = 0;i<argc;i++) {
 			cout << (i>0?",":"") << "\"" << argv[i] << "\"";
 		}
 		cout << "]}"<<endl;
 	}
-
-
 	return 0;
 }
+

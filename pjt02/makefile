@@ -1,7 +1,7 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
-CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1 -g
+CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 
 ifeq ($(OS), Windows_NT)
@@ -36,10 +36,14 @@ SKIP_FILE += b.cpp c.cpp s1.cpp
 #include other source files
 SRC = $(SRC_INC)
 
+TARGET_DEFAULT := t_hash
+
+
 ifeq ($(OS), Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET += al01.exe
+		TARGET:=$(TARGET_DEFAULT:%=%.exe)
+#		TARGET += aa.exe
 	endif
 
 	SRC+=$(TARGET:%.exe=%.cpp)
@@ -48,7 +52,8 @@ ifeq ($(OS), Windows_NT)
 	RELEASE_APP:=release_app_win
 else
 	ifeq ($(strip $(TARGET)),)
-		TARGET  := al01
+		TARGET:=$(TARGET_DEFAULT)
+#		TARGET  := aa
 	endif
 
 	SRC+=$(TARGET:%=%.cpp)
@@ -57,11 +62,8 @@ else
 	RELEASE_APP:=release_app_oth
 endif
 
-#objects for other source files
-#OBJECTS = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 OBJS    = $(SRC:%.cpp=%.o)
 
-#all
 all: $(TARGET)
 
 #	@mkdir -p $(@D)
@@ -74,7 +76,7 @@ $(OBJS):$(SRC)
 
 #	@mkdir -p $(@D)
 $(TARGET):$(OBJS)
-	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS) 
+	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS)
 
 #	@mkdir -p $(@D)
 #$(OBJ_DIR)/%.o: %.cpp
@@ -101,7 +103,7 @@ release: CXXFLAGS += -O2
 release: all
 
 release_app_win:
-	@copy /Y $(APP_DIR)\$(TARGET) $(TARGET)
+	copy /Y $(APP_DIR)\$(TARGET) $(TARGET)
 
 release_app_oth:
 	@cp $(APP_DIR)/$(TARGET) $(TARGET)
@@ -109,21 +111,18 @@ release_app_oth:
 clean:$(CLN)
 
 clean_win:
-	@echo "starting clean "
+	@echo starting clean 
 	@del /F /Q *.o
 	@del /F /Q $(TARGET)
 #	-@IF EXIST $(OBJ_DIR) ( del /S /F /Q $(OBJ_DIR)\*.o )
 #	-@IF EXIST $(APP_DIR) ( del /S /F /Q $(APP_DIR)\$(TARGET) )
 #	-@IF EXIST $(TARGET) ( del /F /Q $(TARGET) )
-	@echo "complete clean"
+	@echo complete clean
 
 clean_oth:
 	@echo starting clean 
 	@rm -rf *.o
 	@rm -rf $(TARGET)
-#	@rm -rf $(OBJ_DIR)/*.o
-#	@rm -rf $(APP_DIR)/$(TARGET)
-#	@rm -f $(TARGET)
 	@echo complete clean
 
 uninstall_win:
