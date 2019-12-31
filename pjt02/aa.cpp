@@ -6,6 +6,7 @@
 #include <thread>
 #include <cstring>
 #include <vector>
+#include <time.h>
 
 #include "mutil.hpp"
 
@@ -46,8 +47,11 @@ int main(int argc,char* argv[]) {
 		//	char* tt = (char*)malloc(sizeof(char)*1);
 		//	memset(tt, '\0', 1);
 			std::cout << getTimestamp() << " {\"timestamp\":\"" << getTimestamp() << "\"}" << endl;
-			std::cout << getTimestamp2() << " {\"timestamp2\":\"" << getTimestamp2() << "\"}" << endl;
+			std::cout << getTimestamp() << " {\"timestamp2\":\"" << getTimestamp() << "\"}" << endl;
 		}
+		else if(!strcmp("-t01", argv[i])) {
+			std::cout << getTimestamp() << " : -t01" << std::endl;
+		}	
 		else if (!strcmp("-a", argv[i]) && i+1 < argc) {
 			argm.insert({argv[i], argv[i+1]});
 
@@ -64,8 +68,8 @@ int main(int argc,char* argv[]) {
 			memset(temp+len, '\0', 1);
 
 			strncpy(temp, argv[i+1], len);
-			std::cout << getTimestamp2() << " {\"temp\":\"" << temp << "\"}"<< std::endl;
-			std::cout << getTimestamp2() << " {\"delim\":\"" << delim <<"\"}"<< std::endl;
+			std::cout << getTimestamp() << " {\"temp\":\"" << temp << "\"}"<< std::endl;
+			std::cout << getTimestamp() << " {\"delim\":\"" << delim <<"\"}"<< std::endl;
 			char* token= __STRTOK(temp, delim);
 			while(token) {
 				args.push_back(std::string(token));
@@ -75,7 +79,7 @@ int main(int argc,char* argv[]) {
 			free(temp);
 			temp = token = NULL;
 
-			std::cout << getTimestamp2() << " {\"tokens\":[";
+			std::cout << getTimestamp() << " {\"tokens\":[";
 			int j=0;
 			for(auto it = args.cbegin();it!=args.cend();it++) {
 				std::cout << ((j>0)? ", ":"") << "\"" << (*it) << "\"";
@@ -85,23 +89,6 @@ int main(int argc,char* argv[]) {
 
 			i++;
 		}
-		else if(!strcmp("-ts", argv[i])) {
-			clockid_t clk_id = CLOCK_REALTIME;
-			const uint TIME_FMT = strlen("2019-12-31 11:59:59.123456789") + 1;
-			char timestr[TIME_FMT];
-			struct timespec ts, res;
-			clock_getres(clk_id, &res);
-			clock_gettime(clk_id, &ts);
-
-			if (timespec2str(timestr, sizeof(timestr), &ts) != 0) {
-				printf("timespec2str failed!\n");
-				return EXIT_FAILURE;
-			} else {
-				unsigned long resol = res.tv_sec * NANO + res.tv_nsec;
-				printf("CLOCK_REALTIME: res=%ld ns, time=%s\n", resol, timestr);
-				return EXIT_SUCCESS;
-			}		
-		}
 		else {
 			argm.insert({argv[i], argv[i]});
 		}
@@ -109,19 +96,19 @@ int main(int argc,char* argv[]) {
 	
 	auto search = argm.find("-t");
 	if(search != argm.end()) {
-		cout << getTimestamp2() << " [I]" << " sleep time=" << sleepTime<< endl;
-		cout << getTimestamp2() << " [I]" << " sleep count=" << sleepCount<< endl;
+		cout << getTimestamp() << " [I]" << " sleep time=" << sleepTime<< endl;
+		cout << getTimestamp() << " [I]" << " sleep count=" << sleepCount<< endl;
 		system("pause");
 
 		for (int i=0;!sleepCount || i< sleepCount;i++) {
-			cout << getTimestamp2() << " {\"argv\":[";
+			cout << getTimestamp() << " {\"argv\":[";
 			for(int i = 0;i<argc;i++) {
 				cout << (i > 0 ? "," : "") << "\"" << argv[i] << "\"";
 			}
 			cout << "]}" << endl;
 
 			int j = 0;
-			cout << getTimestamp2() << " {\"args\":[";
+			cout << getTimestamp() << " {\"args\":[";
 			for(auto it = args.cbegin();it!= args.cend();it++) {
 				cout << (j>0? ",":"") << "\"" << (*it) << "\"";
 				j++;
@@ -132,7 +119,7 @@ int main(int argc,char* argv[]) {
 		}
 	}
 	else {
-		cout << getTimestamp2() << " { args:[";
+		cout << getTimestamp() << " { args:[";
 		for(int i = 0;i<argc;i++) {
 			cout << (i>0?",":"") << "\"" << argv[i] << "\"";
 		}

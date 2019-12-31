@@ -8,9 +8,7 @@
 
 char* mstrtok(char* _str, const char* _delim); 
 int   mstrcmp(const char* _str1, const char* _str2);
-std::string getTimestamp();
-char* getTimestamp2();
-int timespec2str(char *buf, uint len, struct timespec *ts);
+char* getTimestamp();
 
 typedef struct _Node
 {

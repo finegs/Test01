@@ -36,14 +36,12 @@ SKIP_FILE += b.cpp c.cpp s1.cpp
 #include other source files
 SRC = $(SRC_INC)
 
-TARGET_DEFAULT := t_hash
-
+TARGET_DEFAULT := aa
 
 ifeq ($(OS), Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
 		TARGET:=$(TARGET_DEFAULT:%=%.exe)
-#		TARGET += aa.exe
 	endif
 
 	SRC+=$(TARGET:%.exe=%.cpp)
@@ -53,7 +51,6 @@ ifeq ($(OS), Windows_NT)
 else
 	ifeq ($(strip $(TARGET)),)
 		TARGET:=$(TARGET_DEFAULT)
-#		TARGET  := aa
 	endif
 
 	SRC+=$(TARGET:%=%.cpp)
@@ -68,8 +65,6 @@ all: $(TARGET)
 
 #	@mkdir -p $(@D)
 $(OBJS):$(SRC)
-#	@IF NOT EXIST $(@D) mkdir $(@D)
-#	@echo "SRS IS "$(SRC)
 #	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 #	$(CXX) -c $? $(CXXFLAGS) $(INCLUDE)
 	$(CXX) -c $^ $(CXXFLAGS) $(INCLUDE)

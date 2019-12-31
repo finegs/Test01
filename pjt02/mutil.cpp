@@ -57,100 +57,30 @@ int mstrcmp(const char* _arr1, const char* _arr2) {
 	return 0;
 }
 
-std::string getTimestamp() {
-  // get a precise timestamp as a string
-  const auto now = std::chrono::system_clock::now();
-  const auto nowAsTimeT = std::chrono::system_clock::to_time_t(now);
-  const auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
-      now.time_since_epoch()) % 1000;
-  std::stringstream nowSs;
-  nowSs
-	  << std::put_time(std::localtime(&nowAsTimeT), "%Y-%m-%d %H:%M:%S")
-   //   << std::put_time(std::localtime(&nowAsTimeT), "%a %b %d %Y %T")
-      << '.' << std::setfill('0') << std::setw(3) << nowMs.count();
-  return nowSs.str();
-}
-
-#if 0
-char* getTimestamp2() {
-	struct timeval tmnow;
-    struct tm *tm;
-    static char* buf; 
-	static char* usec_buf;
-
-	if(!buf) buf = (char*)malloc(sizeof(char)*30);
-	if(!usec_buf) usec_buf = (char*)malloc(sizeof(char)*6);
-
-    gettimeofday(&tmnow, NULL);
-    tm = localtime(&tmnow.tv_sec);
-    strftime(buf,30,"%Y-%m-%d %H:%M:%S", tm);
-    strcat(buf,".");
-    sprintf(usec_buf,"%dZ",(int)tmnow.tv_usec);
-    strcat(buf,usec_buf);
-	 buf;
-}
-
-#endif
-
-char* getTimestamp2() {
-	int rc;
+char* getTimestamp() {
 	static char* buf;
 	static size_t buf_len;
-	if(!buf) {
-		buf = (char*)malloc(sizeof(char)*35);
-		buf_len = strlen("2019-12-31 11:59:59.123456789") + 1;
-//		buf_len = strlen("2019-12-31 11:59:59.123456") + 1;
-	}
-	memset(buf, '\0', buf_len);
 
 	struct timespec ts;
-//	clock_getres(CLOCK_REALTIME, &res);
-	clock_gettime(CLOCK_REALTIME, &ts);
-
-	if ((rc = timespec2str(buf, buf_len, &ts)) != EXIT_SUCCESS) {
-		printf("timespec2str failed!, ec=%d\n", rc);
-	} else {
-//		unsigned long resol = res.tv_sec * NANO + res.tv_nsec;
-//		printf("CLOCK_REALTIME: res=%ld ns, time=%s\n", resol, buf);
+	struct tm tm;
+  	struct tm* rtm;
+	if(!buf) {
+		buf_len = strlen("2019-12-31 11:59:59.123456789") + 1;
+		buf = (char*)malloc(sizeof(char)*buf_len);
+		memset(buf, '\0', buf_len);
 	}
 
-	return buf;
-}
+	clock_gettime(CLOCK_REALTIME, &ts);
 
-// buf needs to store 30 characters
-int timespec2str(char *buf, uint len, struct timespec *ts) {
-
-  time_t rawtime;
-  struct tm* timeinfo;
-
-  time (&rawtime);
-#if USE_LOCAL_TIME
-  timeinfo = localtime(&rawtime);
+#ifdef USE_LOCAL_TIME
+    rtm = localtime_r (&ts.tv_sec, &tm);
 #else
-  timeinfo = gmtime(&rawtime);
+    rtm = gmtime_r (&ts.tv_sec, &tm);
 #endif
 
-  strftime(buf, 35, "%Y-%m-%d %H:%M:%S", timeinfo);
-  snprintf(&buf[strlen(buf)], len, ".%09ld", ts->tv_nsec);
-
-#if 0
-    int ret;
-    struct tm t;
-
-    _tzset();
-	localtime(&t);
-//    if (localtime_r(&(ts->tv_sec), &t) == NULL) return 1;
-
-//    ret = strftime(buf, len, "%F %T", &t);
-    ret = strftime(buf, len, "%Y-%m-%d %H:%M:%S", &t);
-    if (ret == 0) return 2;
-    len -= ret - 1;
-
-    ret = snprintf(&buf[strlen(buf)], len, ".%09ld", ts->tv_nsec);
-    if (ret >= len) return 3;
-#endif
-
-    return 0;
+	strftime(buf, buf_len, "%Y-%m-%d %H:%M:%S", rtm);
+	sprintf(buf+19, ".%09ld", ts.tv_nsec);
+	return buf;
 }
 
 Node *hashTable[1000];
