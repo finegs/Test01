@@ -39,6 +39,7 @@ char* mstrtok(char* _str, const char* _delim) {
 		pstr++;
 		len++;
 	}
+	if(0==len) return NULL;
 	return _str;
 }
 
@@ -54,22 +55,32 @@ int mstrcmp(const char* _arr1, const char* _arr2) {
 	}
 	return 0;
 }
+char* getTimestamp() {
+      static char* buf;
+      static size_t buf_len;
 
+      struct timespec ts;
+      struct tm tm;
+      struct tm* rtm;
+      if(!buf) {
+              buf_len = strlen("2019-12-31 11:59:59.123456789") + 1;
+              buf = (char*)malloc(sizeof(char)*buf_len);
+              memset(buf, '\0', buf_len);
+      }
 
+      clock_gettime(CLOCK_REALTIME, &ts);
 
-std::string getTimestamp() {
-  // get a precise timestamp as a string
-  const auto now = std::chrono::system_clock::now();
-  const auto nowAsTimeT = std::chrono::system_clock::to_time_t(now);
-  const auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
-      now.time_since_epoch()) % 1000;
-  std::stringstream nowSs;
-  nowSs
-	  << std::put_time(std::localtime(&nowAsTimeT), "%Y-%m-%d %H:%M:%S")
-   //   << std::put_time(std::localtime(&nowAsTimeT), "%a %b %d %Y %T")
-      << '.' << std::setfill('0') << std::setw(3) << nowMs.count();
-  return nowSs.str();
+#ifdef USE_LOCAL_TIME
+    rtm = localtime_r (&ts.tv_sec, &tm);
+#else
+    rtm = gmtime_r (&ts.tv_sec, &tm);
+#endif
+
+      strftime(buf, buf_len, "%Y-%m-%d %H:%M:%S", rtm);
+      sprintf(buf+19, ".%09ld", ts.tv_nsec);
+      return buf;
 }
+
 
 Node *hashTable[1000];
 int hashTableSize = 10;
@@ -240,3 +251,4 @@ void runHash() {
 	}
 }
 						
+
