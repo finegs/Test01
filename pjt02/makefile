@@ -141,5 +141,3 @@ uninstall_oth:
 	@rm -f $(TARGET)
 	@echo complete $(@)
 
-
->>>>>>> refs/remotes/origin/master

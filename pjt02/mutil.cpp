@@ -28,7 +28,7 @@ char* mstrtok(char* _str, const char* _delim) {
 		pdelim = _delim;
 
 		while(*pdelim) {
-			if(len != 0 && *pstr == *pdelim) {
+			if(*pstr == *pdelim) {
 //				bdelim = *pdelim;
 				*pstr = '\0'; 
 				pstr++;
