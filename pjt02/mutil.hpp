@@ -3,9 +3,12 @@
 
 #include <string>
 
+#define NANO 1000000000L
+#define uint unsigned int
+
 char* mstrtok(char* _str, const char* _delim); 
 int   mstrcmp(const char* _str1, const char* _str2);
-std::string getTimestamp();
+char* getTimestamp();
 
 typedef struct _Node
 {

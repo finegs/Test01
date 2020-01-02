@@ -1,0 +1,37 @@
+
+CXX := g++
+
+ifeq ($(strip $(TARGET)),)
+	ifeq ($(OS), Windows_NT)
+		RM := del /f
+		TARGET:=aa.exe
+		SRCS := $(TARGET:%.exe=%.cpp)
+	else
+		RM := rm -f
+		TARGET=aa
+		SRCS := $(TARGET:%=%.cpp)
+	endif
+endif
+
+PROGRAM := $(TARGET)
+SRCS += mutil.cpp
+
+PROGRAM_DEPS := $(SRCS:.cpp=.o)
+DEPS := $(SRCS:.cpp=.d)
+
+.SUFFIXES : .cpp .o .exe
+
+.PHONY : all
+
+all : $(PROGRAM)
+
+$(PROGRAM) : $(PROGRAM_DEPS)
+	$(CXX) -o $@ $^
+
+%.d : %.cpp
+	$(CXX) -M -MP -MT "$(@:.d=.o) $@" -MF $@ $<
+
+clean:
+	$(RM) $(PROGRAM_DEPS)
+	$(RM) $(TARGET)
+

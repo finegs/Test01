@@ -27,33 +27,44 @@ int  parse(const char* file, testData* tData)
 		while(!feof(pFile))
 		{
 			pStr = fgets(strTmp, sizeof(strTmp), pFile);
-
-			if(lineNo >= 2) { // skip ignore columns
+			if(lineNo <2) { 
+				lineNo++; 
+			}else {
 				if(pStr == NULL) break;
-				sscanf(pStr, "%d,%[^,],%lf\n",
+				sscanf_s(pStr, "%d,%[^,]s,%lf\n",
 						&tData[recCnt].aa,
 						tData[recCnt].bb,
 						&tData[recCnt].cc
 					  );
 				recCnt++;
 			}
-			else
-				lineNo++;
 		}
 		fclose(pFile);
 	}
 	else {
-		printf("Fail");
+		printf("Fail : %d\n", ec);
 		recCnt = (int)ec;
 	}
 	return recCnt;
 }
 
 
+int load(int argc, char* argv[]) {
+	if(argc <2) {
+		printf("Usage %s {file name}\n", argv[0]);
+		return 0;
+	}
+
+	int rc = parse(argv[1], tData);
+	if (rc < 0) { printf("Error : %d\n", rc); }
+	else { printf("Parse Count : %d\n", rc); }
+	return 0;
+}
+
 int main(int argc, char* argv[])
 {
 
-	if(argc < 1) {
+	if(argc < 2) {
 		printf("Usage %s {file name}\n", argv[0]);
 		return 0;
 	}
