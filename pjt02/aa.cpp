@@ -18,7 +18,44 @@
 
 using namespace std;
 
+void buildMaxHeap(int arr[], int n)
+{
+	for(int i = 1;i<n;i++) {
+		if(arr[i]>arr[i-1]/2) {
+			int j = i;
 
+			while(arr[j]>arr[(j-1)/2]) {
+				swap(arr[j], arr[(j-1)/2]);
+				j=(j-1)/2;
+			}
+		}
+	}
+}
+
+void heapsort(int arr[], int n)
+{
+	buildMaxHeap(arr,n);
+
+	for(int i = n-1;i>0;i--) {
+		swap(arr[0], arr[i]);
+
+		int j = 0, index;
+
+		do {
+			index =  (2*j +1);
+
+			if(arr[index]<arr[index+1] &&
+					index < (i-1))
+				index++;
+
+			if(arr[j]<arr[index] && index<i)
+				swap(arr[j], arr[index]);
+
+			j = index;
+
+		} while(index < i);
+	}
+}
 
 int main(int argc,char* argv[]) {
 	unordered_map<string, string> argm;
@@ -51,6 +88,7 @@ int main(int argc,char* argv[]) {
 		}
 		else if(!strcmp("-t01", argv[i])) {
 			std::cout << getTimestamp() << " : -t01" << std::endl;
+			
 		}	
 		else if (!strcmp("-a", argv[i]) && i+1 < argc) {
 			argm.insert({argv[i], argv[i+1]});
@@ -60,7 +98,9 @@ int main(int argc,char* argv[]) {
 			if(i+2<argc) {
 				tdelim = argv[i+2];
 			} else {
-				tdelim = ",";
+				tdelim = (char*)malloc(sizeof(char)*(len=strlen(",")+1));
+				memset(tdelim, '\0',len);
+				strcpy(tdelim, ",");
 			}
 
 			const char* delim = tdelim;
@@ -87,15 +127,20 @@ int main(int argc,char* argv[]) {
 			}
 			cout << "]}"<<endl;
 
+
 			i++;
+		}
+		else if(argv[i][0] == '-' && i+1 < argc) {
+			argm.insert({argv[i], argv[i+1]});
 		}
 		else {
 			argm.insert({argv[i], argv[i]});
 		}
 	}
 	
-	auto search = argm.find("-t");
-	if(search != argm.end()) {
+	// auto search = argm.find("-t");
+	if(argm.find("-t") != argm.end()) {
+	// if(search != argm.end()) {
 		cout << getTimestamp() << " [I]" << " sleep time=" << sleepTime<< endl;
 		cout << getTimestamp() << " [I]" << " sleep count=" << sleepCount<< endl;
 		system("pause");
@@ -118,6 +163,64 @@ int main(int argc,char* argv[]) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
 		}
 	}
+	else if(argm.find("-ht") != argm.end()) {
+		std::string ss = argm["-a"];
+		std::vector<char> tv(ss.begin(), ss.end());
+		tv.push_back('\0');
+		char* a = &tv[0];
+		// char* a = argm["-a"].c_str();
+		int *arr;
+		int arrLen = 10;
+        int n;
+        if(a) {
+			arr = (int*)malloc(sizeof(int)*arrLen);
+			int num;
+			char *ta = mstrtok(a,",");
+			n = 0;
+			printf("\n");
+			while(ta) {
+				num = atoi(ta);
+				if (n >= arrLen) {
+				  int *tarr =
+					  (int *)malloc(sizeof(int) * arrLen * 2);
+				  if (!tarr) {
+					fprintf(stderr, "fail to malloc\n");
+					exit(-100);
+				  }
+				  memset(tarr, 0, arrLen * 2);
+				  memcpy(tarr, arr, arrLen);
+				  free(arr);
+				  arr = NULL;
+				  arrLen = arrLen * 2;
+				  arr = tarr;
+				  tarr = NULL;
+				}
+				arr[n++] = num;
+				printf("%d\t", num);
+				ta=mstrtok(NULL, ",");
+			}
+			printf("\n");
+		}
+		else {
+			std::vector<int> iv{10,20,15,27,9,21};
+			// arr = {10,20, 15, 27, 9, 21};
+			arr = &iv[0];
+            n = 6;
+        }
+
+     	// int n = sizeof(arr)/sizeof(arr[0]);
+		
+		printf("before:");
+		for(int i = 0;i<n;i++) printf("%s%d", (i>0?", ":""), arr[i]);
+		printf("\n");
+
+		heapsort(arr, n);
+
+		printf("after:");
+		for(int i = 0;i<n;i++) printf("%s%d", (i>0?", ":""), arr[i]);
+		printf("\n");
+
+	}
 	else {
 		cout << getTimestamp() << " { args:[";
 		for(int i = 0;i<argc;i++) {
@@ -125,6 +228,7 @@ int main(int argc,char* argv[]) {
 		}
 		cout << "]}"<<endl;
 	}
+
 	return 0;
 }
 
