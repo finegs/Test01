@@ -18,6 +18,7 @@
 
 using namespace std;
 
+/*
 void buildMaxHeap(int arr[], int n)  
 {  
     for (int i = 1; i < n; i++)  
@@ -74,6 +75,8 @@ void heapSort(int arr[], int n)
         } while (index < i); 
     } 
 } 
+
+*/
 
 #if 0
 void buildMaxHeap(int arr[], int n)
@@ -225,7 +228,7 @@ int main(int argc,char* argv[]) {
 		}
 	}
 	else if(argm.find("-ht") != argm.end()) {
-		std::string ss = argm["-a"];
+		std::string &ss = argm["-a"];
 		std::vector<char> tv(ss.begin(), ss.end());
 		tv.push_back('\0');
 		char* a = &tv[0];
@@ -233,7 +236,7 @@ int main(int argc,char* argv[]) {
 		int *arr;
 		int arrLen = 10;
         int n;
-		printf("-a is %s\n", ss.c_str());
+		// printf("-a is %s\n", ss.c_str());
 
         if(!ss.empty()) {
 			arr = (int*)malloc(sizeof(int)*arrLen);
@@ -262,28 +265,27 @@ int main(int argc,char* argv[]) {
 				  tarr = NULL;
 				}
 				num = atoi(ta);
-				printf("%s[%d]=%d", (n>0?", ":""), n, num);
+				// printf("%s[%d]=%d", (n>0?", ":""), n, num);
 				arr[n++] = num;
 				ta=mstrtok(NULL, ",");
 			}
-			printf("\nn=%d\n", n);
+			// printf("\nn=%d\n", n);
 		}
 		else {
-			static std::vector<int> iv{10,20,15,27,9,21,88,55,33,99,1001,12,1,2,-100,-201};
-			// arr = {10,20, 15, 27, 9, 21};
+			std::vector<int> iv{10,20,15,27,9,21,88,55,33,99,1001,12,1,2,-100,-201};
 			arr = &iv[0];
             n = iv.size();
         }
 
      	// int n = sizeof(arr)/sizeof(arr[0]);
 		
-		printf("before:");
+		printf("before:\t");
 		for(int i = 0;i<n;i++) printf("%s%d", (i>0?", " : ""), arr[i]);
 		printf("\n");
 
 		heapSort(arr, n);
 
-		printf("after:");
+		printf("after:\t");
 		for(int i = 0;i<n;i++) printf("%s%d", (i>0?", ":""), arr[i]);
 		printf("\n");
 

@@ -25,5 +25,7 @@ void deleteNode(char name[]);
 void printfList(Node* n);
 void printHashTable();
 
+void buildMaxHeap(int arr[], int n);
+void heapSort(int arr[], int n);
 
 #endif
