@@ -4,6 +4,11 @@
 
 int main(int argc, char* argv[]) {
 	char* aa;
+
+	if(argc>0) {
+		printf("argc is %d, argv[0]=%s\n", argc, argv[0]);
+	}
+
 	aa = (char*)malloc(sizeof(char)*10);
 	memset(aa, '\0', 10);
 
@@ -19,7 +24,7 @@ int main(int argc, char* argv[]) {
 	}
 	printf("\n");
 
-	printf("strlen[%d]=%s\n", strlen(aa), aa);
+	printf("strlen[%Iu]=%s\n", strlen(aa), aa);
 
 	return 0;
 }
