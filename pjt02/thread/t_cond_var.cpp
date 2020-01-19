@@ -69,6 +69,7 @@ int main()
 #include <thread>             // std::thread
 #include <mutex>              // std::mutex, std::unique_lock
 #include <condition_variable> // std::condition_variable
+#include <sstream>
 
 std::mutex mtx;
 std::condition_variable mainCmdCV;
@@ -95,6 +96,13 @@ int main ()
     threads[i] = std::thread(print_id,i);
 
   std::cout << "10 threads ready to race...\n";
+  std::string line;
+  do {
+	line.clear();
+  	std::cout << "enter 'go' to contiue" << std::endl;
+	std::getline(std::cin, line);
+  } while(line != "go");
+
   go();                       // go!
 
   for (auto& th : threads) th.join();
