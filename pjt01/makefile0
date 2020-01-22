@@ -1,0 +1,38 @@
+.SUFFIXES : .c .o 
+
+CC = g++ 
+CFLAGS = -g -c 
+INC = -Iinclude
+
+ifeq ($(OS), Windows_NT)
+	RM := del /f
+else
+	RM := rm -f
+endif
+
+TARGET = Main.exe
+#OBJECTS = main.o read.o write.o
+#SRCS = main.c read.c write.c
+SRCS := $(TARGET:.exe=.cpp)
+SRCS += hash_func.cpp 
+
+
+OBJECTS := $(SRCS:.cpp=.o)
+
+
+all : $(TARGET)
+
+debug : all
+
+$(TARGET) : $(OBJECTS)
+	$(CC) -o $(TARGET) $(OBJECTS)
+
+.c.o :
+	$(CC) $(INC) $(CFLAGS) $<
+
+clean : 
+	$(RM) $(OBJECTS) $(TARGET) core 
+
+#main.o : io.h main.c
+#read.o : io.h read.c
+#write.o : io.h write.c

@@ -1,7 +1,7 @@
 CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
-CXXFLAGS := -std=c++17 -Wall -Wextra
+CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1 -DUSE_LOCAL_TIME=true
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 
 ifeq ($(OS), Windows_NT)
@@ -36,10 +36,12 @@ SKIP_FILE += b.cpp c.cpp s1.cpp
 #include other source files
 SRC = $(SRC_INC)
 
+TARGET_DEFAULT := aa
+
 ifeq ($(OS), Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET += aa.exe
+		TARGET:=$(TARGET_DEFAULT:%=%.exe)
 	endif
 
 	SRC+=$(TARGET:%.exe=%.cpp)
@@ -48,7 +50,7 @@ ifeq ($(OS), Windows_NT)
 	RELEASE_APP:=release_app_win
 else
 	ifeq ($(strip $(TARGET)),)
-		TARGET  := aa
+		TARGET:=$(TARGET_DEFAULT)
 	endif
 
 	SRC+=$(TARGET:%=%.cpp)
@@ -57,17 +59,12 @@ else
 	RELEASE_APP:=release_app_oth
 endif
 
-#objects for other source files
-#OBJECTS = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 OBJS    = $(SRC:%.cpp=%.o)
 
-#all
 all: $(TARGET)
 
 #	@mkdir -p $(@D)
 $(OBJS):$(SRC)
-#	@IF NOT EXIST $(@D) mkdir $(@D)
-#	@echo "SRS IS "$(SRC)
 #	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 #	$(CXX) -c $? $(CXXFLAGS) $(INCLUDE)
 	$(CXX) -c $^ $(CXXFLAGS) $(INCLUDE)
@@ -75,6 +72,7 @@ $(OBJS):$(SRC)
 #	@mkdir -p $(@D)
 $(TARGET):$(OBJS)
 	$(CXX) $^ $(INCLUDE) $(LDFLAGS) -o $@
+#	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS)
 
 #	@mkdir -p $(@D)
 #$(OBJ_DIR)/%.o: %.cpp
@@ -121,9 +119,6 @@ clean_oth:
 	@echo starting clean 
 	@rm -rf *.o
 	@rm -rf $(TARGET)
-#	@rm -rf $(OBJ_DIR)/*.o
-#	@rm -rf $(APP_DIR)/$(TARGET)
-#	@rm -f $(TARGET)
 	@echo complete clean
 
 uninstall_win:
