@@ -36,52 +36,60 @@ static uint8_t sizecvt(const int read)
  
 static int read_dht22_dat()
 {
-    uint8_t laststate = HIGH;
-     uint8_t counter = 0;
-      uint8_t j = 0, i;
+   uint8_t laststate = HIGH;
+   uint8_t counter = 0;
+   uint8_t j = 0, i;
  
-      dht22_dat[0] = dht22_dat[1] = dht22_dat[2] = dht22_dat[3] = dht22_dat[4] = 0;
+   dht22_dat[0] 
+	   = dht22_dat[1] 
+	   = dht22_dat[2] 
+	   = dht22_dat[3] 
+	   = dht22_dat[4] = 0;
  
-      // pull pin down for 18 milliseconds
-      pinMode(DHTPIN, OUTPUT);
-      digitalWrite(DHTPIN, HIGH);
-      delay(10);
-      digitalWrite(DHTPIN, LOW);
-      delay(18);
-      // then pull it up for 40 microseconds
-      digitalWrite(DHTPIN, HIGH);
-      delayMicroseconds(40); 
-      // prepare to read the pin
-      pinMode(DHTPIN, INPUT);
+   // pull pin down for 18 milliseconds
+   pinMode(DHTPIN, OUTPUT);
+   digitalWrite(DHTPIN, HIGH);
+   delay(10);
+   digitalWrite(DHTPIN, LOW);
+   delay(18);
+   // then pull it up for 40 microseconds
+   digitalWrite(DHTPIN, HIGH);
+   delayMicroseconds(40); 
+   // prepare to read the pin
+   pinMode(DHTPIN, INPUT);
  
-      // detect change and read data
-      for ( i=0; i< MAXTIMINGS; i++) {
-        counter = 0;
-        while (sizecvt(digitalRead(DHTPIN)) == laststate) {
-              counter++;
-              delayMicroseconds(1);
-              if (counter == 255) {
-                break;
-              }
-        }//end wile
-        laststate = sizecvt(digitalRead(DHTPIN));
+   // detect change and read data
+   for ( i=0; i< MAXTIMINGS; i++) {
+     counter = 0;
+     while (sizecvt(digitalRead(DHTPIN)) == laststate) {
+       counter++;
+       delayMicroseconds(1);
+       if (counter == 255) {
+         break;
+       }
+     }//end wile
+     laststate = sizecvt(digitalRead(DHTPIN));
  
-        if (counter == 255) break;
+     if (counter == 255) break;
  
-        // ignore first 3 transitions
-        if ((i >= 4) && (i%2 == 0)) {
-          // shove each bit into the storage bytes
-              dht22_dat[j/8] <<= 1;
-              if (counter > 16)
-                dht22_dat[j/8] |= 1;
-                  j++;
-        }
-      }//end for
+     // ignore first 3 transitions
+     if ((i >= 4) && (i%2 == 0)) {
+	// shove each bit into the storage bytes
+    	dht22_dat[j/8] <<= 1;
+	if (counter > 16)
+          dht22_dat[j/8] |= 1;
+        j++;
+     }
+  }//end for
  
   // check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
   // print it out if data is good
-      if ((j >= 40) && (dht22_dat[4] == ((dht22_dat[0] + dht22_dat[1] + dht22_dat[2] + dht22_dat[3]) & 0xFF)) ) 
-    {
+  if ((j >= 40) && 
+		  (dht22_dat[4] == ((dht22_dat[0] + 
+				     dht22_dat[1] + 
+				     dht22_dat[2] + 
+				     dht22_dat[3]) & 0xFF)) ) 
+  {
         float t, h;
         h = (float)dht22_dat[0] * 256 + (float)dht22_dat[1];
         h /= 10;
@@ -91,12 +99,12 @@ static int read_dht22_dat()
  
         printf("Humidity = %.2f %% Temperature = %.2f *C \n", h, t );
         return 1;
-      }
-      else
-      {
+   }
+   else
+   {
         printf("Data not good, skip\n");
         return 0;
-      }
+   }
 }
  
 //int main (int argc, char *argv[])
@@ -117,7 +125,7 @@ int main (void)
           {
              delay(1000); // wait 1sec to refresh 1초간 기다립니다.
           }
-    }
+      }
   return 0 ;
 }
 

@@ -1,14 +1,33 @@
-CXX      := -g++
+#CXX      := -g++
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
-CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1 -DUSE_LOCAL_TIME=true
+#CXXFLAGS := -std=c++17 -Wall -Wextra
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
+
+DEFAULT_TARGET := aa
+
+ifeq ($(strip $(TARGET)),)
+    TARGET := $(DEFAULT_TARGET)
+endif
+
+TARGET_SRC := $(TARGET:%=%.cpp)
+
+ifeq ($(wildcard $(TARGET_SRC)),)
+	CXX    := -gcc
+    CXXFLAGS := -std=c99 -Wall -Wextra
+else
+	CXX    := -g++
+    CXXFLAGS := -std=c++17 -Wall -Wextra
+endif
 
 ifeq ($(OS), Windows_NT)
 	LDFLAGS  := -lws2_32 -pthread
+	TARGET   := $(TARGET:%=%.exe)
 else
 	LDFLAGS  := -L /usr/local/lib -pthread -lwiringPi -lm -lcrypt -lrt
+    TARGET   := $(TARGET)
 endif
+
 BUILD    := build
 
 ifeq ($(OS), Windows_NT)
@@ -20,7 +39,10 @@ else
 endif
 
 INCLUDE  := -I include -I /usr/local/include
-SRC_INC  := mutil.cpp
+
+ifeq ($(CXX), -g++)
+    SRC_INC  := mutil.cpp
+endif
 
 #skip files
 SKIP_FILE := $(wildcard Test*.cpp)
@@ -36,35 +58,44 @@ SKIP_FILE += b.cpp c.cpp s1.cpp
 #include other source files
 SRC = $(SRC_INC)
 
-TARGET_DEFAULT := aa
-
 ifeq ($(OS), Windows_NT)
-
-	ifeq ($(strip $(TARGET)),)
-		TARGET:=$(TARGET_DEFAULT:%=%.exe)
+	ifeq ($(CXX), -g++)
+		SRC+=$(TARGET:%.exe=%.cpp)
+	else
+		SRC+=$(TARGET:%.exe=%.c)
 	endif
 
-	SRC+=$(TARGET:%.exe=%.cpp)
 	CLN:=clean_win
 	BLD:=build_win
 	RELEASE_APP:=release_app_win
 else
-	ifeq ($(strip $(TARGET)),)
-		TARGET:=$(TARGET_DEFAULT)
+
+	ifeq ($(CXX), -g++)
+		SRC+=$(TARGET:%=%.cpp)
+	else
+		SRC+=$(TARGET:%=%.c)
 	endif
 
-	SRC+=$(TARGET:%=%.cpp)
 	CLN:=clean_oth
 	BLD:=build_oth
 	RELEASE_APP:=release_app_oth
 endif
 
-OBJS    = $(SRC:%.cpp=%.o)
+#objects for other source files
+#OBJECTS = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+ifeq ($(CXX), -g++)
+	OBJS    = $(SRC:%.cpp=%.o)
+else
+	OBJS    = $(SRC:%.c=%.o)
+endif
 
+#all
 all: $(TARGET)
 
 #	@mkdir -p $(@D)
 $(OBJS):$(SRC)
+#	@IF NOT EXIST $(@D) mkdir $(@D)
+#	@echo "SRS IS "$(SRC)
 #	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 #	$(CXX) -c $? $(CXXFLAGS) $(INCLUDE)
 	$(CXX) -c $^ $(CXXFLAGS) $(INCLUDE)
@@ -72,7 +103,6 @@ $(OBJS):$(SRC)
 #	@mkdir -p $(@D)
 $(TARGET):$(OBJS)
 	$(CXX) $^ $(INCLUDE) $(LDFLAGS) -o $@
-#	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS)
 
 #	@mkdir -p $(@D)
 #$(OBJ_DIR)/%.o: %.cpp
@@ -119,6 +149,9 @@ clean_oth:
 	@echo starting clean 
 	@rm -rf *.o
 	@rm -rf $(TARGET)
+#	@rm -rf $(OBJ_DIR)/*.o
+#	@rm -rf $(APP_DIR)/$(TARGET)
+#	@rm -f $(TARGET)
 	@echo complete clean
 
 uninstall_win:
