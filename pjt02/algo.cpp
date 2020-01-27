@@ -6,7 +6,6 @@
                     floor in worst case.
   eggDrop(n, k) = 1 + min{max(eggDrop(n - 1, x - 1), eggDrop(n, k - x)): 
                  x in {1, 2, ..., k}}
-
 */
 
 #include <iostream>
@@ -82,6 +81,7 @@ int main(int argc, char* argv[]) {
 	printf("arguments : n=%d, f=%d\n", n, f);
 
 	printf("min attempt : %d\n", eggdrop(n,f));
+
 
 	return EXIT_SUCCESS;
 }

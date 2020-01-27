@@ -9,6 +9,7 @@
 #include <time.h>
 
 #include "mutil.hpp"
+#include "mtest01.hpp"
 
 #if USE_MSTR_TOK > 0
 #define __STRTOK mstrtok
@@ -151,8 +152,90 @@ int main(int argc,char* argv[]) {
 		}
 		else if(!strcmp("-t01", argv[i])) {
 			std::cout << getTimestamp() << " : -t01" << std::endl;
-			
 		}	
+		else if(!strcmp("-t02", argv[i])) {
+			char buf[256];
+			int len;
+			int i;
+
+			len = sprintf(buf, "Hello\n");
+			for(i=0;i<5;i++)
+				len += sprintf(buf+len, " %d",i);
+
+			printf("buf=%s\n", buf);
+
+			char buf2[20];
+			char str[] = "Hello world!";
+			snprintf(buf2, strlen(str), "%s", str);
+			printf("%s\n", buf2);
+			snprintf(buf2, 10, "%s", str);
+			printf("%s\n", buf2);
+
+		}
+		else if(!strcmp("-t03", argv[i])) {
+#if 0
+			int n = 10;
+			if(i+1<argc) {
+				n = atoi(argv[i+1]);
+			}
+
+			for(int i = 0;i<n;i++) {
+				printf("%3d is %4s\n", i, (i&1)? "ODD" : "EVEN");
+			}
+#endif
+
+			Point pt;
+			pt(3,2);
+			pt.show();
+		}
+		else if(!strcmp("-t04", argv[i])) {
+			int n = 253;
+			if(i+1<argc) {
+				n = atoi(argv[i+1]);
+			}
+
+			std::cout << getTimestamp() << " 0. n : " << n << std::endl;
+
+			std::srand(static_cast<unsigned int>(std::time(0)));
+
+			char *arr = (char*)malloc(sizeof(char)*n);
+			memset(arr, '\0', n);
+			for(int i = 0;i<n;i++) {
+				// arr[i] = (i + 0x21)%255 + 2;
+				arr[i] = 'A' + std::rand() % ('z'-'A');
+			}
+
+			// std::cout << "'0'="<<(int)'0' << ",'Z'="<<(int)'Z'<<",'a'="<<(int)'a'<<std::endl;
+
+			string s = std::string(arr);
+
+			std::cout << getTimestamp() << " 1. s[" << s.length() << "]=" << s << std::endl;
+
+			std::cout << getTimestamp() << " 1. Start. " << std::endl;
+
+			remove_ctrl(s);
+
+			std::cout << getTimestamp() << " 1. Done."<< std::endl;
+			
+			memset(arr, '\0', n);
+			for(int i = 0;i<n;i++) {
+				// arr[i] = (i + 0x21)%255 + 2;
+				arr[i] = 'A' + std::rand() % ('z'-'A');
+			}
+			s.clear();
+			s.append(arr);
+			// s = std::string(arr);
+
+			std::cout << getTimestamp() << " 2. s[" << s.length() << "]=" <<  s << std::endl;
+			std::cout << getTimestamp() << " 2. Start. " << std::endl;
+
+			remove_ctrl_mutating(s);
+
+			std::cout << getTimestamp() << " 2. Done."<< std::endl;
+
+			free(arr);
+
+		}
 		else if (!strcmp("-a", argv[i]) && i+1 < argc) {
 			argm.insert({argv[i], argv[i+1]});
 
