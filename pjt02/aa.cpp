@@ -9,6 +9,7 @@
 #include <time.h>
 
 #include "mutil.hpp"
+#include "mtest.hpp"
 
 #if USE_MSTR_TOK > 0
 #define __STRTOK mstrtok
@@ -88,8 +89,36 @@ int main(int argc,char* argv[]) {
 		}
 		else if(!strcmp("-t01", argv[i])) {
 			std::cout << getTimestamp() << " : -t01" << std::endl;
-			
-		}	
+		}
+		else if(!strcmp("-t02", argv[i])) {
+			int n  = -1, d = -1;
+			if(argc > i+1) {
+				n = atoi(argv[i+1]);
+			}
+			else {
+				printf("N : "); fflush(stdout);
+				scanf("%d", &n);
+			}
+			if(argc > i+2) {
+				d = atoi(argv[i+2]);
+			}
+			else {
+				printf("D : "); fflush(stdout);
+				scanf("%d", &d);
+			}
+
+#if 0
+			for(int i = 0;i<n;i++) {
+				printf("%3d is %4s\n", i, (i&1)?"ODD":"EVEN");
+			}
+#endif
+
+			MTest mt;
+			printf("left rotation of %d by %d is %d\n", n, d, mt.leftRotate(n, d));
+			printf("right rotation of %d by %d is %d\n", n, d, mt.rightRotate(n, d));
+
+
+		}
 		else if (!strcmp("-a", argv[i]) && i+1 < argc) {
 			argm.insert({argv[i], argv[i+1]});
 
