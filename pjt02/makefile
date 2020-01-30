@@ -7,7 +7,7 @@ CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1 -DUSE_LOCAL_TIME=true
 ifeq ($(OS), Windows_NT)
 	LDFLAGS  := -lws2_32 -pthread
 else
-	LDFLAGS  := -pthread
+	LDFLAGS  := -L /usr/local/lib -pthread -lwiringPi -lm -lcrypt -lrt
 endif
 BUILD    := build
 
@@ -19,7 +19,7 @@ else
 	APP_DIR  := $(BUILD)/apps
 endif
 
-INCLUDE  := -I include
+INCLUDE  := -I include -I /usr/local/include
 SRC_INC  := mutil.cpp
 
 #skip files
@@ -71,7 +71,8 @@ $(OBJS):$(SRC)
 
 #	@mkdir -p $(@D)
 $(TARGET):$(OBJS)
-	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS)
+	$(CXX) $^ $(INCLUDE) $(LDFLAGS) -o $@
+#	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS)
 
 #	@mkdir -p $(@D)
 #$(OBJ_DIR)/%.o: %.cpp
