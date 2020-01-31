@@ -19,6 +19,20 @@
 
 using namespace std;
 
+char rand_char() {
+	int n = std::rand();
+	switch(n%3) {
+		case 0:
+			return '0' + (n % ('9'-'0'));
+		case 1:
+			return 'A' + (n % ('Z'-'A'));
+		case 2:
+			return 'a' + (n % ('z'-'a'));
+	}
+	return '-';
+}
+
+#if 0
 void buildMaxHeap(int arr[], int n)
 {
 	for(int i = 1;i<n;i++) {
@@ -57,6 +71,33 @@ void heapsort(int arr[], int n)
 		} while(index < i);
 	}
 }
+
+#endif
+
+std::string remove_ctrl(std::string s) {
+	std::string r;
+	for(size_t i = 0;i<s.length();i++) {
+		if(s[i] >= 0x20) r = r + s[i];
+	}
+	return r;
+}
+
+std::string remove_ctrl_mutating(std::string s) {
+	std::string r;
+	r.reserve(s.length());
+#if 0
+	for(size_t i =0;i<s.length();i++) {
+		if(s[i] >= 0x20) r += s[i];
+	}
+#endif
+	for(auto it = s.begin(), end = s.end();it != end; ++it) {
+		if(*it>= 0x20) r += *it;
+	}
+	return r;
+}
+
+
+std::unordered_map<std::thread::id, unsigned int> MTest::timeMap;
 
 int main(int argc,char* argv[]) {
 	unordered_map<string, string> argm;
@@ -136,49 +177,50 @@ int main(int argc,char* argv[]) {
 			// pt.show();
 		}
 		else if(!strcmp("-t04", argv[i])) {
-			int n = 253;
+			int n = 255;
 			if(i+1<argc) {
 				n = atoi(argv[i+1]);
 			}
 
 			std::cout << getTimestamp() << " 0. n : " << n << std::endl;
 
-			std::srand(static_cast<unsigned int>(std::time(0)));
+			char *arr = (char*)malloc(sizeof(char)*n+1);
+			memset(arr, '\0', n+1);
 
-			char *arr = (char*)malloc(sizeof(char)*n);
-			memset(arr, '\0', n);
+			std::srand(static_cast<unsigned int>(std::time(NULL)));
+
 			for(int i = 0;i<n;i++) {
-				// arr[i] = (i + 0x21)%255 + 2;
-				arr[i] = 'A' + std::rand() % ('z'-'A');
+				arr[i] = rand_char();
 			}
 
 			// std::cout << "'0'="<<(int)'0' << ",'Z'="<<(int)'Z'<<",'a'="<<(int)'a'<<std::endl;
 
 			string s = std::string(arr);
 
-			std::cout << getTimestamp() << " 1. s[" << s.length() << "]=" << s << std::endl;
-
+			std::cout << getTimestamp() << " 1. s[" << s.length() << "]=" << (s.length() > 100 ? "..." : s) << std::endl;
 			std::cout << getTimestamp() << " 1. Start. " << std::endl;
+			MTest::setCurrentTimestamp();
 
-			remove_ctrl(s);
+			std::string r = remove_ctrl(s);
 
-			std::cout << getTimestamp() << " 1. Done."<< std::endl;
+			std::cout << getTimestamp() << " 1. Done."<< ", ES=" << MTest::getDiffTime() << std::endl;
 			
-			memset(arr, '\0', n);
+			memset(arr, '\0', n+1);
 			for(int i = 0;i<n;i++) {
-				// arr[i] = (i + 0x21)%255 + 2;
-				arr[i] = 'A' + std::rand() % ('z'-'A');
+				arr[i] = rand_char();
 			}
 			s.clear();
 			s.append(arr);
 			// s = std::string(arr);
 
-			std::cout << getTimestamp() << " 2. s[" << s.length() << "]=" <<  s << std::endl;
+			std::cout << getTimestamp() << " 2. s[" << s.length() << "]=" <<  (s.length() > 100 ? "..." : s) << std::endl;
 			std::cout << getTimestamp() << " 2. Start. " << std::endl;
 
-			remove_ctrl_mutating(s);
+			MTest::setCurrentTimestamp();
 
-			std::cout << getTimestamp() << " 2. Done."<< std::endl;
+			r = remove_ctrl_mutating(s);
+
+			std::cout << getTimestamp() << " 2. Done."<< ", ES=" << MTest::getDiffTime() << std::endl;
 
 			free(arr);
 
@@ -307,7 +349,7 @@ int main(int argc,char* argv[]) {
 		for(int i = 0;i<n;i++) printf("%s%d", (i>0?", ":""), arr[i]);
 		printf("\n");
 
-		heapsort(arr, n);
+		heapSort(arr, n);
 
 		printf("after:");
 		for(int i = 0;i<n;i++) printf("%s%d", (i>0?", ":""), arr[i]);
