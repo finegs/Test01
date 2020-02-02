@@ -76,7 +76,8 @@ void heapsort(int arr[], int n)
 
 std::string remove_ctrl(std::string s) {
 	std::string r;
-	for(size_t i = 0;i<s.length();i++) {
+	size_t len = s.length();
+	for(size_t i = 0;i<len;i++) {
 		if(s[i] >= 0x20) r = r + s[i];
 	}
 	return r;
@@ -182,7 +183,9 @@ int main(int argc,char* argv[]) {
 				n = atoi(argv[i+1]);
 			}
 
+#ifdef M_DEBUG
 			std::cout << getTimestamp() << " 0. n : " << n << std::endl;
+#endif
 
 			char *arr = (char*)malloc(sizeof(char)*n+1);
 			memset(arr, '\0', n+1);
@@ -197,8 +200,10 @@ int main(int argc,char* argv[]) {
 
 			string s = std::string(arr);
 
+#ifdef M_DEBUG
 			std::cout << getTimestamp() << " 1. s[" << s.length() << "]=" << (s.length() > 100 ? "..." : s) << std::endl;
 			std::cout << getTimestamp() << " 1. Start. " << std::endl;
+#endif
 			MTest::setCurrentTimestamp();
 
 			std::string r = remove_ctrl(s);
@@ -212,9 +217,10 @@ int main(int argc,char* argv[]) {
 			s.clear();
 			s.append(arr);
 			// s = std::string(arr);
-
+#ifdef M_DEBUG
 			std::cout << getTimestamp() << " 2. s[" << s.length() << "]=" <<  (s.length() > 100 ? "..." : s) << std::endl;
 			std::cout << getTimestamp() << " 2. Start. " << std::endl;
+#endif
 
 			MTest::setCurrentTimestamp();
 
@@ -223,6 +229,29 @@ int main(int argc,char* argv[]) {
 			std::cout << getTimestamp() << " 2. Done."<< ", ES=" << MTest::getDiffTime() << std::endl;
 
 			free(arr);
+
+		}
+		else if (!strcmp("-t05", argv[i])) {
+
+			MTest::setCurrentTimestamp();
+
+			float d,t,a = -9.8f, v0 = 0.0f, d0 = 100.0f;
+			for(t = 0.0;t<3.01f;t+=0.1f) {
+				d = a*t*t + v0*t + d0;
+			}
+			std::cout << "float : d = " << d << std::endl;
+
+			std::cout << "float : ES : " << MTest::getDiffTime() << std::endl;
+
+			MTest::setCurrentTimestamp();
+
+			double dd,td,ad = -9.8f, vd0 = 0.0, dd0 = 100.0;
+			for(td = 0.0;td<3.01;td+=0.1) {
+				dd = ad*td*td + vd0*td + dd0;
+			}
+
+			std::cout << "double : dd = " << dd << std::endl;
+			std::cout << "double : ES : " << MTest::getDiffTime() << std::endl;
 
 		}
 		else if (!strcmp("-a", argv[i]) && i+1 < argc) {
@@ -357,11 +386,13 @@ int main(int argc,char* argv[]) {
 
 	}
 	else {
+#ifdef M_DEBUG
 		cout << getTimestamp() << " { args:[";
 		for(int i = 0;i<argc;i++) {
 			cout << (i>0?",":"") << "\"" << argv[i] << "\"";
 		}
 		cout << "]}"<<endl;
+#endif
 	}
 
 	return 0;
