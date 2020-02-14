@@ -29,6 +29,8 @@ std::string remove_ctrl(std::string s){
 std::string remove_ctrl_mutating(std::string s){
 	std::string result;
 
+	result.reserve(s.length());
+
 	for(size_t i = 0;i < s.length();++i) {
 		if(s[i] >= 0x20) result +=  s[i];
 	}

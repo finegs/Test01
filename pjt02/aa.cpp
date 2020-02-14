@@ -202,10 +202,22 @@ int main(int argc,char* argv[]) {
 			memset(arr, '\0', n);
 			for(int i = 0;i<n;i++) {
 				// arr[i] = (i + 0x21)%255 + 2;
-				arr[i] = 'A' + std::rand() % ('z'-'A');
+				switch(rand()%3) {
+					case 0:
+						arr[i] = '0' + std::rand()%('9'-'0');
+					break;
+					case 1:
+						arr[i] = 'A' + std::rand()%('Z'-'A');
+					break;
+					case 2:
+						arr[i] = 'a' + std::rand()%('z'-'a');
+					break;
+					default:
+					;
+				}
 			}
 
-			// std::cout << "'0'="<<(int)'0' << ",'Z'="<<(int)'Z'<<",'a'="<<(int)'a'<<std::endl;
+			std::cout << "'0'="<<(int)'0' << ",'A'="<<(int)'A'<<",'z'="<<(int)'z'<<std::endl;
 
 			string s = std::string(arr);
 
