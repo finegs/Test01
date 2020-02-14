@@ -9,7 +9,7 @@
 #include <time.h>
 
 #include "mutil.hpp"
-#include "mtest01.hpp"
+#include "mtest.hpp"
 
 #if USE_MSTR_TOK > 0
 #define __STRTOK mstrtok
@@ -19,71 +19,24 @@
 
 using namespace std;
 
-/*
-void buildMaxHeap(int arr[], int n)  
-{  
-    for (int i = 1; i < n; i++)  
-    { 
-        // if child is bigger than parent 
-        if (arr[i] > arr[(i - 1) / 2])  
-        { 
-            int j = i; 
-      
-            // swap child and parent until 
-            // parent is smaller 
-            while (arr[j] > arr[(j - 1) / 2])  
-            { 
-                swap(arr[j], arr[(j - 1) / 2]); 
-                j = (j - 1) / 2; 
-            } 
-        } 
-    } 
-} 
-  
-void heapSort(int arr[], int n)  
-{ 
-    buildMaxHeap(arr, n); 
-  
-    for (int i = n - 1; i > 0; i--) 
-    { 
-        // swap value of first indexed  
-        // with last indexed  
-        swap(arr[0], arr[i]); 
-      
-        // maintaining heap property 
-        // after each swapping 
-        int j = 0, index; 
-          
-        do
-        { 
-            index = (2 * j + 1); 
-              
-            // if left child is smaller than  
-            // right child point index variable  
-            // to right child 
-            if (arr[index] < arr[index + 1] && 
-                                index < (i - 1)) 
-                index++; 
-          
-            // if parent is smaller than child  
-            // then swapping parent with child  
-            // having higher value 
-            if (arr[j] < arr[index] && index < i) 
-                swap(arr[j], arr[index]); 
-          
-            j = index; 
-          
-        } while (index < i); 
-    } 
-} 
-
-*/
+char rand_char() {
+	int n = std::rand();
+	switch(n%3) {
+		case 0:
+			return '0' + (n % ('9'-'0'));
+		case 1:
+			return 'A' + (n % ('Z'-'A'));
+		case 2:
+			return 'a' + (n % ('z'-'a'));
+	}
+	return '-';
+}
 
 #if 0
 void buildMaxHeap(int arr[], int n)
 {
 	for(int i = 1;i<n;i++) {
-		if(arr[i]>arr[(i-1)/2]) {
+		if(arr[i]>arr[i-1]/2) {
 			int j = i;
 
 			while(arr[j]>arr[(j-1)/2]) {
@@ -121,6 +74,32 @@ void heapsort(int arr[], int n)
 
 #endif
 
+std::string remove_ctrl(std::string s) {
+	std::string r;
+	size_t len = s.length();
+	for(size_t i = 0;i<len;i++) {
+		if(s[i] >= 0x20) r = r + s[i];
+	}
+	return r;
+}
+
+std::string remove_ctrl_mutating(std::string s) {
+	std::string r;
+	r.reserve(s.length());
+#if 0
+	for(size_t i =0;i<s.length();i++) {
+		if(s[i] >= 0x20) r += s[i];
+	}
+#endif
+	for(auto it = s.begin(), end = s.end();it != end; ++it) {
+		if(*it>= 0x20) r += *it;
+	}
+	return r;
+}
+
+
+std::unordered_map<std::thread::id, unsigned int> MTest::timeMap;
+
 int main(int argc,char* argv[]) {
 	unordered_map<string, string> argm;
 	std::vector<std::string> args;
@@ -152,24 +131,34 @@ int main(int argc,char* argv[]) {
 		}
 		else if(!strcmp("-t01", argv[i])) {
 			std::cout << getTimestamp() << " : -t01" << std::endl;
-		}	
+		}
 		else if(!strcmp("-t02", argv[i])) {
-			char buf[256];
-			int len;
-			int i;
+			int n  = -1, d = -1;
+			if(argc > i+1) {
+				n = atoi(argv[i+1]);
+			}
+			else {
+				printf("N : "); fflush(stdout);
+				scanf("%d", &n);
+			}
+			if(argc > i+2) {
+				d = atoi(argv[i+2]);
+			}
+			else {
+				printf("D : "); fflush(stdout);
+				scanf("%d", &d);
+			}
 
-			len = sprintf(buf, "Hello\n");
-			for(i=0;i<5;i++)
-				len += sprintf(buf+len, " %d",i);
+#if 0
+			for(int i = 0;i<n;i++) {
+				printf("%3d is %4s\n", i, (i&1)?"ODD":"EVEN");
+			}
+#endif
 
-			printf("buf=%s\n", buf);
+			MTest mt;
+			printf("left rotation of %d by %d is %d\n", n, d, mt.leftRotate(n, d));
+			printf("right rotation of %d by %d is %d\n", n, d, mt.rightRotate(n, d));
 
-			char buf2[20];
-			char str[] = "Hello world!";
-			snprintf(buf2, strlen(str), "%s", str);
-			printf("%s\n", buf2);
-			snprintf(buf2, 10, "%s", str);
-			printf("%s\n", buf2);
 
 		}
 		else if(!strcmp("-t03", argv[i])) {
@@ -184,68 +173,85 @@ int main(int argc,char* argv[]) {
 			}
 #endif
 
-			Point pt;
-			pt(3,2);
-			pt.show();
+			// Point pt;
+			// pt(3,2);
+			// pt.show();
 		}
 		else if(!strcmp("-t04", argv[i])) {
-			int n = 253;
+			int n = 255;
 			if(i+1<argc) {
 				n = atoi(argv[i+1]);
 			}
 
+#ifdef M_DEBUG
 			std::cout << getTimestamp() << " 0. n : " << n << std::endl;
+#endif
 
-			std::srand(static_cast<unsigned int>(std::time(0)));
+			char *arr = (char*)malloc(sizeof(char)*n+1);
+			memset(arr, '\0', n+1);
 
-			char *arr = (char*)malloc(sizeof(char)*n);
-			memset(arr, '\0', n);
+			std::srand(static_cast<unsigned int>(std::time(NULL)));
+
 			for(int i = 0;i<n;i++) {
-				// arr[i] = (i + 0x21)%255 + 2;
-				switch(rand()%3) {
-					case 0:
-						arr[i] = '0' + std::rand()%('9'-'0');
-					break;
-					case 1:
-						arr[i] = 'A' + std::rand()%('Z'-'A');
-					break;
-					case 2:
-						arr[i] = 'a' + std::rand()%('z'-'a');
-					break;
-					default:
-					;
-				}
+				arr[i] = rand_char();
 			}
 
 			std::cout << "'0'="<<(int)'0' << ",'A'="<<(int)'A'<<",'z'="<<(int)'z'<<std::endl;
 
 			string s = std::string(arr);
 
-			std::cout << getTimestamp() << " 1. s[" << s.length() << "]=" << s << std::endl;
-
+#ifdef M_DEBUG
+			std::cout << getTimestamp() << " 1. s[" << s.length() << "]=" << (s.length() > 100 ? "..." : s) << std::endl;
 			std::cout << getTimestamp() << " 1. Start. " << std::endl;
+#endif
+			MTest::setCurrentTimestamp();
 
-			remove_ctrl(s);
+			std::string r = remove_ctrl(s);
 
-			std::cout << getTimestamp() << " 1. Done."<< std::endl;
+			std::cout << getTimestamp() << " 1. Done."<< ", ES=" << MTest::getDiffTime() << std::endl;
 			
-			memset(arr, '\0', n);
+			memset(arr, '\0', n+1);
 			for(int i = 0;i<n;i++) {
-				// arr[i] = (i + 0x21)%255 + 2;
-				arr[i] = 'A' + std::rand() % ('z'-'A');
+				arr[i] = rand_char();
 			}
 			s.clear();
 			s.append(arr);
 			// s = std::string(arr);
-
-			std::cout << getTimestamp() << " 2. s[" << s.length() << "]=" <<  s << std::endl;
+#ifdef M_DEBUG
+			std::cout << getTimestamp() << " 2. s[" << s.length() << "]=" <<  (s.length() > 100 ? "..." : s) << std::endl;
 			std::cout << getTimestamp() << " 2. Start. " << std::endl;
+#endif
 
-			remove_ctrl_mutating(s);
+			MTest::setCurrentTimestamp();
 
-			std::cout << getTimestamp() << " 2. Done."<< std::endl;
+			r = remove_ctrl_mutating(s);
+
+			std::cout << getTimestamp() << " 2. Done."<< ", ES=" << MTest::getDiffTime() << std::endl;
 
 			free(arr);
+
+		}
+		else if (!strcmp("-t05", argv[i])) {
+
+			MTest::setCurrentTimestamp();
+
+			float d,t,a = -9.8f, v0 = 0.0f, d0 = 100.0f;
+			for(t = 0.0;t<3.01f;t+=0.1f) {
+				d = a*t*t + v0*t + d0;
+			}
+			std::cout << "float : d = " << d << std::endl;
+
+			std::cout << "float : ES : " << MTest::getDiffTime() << std::endl;
+
+			MTest::setCurrentTimestamp();
+
+			double dd,td,ad = -9.8f, vd0 = 0.0, dd0 = 100.0;
+			for(td = 0.0;td<3.01;td+=0.1) {
+				dd = ad*td*td + vd0*td + dd0;
+			}
+
+			std::cout << "double : dd = " << dd << std::endl;
+			std::cout << "double : ES : " << MTest::getDiffTime() << std::endl;
 
 		}
 		else if (!strcmp("-a", argv[i]) && i+1 < argc) {
@@ -271,7 +277,6 @@ int main(int argc,char* argv[]) {
 			char* token= __STRTOK(temp, delim);
 			while(token) {
 				args.push_back(std::string(token));
-				*(token+strlen(token)) = delim[0];
 				token = __STRTOK(NULL, delim);
 			}
 
@@ -323,7 +328,7 @@ int main(int argc,char* argv[]) {
 		}
 	}
 	else if(argm.find("-ht") != argm.end()) {
-		std::string &ss = argm["-a"];
+		std::string ss = argm["-a"];
 		std::vector<char> tv(ss.begin(), ss.end());
 		tv.push_back('\0');
 		char* a = &tv[0];
@@ -331,17 +336,14 @@ int main(int argc,char* argv[]) {
 		int *arr;
 		int arrLen = 10;
         int n;
-		// printf("-a is %s\n", ss.c_str());
-
-        if(!ss.empty()) {
+        if(a) {
 			arr = (int*)malloc(sizeof(int)*arrLen);
-			memset(arr, 0, arrLen);
-
 			int num;
 			char *ta = mstrtok(a,",");
 			n = 0;
 			printf("\n");
 			while(ta) {
+				num = atoi(ta);
 				if (n >= arrLen) {
 				  int *tarr =
 					  (int *)malloc(sizeof(int) * arrLen * 2);
@@ -350,50 +352,47 @@ int main(int argc,char* argv[]) {
 					exit(-100);
 				  }
 				  memset(tarr, 0, arrLen * 2);
-				  memcpy(tarr, arr, sizeof(int)*arrLen);
-
+				  memcpy(tarr, arr, arrLen);
 				  free(arr);
 				  arr = NULL;
-
 				  arrLen = arrLen * 2;
 				  arr = tarr;
 				  tarr = NULL;
 				}
-				num = atoi(ta);
-				// printf("%s[%d]=%d", (n>0?", ":""), n, num);
 				arr[n++] = num;
+				printf("%d\t", num);
 				ta=mstrtok(NULL, ",");
 			}
-			// printf("\nn=%d\n", n);
+			printf("\n");
 		}
 		else {
-			std::vector<int> iv{10,20,15,27,9,21,88,55,33,99,1001,12,1,2,-100,-201};
+			std::vector<int> iv{10,20,15,27,9,21};
+			// arr = {10,20, 15, 27, 9, 21};
 			arr = &iv[0];
-            n = iv.size();
+            n = 6;
         }
 
      	// int n = sizeof(arr)/sizeof(arr[0]);
 		
-		printf("before:\t");
-		for(int i = 0;i<n;i++) printf("%s%d", (i>0?", " : ""), arr[i]);
+		printf("before:");
+		for(int i = 0;i<n;i++) printf("%s%d", (i>0?", ":""), arr[i]);
 		printf("\n");
 
 		heapSort(arr, n);
 
-		printf("after:\t");
+		printf("after:");
 		for(int i = 0;i<n;i++) printf("%s%d", (i>0?", ":""), arr[i]);
 		printf("\n");
 
-		if(a) a = NULL;
-		if(arr) free(arr);
-
 	}
 	else {
+#ifdef M_DEBUG
 		cout << getTimestamp() << " { args:[";
 		for(int i = 0;i<argc;i++) {
 			cout << (i>0?",":"") << "\"" << argv[i] << "\"";
 		}
 		cout << "]}"<<endl;
+#endif
 	}
 
 	return 0;
