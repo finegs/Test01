@@ -4,7 +4,9 @@ CXX      := -g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1 -DUSE_LOCAL_TIME=true
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 
-ifeq ($(OS), Windows_NT)
+xNIX_HEADER := $(shell [ -e /usr/include ] && echo 1|| echo 0 )
+
+ifeq ($(OS), Windows_NT) 
 	LDFLAGS  := -lws2_32 -pthread
 else
 	LDFLAGS  := -L /usr/local/lib -pthread -lwiringPi -lm -lcrypt -lrt
@@ -45,9 +47,17 @@ ifeq ($(OS), Windows_NT)
 	endif
 
 	SRC+=$(TARGET:%.exe=%.cpp)
-	CLN:=clean_win
-	BLD:=build_win
-	RELEASE_APP:=release_app_win
+	#added by SGK 20200215
+#	ifeq ($(UNAMEO), Msys)
+	ifeq ($(xNIX_HEADER), 1)
+		CLN:=clean_oth
+		BLD:=build_oth
+		RELEASE_APP:=release_app_oth
+	else
+		CLN:=clean_win
+		BLD:=build_win
+		RELEASE_APP:=release_app_win
+	endif
 else
 	ifeq ($(strip $(TARGET)),)
 		TARGET:=$(TARGET_DEFAULT)
