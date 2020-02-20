@@ -131,3 +131,10 @@ uninstall_oth:
 	@rm -f $(TARGET)
 	@echo complete $(@)
 
+build_dll:
+	g++ -c -DBUILDING_EXAMPLE_DLL example_dll.cpp
+	g++ -shared -o example_dll.dll example_dll.o -Wl,--out-implib,libexample_dll.a
+
+build_dll_main:
+	g++ -c example_main.cpp
+	g++ -o example_main example_main.o -L. -lexample_dll
