@@ -196,7 +196,7 @@ int main(int argc,char* argv[]) {
 				arr[i] = rand_char();
 			}
 
-			// std::cout << "'0'="<<(int)'0' << ",'Z'="<<(int)'Z'<<",'a'="<<(int)'a'<<std::endl;
+			std::cout << "'0'="<<(int)'0' << ",'A'="<<(int)'A'<<",'z'="<<(int)'z'<<std::endl;
 
 			string s = std::string(arr);
 
