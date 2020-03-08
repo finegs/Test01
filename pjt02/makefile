@@ -4,7 +4,14 @@ CXX      := -g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1 -DUSE_LOCAL_TIME=true
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 
-xNIX_HEADER := $(shell [ -e /usr/include ] && echo 1|| echo 0 )
+ifeq ($(OS), Windows_NT)
+	xNIX_HEADER := 0
+else
+	xNIX_HEADER := 1
+endif
+
+#xNIX_HEADER := $(shell [ -e /usr/include ] && echo 1|| echo 0 )
+
 
 ifeq ($(OS), Windows_NT) 
 	LDFLAGS  := -lws2_32 -pthread
@@ -71,7 +78,8 @@ endif
 
 OBJS    = $(SRC:%.cpp=%.o)
 
-all: $(TARGET)
+
+all: $(TARGET) build_dll_main
 
 #	@mkdir -p $(@D)
 $(OBJS):$(SRC)
@@ -145,6 +153,17 @@ build_dll:
 	g++ -c -DBUILDING_EXAMPLE_DLL example_dll.cpp
 	g++ -shared -o example_dll.dll example_dll.o -Wl,--out-implib,libexample_dll.a
 
-build_dll_main:
+build_dll_main: build_dll
 	g++ -c example_main.cpp
 	g++ -o example_main example_main.o -L. -lexample_dll
+
+
+help:
+	@echo off
+	@echo debug
+	@echo $(TARGET) (default)
+	@echo release
+	@echo clean_win
+	@echo clean_oth
+	@echo build_dll			::  Build DLL for windows
+	@echo build_dll_main	:: Build Main with DLL

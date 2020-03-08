@@ -16,14 +16,14 @@ unsigned char SHT20;
 void main(void)
 {
 
-             SHT20_SoftReset();
+	SHT20_SoftReset();
 
-             while(1)
-             {
-                       //SHT20 0x80 //SHT20 Temp Humidity sensor ID
-                       SHT20_read(SHT20, SHT20_TEMPERATURE, &dat); //SHT20_TEMPERATURE 0xE3 //Measure Temperature under Hole Mode
-                       SHT20_Digit(0xC2, &dat, 'T'); //SHT20_HUMIDITY 0xE5 //Measure Humidity under Hold Mode
-               }
+	while(1)
+	{
+		//SHT20 0x80 //SHT20 Temp Humidity sensor ID
+		SHT20_read(SHT20, SHT20_TEMPERATURE, &dat); //SHT20_TEMPERATURE 0xE3 //Measure Temperature under Hole Mode
+		SHT20_Digit(0xC2, &dat, 'T'); //SHT20_HUMIDITY 0xE5 //Measure Humidity under Hold Mode
+	}
 }
 
 

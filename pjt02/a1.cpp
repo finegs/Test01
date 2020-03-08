@@ -2,6 +2,9 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include <cstdlib>
+#include <cstring>
+#include <unordered_set>
 
 std::tuple<double, char, std::string> get_student(int id) 
 {
@@ -11,9 +14,20 @@ std::tuple<double, char, std::string> get_student(int id)
 	throw std::invalid_argument("illegal id");
 }
 
+int strrev(char* str, size_t len) {
+	if(!str) return EXIT_FAILURE;
+	if(len<=0) return EXIT_FAILURE;
+	int  l = 0, r = len;
+	char t;
+	for(l = 0, r = len-1;l<r;l++,r--) {
+		t = str[l]; str[l] = str[r]; str[r] = t;
+	}
+	return EXIT_SUCCESS;
+}
 
-int main() 
-{
+struct Point { double x, y; };
+
+int f2() {
 	auto std0 = get_student(0);
 
 	std::cout << "ID : 0, "
@@ -46,6 +60,56 @@ int main()
 				<< "GPA: " <<  gpa2 << ", "
 				<< "Grade: " << grade2 << ", "
 				<< "Name: " <<  name2 << "\n";
+
+	return EXIT_SUCCESS;
+}
+
+void f3() {
+	std::string str;
+	size_t len;
+
+	std::cout << "str? : "; std::cout.flush();
+	std::cin >> str; std::cin.clear();
+	char* cstr = new char[(len = str.length())+1];
+	memset(cstr, '\0', len+1);
+	strncpy(cstr, str.c_str(), len);
+	std::cout << "str before strrev(cstr) : " << cstr << std::endl;
+	std::cout << "strrev("<<cstr<<", " << len << ") = " << strrev(cstr, len) << std::endl;
+	std::cout << "str after  strrev(cstr) : " << cstr << std::endl;
+
+	std::free(cstr);
+}
+	
+int f1() {
+	Point pts[3] = { {1, 0}, {2, 0}, {3, 0} };
+ 
+	//points is a set containing the addresses of points
+	std::unordered_set<Point *> points = { pts, pts + 1, pts + 2 };
+ 
+	//Change each y-coordinate of (i, 0) from 0 into i^2 and print the point
+	for(auto iter = points.begin(); iter != points.end(); ++iter){
+	    (*iter)->y = ((*iter)->x) * ((*iter)->x); //iter is a pointer-to-Point*
+	    std::cout << "(" << (*iter)->x << ", " << (*iter)->y << ") ";
+	}
+	std::cout << '\n';
+ 
+	//Now using the range-based for loop, we increase each y-coordinate by 10
+	for(Point * i : points) {
+	    i->y += 10;
+	    std::cout << "(" << i->x << ", " << i->y << ") ";
+	}
+	std::cout << std::endl;
+
+	return EXIT_SUCCESS;
+}
+
+
+int main() 
+{
+
+	f1();
+	f2();
+	f3();
 
 }
 
