@@ -2,6 +2,8 @@
 #define _MUTIL_HPP_
 
 #include <string>
+#include <vector>
+#include <istream>
 
 #define NANO 1000000000L
 #define uint unsigned int
@@ -27,5 +29,6 @@ void printHashTable();
 
 void buildMaxHeap(int arr[], int n);
 void heapSort(int arr[], int n);
+std::vector<std::string> csv_read_row(std::istream &file, char delimiter);
 
 #endif
