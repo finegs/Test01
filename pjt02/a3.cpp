@@ -73,6 +73,10 @@ void log(const char* msg) {
 	std::cout << getTimestamp() << " " << msg << std::endl;
 }
 
+void log(const std::string& msg ) {
+	std::cout << getTimestamp() << msg << std::endl;
+}
+
 int gcd(int a, int b) {
 	int tmp, n;
 	if(a<b) {
@@ -151,14 +155,16 @@ int main(int argc, char* argv[]) {
 	cout << endl;
 
 	return 0;
+#endif
 
+#if 1
 	std::unordered_map<std::string, Clz2> m2;
 	std::set<std::string> argset;
 	bool verbose = false;
 	char* inputFile;
 	for(int i = 1;i < argc;i++) {
 		argset.insert(std::string(argv[i]));
-		if(!strcmp("-in", argv[i]) && argc > i+1) {
+		if(!strcmp("-f", argv[i]) && argc > i+1) {
 			inputFile = argv[i+1];	
 		}		
 	}
@@ -198,8 +204,8 @@ int main(int argc, char* argv[]) {
 	m.insert({2, {2, "name2"}});
 	m.insert({{3, {3, "name3"}},{4,{4,"name4"}}});
 	
-	Clz a = Clz(5, "ccc");
-	m.insert({a.age, a});
+	Clz c1 = Clz(5, "ccc");
+	m.insert({c1.age, c1});
 
 	std::cout << m[1].age << " = " << m[1].name << std::endl;
 	std::cout << m[1].age << " = " << m[1].name << std::endl;
@@ -217,7 +223,10 @@ int main(int argc, char* argv[]) {
 	std::cout << "##### End ###############" << std::endl;
 
 	std::cout << "##### Start #############" << std::endl;
-	std::cout << "m2.size()=" << m2.size() << std::endl;
+	// std::cout << "m2.size()=" << m2.size() << std::endl;
+	std::string msg("m2.size() : ");
+	msg+= m2.size();	
+	log(msg);	
 	if(verbose) {
 		std::cout << "m2.content= " << std::endl;
 		int i = 0;
