@@ -15,8 +15,10 @@ endif
 
 ifeq ($(OS), Windows_NT) 
 	LDFLAGS  := -lws2_32 -pthread
+	INCLUDE  := -I include
 else
 	LDFLAGS  := -L /usr/local/lib -pthread -lwiringPi -lm -lcrypt -lrt
+	INCLUDE  := -I include -I /usr/local/include
 endif
 BUILD    := build
 
@@ -28,7 +30,6 @@ else
 	APP_DIR  := $(BUILD)/apps
 endif
 
-INCLUDE  := -I include -I /usr/local/include
 SRC_INC  := mutil.cpp
 
 #skip files
