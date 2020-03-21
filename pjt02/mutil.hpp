@@ -29,6 +29,7 @@ void printHashTable();
 
 void buildMaxHeap(int arr[], int n);
 void heapSort(int arr[], int n);
+std::vector<std::vector<std::string>> load_csv(const char* path);
 std::vector<std::string> csv_read_row(std::istream &file, char delimiter);
 
 #endif

@@ -11,6 +11,7 @@
 #include <vector>
 #include "mutil.hpp"
 
+
 char* mstrtok(char* _str, const char* _delim) {
 	static char* pstr;
 //	static char bdelim;
@@ -294,41 +295,40 @@ void heapSort(int arr[], int n) {
 	}
 }
 
-std::vector<std::vector<std::string>> load_csv(const char* path) {
-	using namespace std;
-	ifstream file(path);
-	// ifstream file("C:\\Dev\\git\\Test01\\pjt02\\in.csv");
-
-	vector<vector<string>> rows;
-
-	if(file.fail()) {
-		cout << "File Not found : " << path << endl;
-		return rows;
-	}
-
-	while(file.good()) {
-		vector<string> row = csv_read_row(file, ',');
-		
-		if(!row[0].find("#")) {
-			continue;
-		}
-		else {
-#ifdef DEBUG
-			for(int i = 0,len=row.size()-2;i<len;i++) {
-				cout << "[" << row[i] << "]" << "\t";
-			}
-#endif
-			rows.push_back(row);
-		}
-#ifdef DEBUG
-		cout << endl;
-#endif
-	}
-
-	file.close();
-
-	return rows;
-}
+//std::vector<std::vector<std::string>> load_csv(const char* path) {
+//	std::ifstream filein(path, std::ios::in);
+//	// ifstream file("C:\\Dev\\git\\Test01\\pjt02\\in.csv");
+//
+//	std::vector<std::vector<std::string>> rows;
+//
+//	if(filein.fail()) {
+//		std::cout << "File Not found : " << path << std::endl;
+//		return rows;
+//	}
+//
+//	while(filein.good()) {
+//		std::vector<std::string> row = csv_read_row(filein, ',');
+//		
+//		if(!row[0].find("#")) {
+//			continue;
+//		}
+//		else {
+//#ifdef DEBUG
+//			for(int i = 0,len=row.size()-2;i<len;i++) {
+//				std::cout << "[" << row[i] << "]" << "\t";
+//			}
+//#endif
+//			rows.push_back(row);
+//		}
+//#ifdef DEBUG
+//		std::cout << std::endl;
+//#endif
+//	}
+//
+//	file.close();
+//
+//	return rows;
+//}
 
 
 std::vector<std::string> csv_read_row(std::istream &file, char delimiter) {
