@@ -3,6 +3,7 @@
 #include <string>
 #include <cstring>
 #include <memory>
+
 std::string getString(const char* str) {
 	return std::string(str);
 }

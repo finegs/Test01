@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <istream>
+#include <fstream>
 
 #define NANO 1000000000L
 #define uint unsigned int
@@ -29,6 +30,7 @@ void printHashTable();
 
 void buildMaxHeap(int arr[], int n);
 void heapSort(int arr[], int n);
+std::vector<std::vector<std::string>> load_csv(const char* path);
 std::vector<std::string> csv_read_row(std::istream &file, char delimiter);
 
 #endif

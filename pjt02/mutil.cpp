@@ -11,6 +11,7 @@
 #include <vector>
 #include "mutil.hpp"
 
+
 char* mstrtok(char* _str, const char* _delim) {
 	static char* pstr;
 //	static char bdelim;
@@ -296,7 +297,7 @@ void heapSort(int arr[], int n) {
 
 std::vector<std::vector<std::string>> load_csv(const char* path) {
 	using namespace std;
-	std::ifstream file(std::string(path));
+	std::ifstream file(std::string(path), std::ifstream::in);
 	// ifstream file("C:\\Dev\\git\\Test01\\pjt02\\in.csv");
 
 	vector<vector<string>> rows;
@@ -329,7 +330,6 @@ std::vector<std::vector<std::string>> load_csv(const char* path) {
 
 	return rows;
 }
-
 
 std::vector<std::string> csv_read_row(std::istream &file, char delimiter) {
 	using namespace std;
@@ -366,3 +366,4 @@ std::vector<std::string> csv_read_row(std::istream &file, char delimiter) {
 	}
 	return row;
 }
+
