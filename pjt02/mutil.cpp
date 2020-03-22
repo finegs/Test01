@@ -296,7 +296,7 @@ void heapSort(int arr[], int n) {
 
 std::vector<std::vector<std::string>> load_csv(const char* path) {
 	using namespace std;
-	ifstream file(path);
+	std::ifstream file(std::string(path));
 	// ifstream file("C:\\Dev\\git\\Test01\\pjt02\\in.csv");
 
 	vector<vector<string>> rows;

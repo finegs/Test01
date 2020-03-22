@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
 	std::cout << s << " : " << (void*)s << std::endl;
 
 	std::cout << ss << " : " << (void*)&(ss.c_str()[0]) << std::endl;
-
+A
 	std::string s1 = getString(ss.c_str());
 
 	std::cout << s1 << " : " << (void*)&(s1.c_str()[0]) << std::endl;
