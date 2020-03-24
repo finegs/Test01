@@ -46,35 +46,35 @@ SKIP_FILE += b.cpp c.cpp s1.cpp
 #include other source files
 SRC = $(SRC_INC)
 
-TARGET_DEFAULT := aa
+TARGET_DEFAULT = aa
 
 ifeq ($(OS), Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET:=$(TARGET_DEFAULT:%=%.exe)
+		TARGET = $(TARGET_DEFAULT:%=%.exe)
 	endif
 
-	SRC+=$(TARGET:%.exe=%.cpp)
+	SRC += $(TARGET:%.exe=%.cpp)
 	#added by SGK 20200215
 #	ifeq ($(UNAMEO), Msys)
 	ifeq ($(xNIX_HEADER), 1)
-		CLN:=clean_oth
-		BLD:=build_oth
-		RELEASE_APP:=release_app_oth
+		CLN := clean_oth
+		BLD := build_oth
+		RELEASE_APP := release_app_oth
 	else
-		CLN:=clean_win
-		BLD:=build_win
-		RELEASE_APP:=release_app_win
+		CLN := clean_win
+		BLD := build_win
+		RELEASE_APP := release_app_win
 	endif
 else
 	ifeq ($(strip $(TARGET)),)
-		TARGET:=$(TARGET_DEFAULT)
+		TARGET =$(TARGET_DEFAULT)
 	endif
 
-	SRC+=$(TARGET:%=%.cpp)
-	CLN:=clean_oth
-	BLD:=build_oth
-	RELEASE_APP:=release_app_oth
+	SRC += $(TARGET:%=%.cpp)
+	CLN := clean_oth
+	BLD := build_oth
+	RELEASE_APP := release_app_oth
 endif
 
 OBJS    = $(SRC:%.cpp=%.o)

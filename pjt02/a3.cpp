@@ -13,6 +13,13 @@
 
 using namespace std;
 
+//template <typename... Args>
+//std::string sstr(Args &&... args) {
+//	std::ostringstream sstr;
+//	( sstr << std::dec << ... << args );
+//	return sstr.str();
+//}
+
 class Clz {
 	public:
 		int age;
@@ -196,6 +203,8 @@ int main(int argc, char* argv[]) {
 
 			m2.insert({key, {key, name}});
 		}
+
+		std::cout << "file : " << inputFile << " loaded. map.size() : " << m2.size() << std::endl;
 	}
 
 	std::unordered_map<int, Clz> m;
@@ -225,8 +234,8 @@ int main(int argc, char* argv[]) {
 	std::cout << "##### Start #############" << std::endl;
 	// std::cout << "m2.size()=" << m2.size() << std::endl;
 	std::string msg("m2.size() : ");
-	msg+= m2.size();	
-	log(msg);	
+	msg += std::to_string(m2.size());	
+	log(msg);
 	if(verbose) {
 		std::cout << "m2.content= " << std::endl;
 		int i = 0;
