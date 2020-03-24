@@ -6,12 +6,16 @@
 #include <map>
 #include <mutex>
 
+#ifdef USE_BOOST
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/containers/map.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
+#endif
 
 #include "mipc.hpp"
 
+
+#ifdef USE_BOOST
 //using namespace std;
 int MyIPC::TEST_MAP_SIZE = 100;
 
@@ -201,6 +205,8 @@ int MyIPC::testIPCMapFile(int argc, char *argv[], std::vector<std::string> &para
 
    return EXIT_SUCCESS;
 }
+
+#endif
 
 std::string MyIPC::popCmd() {
 	std::lock_guard<std::mutex> guard(MyIPC::cmdQueue_mtx);
