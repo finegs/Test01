@@ -12,3 +12,5 @@ print(t)               # namedtuple
 print(t.C)             # Celsius
 
 h, t = sht.all()  # read both at once
+
+print(f1(1,23))
