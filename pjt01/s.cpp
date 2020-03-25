@@ -89,14 +89,15 @@ int main(int argc, char *argv[])
     /* Join the multicast address */
     //if (setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *) &multicastRequest, sizeof(multicastRequest)) < 0)
     //if (setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, multicastIP, sizeof(multicastRequest)) < 0)
-    if (setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&multicastRequest, sizeof(multicastRequest)) < 0)
+    if (setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&multicastRequest, sizeof(multicastRequest)) < 0) {
         DieWithError("setsockopt() failed");
+	}	
 
 	std::thread send_worker(handle_send, sock);
 	std::thread recv_worker(handle_recv, sock);
 
 	sockaddr_in addr;
-	int addrlen = sizeof(addr);
+	// int addrlen = sizeof(addr);
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	addr.sin_port = htons(multicastPort);
@@ -165,16 +166,15 @@ void handle_send(int sock)
 {
 	while(1)
 	{
-		int msgLen;
+		int msgLen = -1;
 		my::Msg* msg = popSendQueue();
 		if(!msg) continue;
-       	if (sendto(sock, 
-	        msg->getCMsg().c_str(),
-	        msgLen = strlen(msg->getCMsg().c_str()), 
+		const std::string& sndStr = msg->getCMsg();
+		msgLen = sndStr.size();
+       	if (sendto(sock, sndStr.c_str(), msgLen, 
 		0, 
 		(struct sockaddr*)msg->getFromAddr(), 
-		sizeof(msg->getFromAddr())) != msgLen)
-		{
+		sizeof(msg->getFromAddr())) != msgLen) {
         	DieWithError("sendto() sent a different number of bytes than expected");
 		}
 		delete msg;

@@ -4,6 +4,8 @@ BUILD     := build
 APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
 
+DEFAULT_TARGET := t
+
 ifeq ($(OS),Windows_NT)
 	RM = del /Q /F
 	RRM = rmdir /Q /S
@@ -44,15 +46,15 @@ endif
 
 ifeq ($(strip $(TARGET)),)
 	ifeq ($(OS), Windows_NT)
-		TARGET += t.exe
-		SRC:=$(TARGET:%.exe=%.cpp)
+		TARGET = $(DEFAULT_TARGET:%=%.exe)
+		SRC:=$(TARGET:%=%.cpp)
 	else
-		TARGET  := t
+		TARGET = $(DEFAULT_TARGET)
 		SRC := $(TARGET:%=%.cpp)
 	endif
 else
 	ifeq ($(OS), Windows_NT)
-		SRC := $(TARGET:%.exe=%.cpp)
+		SRC := $(TARGET:%=%.cpp)
 	else
 		SRC := $(TARGET:%=%.cpp)
 	endif
@@ -125,13 +127,12 @@ OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 all: $(TARGET)
 
-
 ##########################################################
 
 #################             Compile            ######
 $(OBJ_DIR)/%.o: %.cpp
-	-@if NOT EXIST "$(@D)" . \
-		mkdir -p "$(@D)".       \
+	-@if NOT EXIST "$(@D)" \
+		mkdir -p "$(@D)"   \
 	fi
 	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $@ -c $<
 
@@ -139,8 +140,8 @@ $(OBJ_DIR)/%.o: %.cpp
 
 ##########          Link               ######
 $(TARGET): $(OBJS)
-	-@if NOT EXIST "$(@D)" . \
-		mkdir -p "$(@D)".      \
+	-@if NOT EXIST "$(@D)"  \
+		mkdir -p "$(@D)"      \
 	fi
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
 #   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
@@ -155,11 +156,11 @@ $(TARGET): $(OBJS)
 
 ##########             Make Directory to store obj, target files ######################
 mkdirs:
-	-@if NOT EXIST "$(APP_DIR)" .\
-		mkdir -p "$(APP_DIR)".     \
+	-@if NOT EXIST "$(APP_DIR)" \
+		mkdir -p "$(APP_DIR)"   \
 	fi
-	-@if NOT EXIST "$(OBJ_DIR)" .\
-		mkdir -p "$(OBJ_DIR)".     \
+	-@if NOT EXIST "$(OBJ_DIR)" \
+		mkdir -p "$(OBJ_DIR)"   \
 	fi
 ##########################################################
 

@@ -13,6 +13,13 @@
 
 using namespace std;
 
+//template <typename... Args>
+//std::string sstr(Args &&... args) {
+//	std::ostringstream sstr;
+//	( sstr << std::dec << ... << args );
+//	return sstr.str();
+//}
+
 class Clz {
 	public:
 		int age;
@@ -71,6 +78,10 @@ std::ostream& operator<<(std::ostream& os, const Clz& o) {
 
 void log(const char* msg) {
 	std::cout << getTimestamp() << " " << msg << std::endl;
+}
+
+void log(const std::string& msg ) {
+	std::cout << getTimestamp() << msg << std::endl;
 }
 
 int gcd(int a, int b) {
@@ -151,14 +162,16 @@ int main(int argc, char* argv[]) {
 	cout << endl;
 
 	return 0;
+#endif
 
+#if 1
 	std::unordered_map<std::string, Clz2> m2;
 	std::set<std::string> argset;
 	bool verbose = false;
 	char* inputFile;
 	for(int i = 1;i < argc;i++) {
 		argset.insert(std::string(argv[i]));
-		if(!strcmp("-in", argv[i]) && argc > i+1) {
+		if(!strcmp("-f", argv[i]) && argc > i+1) {
 			inputFile = argv[i+1];	
 		}		
 	}
@@ -190,6 +203,8 @@ int main(int argc, char* argv[]) {
 
 			m2.insert({key, {key, name}});
 		}
+
+		std::cout << "file : " << inputFile << " loaded. map.size() : " << m2.size() << std::endl;
 	}
 
 	std::unordered_map<int, Clz> m;
@@ -198,8 +213,8 @@ int main(int argc, char* argv[]) {
 	m.insert({2, {2, "name2"}});
 	m.insert({{3, {3, "name3"}},{4,{4,"name4"}}});
 	
-	Clz a = Clz(5, "ccc");
-	m.insert({a.age, a});
+	Clz c1 = Clz(5, "ccc");
+	m.insert({c1.age, c1});
 
 	std::cout << m[1].age << " = " << m[1].name << std::endl;
 	std::cout << m[1].age << " = " << m[1].name << std::endl;
@@ -217,7 +232,10 @@ int main(int argc, char* argv[]) {
 	std::cout << "##### End ###############" << std::endl;
 
 	std::cout << "##### Start #############" << std::endl;
-	std::cout << "m2.size()=" << m2.size() << std::endl;
+	// std::cout << "m2.size()=" << m2.size() << std::endl;
+	std::string msg("m2.size() : ");
+	msg += std::to_string(m2.size());	
+	log(msg);
 	if(verbose) {
 		std::cout << "m2.content= " << std::endl;
 		int i = 0;

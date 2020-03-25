@@ -4,12 +4,21 @@ CXX      := -g++
 CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1 -DUSE_LOCAL_TIME=true
 #LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
 
-xNIX_HEADER := $(shell [ -e /usr/include ] && echo 1|| echo 0 )
+ifeq ($(OS), Windows_NT)
+	xNIX_HEADER := 0
+else
+	xNIX_HEADER := 1
+endif
+
+#xNIX_HEADER := $(shell [ -e /usr/include ] && echo 1|| echo 0 )
+
 
 ifeq ($(OS), Windows_NT) 
 	LDFLAGS  := -lws2_32 -pthread
+	INCLUDE  := -I include
 else
 	LDFLAGS  := -L /usr/local/lib -pthread -lwiringPi -lm -lcrypt -lrt
+	INCLUDE  := -I include -I /usr/local/include
 endif
 BUILD    := build
 
@@ -21,7 +30,6 @@ else
 	APP_DIR  := $(BUILD)/apps
 endif
 
-INCLUDE  := -I include -I /usr/local/include
 SRC_INC  := mutil.cpp
 
 #skip files
@@ -38,40 +46,41 @@ SKIP_FILE += b.cpp c.cpp s1.cpp
 #include other source files
 SRC = $(SRC_INC)
 
-TARGET_DEFAULT := aa
+TARGET_DEFAULT = aa
 
 ifeq ($(OS), Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET:=$(TARGET_DEFAULT:%=%.exe)
+		TARGET = $(TARGET_DEFAULT:%=%.exe)
 	endif
 
-	SRC+=$(TARGET:%.exe=%.cpp)
+	SRC += $(TARGET:%.exe=%.cpp)
 	#added by SGK 20200215
 #	ifeq ($(UNAMEO), Msys)
 	ifeq ($(xNIX_HEADER), 1)
-		CLN:=clean_oth
-		BLD:=build_oth
-		RELEASE_APP:=release_app_oth
+		CLN := clean_oth
+		BLD := build_oth
+		RELEASE_APP := release_app_oth
 	else
-		CLN:=clean_win
-		BLD:=build_win
-		RELEASE_APP:=release_app_win
+		CLN := clean_win
+		BLD := build_win
+		RELEASE_APP := release_app_win
 	endif
 else
 	ifeq ($(strip $(TARGET)),)
-		TARGET:=$(TARGET_DEFAULT)
+		TARGET =$(TARGET_DEFAULT)
 	endif
 
-	SRC+=$(TARGET:%=%.cpp)
-	CLN:=clean_oth
-	BLD:=build_oth
-	RELEASE_APP:=release_app_oth
+	SRC += $(TARGET:%=%.cpp)
+	CLN := clean_oth
+	BLD := build_oth
+	RELEASE_APP := release_app_oth
 endif
 
 OBJS    = $(SRC:%.cpp=%.o)
 
-all: $(TARGET)
+
+all: $(TARGET) build_dll_main
 
 #	@mkdir -p $(@D)
 $(OBJS):$(SRC)
@@ -145,6 +154,17 @@ build_dll:
 	g++ -c -DBUILDING_EXAMPLE_DLL example_dll.cpp
 	g++ -shared -o example_dll.dll example_dll.o -Wl,--out-implib,libexample_dll.a
 
-build_dll_main:
+build_dll_main: build_dll
 	g++ -c example_main.cpp
 	g++ -o example_main example_main.o -L. -lexample_dll
+
+
+help:
+	@echo off
+	@echo debug
+	@echo $(TARGET) (default)
+	@echo release
+	@echo clean_win
+	@echo clean_oth
+	@echo build_dll			::  Build DLL for windows
+	@echo build_dll_main	:: Build Main with DLL

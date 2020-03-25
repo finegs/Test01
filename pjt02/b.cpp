@@ -69,6 +69,7 @@ int main(int argc, char* argv[])
 
 //	if(WM_LBUTTONDOWN)
 //		printf("%d:%d\n", LOWORD(LPARAM), HIWORD(LPARAM));
+	
 
-	return 0;
+	return EXIT_SUCCESS;
 }
