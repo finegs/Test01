@@ -26,9 +26,24 @@ class Cust {
 		}
 };
 
+const char* getText() {
+	const char* s{"abc"};
+	std::cout << "in &s.getText(): " << &s << std::endl;
+	return s;
+}
+
+const char* getText2() {
+	const char s[]{"abc"};
+	std::cout << "in &s.getText(): " << &s << std::endl;
+	return s;
+}
 
 
 int main() {
+	const char* rs = getText();
+	std::cout << "&getText() : " << &rs << std::endl;
+	rs = getText2();
+	std::cout << "&getText2() : " << &rs << std::endl;
 
 
 	Cust c{"Joe", "Fix", 42};
