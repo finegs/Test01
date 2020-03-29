@@ -171,11 +171,15 @@ void MyUU1::testCode(const std::string &strCode, int argc, char* argv[], std::ve
 		MyUU1::testCode04();
 	}
 	break;
+#ifdef USE_BOOST
 	case TC05:
 	{
+
 		 MyIPC::testIPCMapFile(argc, argv , params);
+
 	}
 	break;
+#endif
 
 	default:
 	{

@@ -6,7 +6,14 @@ CXXFLAGS += -Wextra
 CXXFLAGS += -DUSE_MSTR_TOK=1 
 CXXFLAGS += -DUSE_LOCAL_TIME=true
 
-xNIX_HEADER := $(shell [ -e /usr/include ] && echo 1|| echo 0 )
+ifeq ($(OS), Windows_NT)
+	xNIX_HEADER := 0
+else
+	xNIX_HEADER := 1
+endif
+
+#xNIX_HEADER := $(shell [ -e /usr/include ] && echo 1|| echo 0 )
+
 
 LDFLAGS  := -L /usr/local/lib 
 LDFLAGS  += -pthread 
@@ -16,10 +23,13 @@ LDFLAGS  += -lrt
 
 ifeq ($(OS),Windows_NT) 
 	LDFLAGS  := -lws2_32 -pthread
+	INCLUDE  := -I include
 else
 	ifeq ($(USE_WIRINGPI),1)
 		LDFLAGS  += -lwiringPi
 	endif
+	LDFLAGS  := -L /usr/local/lib -pthread -lwiringPi -lm -lcrypt -lrt
+	INCLUDE  := -I include -I /usr/local/include
 endif
 BUILD    := build
 
@@ -49,29 +59,29 @@ SKIP_FILE += b.cpp c.cpp s1.cpp
 
 #include other source files
 
-TARGET_DEFAULT := aa
+TARGET_DEFAULT = aa
 
 ifeq ($(OS),Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET:=$(TARGET_DEFAULT:%=%.exe)
+		TARGET = $(TARGET_DEFAULT:%=%.exe)
 	endif
 
 	SRC_TARGET :=$(TARGET:%.exe=%.cpp)
 	#added by SGK 20200215
 #	ifeq ($(UNAMEO), Msys)
 	ifeq ($(xNIX_HEADER), 1)
-		CLN:=clean_oth
-		BLD:=build_oth
-		RELEASE_APP:=release_app_oth
+		CLN := clean_oth
+		BLD := build_oth
+		RELEASE_APP := release_app_oth
 	else
-		CLN:=clean_win
-		BLD:=build_win
-		RELEASE_APP:=release_app_win
+		CLN := clean_win
+		BLD := build_win
+		RELEASE_APP := release_app_win
 	endif
 else
 	ifeq ($(strip $(TARGET)),)
-		TARGET:=$(TARGET_DEFAULT)
+		TARGET =$(TARGET_DEFAULT)
 	endif
 	ifeq ($(strip $(target)),)
 		TARGET:=$(TARGET_DEFAULT)
@@ -93,7 +103,8 @@ OBJS := $(SRCS:%.cpp=%.o)
 #SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
 #OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
-all: $(TARGET)
+
+all: $(TARGET) build_dll_main
 
 #	@mkdir -p $(@D)
 #$(OBJS):$(SRCS)
@@ -161,6 +172,17 @@ build_dll:
 	g++ -c -DBUILDING_EXAMPLE_DLL example_dll.cpp
 	g++ -shared -o example_dll.dll example_dll.o -Wl,--out-implib,libexample_dll.a
 
-build_dll_main:
+build_dll_main: build_dll
 	g++ -c example_main.cpp
 	g++ -o example_main example_main.o -L. -lexample_dll
+
+
+help:
+	@echo off
+	@echo debug
+	@echo $(TARGET) (default)
+	@echo release
+	@echo clean_win
+	@echo clean_oth
+	@echo build_dll			::  Build DLL for windows
+	@echo build_dll_main	:: Build Main with DLL
