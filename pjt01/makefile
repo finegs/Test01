@@ -4,10 +4,13 @@ BUILD     := build
 APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
 
+DEFAULT_TARGET := t
+
 ifeq ($(OS),Windows_NT)
 	RM = del /Q /F
 	RRM = rmdir /Q /S
 	OSFLAG += -D WIN32
+	MKDIR = mkdir
 	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
 		OSFLAG += -D AMD64
 	endif
@@ -17,6 +20,7 @@ ifeq ($(OS),Windows_NT)
 else
 	RM = rm -f
 	RRM = rm -f -r
+	MKDIR = mkdir -p
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		OSFLAG += -D LINUX
@@ -38,20 +42,20 @@ endif
 
 
 OSFLAG    := 
-ifeq ($(OS), Windows_NT)
+ifeq ($(OS),Windows_NT)
 	OSFLAG += -D WIN32
 endif
 
 ifeq ($(strip $(TARGET)),)
-	ifeq ($(OS), Windows_NT)
-		TARGET += t.exe
+	ifeq ($(OS),Windows_NT)
+		TARGET := $(DEFAULT_TARGET:%=%.exe)
 		SRC:=$(TARGET:%.exe=%.cpp)
 	else
-		TARGET  := t
+		TARGET := $(DEFAULT_TARGET:%=%)
 		SRC := $(TARGET:%=%.cpp)
 	endif
 else
-	ifeq ($(OS), Windows_NT)
+	ifeq ($(OS),Windows_NT)
 		SRC := $(TARGET:%.exe=%.cpp)
 	else
 		SRC := $(TARGET:%=%.cpp)
@@ -84,8 +88,7 @@ INC_PATH  += -Iinc
 LFLAGS    :=
 LDFLAGS   :=
 
-ifeq ($(OS), Windows_NT)
-#	LDFLAGS  := -Wl, -Bstatic
+ifeq ($(OS),Windows_NT)
     LDFLAGS  := -static
 	LDFLAGS  += -lws2_32
 #	LDFLAGS  += -Wl,-Bdynamic
@@ -94,7 +97,6 @@ else
 endif
 
 
-#LDFLAGS  += -Wl,-Bdynamic
 LDFLAGS   += -lstdc++
 LDFLAGS   += -lm
 LDFLAGS   += -pthread
@@ -102,8 +104,7 @@ LDFLAGS   += -pthread
 
 #LDFLAGS   += -lwsock32
 
-
-ifeq ($(OS), Windows_NT)
+ifeq ($(OS),Windows_NT)
 	LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
 else
 	LIB_PATH  := 
@@ -123,29 +124,28 @@ OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 #################  all (Default)      ######
 
-all: $(TARGET)
+all: makedirs $(TARGET)
 
 
 ##########################################################
 
 #################             Compile            ######
 $(OBJ_DIR)/%.o: %.cpp
-	-@if NOT EXIST "$(@D)" . \
-		mkdir -p "$(@D)".       \
-	fi
-	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $@ -c $<
+#	-@if NOT EXIST "$(@D)" . \
+#		mkdir -p "$(@D)".       \
+#	fi
+	-@$(MKDIR) $(@D)
+	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $? -o $@ 
 
 ##########################################################
 
 ##########          Link               ######
 $(TARGET): $(OBJS)
-	-@if NOT EXIST "$(@D)" . \
-		mkdir -p "$(@D)".      \
-	fi
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
 #   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
-	$(CXX) -o $@ $(LIB_PATH) $(OBJS) $(LDFLAGS)
- 
+	-@$(MKDIR) $(@D)
+	$(CXX) -o $@ $^ $(LIB_PATH) $(LDFLAGS)
+
 ##########################################################
 
 ##########             Build All always SRC or SRC_OTHERS is changed without target removed ########
@@ -154,13 +154,16 @@ $(TARGET): $(OBJS)
 ##########################################################
 
 ##########             Make Directory to store obj, target files ######################
-mkdirs:
-	-@if NOT EXIST "$(APP_DIR)" .\
-		mkdir -p "$(APP_DIR)".     \
-	fi
-	-@if NOT EXIST "$(OBJ_DIR)" .\
-		mkdir -p "$(OBJ_DIR)".     \
-	fi
+makedirs:
+	-@$(MKDIR) $(APP_DIR)
+	-@$(MKDIR) $(OBJ_DIR)
+#	-@if NOT EXIST "$(APP_DIR)" \
+#		mkdir -p "$(APP_DIR)".  \
+#	fi
+#	-@if NOT EXIST "$(OBJ_DIR)" \
+#		mkdir -p "$(OBJ_DIR)".  \
+#	fi
+
 ##########################################################
 
 debug: CXXFLAGS += -DDEBUG -g
@@ -182,9 +185,9 @@ release_this:
 ##########            Clean Target, Object and Current Path Target Files    #########################
 clean:
 	-@echo Starting clean.
-	-@$(RM) "$(TARGET)"
-	-@$(RM) "$(OBJ_DIR)\*.*"
-	-@$(RM) "$(APP_DIR)\*.*"
+	-@$(RM) $(TARGET)
+	-@$(RM) $(OBJ_DIR)/*.*
+	-@$(RM) $(APP_DIR)/*.*
 #
 #	-@rm -rf "$(OBJ_DIR)"/*.*
 #	-@rm -rf "$(APP_DIR)"/*.*
