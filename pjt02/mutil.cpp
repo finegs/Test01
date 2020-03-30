@@ -367,3 +367,7 @@ std::vector<std::string> csv_read_row(std::istream &file, char delimiter) {
 	return row;
 }
 
+std::ostream& operator<<(std::ostream& os, const MyClz& o) {
+	os << "{\"name\":\"" << o.name << "\", \"desc\":" << o.desc << "\"}";
+	return os;
+}

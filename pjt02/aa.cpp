@@ -1,5 +1,6 @@
 #include <chrono>
 #include <cstring>
+#include <ios>
 #include <iostream>
 //#include <iomanip>
 #include <string>
@@ -109,6 +110,16 @@ int main(int argc, char *argv[]) {
 
 	sleepTime = 1000;
 	sleepCount = 0;
+
+	
+	MyClz c("name", " v  e  r  y  Long N a m e");
+	MyClz cc(c);
+	MyClz ccc;
+	ccc = cc;
+	std::cout << c << std::endl;
+	std::cout << "c == cc " << std::boolalpha << (c == cc) << std::endl;
+	std::cout << "c == ccc " << std::boolalpha << (c == ccc) << std::endl;
+
 	for (int i = 1; i < argc; i++) {
 		if (!strcmp("-t", argv[i]) && i + 1 < argc) {
 			argm.insert({argv[i], argv[i + 1]});

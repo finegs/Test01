@@ -178,8 +178,8 @@ example_main: example_dll
 
 clean_example_dll:
 	@echo starting $@
-	@del /S /Q *.dll
-	@del /S /Q *.a
+	-@del /S /Q *.dll
+	-@del /S /Q *.a
 	@echo complete $@
 
 help:

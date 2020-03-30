@@ -1,14 +1,12 @@
 ######################  Init All Variables ###############################################
 CXX      := g++ 
 BUILD     := build
-APP_DIR   := $(BUILD)/apps
-OBJ_DIR   := $(BUILD)/objects
 
 DEFAULT_TARGET := t
 
 ifeq ($(OS),Windows_NT)
 	RM = del /Q /F
-	RRM = rmdir /Q /S
+	RRM = rd /Q /S
 	OSFLAG += -D WIN32
 	MKDIR = mkdir
 	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
@@ -17,6 +15,9 @@ ifeq ($(OS),Windows_NT)
 	ifeq ($(PROCESSOR_ARCHITECTURE),x86)
 		OSFLAG += -D IA32
 	endif
+
+	APP_DIR   := $(BUILD)\apps
+	OBJ_DIR   := $(BUILD)\objects
 else
 	RM = rm -f
 	RRM = rm -f -r
@@ -38,6 +39,9 @@ else
 	ifneq ($(filter arm%,$(UNAME_P)),)
 		OSFLAG += -D ARM
 	endif
+
+	APP_DIR   := $(BUILD)/apps
+	OBJ_DIR   := $(BUILD)/objects
 endif
 
 
@@ -124,7 +128,7 @@ OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 #################  all (Default)      ######
 
-all: makedirs $(TARGET)
+all: mkdirs $(TARGET)
 
 ##########################################################
 
@@ -153,7 +157,7 @@ $(TARGET): $(OBJS)
 ##########################################################
 
 ##########             Make Directory to store obj, target files ######################
-makedirs:
+mkdirs:
 	-@$(MKDIR) $(APP_DIR)
 	-@$(MKDIR) $(OBJ_DIR)
 #	-@if NOT EXIST "$(APP_DIR)" \
