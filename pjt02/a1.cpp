@@ -6,12 +6,22 @@
 #include <cstring>
 #include <unordered_set>
 
-std::tuple<double, char, std::string> get_student(int id) 
+using myt = std::tuple<double, char, std::string>;
+
+myt get_student(int id) 
 {
-	if(id ==0) return std::make_tuple(3.89, 'A', "Lisa Simpsion");
-	if(id ==1) return std::make_tuple(2.33, 'B', "Milhouse Van Houten");
-	if(id ==2) return std::make_tuple(1.70, 'D', "Ralph Wiggum");
+	if(id ==0) return myt{3.89, 'A', "Lisa Simpsion"};
+	if(id ==1) return myt{2.33, 'B', "Milhouse Van Houten"};
+	if(id ==2) return myt{1.70, 'D', "Ralph Wiggum"};
 	throw std::invalid_argument("illegal id");
+}
+
+std::ostream& operator<<(std::ostream& os, myt o) {
+	os << "ID : " << std::get<0>(o)
+			<< ", GPA : " << std::get<1>(o)
+			<< ", Grade : " << std::get<2>(o)
+			<< std::endl;
+	return os;
 }
 
 int strrev(char* str, size_t len) {
@@ -30,10 +40,7 @@ struct Point { double x, y; };
 int f2() {
 	auto std0 = get_student(0);
 
-	std::cout << "ID : 0, "
-				<< "GPA: " <<  std::get<0>(std0) << ", "
-				<< "Grade: " <<  std::get<1>(std0) << ", "
-				<< "Name: " <<  std::get<2>(std0) << "\n";
+	std::cout << std0 << "\n";
 
 	double gpa1;
 	char grade1;
@@ -110,7 +117,5 @@ int main()
 	f1();
 	f2();
 	f3();
-
-
 }
 

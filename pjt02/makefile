@@ -48,7 +48,7 @@ SRC = $(SRC_INC)
 
 TARGET_DEFAULT = aa
 
-ifeq ($(OS), Windows_NT)
+ifeq ($(OS),Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
 		TARGET = $(TARGET_DEFAULT:%=%.exe)
@@ -80,7 +80,7 @@ endif
 OBJS    = $(SRC:%.cpp=%.o)
 
 
-all: $(TARGET) build_dll_main
+all: $(TARGET) example_main
 
 #	@mkdir -p $(@D)
 $(OBJS):$(SRC)
@@ -125,14 +125,14 @@ release_app_oth:
 
 clean:$(CLN)
 
-clean_win:
-	@echo starting clean 
-	@del /F /Q *.o
-	@del /F /Q $(TARGET)
+clean_win: clean_example_dll
+	@echo starting $@
+	-@del /F /Q *.o
+	-@del /F /Q $(TARGET)
 #	-@IF EXIST $(OBJ_DIR) ( del /S /F /Q $(OBJ_DIR)\*.o )
 #	-@IF EXIST $(APP_DIR) ( del /S /F /Q $(APP_DIR)\$(TARGET) )
 #	-@IF EXIST $(TARGET) ( del /F /Q $(TARGET) )
-	@echo complete clean
+	@echo complete $@
 
 clean_oth:
 	@echo starting clean 
@@ -150,14 +150,19 @@ uninstall_oth:
 	@rm -f $(TARGET)
 	@echo complete $(@)
 
-build_dll:
-	g++ -c -DBUILDING_EXAMPLE_DLL example_dll.cpp
-	g++ -shared -o example_dll.dll example_dll.o -Wl,--out-implib,libexample_dll.a
+example_dll:
+	$(CXX) -DBUILDING_EXAMPLE_DLL -c $(@:%=%.cpp)
+	$(CXX) -shared -o $(@:%=%.dll) $(@:%=%.o) -Wl,--out-implib,libexample_dll.a
 
-build_dll_main: build_dll
-	g++ -c example_main.cpp
-	g++ -o example_main example_main.o -L. -lexample_dll
+example_main: example_dll
+	$(CXX) -c $(@:%=%.cpp) -o $(@:%=%.o)
+	$(CXX) -o $@ $(@:%=%.o) -L. -l$< 
 
+clean_example_dll:
+	@echo starting $@
+	@del /S /Q *.dll
+	@del /S /Q *.a
+	@echo complete $@
 
 help:
 	@echo off
@@ -167,4 +172,4 @@ help:
 	@echo clean_win
 	@echo clean_oth
 	@echo build_dll			::  Build DLL for windows
-	@echo build_dll_main	:: Build Main with DLL
+	@echo dll_main	:: Build Main with DLL
