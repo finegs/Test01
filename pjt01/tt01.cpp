@@ -432,9 +432,17 @@ void simple_printf(const char* fmt, ...) {
 }
 
 int main(int argc, char* argv[]) {
-	const char* f =  "%d --- %c --- %f --- %f\n";
-	printf(f, 3, 'a', 1.999, 42.5);
-	simple_printf(f, 3, 'a', 1.999, 42.5);
+	const char* ff;
+	if(argc > 1) {
+		ff = argv[1];
+	}
+	else {
+		ff =  "%d --- %c --- %f --- %f\n";
+	}
+
+	// const char* f =  "%d --- %c --- %f --- %f\n";
+	printf(ff, 3, 'a', 1.999, 42.5);
+	simple_printf(ff, 3, 'a', 1.999, 42.5);
 }
 
 #endif
