@@ -64,10 +64,10 @@ TARGET_DEFAULT = aa
 ifeq ($(OS),Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET = $(TARGET_DEFAULT:%=%.exe)
+		TARGET = $(TARGET_DEFAULT)
 	endif
 
-	SRC_TARGET :=$(TARGET:%.exe=%.cpp)
+	SRC_TARGET :=$(TARGET:%=%.cpp)
 	#added by SGK 20200215
 #	ifeq ($(UNAMEO), Msys)
 	ifeq ($(xNIX_HEADER), 1)
@@ -114,7 +114,8 @@ all: $(TARGET) example_main
 
 #	@mkdir -p $(@D)
 $(TARGET):$(OBJS)
-	$(CXX) $(INCLUDE) $(LDFLAGS) -o $@ $^
+#	$(CXX) $(INCLUDE) $(LDFLAGS) -o $@ $^
+	$(CXX) $(INCLUDE) $(LDFLAGS) $^ -o $@
 
 .PHONY: clean all
 
