@@ -16,7 +16,9 @@ ifeq ($(OS),Windows_NT)
 	ifeq ($(PROCESSOR_ARCHITECTURE),x86)
 		OSFLAG += -D IA32
 	endif
+
 else
+
 	RM = rm -f
 	RRM = rm -f -r
 	UNAME_S := $(shell uname -s)
@@ -195,5 +197,4 @@ clean:
 	-@echo Clean done.
 
 ##########################################################
-
 

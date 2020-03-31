@@ -27,9 +27,12 @@ public:
 
 public:
 
-#ifdef USE_BOOST
+
+#ifndef USE_NBOOST
+
 	static int testIPC(int argc, char *argv[]);
 	static int testIPCMapFile(int argc, char *argv[], std::vector<std::string> &params);
+
 #endif
 
 	static std::string popCmd();
@@ -38,6 +41,7 @@ public:
 	
 private:
 	static void initQueue();
+
 	static std::queue<std::string> cmdQueue;
 	static std::mutex cmdQueue_mtx;
 };

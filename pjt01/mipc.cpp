@@ -15,7 +15,7 @@
 #include "mipc.hpp"
 
 
-#ifdef USE_BOOST
+#ifndef USE_NBOOST
 //using namespace std;
 int MyIPC::TEST_MAP_SIZE = 100;
 
