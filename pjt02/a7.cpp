@@ -2,6 +2,28 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstring>
+#include <cstdlib>
+#include <functional>
+
+template<typename T>
+T max(T const a, T const  b) {
+	return b < a? a : b;
+}
+
+
+template<typename T = std::string>
+bool f(T = "") {
+	return true;
+}
+
+template<typename T>
+T* max(T* a, T* b) {
+	return *b<*a? a : b;
+}
+char const* max(char const* a, char const* b) {
+	return std::strcmp(b, a) < 0 ? a:b;
+}
 
 std::vector<std::string> read_until(std::istream& is, std::string_view& terminator) {
 	std::vector<std::string> res;
@@ -51,6 +73,12 @@ class UserData {
 			return *this;
 		}
 
+		friend
+		std::ostream& operator<(std::ostream& os, const UserData& o) {
+			os << "UserName : " << o.userName << ", MsgDetail : " << o.msgDetail;
+			return os;
+		}
+
 		std::string& getMsgDetail() { return msgDetail; }
 		std::string& getUserName() { return userName; }
 };
@@ -66,6 +94,8 @@ class Msg {
 
 	public:
 		Msg() : msg(""), val(-1.0), name(""), msgType(Msg_Normal), userData(nullptr) {}
+		Msg(std::string _msg = "", double _val = -1.0, MsgType _msgType = MsgType::Msg_Normal, UserData* _userData = nullptr)
+			: msg(_msg), val(_val), msgType(_msgType) , userData(_userData) {}
 		Msg(const Msg& o) 
 			: msg(o.msg), val(o.val), name(o.name), msgType(o.msgType), userData(o.userData) {}
 		Msg(Msg&& o)
@@ -105,10 +135,20 @@ class Msg {
 			if(o.userData) {
 				userData = o.userData;
 			}
-
 			o.userData = nullptr;
 
 			return *this;
+		}
+
+		friend
+		std::ostream& operator<<(std::ostream& os, const Msg& o) {
+			os << "Name : " << o.name << ", Val : " << o.val << ", Msg : " << o.msg << ", MsgType : " << o.val;
+			os << ", UserData : ";
+			if(o.userData)
+				os << o.userData;
+			else
+				os << "";
+			return os;
 		}
 
 //		~UserData() {
@@ -124,9 +164,56 @@ class Msg {
 
 };
 
+int func1(int argc, char* argv[]);
+int func2(int argc, char* argv[]);
 
-int main() {
-	Msg* m = new Msg{"a", 1.0, "b"};
 
-	delete m;
+int main(int argc, char* argv[]) {
+	
+	std::function<int(int argc, char* argv[])> f1 = func1;
+	std::function<int(int argc, char* argv[])> f2 = func2;
+
+	f1(argc, argv);
+	f2(argc, argv);
+
+	return EXIT_SUCCESS;
 }
+
+int func2(int argc, char* argv[]) {
+#ifdef MYDEBUG
+	if(argc>1) {
+		for(int i = 1;i<argc;i++) {
+			std::cout << " argv[" << i << "] : " << argv[i] << (i+1>argc?", ": "");
+		}
+	}
+#endif
+	return EXIT_SUCCESS;
+}
+
+int func1(int argc, char* argv[]) {
+#ifdef MYDEBUG
+	if(argc>1) {
+		for(int i = 1;i<argc;i++) {
+			std::cout << " argv[" << i << "] : " << argv[i] << (i+1>argc?", ": "");
+		}
+	}
+#endif
+
+	Msg* m = new Msg{"a", 1.0};
+	std::cout << " new Msg{\"a\", 1.0} = " << (*m) << std::endl;
+
+	std::cout << " 1 < 2 = " << std::boolalpha << max(1,2) << std::endl;
+	std::cout << " f(\"1\") = " << std::boolalpha << f() << std::endl;
+
+	char const* a = "hello";
+	char const* b = "world";
+///	a[1] = 'J';
+	a = "Good";
+//	char* const aa = "Good";
+//	aa[1] = 'C';
+//	aa = "Gooooood";
+	std::cout << "max(" << a << "," << b << ") : " <<  max(a,b) << std::endl;
+	delete m;
+	return EXIT_SUCCESS;
+}
+

@@ -3,6 +3,7 @@ CXX      := -g++
 CXXFLAGS := -std=c++17
 CXXFLAGS += -Wall 
 CXXFLAGS += -Wextra 
+CXXFLAGS += -Wunused-parameter
 CXXFLAGS += -DUSE_MSTR_TOK=1 
 CXXFLAGS += -DUSE_LOCAL_TIME=true
 
