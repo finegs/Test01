@@ -1,7 +1,22 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
+std::vector<std::string> read_until(std::istream& is, std::string_view& terminator) {
+	std::vector<std::string> res;
+	for(std::string s; is >> s && s != terminator; )
+		res.push_back(s);
+
+	return res;
+}
+std::vector<std::string> read_until(std::istream& is, const std::string& terminator) {
+	std::vector<std::string> res;
+	for(std::string s; is >> s && s != terminator; )
+		res.push_back(s);
+
+	return res;
+}
 
 enum MsgType {
 	Msg_Normal = 1,
@@ -111,7 +126,7 @@ class Msg {
 
 
 int main() {
-	Msg* m = new Msg("a", 1.0, "b");
+	Msg* m = new Msg{"a", 1.0, "b"};
 
 	delete m;
 }

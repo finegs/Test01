@@ -104,9 +104,15 @@ int gcd(int a, int b) {
 
 
 
+
 int main(int argc, char* argv[]) {
-	int a = atoi(argv[1]);
-	int b = atoi(argv[2]);
+	int a = -100,b = -100;
+	if(argc > 1) {
+		a = atoi(argv[1]);
+	}
+	if(argc > 2) {
+		b = atoi(argv[2]);
+	}
 
 	int result;
 	printf("a:%d, b:%d\n", a,b);

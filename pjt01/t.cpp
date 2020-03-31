@@ -152,10 +152,11 @@ void handleUserInput(int argc, char* argv[]) {
 		else if ("-h" == cmd || "-H" == cmd || "-help" == cmd || "-HELP" == cmd) {
 			MyClz::printCRUDUsage();
 		}
+#if 0
 		else if ("-t00" == cmd || "-T00" == cmd) {
-
 			MyIPC::testIPC(argc, argv);
 		}
+#endif
 		else if ("-t01" == cmd || "-t01" == cmd) {
 			MyUU1 u;
 
@@ -180,9 +181,11 @@ void handleUserInput(int argc, char* argv[]) {
 		else if ("-t04" == cmd || "-T04" == cmd) {
 			MyUU1::test04();
 		}
+#if 0
 		else if ("-t05" == cmd || "-T05" == cmd) {
 			MyIPC::testIPCMapFile(argc, argv, params);
 		}
+#endif
 		else if ("-tc" == cmd || "-TC" == cmd) {
 			if (params.size() < 2)
 				continue;
@@ -223,7 +226,9 @@ int main(int argc, char *argv[]) {
 				return false;
 		})) {
 	
+#if 0
 		MyIPC::testIPCMapFile(argc, argv, params);
+#endif
 		return EXIT_SUCCESS;
 	}
 

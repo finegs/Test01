@@ -33,4 +33,41 @@ void heapSort(int arr[], int n);
 std::vector<std::vector<std::string>> load_csv(const char* path);
 std::vector<std::string> csv_read_row(std::istream &file, char delimiter);
 
+class MyClz {
+	private:
+		std::string name;
+		std::string desc;
+
+	public:
+		MyClz() = default;
+		MyClz(const std::string& _name, const std::string& _desc) 
+			: name(_name), desc(_desc) {}
+		MyClz(const MyClz& o) 
+			: name(o.name), desc(o.desc) {}
+		MyClz(MyClz&& o) 
+			: name(std::move(o.name)), desc(std::move(o.desc)) {}
+		MyClz& operator=(const MyClz& o) {
+			if(this==&o) return *this;
+			name = o.name;
+			desc = o.desc;
+			return *this;
+		}
+		MyClz& operator=(MyClz&& o) {
+			if(this==&o) return *this;
+			name = std::move(o.name);
+			desc = std::move(o.desc);
+			return *this;
+		}
+
+
+		friend 
+		std::ostream& operator<<(std::ostream& os, const MyClz& o);
+
+		bool operator==(const MyClz& o) const {
+			if(this==&o) return true;
+			return name == o.name && o.desc == o.desc;
+		}
+};
+
+
 #endif

@@ -1,8 +1,10 @@
 CXX      := -g++
-#CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
-#CXXFLAGS := -std=c++17 -Wall -Wextra -Werror -static
-CXXFLAGS := -std=c++17 -Wall -Wextra -DUSE_MSTR_TOK=1 -DUSE_LOCAL_TIME=true
-#LDFLAGS  := -L/usr/lib -lstdc++ -lm -lws2_32 -pthread
+
+CXXFLAGS := -std=c++17
+CXXFLAGS += -Wall 
+CXXFLAGS += -Wextra 
+CXXFLAGS += -DUSE_MSTR_TOK=1 
+CXXFLAGS += -DUSE_LOCAL_TIME=true
 
 ifeq ($(OS), Windows_NT)
 	xNIX_HEADER := 0
@@ -13,16 +15,25 @@ endif
 #xNIX_HEADER := $(shell [ -e /usr/include ] && echo 1|| echo 0 )
 
 
-ifeq ($(OS), Windows_NT) 
+LDFLAGS  := -L /usr/local/lib 
+LDFLAGS  += -pthread 
+LDFLAGS  += -lm 
+LDFLAGS  += -lcrypt 
+LDFLAGS  += -lrt
+
+ifeq ($(OS),Windows_NT) 
 	LDFLAGS  := -lws2_32 -pthread
 	INCLUDE  := -I include
 else
+	ifeq ($(USE_WIRINGPI),1)
+		LDFLAGS  += -lwiringPi
+	endif
 	LDFLAGS  := -L /usr/local/lib -pthread -lwiringPi -lm -lcrypt -lrt
 	INCLUDE  := -I include -I /usr/local/include
 endif
 BUILD    := build
 
-ifeq ($(OS), Windows_NT)
+ifeq ($(OS),Windows_NT)
 	OBJ_DIR  := $(BUILD)\objs
 	APP_DIR  := $(BUILD)\apps
 else
@@ -30,7 +41,10 @@ else
 	APP_DIR  := $(BUILD)/apps
 endif
 
-SRC_INC  := mutil.cpp
+INCLUDE := -I include
+INCLUDE += -I /usr/local/include
+
+SRCS_INC := mutil.cpp
 
 #skip files
 SKIP_FILE := $(wildcard Test*.cpp)
@@ -44,17 +58,16 @@ SKIP_FILE += b.cpp c.cpp s1.cpp
 #SRC		:= $(filter-out $(SKIP_FILE) , $(SRC))
 
 #include other source files
-SRC = $(SRC_INC)
 
 TARGET_DEFAULT = aa
 
-ifeq ($(OS), Windows_NT)
+ifeq ($(OS),Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET = $(TARGET_DEFAULT:%=%.exe)
+		TARGET = $(TARGET_DEFAULT)
 	endif
 
-	SRC += $(TARGET:%.exe=%.cpp)
+	SRC_TARGET :=$(TARGET:%=%.cpp)
 	#added by SGK 20200215
 #	ifeq ($(UNAMEO), Msys)
 	ifeq ($(xNIX_HEADER), 1)
@@ -70,33 +83,39 @@ else
 	ifeq ($(strip $(TARGET)),)
 		TARGET =$(TARGET_DEFAULT)
 	endif
+	ifeq ($(strip $(target)),)
+		TARGET:=$(TARGET_DEFAULT)
+	else
+		TARGET:=$(target)
+	endif
 
-	SRC += $(TARGET:%=%.cpp)
-	CLN := clean_oth
-	BLD := build_oth
-	RELEASE_APP := release_app_oth
+	SRC_TARGET :=$(TARGET:%=%.cpp)
+	CLN:=clean_oth
+	BLD:=build_oth
+	RELEASE_APP:=release_app_oth
 endif
 
-OBJS    = $(SRC:%.cpp=%.o)
+SRCS = $(SRCS_INC)	
+SRCS += $(SRC_TARGET)	
+
+OBJS := $(SRCS:%.cpp=%.o)
+
+#SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+#OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
 
-all: $(TARGET) build_dll_main
+all: $(TARGET) example_main
 
 #	@mkdir -p $(@D)
-$(OBJS):$(SRC)
+#$(OBJS):$(SRCS)
+%.o:%.cpp
 #	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
-#	$(CXX) -c $? $(CXXFLAGS) $(INCLUDE)
-	$(CXX) -c $^ $(CXXFLAGS) $(INCLUDE)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $? -o $@
 
 #	@mkdir -p $(@D)
 $(TARGET):$(OBJS)
-	$(CXX) $^ $(INCLUDE) $(LDFLAGS) -o $@
-#	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS)
-
-#	@mkdir -p $(@D)
-#$(OBJ_DIR)/%.o: %.cpp
-#	@IF NOT EXIST $(@D) mkdir $(@D)
-#	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
+#	$(CXX) $(INCLUDE) $(LDFLAGS) -o $@ $^
+	$(CXX) $(INCLUDE) $(LDFLAGS) $^ -o $@
 
 .PHONY: clean all
 
@@ -125,14 +144,14 @@ release_app_oth:
 
 clean:$(CLN)
 
-clean_win:
-	@echo starting clean 
-	@del /F /Q *.o
-	@del /F /Q $(TARGET)
+clean_win: clean_example_dll
+	@echo starting $@
+	-@del /F /Q *.o
+	-@del /F /Q $(TARGET)
 #	-@IF EXIST $(OBJ_DIR) ( del /S /F /Q $(OBJ_DIR)\*.o )
 #	-@IF EXIST $(APP_DIR) ( del /S /F /Q $(APP_DIR)\$(TARGET) )
 #	-@IF EXIST $(TARGET) ( del /F /Q $(TARGET) )
-	@echo complete clean
+	@echo complete $@
 
 clean_oth:
 	@echo starting clean 
@@ -150,14 +169,19 @@ uninstall_oth:
 	@rm -f $(TARGET)
 	@echo complete $(@)
 
-build_dll:
-	g++ -c -DBUILDING_EXAMPLE_DLL example_dll.cpp
-	g++ -shared -o example_dll.dll example_dll.o -Wl,--out-implib,libexample_dll.a
+example_dll:
+	$(CXX) -DBUILDING_EXAMPLE_DLL -c $(@:%=%.cpp)
+	$(CXX) -shared -o $(@:%=%.dll) $(@:%=%.o) -Wl,--out-implib,libexample_dll.a
 
-build_dll_main: build_dll
-	g++ -c example_main.cpp
-	g++ -o example_main example_main.o -L. -lexample_dll
+example_main: example_dll
+	$(CXX) -c $(@:%=%.cpp) -o $(@:%=%.o)
+	$(CXX) -o $@ $(@:%=%.o) -L. -l$< 
 
+clean_example_dll:
+	@echo starting $@
+	-@del /S /Q *.dll
+	-@del /S /Q *.a
+	@echo complete $@
 
 help:
 	@echo off
@@ -167,4 +191,4 @@ help:
 	@echo clean_win
 	@echo clean_oth
 	@echo build_dll			::  Build DLL for windows
-	@echo build_dll_main	:: Build Main with DLL
+	@echo dll_main	:: Build Main with DLL
