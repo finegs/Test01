@@ -1,10 +1,16 @@
 
 #include <iostream>
+#include <memory>
 #include <string>
+#include <system_error>
+#include <type_traits>
 #include <vector>
 #include <cstring>
 #include <cstdlib>
 #include <functional>
+#include <queue>
+#include <condition_variable>
+#include <mutex>
 
 template<typename T>
 T max(T const a, T const  b) {
@@ -164,17 +170,37 @@ class Msg {
 
 };
 
+
+class SingleTone {
+	private:
+		static std::queue<Msg*> QUEUE;
+		static std::mutex      MUTEX;
+		static std::condition_variable CV;
+
+	public:
+		static void initialize();
+};
+
+void SingleTone::initialize() {
+	std::queue<Msg*> QUEUE;
+	std::mutex 		MUTEX;
+	std::condition_variable CV;
+};
+
 int func1(int argc, char* argv[]);
 int func2(int argc, char* argv[]);
+int func3(int argc, char* argv[]);
 
 
 int main(int argc, char* argv[]) {
 	
 	std::function<int(int argc, char* argv[])> f1 = func1;
 	std::function<int(int argc, char* argv[])> f2 = func2;
+	std::function<int(int argc, char* argv[])> f3 = func3;
 
 	f1(argc, argv);
 	f2(argc, argv);
+	f3(argc, argv);
 
 	return EXIT_SUCCESS;
 }
@@ -214,6 +240,17 @@ int func1(int argc, char* argv[]) {
 //	aa = "Gooooood";
 	std::cout << "max(" << a << "," << b << ") : " <<  max(a,b) << std::endl;
 	delete m;
+	return EXIT_SUCCESS;
+}
+
+
+int func3(int argc, char* argv[]) {
+	if(argc < 2) std::cout << "Default : " << argv[0] << std::endl; 
+
+	SingleTone::initialize();
+
+	std::string str{"a:b"};
+
 	return EXIT_SUCCESS;
 }
 

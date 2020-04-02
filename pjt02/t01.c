@@ -3,13 +3,13 @@
  
 int main(void)
 {
-    struct car { char *make; char *model; int year; }; // declares the struct type
+    struct car { const char *make; const char *model; int year; }; // declares the struct type
     // declares and initializes an object of a previously-declared struct type
     struct car c = {.year=1923, .make="Nash", .model="48 Sports Touring Car"};
     printf("car: %d %s %s\n", c.year, c.make, c.model);
  
     // declares a struct type, an object of that type, and a pointer to it
-    struct spaceship { char *make; char *model; char *year; }
+    struct spaceship { const char *make; const char *model; const char *year; }
         ship = {"Incom Corporation", "T-65 X-wing starfighter", "128 ABY"},
         *pship = &ship;
     printf("spaceship: %s %s %s\n", ship.year, ship.make, ship.model);

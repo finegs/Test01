@@ -86,9 +86,11 @@ CXXFLAGS  := -std=c++17
 CXXFLAGS  += -Wall
 CXXFLAGS  += -Wextra
 CXXFLAGS  += -Wno-unused-parameter
+CXXFLAGS  += -DUSE_BOOST
 
 INC_PATH  += -I.
 INC_PATH  += -Iinc    
+INC_PATH  += -I D:\Programs\boost\1.72\include\boost-1_73
 
 LFLAGS    :=
 LDFLAGS   :=

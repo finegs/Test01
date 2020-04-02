@@ -181,11 +181,14 @@ void handleUserInput(int argc, char* argv[]) {
 		else if ("-t04" == cmd || "-T04" == cmd) {
 			MyUU1::test04();
 		}
-#if 0
+#ifdef USE_BOOST
 		else if ("-t05" == cmd || "-T05" == cmd) {
 			MyIPC::testIPCMapFile(argc, argv, params);
 		}
 #endif
+		else if ("-t06" == cmd || "-T06" == cmd) {
+			MyUU1::test06();
+		}
 		else if ("-tc" == cmd || "-TC" == cmd) {
 			if (params.size() < 2)
 				continue;
@@ -219,6 +222,7 @@ int main(int argc, char *argv[]) {
 	// 1. Initialize TestEnumCodeMap
 	MyUU1::MyUU1::initTestEnumMap();
 
+#ifdef USE_BOOST
 	if (std::end(params) != std::find_if(std::begin(params), std::end(params), [&](std::string &s) {
 			if ("-t05" == s || "-T05" == s)
 				return true;
@@ -226,17 +230,16 @@ int main(int argc, char *argv[]) {
 				return false;
 		})) {
 	
-#if 0
 		MyIPC::testIPCMapFile(argc, argv, params);
-#endif
 		return EXIT_SUCCESS;
 	}
+#endif
 
 	std::thread cinReader = std::thread(handleUserInput, argc, argv);
 
-//#ifdef _WIN32
-//	system("pause");
-//#endif
+#if _WIN32 && USE_SYSTEM_PAUSE
+	system("pause");
+#endif
 
 	cinReader.join();
 
