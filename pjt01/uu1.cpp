@@ -91,6 +91,20 @@ int MyUU1::test06() {
 	return EXIT_SUCCESS;
 }
 
+
+int MyUU1::test07() {
+	using namespace std;
+
+	float sum = 0.0;
+	for(int i = 0;i < 1000;i++) {
+		sum += 0.1;
+	}
+
+	cout<< "sum(0.1 x 1000) = " << sum << std::endl;
+
+	return EXIT_SUCCESS;
+}
+
 //constexpr
 //int MyUU1::mypow(int base, int exp) noexcept {
 //	return (exp == 0 ? 1 : base * MyUU1::mypow(base, exp -1));
@@ -307,5 +321,18 @@ void MyUU1::testCInWithAsyncReader()
 	std::cout << "b : " << b << std::endl;
 	std::cout << "c : " << c << std::endl;
 	std::cout << "d1 : " << d1 << std::endl;
+}
+
+
+int Test01::test(int argc, char* argv[]) {
+	using namespace std;
+
+	if(argc>1) {
+		for(int i = 0;i<argc;i++) {
+			cout << "argv[" << i << "] : " << argv[i] << (i<argc-1?"," : "\n");
+		}
+	}
+
+	return EXIT_SUCCESS;
 }
 

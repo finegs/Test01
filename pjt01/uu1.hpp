@@ -61,6 +61,7 @@ public:
 public:
 	static void test04();
 	static int test06();
+	static int test07();
 
 	static constexpr int mypow(int base, int exp) noexcept {
 		return (exp == 0 ? 1 : base * MyUU1::mypow(base, exp - 1));
@@ -96,6 +97,27 @@ class Bond : public Investment {
 
 class RealEstate : public Investment {
 };
+
+
+class MyTest {
+	private:
+		std::string name;
+	public:
+		MyTest(const std::string& _name) 
+			: name(_name){}
+
+		virtual int test(int argc, char* argv[]) = 0;
+};
+
+class Test01 : MyTest {
+	public:
+		Test01(const std::string& _name) : MyTest(_name) {}
+		virtual int test(int argc, char* argv[]); 
+};
+
+
+
+// std::unordered_map<std::string, std::function<int(int argc, char* argv[])[]>> test_funs;
 
 #endif
 

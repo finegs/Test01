@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
 
-	MyUU1::test05();	
+	MyUU1::test06();	
 
 	return EXIT_SUCCESS;
 }

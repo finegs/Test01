@@ -189,6 +189,9 @@ void handleUserInput(int argc, char* argv[]) {
 		else if ("-t06" == cmd || "-T06" == cmd) {
 			MyUU1::test06();
 		}
+		else if ("-t07" == cmd || "-T07" == cmd) {
+			MyUU1::test07();
+		}
 		else if ("-tc" == cmd || "-TC" == cmd) {
 			if (params.size() < 2)
 				continue;
