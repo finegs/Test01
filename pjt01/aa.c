@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdio_ext.h>
 
 int main(int argc, char* argv[]) {
 
@@ -17,13 +18,17 @@ int main(int argc, char* argv[]) {
 #if __WIN32 || __WIN64
 	fflush(stdin);
 #else
-	fpurge(stdin);
+	__fpurge(stdin);
 #endif
 	printf("Input Age : "); fflush(stdout);
 	fscanf(stdin, "%d", &nAge);
+#if __WIN32 || __WIN64
 	fflush(stdin);
+#else
+	__fpurge(stdin);
+#endif
 	printf("Input Name: "); fflush(stdout);
-	gets(szName);
+	fgets(szName,sizeof(szName), stdin);
 
 	printf("%d, %s\n", nAge, szName);
 
