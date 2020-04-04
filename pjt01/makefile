@@ -90,7 +90,11 @@ CXXFLAGS  += -DUSE_BOOST
 
 INC_PATH  += -I.
 INC_PATH  += -Iinc    
-INC_PATH  += -I D:\Programs\boost\1.72\include\boost-1_73
+ifeq ($(OS),Windows_NT)
+	ifeq ($(BOOST_HOME),)
+		INC_PATH  += -I D:\Programs\boost\1.72\include\boost-1_73
+	endif
+endif
 
 LFLAGS    :=
 LDFLAGS   :=
@@ -118,8 +122,13 @@ else
 endif
 
 ################## BOOST #################################
-BOOST_INC := $(BOOST_HOME)/../boost_inc
-BOOST_LIB := $(BOOST_HOME)/lib
+ifneq ($(BOOST_HOME),)
+	BOOST_INC := $(BOOST_HOME)/../boost_inc
+	BOOST_LIB := $(BOOST_HOME)/lib
+else
+	BOOST_INC := /usr/include
+	BOOST_LIB := /usr/lib
+endif
 
 INC_PATH  += -I$(BOOST_INC)
 LIB_PATH  += -L$(BOOST_LIB)

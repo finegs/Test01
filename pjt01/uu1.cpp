@@ -328,11 +328,10 @@ int Test01::test(int argc, char* argv[]) {
 	using namespace std;
 
 	if(argc>1) {
-		for(int i = 0;i<argc;i++) {
+		for(int i = 0;i < argc;i++) {
 			cout << "argv[" << i << "] : " << argv[i] << (i<argc-1?"," : "\n");
 		}
 	}
-
 	return EXIT_SUCCESS;
 }
 

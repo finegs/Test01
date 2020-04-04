@@ -105,19 +105,24 @@ class MyTest {
 	public:
 		MyTest(const std::string& _name) 
 			: name(_name){}
+		const std::string& getName() { return name; }
 
 		virtual int test(int argc, char* argv[]) = 0;
 };
 
 class Test01 : MyTest {
 	public:
-		Test01(const std::string& _name) : MyTest(_name) {}
+		Test01() : MyTest("-T007") {}
 		virtual int test(int argc, char* argv[]); 
 };
 
+typedef std::function<int(int argc, char*[])> m_handler;
 
+//std::unordered_map<const std::string, std::function<int(int argc, char* argv[])[]>> test_funs;
+// std::unordered_map<const std::string, m_handler> test_funs;
 
-// std::unordered_map<std::string, std::function<int(int argc, char* argv[])[]>> test_funs;
+// Test01 t = Test01();
+// funs.insert(t.getName(), t);
 
 #endif
 
