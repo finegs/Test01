@@ -69,6 +69,7 @@ flags = [
 '-isystem', 'D:/Programs/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed',
 '-isystem', 'D:/Programs/mingw64/mingw64/x86_64-w64-mingw32',
 '-isystem', 'D:/Programs/boost/1.72/include/boost-1_73',
+'-isystem', 'D:/Dev/git/gnuplot-gnuplot-main/src',
 ]
 
 # Clang automatically sets the '-std=' flag to 'c++14' for MSVC 2015 or later,
