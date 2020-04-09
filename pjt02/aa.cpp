@@ -112,13 +112,6 @@ int main(int argc, char *argv[]) {
 	sleepCount = 0;
 
 	
-	MyClz c("name", " v  e  r  y  Long N a m e");
-	MyClz cc(c);
-	MyClz ccc;
-	ccc = cc;
-	std::cout << c << std::endl;
-	std::cout << "c == cc " << std::boolalpha << (c == cc) << std::endl;
-	std::cout << "c == ccc " << std::boolalpha << (c == ccc) << std::endl;
 
 	for (int i = 1; i < argc; i++) {
 		if (!strcmp("-t", argv[i]) && i + 1 < argc) {
@@ -136,10 +129,8 @@ int main(int argc, char *argv[]) {
 		} else if (!strcmp("-tt", argv[i])) {
 			//	char* tt = (char*)malloc(sizeof(char)*1);
 			//	memset(tt, '\0', 1);
-			std::cout << getTimestamp() << " {\"timestamp\":\"" << getTimestamp()
-						    << "\"}" << endl;
-			std::cout << getTimestamp() << " {\"timestamp2\":\"" << getTimestamp()
-						    << "\"}" << endl;
+			std::cout << getTimestamp() << " {\"timestamp\":\"" << getTimestamp() << "\"}" << endl;
+			std::cout << getTimestamp() << " {\"timestamp2\":\"" << getTimestamp() << "\"}" << endl;
 		} else if (!strcmp("-t01", argv[i])) {
 			std::cout << getTimestamp() << " : -t01" << std::endl;
 		} else if (!strcmp("-t02", argv[i])) {
@@ -203,8 +194,10 @@ int main(int argc, char *argv[]) {
 				arr[i] = rand_char();
 			}
 
-			std::cout << "'0'=" << (int)'0' << ",'A'=" << (int)'A'
-						    << ",'z'=" << (int)'z' << std::endl;
+			std::cout << "'0'=" << (int)'0' 
+				<< ",'A'=" << (int)'A' 
+				<< ",'z'=" << (int)'z' 
+				<< std::endl;
 
 			string s = std::string(arr);
 
@@ -304,9 +297,20 @@ int main(int argc, char *argv[]) {
 			cout << "]}" << endl;
 
 			i++;
+		} else if (!strcmp(argv[i], "-tt01") && i+1 < argc) {
+			MyClz c("name", argv[i+1]);
+			MyClz cc(c);
+			MyClz ccc;
+			MyClz cccc;
+			ccc = cc;
+			std::cout << getTimestamp() << " : " << "c : " << c << std::endl;
+			std::cout << getTimestamp() << " : " << "c == cc : " << std::boolalpha << (c == cc) << std::endl;
+			std::cout << getTimestamp() << " : " << "c == ccc : " << std::boolalpha << (c == ccc) << std::endl;
+			cccc = std::move(ccc);
+			std::cout << getTimestamp() << " : cccc("<< cccc  << ") == ccc(" << ccc << ")  : " << std::boolalpha << (cccc == ccc) << std::endl;
 		} else if (argv[i][0] == '-' && i + 1 < argc) {
 			argm.insert({argv[i], argv[i + 1]});
-		} else {
+ 		} else {
 			argm.insert({argv[i], argv[i]});
 		}
 	}
