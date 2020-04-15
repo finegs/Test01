@@ -102,6 +102,31 @@ std::string remove_ctrl_mutating(std::string s) {
 
 std::unordered_map<std::thread::id, unsigned int> MTest::timeMap;
 
+#if 0
+int f_t(int& i, char* argv[], std::unordered_map<std::string, std::string> argm);
+int f_n(int& i, char* argv[], std::unordered_map<std::string, std::string> argm);
+
+
+typedef int (*service_t)(int& i, int argc, char* argv[], std::unordered_map<std::string, std::string> argm);
+std::unordered_map<std::string, service_t> svcMap
+= {
+	"-t", f_t,
+	"-n", f_n
+};
+
+
+int f_t(int& i, char* argv[], std::unordered_map<std::string, std::string> argm) {
+	argm.insert({argv[i], argv[i + 1]});
+
+	long sleepTime = atol(argv[i + 1]);
+
+	i++;
+	return EXIT_SUCCESS;
+};
+
+#endif
+
+
 int main(int argc, char *argv[]) {
 	unordered_map<string, string> argm;
 	std::vector<std::string> args;
@@ -112,7 +137,6 @@ int main(int argc, char *argv[]) {
 	sleepCount = 0;
 
 	
-
 	for (int i = 1; i < argc; i++) {
 		if (!strcmp("-t", argv[i]) && i + 1 < argc) {
 			argm.insert({argv[i], argv[i + 1]});

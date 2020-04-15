@@ -2,7 +2,7 @@
 #define _THREADMSG_H
 
 #include <atomic>
-#include "UserData.h"
+#include "UserData.hpp"
 
 enum WorkerThreadMsgType {
 	MSG_POST_USER_DATA = 0,
@@ -16,9 +16,7 @@ public:
 	WorkerThreadMsg(WorkerThreadMsgType _MsgType, UserData* _msg) : 
         msgType(_MsgType), 
         msgSeq(g_seq++), 
-        msgDetail(_msg) 
-    {
-    }
+        msgDetail(_msg) { }
 
 	~WorkerThreadMsg() 
     {

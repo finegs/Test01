@@ -89,7 +89,7 @@ char* getTimestamp() {
 Node *hashTable[1000];
 int hashTableSize = 10;
 
-int str2key(char name[]) {
+int str2key(const char* name) {
 	size_t c,s = 0;
 	for(size_t i = 0;i<strlen(name);i++) {
 		c = name[i];
@@ -98,51 +98,76 @@ int str2key(char name[]) {
 	return s;
 }
 
+void clearscreen() {
+#if ( defined(__WIN32) || defined(__WIN64 ))
+	system("cls");
+#else
+	system("clear");
+#endif
+}
+
 void presentation() {
+
+	printf("%s\n", "===========================================================================");
 	printf("\t\tHash Table C Program\n\n");
 	printf("\tto add an node press 1...\n");
 	printf("\tto search a node press 2...\n");
 	printf("\tto delete a node press 3...\n");
 	printf("\tto print the hash table press 4...\n");
 	printf("\tto exit press 0...\n");
+	printf("%s\n", "===========================================================================");
 	//printf("\tto exit press any other key...\n");
 }
 
-void addNode() {
+int addNode() {
+
 	Node* n, *n1;
 	int ascii,key;
-	printf("adding node...\n");
+
 	n = (Node*)malloc(sizeof(Node));
-	printf("Node Name:"); fflush(stdout);
-	scanf("%s", n->name);
+	if(!n) {
+		fprintf(stderr, "fail to malloc. %s:%d %s\n", __FILE__, __LINE__, __FUNCTION__);
+		return EXIT_FAILURE;
+	}
+
+	fflush(stdin);
+	memset(n, '\0', sizeof(Node));
+	printf("New Node Name:"); fflush(stdout);
+	scanf("%s", n->name);fflush(stdin);
 	n->next = NULL;
-	printf("|[%d]|\n", (int)strlen(n->name));
+	// printf("|[%d]|\n", (int)strlen(n->name));
+	// 1. hash for input name
 	ascii = str2key(n->name);
+	// 2. index for hashvalue
 	key = ascii % hashTableSize;
+
+	// 3. first inserted for input name
 	if(hashTable[key]==NULL) {
 		hashTable[key] = n;
 	}
-	else {
+	else { // 4. Add input name for other hash is already registered
 		for(n1=hashTable[key];n1->next != NULL;n1=n1->next);
 		n1->next = n;
 	}
+	return EXIT_SUCCESS;
 }
 
 
-int searchNode(char nName[]) {
+int searchNode(const char* nName) {
 	int ascii = str2key(nName);
 	int key = ascii & hashTableSize;
 	Node* n;
+
 	for(n=hashTable[key];n!=NULL;n=n->next) {
-		if(strcmp(n->name, nName) ==0) {
+		if(!strcmp(n->name, nName)) {
 			return key;
 		}
 	}
 	return -1;
 }
 
-void deleteNode(char nName[]) {
-	printf("delete Node...\n");
+int deleteNode(const char* nName) {
+	// printf("delete Node...\n");
 	int ascii = str2key(nName);
 	int key = ascii % hashTableSize;
 
@@ -151,7 +176,7 @@ void deleteNode(char nName[]) {
 		n = hashTable[key];
 		hashTable[key] = hashTable[key]->next;
 		free(n);
-		return;
+		return EXIT_SUCCESS;
 	}
 	
 	for(n=hashTable[key];n->next!=NULL;n=n->next) {
@@ -159,25 +184,28 @@ void deleteNode(char nName[]) {
 		if(strcmp(n1->name, nName)==0) {
 			n->next = n1->next;
 			free(n1);
-			return;
+			return EXIT_SUCCESS;
 		}
 	}
+	return EXIT_FAILURE;
 }
 
 void printfList(Node *n) {
 	Node* n1;
 	int i;
 	for(i=0,n1=n;n1!=NULL;n1=n1->next,i++) {
-		printf(" [%d]=%s", i, n1->name);
+		printf("%s[%d]=%s", (n1->next?", ":""), i, n1->name);
 	}
-	printf("\n");
+	// printf("\n");
 }
 
 void printHashTable() {
-	for(int i= 0;i<hashTableSize;i++) {
-		printf("\nHash Table[%d]: ", i);
+	int i = 0;
+	for(i= 0;i<hashTableSize;i++) {
+		printf("\t[%d]: ", i);
 		printfList(hashTable[i]);
 	}
+	printf("\tHashSize=%d\n", i);
 }
 
 
@@ -188,9 +216,12 @@ void runHash() {
 	}
 
 	char nName[256];
-	int key, action  = 1 ;
-	presentation();
-	while(action==1||action==2||action==3||action==4) {
+	int key, action  = 100;
+	while(action) {
+		clearscreen();
+		presentation();
+		scanf("%d", &action);
+		fflush(stdin);
 		switch(action) {
 			case 1: // Add Node
 				{
@@ -206,14 +237,15 @@ void runHash() {
 
 					key = searchNode(nName); 
 
-					if(key==-1) {
-						printf("Node doesn't exist!\n");
+					if(-1==key) {
+						printf("Node doesn't exist!, key=%s\n", nName);
 					}
 					else {
 						printf("Node exist in:");
 						printf("Hash Table[%d]\n", key);
 						printfList(hashTable[key]);
 					}
+					getchar();
 				}
 				break;
 			case 3: // Delete Node
@@ -246,11 +278,9 @@ void runHash() {
 				{
 					printf("\nUnknown action:%d\n", action);
 				}
-
 		}
 
-		presentation();
-		scanf("%d", &action);
+		getchar();
 		fflush(stdin);
 	}
 }

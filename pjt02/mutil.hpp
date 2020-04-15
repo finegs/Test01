@@ -9,6 +9,17 @@
 #define NANO 1000000000L
 #define uint unsigned int
 
+// #define MYDEBUG(fmt, ...) { printf("[%s:%d] %s "fmt, __FILE__, __LINE__, __FUNCTION__, ##_VA_ARGS__); } 
+//
+//#ifndef LOG_DEBUG
+//#define LOG_DEBUG(fmt, ...) { VLog* log = getLog(); if (log != NULL && log->level <= VLog::LEVEL_DEBUG) log->debug("[%s:%d] %s "fmt, __FILENAME__, __LINE__, __FUNCNAME__, ##__VA_ARGS__); }
+//#define LOG_INFO(fmt, ...)  { VLog* log = getLog(); if (log != NULL && log->level <= VLog::LEVEL_INFO ) log->info ("[%s:%d] %s "fmt, __FILENAME__, __LINE__, __FUNCNAME__, ##__VA_ARGS__); }
+//#define LOG_WARN(fmt, ...)  { VLog* log = getLog(); if (log != NULL && log->level <= VLog::LEVEL_WARN ) log->warn ("[%s:%d] %s "fmt, __FILENAME__, __LINE__, __FUNCNAME__, ##__VA_ARGS__); }
+//#define LOG_ERROR(fmt, ...) { VLog* log = getLog(); if (log != NULL && log->level <= VLog::LEVEL_ERROR) log->error("[%s:%d] %s "fmt, __FILENAME__, __LINE__, __FUNCNAME__, ##__VA_ARGS__); }
+//#define LOG_FATAL(fmt, ...) { VLog* log = getLog(); if (log != NULL && log->level <= VLog::LEVEL_FATAL) log->fatal("[%s:%d] %s "fmt, __FILENAME__, __LINE__, __FUNCNAME__, ##__VA_ARGS__); }
+//#define LOG_TRACE(fmt, ...) { VLog* log = getLog(); if (log != NULL)                                    log->trace("[%s:%d] %s "fmt, __FILENAME__, __LINE__, __FUNCNAME__, ##__VA_ARGS__); }
+//#endif // LOG_DEBUG
+
 char* mstrtok(char* _str, const char* _delim); 
 int   mstrcmp(const char* _str1, const char* _str2);
 char* getTimestamp();
@@ -20,11 +31,11 @@ typedef struct _Node
 }Node;
 
 void runHash();
-int str2key(char name[]);
+int str2key(const char* name);
 void presentation();
-void addNode();
-int searchNode(char name[]);
-void deleteNode(char name[]);
+int addNode();
+int searchNode(const char* name);
+int deleteNode(const char* name);
 void printfList(Node* n);
 void printHashTable();
 

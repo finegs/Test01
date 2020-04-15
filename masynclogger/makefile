@@ -42,16 +42,28 @@ TARGET_DEFAULT := Application
 ifeq ($(OS), Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET:=$(TARGET_DEFAULT:%=%.exe)
+		TARGET:=$(TARGET_DEFAULT)
 	endif
 
-	SRC+=$(TARGET:%.exe=%.cpp)
+#if TARGET isn't Application, exclude SRC_INCs
+	ifneq ($(strip, $(TARGET)), $(TARGET_DEFAULT))
+		SRC_INC :=	
+		SRC     :=
+	endif
+
+	SRC+=$(TARGET:%=%.cpp)
 	CLN:=clean_win
 	BLD:=build_win
 	RELEASE_APP:=release_app_win
 else
 	ifeq ($(strip $(TARGET)),)
 		TARGET:=$(TARGET_DEFAULT)
+	endif
+
+#if TARGET isn't Application, exclude SRC_INCs
+	ifneq ($(strip, $(TARGET)), $(TARGET_DEFAULT))
+		SRC_INC :=	
+		SRC     :=
 	endif
 
 	SRC+=$(TARGET:%=%.cpp)
@@ -65,14 +77,13 @@ OBJS    = $(SRC:%.cpp=%.o)
 all: $(TARGET)
 
 #	@mkdir -p $(@D)
-$(OBJS):$(SRC)
-#	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
-#	$(CXX) -c $? $(CXXFLAGS) $(INCLUDE)
-	$(CXX) -c $^ $(CXXFLAGS) $(INCLUDE)
+
+%.o:%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $? -o $@
 
 #	@mkdir -p $(@D)
 $(TARGET):$(OBJS)
-	$(CXX) -o $@ $^ $(LDFLAGS) $(CXXFLAGS)
+	$(CXX) $(LDFLAGS) $(CXXFLAGS) $^ -o $@
 
 #	@mkdir -p $(@D)
 #$(OBJ_DIR)/%.o: %.cpp

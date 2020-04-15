@@ -5,67 +5,111 @@
 #include <thread>             // std::thread
 #include <mutex>              // std::mutex, std::unique_lock
 #include <condition_variable> // std::condition_variable
+#include <type_traits>
 
-std::mutex mtx;
-std::condition_variable mainCmdCV;
-bool ready = false;
+typedef struct {
+	int threadId;
+	std::mutex& mtx;
+	std::condition_variable& condvar;
+	int threadCnt;
+} threadpara;
 
-void print_id (int id) {
-  std::unique_lock<std::mutex> lck(mtx);
-  while (!ready) mainCmdCV.wait(lck);
-  // ...
-  std::cout << "thread [" << std::this_thread::get_id() << "] id = " << id << '\n';
-}
+bool g_ready = false;
+void print_id (void* threadpara);
+void go(void* threadpara);
 
-void go() {
-  std::unique_lock<std::mutex> lck(mtx);
-  ready = true;
-  mainCmdCV.notify_all();
-}
+using threadfp = void (*)(void* threadpara);
+using threadmain = void (*)(void* threadpara);
+
+int testThread(void* threadpara, threadmain, threadfp);
+void teststring();
 
 int main ()
 {
-  std::thread threads[10];
-  // spawn 10 threads:
-  for (int i=0; i<10; ++i)
-    threads[i] = std::thread(print_id,i);
 
-  std::cout << "10 threads ready to race...\n";
-  go();                       // go!
+	std::mutex mtx;
+	std::condition_variable cndCv;
 
-  for (auto& th : threads) th.join();
+	threadpara* tp = new threadpara{-1, mtx, cndCv, 10};
 
-  int width,height;
+	testThread(tp, go, print_id);
 
-  width = 30;
-  height = 20;
+	teststring();
+	
+	return EXIT_SUCCESS;
+}
 
-  std::string **vvs;
-  vvs = new std::string*[width];
-  for (int i = 0; i < width; ++i) {
-	vvs[i] = new std::string[height];
-  }
-
-  for (int i = 0; i < width; ++i) {
-	delete[] vvs[i];
-  }
-  delete[] vvs;
-  vvs = nullptr;
-
-  char** ccs;
-  ccs = new char*[height];
-  for (int i = 0; i < height; ++i) {
-	ccs[i] = new char[width];
-  }
-
-  for (int i = 0; i < height; ++i) {
+void teststring() {
+	int width,height;
+	
+	width = 30;
+	height = 20;
+	
+	std::string **vvs;
+	vvs = new std::string*[width];
+	for (int i = 0; i < width; ++i) {
+	  vvs[i] = new std::string[height];
+	}
+	
+	for (int i = 0; i < width; ++i) {
+	  delete[] vvs[i];
+	}
+	delete[] vvs;
+	vvs = nullptr;
+	
+	char** ccs;
+	ccs = new char*[height];
+	for (int i = 0; i < height; ++i) {
+	  ccs[i] = new char[width];
+	}
+	
+	for (int i = 0; i < height; ++i) {
+	  delete[] ccs;
+	}
+	
 	delete[] ccs;
-  }
+	ccs = nullptr;
 
-  delete[] ccs;
-  ccs = nullptr;
+}
 
-  return EXIT_SUCCESS;
+
+int testThread(void* _tp, threadmain _threadmain, threadfp _threadfp) {
+	threadpara* tp = (threadpara*)_tp;
+	std::thread threads[tp->threadCnt];
+	// spawn 10 threads:
+	for (int i=0; i<tp->threadCnt; ++i) {
+	  	threadpara* ttp = new threadpara{i, tp->mtx, tp->condvar, tp->threadCnt};
+	  threads[i] = std::thread(_threadfp, ttp);
+	}
+
+	std::cout << "10 threads ready to race...\n";
+
+	_threadmain(tp);
+
+	for (auto& th : threads) th.join();
+
+	delete tp;
+
+	return EXIT_SUCCESS;
+}
+
+void print_id (void* _tp) {
+	threadpara* tp = (threadpara*)_tp;
+  std::unique_lock<std::mutex> lck(tp->mtx);
+  while (!g_ready) tp->condvar.wait(lck);
+  // ...
+  std::cout << "thread [" << std::this_thread::get_id() << "] id = " << tp->threadId << '\n';
+
+	delete tp;
+}
+
+void go(void* _tp) {
+	threadpara* tp = (threadpara*)_tp;
+	std::unique_lock<std::mutex> lck(tp->mtx);
+	g_ready = true;
+	tp->condvar.notify_all();
+
+	delete tp;
 }
 
 /*
