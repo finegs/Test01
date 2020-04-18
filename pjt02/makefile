@@ -65,8 +65,13 @@ TARGET_DEFAULT = aa
 ifeq ($(OS),Windows_NT)
 
 	ifeq ($(strip $(TARGET)),)
-		TARGET = $(TARGET_DEFAULT)
+		ifneq ($(strip $(target)),)
+			TARGET = $(target)
+		else
+			TARGET = $(TARGET_DEFAULT)
+		endif
 	endif
+
 
 	SRC_TARGET :=$(TARGET:%=%.cpp)
 	#added by SGK 20200215
@@ -81,13 +86,13 @@ ifeq ($(OS),Windows_NT)
 		RELEASE_APP := release_app_win
 	endif
 else
+
 	ifeq ($(strip $(TARGET)),)
-		TARGET =$(TARGET_DEFAULT)
-	endif
-	ifeq ($(strip $(target)),)
-		TARGET:=$(TARGET_DEFAULT)
-	else
-		TARGET:=$(target)
+		ifneq ($(strip $(target)),)
+			TARGET = $(target)
+		else
+			TARGET = $(TARGET_DEFAULT)
+		endif
 	endif
 
 	SRC_TARGET :=$(TARGET:%=%.cpp)
