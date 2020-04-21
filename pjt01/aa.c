@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
 			else if(!strcmp("-f3", argv[i])) {
 				f3 = 1;
 			}
-			else if(!strcmp("-sp", argv[i]) && i+1<argc) {
+			else if(!strcmp("-period", argv[i]) && i+1<argc) {
 				sleepMsec = atoi(argv[i+1]);
 				i++;
 			}
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 				hz = atoi(argv[i+1]);
 				i++;
 			}
-			else if(!strcmp("-du", argv[i]) && i+1<argc) {
+			else if(!strcmp("-duration", argv[i]) && i+1<argc) {
 				duration = atoi(argv[i+1]);
 				i++;
 			}
@@ -158,7 +158,7 @@ int main(int argc, char* argv[]) {
 	putchar('z');
 #endif
 
-	return 0;
+	return EXIT_SUCCESS;
 }
 
 long unsigned int doBeep(void* argv) {
