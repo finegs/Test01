@@ -149,16 +149,12 @@ $(TARGET): $(OBJS)
 
 ##########             Make Directory to store obj, target files ######################
 mkdirs_win:
-	-@if NOT EXIST "$(APP_DIR)" .\
-		mkdir -p "$(APP_DIR)".     \
-	fi
-	-@if NOT EXIST "$(OBJ_DIR)" .\
-		mkdir -p "$(OBJ_DIR)".     \
-	fi
+	-@if NOT EXIST "$(APP_DIR)" mkdir "$(APP_DIR)"
+	-@if NOT EXIST "$(OBJ_DIR)" mkdir "$(OBJ_DIR)"
 
 mkdirs_other:
 	-@if [ ! -d "$(APP_DIR)" ]; then \
-		mkdir -p "$(APP_DIR)";    \
+		mkdir -p  "$(APP_DIR)";    \
 	fi
 	-@if [ ! -d "$(OBJ_DIR)" ]; then \
 		mkdir -p "$(OBJ_DIR)";     \
@@ -185,14 +181,8 @@ release_this:
 clean:
 	-@echo Starting clean.
 	-@$(RM) "$(TARGET)"
-	-@$(RM) "$(OBJ_DIR)\*.*"
-	-@$(RM) "$(APP_DIR)\*.*"
-#
-#	-@rm -rf "$(OBJ_DIR)"/*.*
-#	-@rm -rf "$(APP_DIR)"/*.*
-#	-@if EXIST "$(TARGET)"  \
-#		del /F "$(TARGET)".     \
-#	fi
+	-@IF EXIST "$(OBJ_DIR)" $(RM) "$(OBJ_DIR)\*.*"
+	-@IF EXIST "$(APP_DIR)" $(RM) "$(APP_DIR)\*.*"
 	-@echo Clean done.
 
 ##########################################################
