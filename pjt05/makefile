@@ -69,23 +69,23 @@ BUILD_STEP = PRE_BUILD $(TARGET) POST_BUILD
 
 # Makefile의 최종 Target과 Depend를 결정한다.
 ifeq ($(ARG.REBUILD),1)
-	# rebuild인 경우,...
-	# 빌드 이전에 clean을 수행한다.
-	rebuild: | clean $(BUILD_STEP)
-	debug: ; @true
-	release: ; @true
+# rebuild인 경우,...
+# 빌드 이전에 clean을 수행한다.
+rebuild: | clean $(BUILD_STEP)
+debug: ; @true
+release: ; @true
 else ifeq ($(ARG.CLEAN),1)
-	# clean인 경우,...
-	# clean target은 rule part에 정의되어 있다.
-	release: ; @true
-	debug: ; @true
+# clean인 경우,...
+# clean target은 rule part에 정의되어 있다.
+release: ; @true
+debug: ; @true
 else
-	# clean/rebuild와 함께 쓰이지 않은 경우,...
-	# 이곳에서 빌드가 이뤄진다.
-	# release, debug는 단독 사용할 수 있어 @true하지 않는다.
-	build: | $(BUILD_STEP)
-	release: build
-	debug: build
+# clean/rebuild와 함께 쓰이지 않은 경우,...
+# 이곳에서 빌드가 이뤄진다.
+# release, debug는 단독 사용할 수 있어 @true하지 않는다.
+build: | $(BUILD_STEP)
+release: build
+debug: build
 endif
 
 # release, debug가 명령에 포함되어 조합되면,
@@ -125,7 +125,7 @@ GROUP.01.DEP = $(GROUP.01.OBJ:.o=.d)
 
 ##################################
 # Group 02
-GROUP.02.SRC = a.c
+GROUP.02.SRC = b.c
 GROUP.02.OBJ = $(addprefix $(BUILD_DIR)/,$(GROUP.02.SRC:.c=.o))
 GROUP.02.DEP = $(GROUP.02.OBJ:.o=.d)
 
