@@ -3,10 +3,13 @@ CXX      := g++
 BUILD     := build
 APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
+DEFAULT_TARGET := testMain
 
 ifeq ($(OS),Windows_NT)
 	RM = del /Q /F
 	RRM = rmdir /Q /S
+	MKDIR = mkdir
+	MKDIRS = mkdirs_win
 	OSFLAG += -D WIN32
 	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
 		OSFLAG += -D AMD64
@@ -17,6 +20,8 @@ ifeq ($(OS),Windows_NT)
 else
 	RM = rm -f
 	RRM = rm -f -r
+	MKDIR = mkdir -p
+	MKDIRS = mkdirs_other
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		OSFLAG += -D LINUX
@@ -44,30 +49,28 @@ endif
 
 ifeq ($(strip $(TARGET)),)
 	ifeq ($(OS), Windows_NT)
-		TARGET += t.exe
-		SRC:=$(TARGET:%.exe=%.cpp)
+		TARGET += $(DEFAULT_TARGET)
+		SRC:=$(TARGET:%=%.cpp)
 	else
-		TARGET  := t
+		TARGET  := $(DEFAULT_TARGET)
 		SRC := $(TARGET:%=%.cpp)
 	endif
 else
 	ifeq ($(OS), Windows_NT)
-		SRC := $(TARGET:%.exe=%.cpp)
+		SRC := $(TARGET:%=%.cpp)
 	else
 		SRC := $(TARGET:%=%.cpp)
 	endif
 endif
 
-#SRC   := $(TARGET:%=%.cpp)
-
-SRC_OTHER := u.cpp mipc.cpp uu1.cpp
+SRC_OTHER := testLib.cpp
 
 SRC       += $(SRC_OTHER)
 
-SKIP_FILE := $(wildcard Test*.cpp)
-SKIP_FILE += s.cpp
-SKIP_FILE += c.cpp
-SKIP_FILE += s1.cpp
+#SKIP_FILE := $(wildcard Test*.cpp)
+#SKIP_FILE += s.cpp
+#SKIP_FILE += c.cpp
+#SKIP_FILE += s1.cpp
 
 #CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
 #CXXFLAGS := -std=c++1y -Wall -Wextra -Werror -Wno-unused-parameter
@@ -91,6 +94,7 @@ ifeq ($(OS), Windows_NT)
 #	LDFLAGS  += -Wl,-Bdynamic
 else
 	LDFLAGS  += -lrt
+	LDFLAGS  += -ldl
 endif
 
 
@@ -99,9 +103,7 @@ LDFLAGS   += -lstdc++
 LDFLAGS   += -lm
 LDFLAGS   += -pthread
 
-
 #LDFLAGS   += -lwsock32
-
 
 ifeq ($(OS), Windows_NT)
 	LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
@@ -116,35 +118,27 @@ BOOST_LIB := $(BOOST_HOME)/lib
 INC_PATH  += -I$(BOOST_INC)
 LIB_PATH  += -L$(BOOST_LIB)
 
-
 ##########################################################
 OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 ##########################################################
 
 #################  all (Default)      ######
 
-all: $(TARGET)
-
+all: init  $(TARGET)
 
 ##########################################################
 
+init: ${MKDIRS}
+
 #################             Compile            ######
 $(OBJ_DIR)/%.o: %.cpp
-	-@if NOT EXIST "$(@D)" . \
-		mkdir -p "$(@D)".       \
-	fi
-	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $@ -c $<
-
+	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $< -o $@
 ##########################################################
 
 ##########          Link               ######
 $(TARGET): $(OBJS)
-	-@if NOT EXIST "$(@D)" . \
-		mkdir -p "$(@D)".      \
-	fi
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
-#   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
-	$(CXX) -o $@ $(LIB_PATH) $(OBJS) $(LDFLAGS)
+	$(CXX) $(LIB_PATH) $(OBJS) $(LDFLAGS) -o $@
  
 ##########################################################
 
@@ -154,12 +148,20 @@ $(TARGET): $(OBJS)
 ##########################################################
 
 ##########             Make Directory to store obj, target files ######################
-mkdirs:
+mkdirs_win:
 	-@if NOT EXIST "$(APP_DIR)" .\
 		mkdir -p "$(APP_DIR)".     \
 	fi
 	-@if NOT EXIST "$(OBJ_DIR)" .\
 		mkdir -p "$(OBJ_DIR)".     \
+	fi
+
+mkdirs_other:
+	-@if [ ! -d "$(APP_DIR)" ]; then \
+		mkdir -p "$(APP_DIR)";    \
+	fi
+	-@if [ ! -d "$(OBJ_DIR)" ]; then \
+		mkdir -p "$(OBJ_DIR)";     \
 	fi
 ##########################################################
 
