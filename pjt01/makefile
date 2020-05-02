@@ -54,19 +54,16 @@ ifeq ($(OS),Windows_NT)
 endif
 
 ifeq ($(strip $(TARGET)),)
-	ifeq ($(OS), Windows_NT)
-		TARGET  := $(DEFAULT_TARGET)
-		SRC:=$(TARGET:%=%.cpp)
-	else
-		TARGET  := $(DEFAULT_TARGET)
-		SRC := $(TARGET:%=%.cpp)
+	ifneq ($(strip $(target)),)
+		TARGET=$(target)
 	endif
+endif
+
+ifeq ($(strip $(TARGET)),)
+	TARGET  := $(DEFAULT_TARGET)
+	SRC:=$(TARGET:%=%.cpp)
 else
-	ifeq ($(OS), Windows_NT)
-		SRC := $(TARGET:%=%.cpp)
-	else
-		SRC := $(TARGET:%=%.cpp)
-	endif
+	SRC := $(TARGET:%=%.cpp)
 endif
 
 #SRC   := $(TARGET:%=%.cpp)

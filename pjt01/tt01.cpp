@@ -1,3 +1,30 @@
+#if 1
+
+#include <cstdio>
+
+
+char d[21] = "0123456789ABCDEFGHIJ";
+
+void f(int n, int k) {
+	if(n>0) f(n/k, k), printf("%c", d[n%k]);
+}
+//void f(int n,int k) {
+//	if(n<k) printf("%c", d[n]);
+//	else f(n/k, k), printf("%c",d[n%k]);
+//}
+
+
+int main() {
+	int n,k;
+	scanf("%d %d", &n, &k);
+	f(n,k);
+	return 0;
+}
+
+#endif
+
+
+
 #if 0
 
 #include <iostream>
@@ -371,7 +398,7 @@ int main(int argc, char* argv[]) {
 #endif
 
 
-#if 1
+#if 0
 
 #include <cstdio>
 #include <cstdarg>

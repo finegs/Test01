@@ -17,6 +17,24 @@ struct thread_params {
 
 long unsigned int doBeep(void* argv);
 long mhash(const char* str);
+int isprime(int n, char* argv[]);
+
+typedef int (*func)(int argc,char* argv[]);
+typedef struct func_item_ {
+	char key[32];
+	func fn;
+	struct func_item_* fn_array;
+	int fn_item_size;
+} func_item;
+
+const int map_size = 100;
+const int key_max = 32;
+const int func_item_array_max = 10;
+
+func_item funcs[map_size];
+int funcs_put(const char* key, func f);
+int funcs_get(const char* key, func* f);
+int funcs_remove(const char* key, func* f);
 
 int main(int argc, char* argv[]) {
 	int sleepMsec = 3000;
@@ -187,3 +205,58 @@ long mhash(const char* str) {
 	}
 	return hc;
 }
+
+
+int isprime(int n) {
+	int i;
+	i=2;
+	while(i<=n/2) {
+		if(n%i==0) {
+			return 1; // prime number
+		}
+		i++;
+	}
+	return 0;
+}
+
+int func_get(const char* key, func_item* f) {
+
+	long h = mhash(key);
+	int i = h%map_size;
+	func_item fi = funcs[i];
+	if(!strcmp(fi.key,key)) {
+		f = &fi;
+		return EXIT_SUCCESS;
+	}
+	else {
+		func_item* fis = fi.fn_array;
+		for(int i = 0; i < fi.fn_item_size;i++) {
+			if(!strcmp(key, (fis+i)->key)) {
+				f = fis+i;
+				return EXIT_SUCCESS;
+			}
+		}
+	}
+	return EXIT_FAILURE;
+}
+
+int funcs_put(const char* key, func f) {
+	long h = mhash(key);
+	int i = h%map_size;
+	func_item fi = funcs[i];
+	
+	if(!fi.fn) {
+		memset(fi.key, '\0', key_max);
+		memcpy(fi.key, key, strlen(key));
+		fi.fn = f;
+	}
+	else {
+		if(!fi.fn_array) {
+			fi.fn_array = (func_item*)malloc(sizeof(func_item) * func_item_array_max);
+		}
+	}
+		
+	return 1;
+}
+int funcs_get(const char* key, func* f);
+int funcs_remove(const char* key, func* f);
