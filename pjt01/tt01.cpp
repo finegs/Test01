@@ -1,7 +1,38 @@
 #if 1
-
 #include <cstdio>
 
+bool first = true;
+
+void f(int n) {
+//	if(n==0)return;
+//	print("%d", n%10);
+//	f(n/10);
+	if(n<1) return;
+	// static bool first;
+	if(first && (n%10) == 0) 
+		f(n/10);
+	else {
+		printf("%d", n%10); 
+		first = false;
+		f(n/10);
+	}
+}
+
+int main() {
+
+	int n;
+	scanf("%d", &n);
+	f(n);
+
+	return 0;
+}
+
+
+#endif
+
+#if 0
+
+#include <cstdio>
 
 char d[21] = "0123456789ABCDEFGHIJ";
 
