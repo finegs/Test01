@@ -1,0 +1,2 @@
+#Compile Option
+ g++ -o rpi01 rpi01.cpp -lwiringPi -pthread -lcrypt -lm -lrt

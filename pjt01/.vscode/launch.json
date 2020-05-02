@@ -8,8 +8,8 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/t.exe",u
-            "args": [],
+            "program": "${workspaceFolder}/t.exe",
+            "args": ["-t"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

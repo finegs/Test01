@@ -6,12 +6,16 @@
 #include <map>
 #include <mutex>
 
+#ifdef USE_BOOST
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/containers/map.hpp>
 #include <boost/interprocess/allocators/allocator.hpp>
+#endif
 
 #include "mipc.hpp"
 
+
+#ifndef USE_NBOOST
 //using namespace std;
 int MyIPC::TEST_MAP_SIZE = 100;
 
@@ -117,19 +121,22 @@ int MyIPC::testIPCMapFile(int argc, char *argv[], std::vector<std::string> &para
    const char *FileName = "file.bin";
    const std::size_t FileSize = 10000;
 
-   bool isSvr = std::end(params) != std::find_if(std::begin(params), 
+   bool isSvr = false;
+   if(argc > 2) {
+   		isSvr = std::end(params) != std::find_if(std::begin(params), 
 		   						std::end(params), 
 								[&](std::string &s) {
                    if ("-s" == s || "-S" == s)
                       return true;
                    return false;
                 });
+   }
 
    //   if(argc == 1){ //Parent process executes this
    if (isSvr)
    {    //Parent process executes this
       { //Create a file
-         file_mapping::remove(FileName);
+		 file_mapping::remove(FileName);
          std::filebuf fbuf;
          fbuf.open(FileName, std::ios_base::in | std::ios_base::out | std::ios_base::trunc | std::ios_base::binary);
          //Set the size
@@ -201,6 +208,8 @@ int MyIPC::testIPCMapFile(int argc, char *argv[], std::vector<std::string> &para
 
    return EXIT_SUCCESS;
 }
+
+#endif
 
 std::string MyIPC::popCmd() {
 	std::lock_guard<std::mutex> guard(MyIPC::cmdQueue_mtx);

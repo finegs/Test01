@@ -1,0 +1,25 @@
+CXX = g++
+
+TARGET=a3.exe
+
+all:$(TARGET)
+
+#cppsrc = $(wildcard *.cpp)
+cppsrc = $(TARGET:.exe=.cpp)
+cppsrc += mutil.cpp
+objs   =$(cppsrc:.cpp=.o)
+
+CFLAGS=-W -Wall
+#LDFLAGS=-std=c++17 -lz -lm
+LDFLAGS=-lz -lm
+
+$(objs): $(cppsrc)
+	$(CXX) -c $^ $(CFLAGS) 
+
+$(TARGET): $(objs)
+	$(CXX) -o $@ $^ $(LDFLAGS)
+
+clean:
+	@echo start clean
+	@del /F /Q $(objs) $(TARGET)
+	@echo complete clean

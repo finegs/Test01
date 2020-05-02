@@ -3,21 +3,28 @@ CXX      := g++
 BUILD     := build
 APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
+
 DEFAULT_TARGET := t
 
 ifeq ($(OS),Windows_NT)
 	RM = del /Q /F
-	RRM = rmdir /Q /S
+	RRM = rd /Q /S
 	OSFLAG += -D WIN32
+	MKDIR = mkdir
 	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
 		OSFLAG += -D AMD64
 	endif
 	ifeq ($(PROCESSOR_ARCHITECTURE),x86)
 		OSFLAG += -D IA32
 	endif
+
+	APP_DIR   := $(BUILD)\apps
+	OBJ_DIR   := $(BUILD)\objects
 else
+
 	RM = rm -f
 	RRM = rm -f -r
+	MKDIR = mkdir -p
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		OSFLAG += -D LINUX
@@ -35,11 +42,14 @@ else
 	ifneq ($(filter arm%,$(UNAME_P)),)
 		OSFLAG += -D ARM
 	endif
+
+	APP_DIR   := $(BUILD)/apps
+	OBJ_DIR   := $(BUILD)/objects
 endif
 
 
 OSFLAG    := 
-ifeq ($(OS), Windows_NT)
+ifeq ($(OS),Windows_NT)
 	OSFLAG += -D WIN32
 endif
 
@@ -78,15 +88,20 @@ CXXFLAGS  := -std=c++17
 CXXFLAGS  += -Wall
 CXXFLAGS  += -Wextra
 CXXFLAGS  += -Wno-unused-parameter
+CXXFLAGS  += -DUSE_BOOST
 
 INC_PATH  += -I.
 INC_PATH  += -Iinc    
+ifeq ($(OS),Windows_NT)
+	ifeq ($(BOOST_HOME),)
+		INC_PATH  += -I D:\Programs\boost\1.72\include\boost-1_73
+	endif
+endif
 
 LFLAGS    :=
 LDFLAGS   :=
 
-ifeq ($(OS), Windows_NT)
-#	LDFLAGS  := -Wl, -Bstatic
+ifeq ($(OS),Windows_NT)
     LDFLAGS  := -static
 	LDFLAGS  += -lws2_32
 #	LDFLAGS  += -Wl,-Bdynamic
@@ -95,7 +110,6 @@ else
 endif
 
 
-#LDFLAGS  += -Wl,-Bdynamic
 LDFLAGS   += -lstdc++
 LDFLAGS   += -lm
 LDFLAGS   += -pthread
@@ -103,16 +117,20 @@ LDFLAGS   += -pthread
 
 #LDFLAGS   += -lwsock32
 
-
-ifeq ($(OS), Windows_NT)
+ifeq ($(OS),Windows_NT)
 	LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
 else
 	LIB_PATH  := 
 endif
 
 ################## BOOST #################################
-BOOST_INC := $(BOOST_HOME)/../boost_inc
-BOOST_LIB := $(BOOST_HOME)/lib
+ifneq ($(BOOST_HOME),)
+	BOOST_INC := $(BOOST_HOME)/../boost_inc
+	BOOST_LIB := $(BOOST_HOME)/lib
+else
+	BOOST_INC := /usr/include
+	BOOST_LIB := /usr/lib
+endif
 
 INC_PATH  += -I$(BOOST_INC)
 LIB_PATH  += -L$(BOOST_LIB)
@@ -124,29 +142,27 @@ OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 #################  all (Default)      ######
 
-all: $(TARGET)
-
+all: mkdirs $(TARGET)
 
 ##########################################################
 
 #################             Compile            ######
 $(OBJ_DIR)/%.o: %.cpp
-	-@if NOT EXIST "$(@D)" . \
-		mkdir -p "$(@D)".       \
-	fi
-	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $@ -c $<
+#	-@if NOT EXIST "$(@D)" . \
+#		mkdir -p "$(@D)".       \
+#	fi
+	-@$(MKDIR) $(@D)
+	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $? -o $@ 
 
 ##########################################################
 
 ##########          Link               ######
 $(TARGET): $(OBJS)
-	-@if NOT EXIST "$(@D)" . \
-		mkdir -p "$(@D)".      \
-	fi
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
 #   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
-	$(CXX) -o $@ $(LIB_PATH) $(OBJS) $(LDFLAGS)
- 
+	-@$(MKDIR) $(@D)
+	$(CXX) -o $@ $^ $(LIB_PATH) $(LDFLAGS)
+
 ##########################################################
 
 ##########             Build All always SRC or SRC_OTHERS is changed without target removed ########
@@ -156,12 +172,15 @@ $(TARGET): $(OBJS)
 
 ##########             Make Directory to store obj, target files ######################
 mkdirs:
-	-@if NOT EXIST "$(APP_DIR)" .\
-		mkdir -p "$(APP_DIR)".     \
-	fi
-	-@if NOT EXIST "$(OBJ_DIR)" .\
-		mkdir -p "$(OBJ_DIR)".     \
-	fi
+	-@$(MKDIR) $(APP_DIR)
+	-@$(MKDIR) $(OBJ_DIR)
+#	-@if NOT EXIST "$(APP_DIR)" \
+#		mkdir -p "$(APP_DIR)".  \
+#	fi
+#	-@if NOT EXIST "$(OBJ_DIR)" \
+#		mkdir -p "$(OBJ_DIR)".  \
+#	fi
+
 ##########################################################
 
 debug: CXXFLAGS += -DDEBUG -g
@@ -183,9 +202,9 @@ release_this:
 ##########            Clean Target, Object and Current Path Target Files    #########################
 clean:
 	-@echo Starting clean.
-	-@$(RM) "$(TARGET)"
-	-@$(RM) "$(OBJ_DIR)\*.*"
-	-@$(RM) "$(APP_DIR)\*.*"
+	-@$(RM) $(TARGET)
+	-@$(RM) $(OBJ_DIR)/*.*
+	-@$(RM) $(APP_DIR)/*.*
 #
 #	-@rm -rf "$(OBJ_DIR)"/*.*
 #	-@rm -rf "$(APP_DIR)"/*.*
@@ -195,5 +214,4 @@ clean:
 	-@echo Clean done.
 
 ##########################################################
-
 

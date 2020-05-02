@@ -10,6 +10,7 @@
 #include <chrono>
 #include <list>
 #include <cmath>
+#include <bitset>
 
 #include "u.hpp"
 #include "uu1.hpp"
@@ -71,6 +72,37 @@ void MyUU1::test04()
 		std::cout << "[" << n++ << "] " << it.first << ", " << it.second << std::endl;
 	});
 
+}
+
+int MyUU1::test06() {
+	using namespace std;
+	
+	unsigned short us = 0xff00;
+	short s = (short)0xff00;
+
+	unsigned short us_shift = us >> 4;
+	short s_shift_r =  s >> 4;
+
+	cout << "		us = " << bitset<16>(us) << "(" << us << ")\n";
+	cout << "		s = " << bitset<16>(s) << "(" << s << ")\n";
+	cout << "	us >> 4 = " << bitset<16>(us_shift) << "(" << us_shift << ")\n";
+	cout << "	s << 4 = " << bitset<16>(s_shift_r) << "(" << s_shift_r << ")\n";
+
+	return EXIT_SUCCESS;
+}
+
+
+int MyUU1::test07() {
+	using namespace std;
+
+	float sum = 0.0;
+	for(int i = 0;i < 1000;i++) {
+		sum += 0.1;
+	}
+
+	cout<< "sum(0.1 x 1000) = " << sum << std::endl;
+
+	return EXIT_SUCCESS;
 }
 
 //constexpr
@@ -171,11 +203,15 @@ void MyUU1::testCode(const std::string &strCode, int argc, char* argv[], std::ve
 		MyUU1::testCode04();
 	}
 	break;
+#ifdef USE_BOOST
 	case TC05:
 	{
+
 		 MyIPC::testIPCMapFile(argc, argv , params);
+
 	}
 	break;
+#endif
 
 	default:
 	{
@@ -285,5 +321,17 @@ void MyUU1::testCInWithAsyncReader()
 	std::cout << "b : " << b << std::endl;
 	std::cout << "c : " << c << std::endl;
 	std::cout << "d1 : " << d1 << std::endl;
+}
+
+
+int Test01::test(int argc, char* argv[]) {
+	using namespace std;
+
+	if(argc>1) {
+		for(int i = 0;i < argc;i++) {
+			cout << "argv[" << i << "] : " << argv[i] << (i<argc-1?"," : "\n");
+		}
+	}
+	return EXIT_SUCCESS;
 }
 
