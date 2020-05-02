@@ -3,6 +3,7 @@ CXX      := g++
 BUILD     := build
 APP_DIR   := $(BUILD)/apps
 OBJ_DIR   := $(BUILD)/objects
+DEFAULT_TARGET := t
 
 ifeq ($(OS),Windows_NT)
 	RM = del /Q /F
@@ -44,15 +45,15 @@ endif
 
 ifeq ($(strip $(TARGET)),)
 	ifeq ($(OS), Windows_NT)
-		TARGET += t.exe
-		SRC:=$(TARGET:%.exe=%.cpp)
+		TARGET  := $(DEFAULT_TARGET)
+		SRC:=$(TARGET:%=%.cpp)
 	else
-		TARGET  := t
+		TARGET  := $(DEFAULT_TARGET)
 		SRC := $(TARGET:%=%.cpp)
 	endif
 else
 	ifeq ($(OS), Windows_NT)
-		SRC := $(TARGET:%.exe=%.cpp)
+		SRC := $(TARGET:%=%.cpp)
 	else
 		SRC := $(TARGET:%=%.cpp)
 	endif
