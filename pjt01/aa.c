@@ -207,7 +207,7 @@ long mhash(const char* str) {
 }
 
 
-int isprime(int n) {
+int isprime(int n, char* argv[]) {
 	int i;
 	i=2;
 	while(i<=n/2) {
