@@ -19,7 +19,13 @@ else
 	OBJ_DIR  := $(BUILD)/objs
 	APP_DIR  := $(BUILD)/apps
 endif
-#TARGET   := aa.exe
+
+ifeq ($(OS), Windows_NT)
+	DEFAULT_TARGET := b.exe
+else
+	DEFAULT_TARGET := b
+endif
+
 INCLUDE  := -I include
 SKIP_FILE := $(wildcard Test*.cpp)
 #SKIP_FILE += c.cpp
@@ -32,9 +38,14 @@ SRC      :=                      \
 	$(wildcard *.cpp)
 SRC		:= $(filter-out $(SKIP_FILE) , $(SRC))
 
+
+ifneq ($(strip $(target)),)
+	TARGET:=$(target)
+endif
+
 ifeq ($(strip $(TARGET)),)
 	ifeq ($(OS), Windows_NT)
-		TARGET += aa.exe
+		TARGET := $(DEFAULT_TARGET)
 		SRC:=$(TARGET:%.exe=%.cpp)
 		BLD:=BUILD_WIN
 		CLN:=clean_win
@@ -95,7 +106,7 @@ all: $(BLD) $(APP_DIR)/$(TARGET) $(release_app)
 #	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 
 #	@mkdir -p $(@D)
-$(OBJECTS):
+$(OBJECTS): $(SRC)
 #	@IF NOT EXIST $(@D) mkdir $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $(SRC)
 
