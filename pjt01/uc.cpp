@@ -76,7 +76,7 @@ Msg* unmarshal(unsigned char* buf, Msg* msg = nullptr)
 SOCKET makeSocket(WORD wPort)
 {
 	SOCKET sock = (SOCKET)NULL;
-    SOCKADDR_IN addr = {0};
+    SOCKADDR_IN addr{0};
 
 
     sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -102,7 +102,7 @@ SOCKET makeSocket(WORD wPort)
 BOOL sendData(void* pParam, WORD wDstPort, unsigned char* sndBuf, size_t sndBufLen)
 {
 	SOCKET sock = *((SOCKET*)pParam);
-	SOCKADDR_IN sendAddr = {0};
+	SOCKADDR_IN sendAddr{0};
 	Msg msg;
 //	char buf[1024];
 	int rc;
@@ -113,19 +113,16 @@ BOOL sendData(void* pParam, WORD wDstPort, unsigned char* sndBuf, size_t sndBufL
 
 	memset(msg.buf, '\0', G_BUF_LEN);
 
-	printf("[I] Enter Message : "); 
-	fflush(stdout);
+	printf("[I] Enter Message : "); fflush(stdout);
 	fgets(msg.buf, G_BUF_LEN, stdin);
 
-	if(msg.buf[0] == 'q' || msg.buf[0] == 'Q')
-	{
+	if(msg.buf[0] == 'q' || msg.buf[0] == 'Q') {
 		return false;
 	}
 
 	marshal(&msg, sndBuf);
 	rc = sendto(sock, (char*)sndBuf, sndBufLen, 0, (SOCKADDR*)&sendAddr, sizeof(sendAddr));
-	if(SOCKET_ERROR == rc)
-	{
+	if(SOCKET_ERROR == rc) {
 		printf("[E] sent bytes : %d, errno : %d\n", rc, WSAGetLastError());
 	}
 
@@ -133,11 +130,11 @@ BOOL sendData(void* pParam, WORD wDstPort, unsigned char* sndBuf, size_t sndBufL
 }
 
 
-//DWORD WINAPI rcvTask(LPVOID pParam)
-DWORD WINAPI rcvTask(void* pParam)
+//DWORD WINAPI recvTask(LPVOID pParam)
+DWORD WINAPI recvTask(void* pParam)
 {
 	SOCKET sock  = *((SOCKET*)pParam);
-	SOCKADDR_IN recvAddr = {0};
+	SOCKADDR_IN recvAddr{0, 0, {0}, 0};
 	int iRet, iRecvSize;
 	Msg msg;
 	size_t bufLen = sizeof(uint32_t) + sizeof(char)*G_BUF_LEN;
@@ -149,31 +146,30 @@ DWORD WINAPI rcvTask(void* pParam)
 		iRecvSize = sizeof(recvAddr);
 		memset(rcvBuf, '\0', sizeof(Msg));		
 		iRet = recvfrom(sock, (char*)rcvBuf, sizeof(Msg), 0, (SOCKADDR*)&recvAddr, &iRecvSize);
-		if(iRet == SOCKET_ERROR)
-		{
+
+		if(iRet == SOCKET_ERROR) {
 			printf("[E] recvfrom failed : rc:%d,error code:%d\n", iRet, WSAGetLastError());
 			continue;
 		}
 
 		//msg.buf[iRet] = '\0';
-        if(srcPort != htons(recvAddr.sin_port))
-        {
+        if(srcPort != htons(recvAddr.sin_port)) {
             printf("\n");
         }
 
 		unmarshal((unsigned char*)rcvBuf, &msg);
+
 		printf("[R] [%s:%d] : [%d]%s", inet_ntoa(recvAddr.sin_addr), htons(recvAddr.sin_port), msg.seq, msg.buf);
 		fflush(stdout);
 
-		if('?' == msg.buf[0])
-		{
-				msg.buf[0] = '!';
-				marshal(&msg, sndBuf);
-				iRet = sendto(sock, (char*)sndBuf, sizeof(msg), 0, (SOCKADDR*)&recvAddr, sizeof(recvAddr));
-				if(iRet == SOCKET_ERROR)
-				{
-					printf("[E] sendto failed : rc:%d,error code:%d\n", iRet, WSAGetLastError());
-				}
+		if('?' == msg.buf[0]) {
+			msg.buf[0] = '!';
+			marshal(&msg, sndBuf);
+			iRet = sendto(sock, (char*)sndBuf, sizeof(msg), 0, (SOCKADDR*)&recvAddr, sizeof(recvAddr));
+			if(iRet == SOCKET_ERROR)
+			{
+				printf("[E] sendto failed : rc:%d,error code:%d\n", iRet, WSAGetLastError());
+			}
 		}
 
 	}
@@ -186,7 +182,7 @@ uint32_t Msg::G_SEQ = 0;
 
 int main(int argc, char* argv[])
 {
-	WSAData wsData = {0};
+	WSAData wsData{0};
 	SOCKET sock;
 	WORD wSrcPort, wDstPort;
 
@@ -207,7 +203,7 @@ int main(int argc, char* argv[])
 	if(sock)
 	{
 		//HANDLE hThread = CreateThread(NULL, 0, rcvTask, (void*)sock, 0, NULL);
-		std::thread recv = std::thread(rcvTask, &sock);
+		std::thread recv = std::thread(recvTask, &sock);
 
 		while(!bEnd)
 		{
