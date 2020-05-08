@@ -56,7 +56,7 @@ int main()
 		printf(";Bind failed with error code : %d", WSAGetLastError());
 		exit(EXIT_FAILURE);
 	}
-	puts(";Bind done");
+	printf(";Bind done. SVR_PORT[%d]\n", PORT);
 
 	//keep listening for data
 	while(1)
