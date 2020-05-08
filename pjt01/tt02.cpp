@@ -1,12 +1,49 @@
 #include <iostream>
 #include "uu1.hpp"
-
+#include <functional>
+#include <string>
+#include <cstring>
 
 using namespace std;
 
+int some_function(const std::string& a) {
+	std::cout << "some_function called : " << a << std::endl;
+	return EXIT_SUCCESS;
+}
+
+struct S001 {
+	int operator()(int argc, char* argv[]) {
+		std::cout << "S Function is called" << std::endl;
+		return EXIT_SUCCESS;
+	}
+};
+
+
 int main() {
 
-	MyUU1::test06();	
+	// MyUU1::test06();	
+	
+	std::function<int(const std::string&)> f1 = some_function;
+	std::function<int(int argc, char* argv[])> f2 = S001();
+	std::function<void(const char* str)> f3 = [](const char* str) { std::cout << "function3 called" << std::endl; };
+
+	f1("Hello");
+	
+	int paramLen = 1;
+	int strlength  = 0;
+	char** param = (char**)malloc(sizeof(char*)*paramLen);
+	param[0] = (char*)malloc(sizeof(char)*(strlength = strlen("Good")+1));
+	memset(param[0], '\0', strlength);
+	strncpy(param[0], "Good", strlength);
+	f2(paramLen, param);
+
+	f3("f3");
+
+	for(int i=0;i<paramLen;i++) {
+		delete param[i];
+	}
+	delete[] param;
+
 
 	return EXIT_SUCCESS;
 }

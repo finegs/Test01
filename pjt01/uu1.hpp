@@ -9,6 +9,7 @@
 #include <exception>
 #include <unordered_map>
 #include <vector>
+#include <functional>
 
 enum MyTestCodeEnum {
 	TC01=1,
