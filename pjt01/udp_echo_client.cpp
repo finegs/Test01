@@ -48,7 +48,9 @@ int main(void)
 	si_other.sin_family = AF_INET;
 	si_other.sin_port = htons(PORT);
 	si_other.sin_addr.S_un.S_addr = inet_addr(SERVER);
-	
+
+	connect(s, (struct sockaddr*)&si_other, slen);
+
 	//start communication
 	while(1)
 	{
@@ -66,13 +68,15 @@ int main(void)
 		//clear the buffer by filling null, it might have previously received data
 		memset(buf,0, BUFLEN);
 		//try to receive some data, this is a blocking call
-		if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == SOCKET_ERROR)
+		// if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == SOCKET_ERROR)
+		if (recv(s, buf, BUFLEN, 0) == SOCKET_ERROR)
 		{
 			printf("recvfrom() failed with error code : %d" , WSAGetLastError());
 			exit(EXIT_FAILURE);
 		}
 		
-		puts(buf);
+		printf("<<%s\n", buf);
+		// puts(buf);
 	}
 
 	closesocket(s);
