@@ -8,15 +8,18 @@
 class Customer {
 	private:
 		std::string name;
+		std::string desc;
 		
 	public:
-		Customer(const std::string& n) : name(n) {}
+		Customer(const std::string& n) : name(n), desc("-") {}
 		std::string getName() const { return name; }
+		void setDesc(const std::string& _desc) { desc = _desc; }
+		std::string getDesc() const { return desc; }
 		friend std::ostream& operator<<(std::ostream& os, const Customer& o);
 };
 
 std::ostream& operator<<(std::ostream& os, const Customer& o) {
-	os << "(" << o.getName() << ")";
+	os << "(" << o.getName() << ", " << o.getDesc() << ")";
 	return os;
 }
 
@@ -61,10 +64,18 @@ int main() {
 	std::for_each(m1.begin(), m1.end(), [](auto& i) { std::cout<< ", (" << i.first << ", " << i.second << ")"; });
 	std::cout<< std::endl;
 
-	std::unordered_multimap<Customer, Customer, MyCustomerHash, MyCustomerEqual> m2;
+	std::unordered_multimap<Customer, Customer&, MyCustomerHash, MyCustomerEqual> m2;
 
-	m2.insert({{"a1"}, {"a1 value"}});
-	m2.insert({{"a1"}, {"a1 other value"}});
+	Customer a1{"a1"};
+	Customer a2{"a2"};
+	Customer a3{"a3"};
+
+
+	m2.insert({a1, a1});
+	m2.insert({a2, a2});
+	m2.insert({a3, a3});
+
+	a3.setDesc("New Desc");
 
 	std::for_each(m2.begin(), m2.end(), [](auto& i) { std::cout<< ", (" << i.first << ", " << i.second << ")"; });
 
