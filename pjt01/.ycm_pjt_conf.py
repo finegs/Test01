@@ -52,7 +52,7 @@ flags = [
 '-DNDEBUG',
 # You 100% do NOT need -DUSE_CLANG_COMPLETER and/or -DYCM_EXPORT in your flags;
 # only the YCM source code needs it.
-#'-DUSE_CLANG_COMPLETER',
+'-DUSE_CLANG_COMPLETER',
 '-DYCM_EXPORT=',
 '-DUSE_BOOST',
 # THIS IS IMPORTANT! Without the '-x' flag, Clang won't know which language to
@@ -62,13 +62,13 @@ flags = [
 '-x', 'c++',
 '-std=c++17',
 '-target', 'x86_64-pc-windows-gnu++',
-'-isystem', 'D:/Programs/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++',
-'-isystem', 'D:/Programs/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32',
-'-isystem', 'D:/Programs/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward',
-'-isystem', 'D:/Programs/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include',
-'-isystem', 'D:/Programs/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed',
-'-isystem', 'D:/Programs/mingw64/mingw64/x86_64-w64-mingw32',
-'-isystem', 'D:/Programs/boost/1.72/include/boost-1_73',
+'-isystem', 'D:/Programs/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++',
+'-isystem', 'D:/Programs/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32',
+'-isystem', 'D:/Programs/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward',
+'-isystem', 'D:/Programs/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include',
+'-isystem', 'D:/Programs/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed',
+'-isystem', 'D:/Programs/msys64/mingw64/x86_64-w64-mingw32',
+'-isystem', 'D:/Programs/boost/boost_1_70_0/include/boost_1_70_0',
 '-isystem', 'D:/Dev/git/gnuplot-gnuplot-main/src',
 ]
 

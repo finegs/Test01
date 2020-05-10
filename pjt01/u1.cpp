@@ -64,7 +64,7 @@ int main() {
 	std::for_each(m1.begin(), m1.end(), [](auto& i) { std::cout<< ", (" << i.first << ", " << i.second << ")"; });
 	std::cout<< std::endl;
 
-	std::unordered_multimap<Customer, Customer&, MyCustomerHash, MyCustomerEqual> m2;
+	std::unordered_multimap<Customer&, Customer&, MyCustomerHash, MyCustomerEqual> m2;
 
 	Customer a1{"a1"};
 	Customer a2{"a2"};
@@ -74,6 +74,10 @@ int main() {
 	m2.insert({a1, a1});
 	m2.insert({a2, a2});
 	m2.insert({a3, a3});
+
+	std::for_each(m2.begin(), m2.end(), [](auto& i) { std::cout<< ", (" << i.first << ", " << i.second << ")"; });
+
+	std::cout<< std::endl;
 
 	a3.setDesc("New Desc");
 

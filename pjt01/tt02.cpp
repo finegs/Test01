@@ -1,3 +1,4 @@
+#if 0
 #include <iostream>
 #include "uu1.hpp"
 #include <functional>
@@ -47,3 +48,42 @@ int main() {
 
 	return EXIT_SUCCESS;
 }
+
+
+#endif
+
+#if 1
+
+#include <iostream>
+#include <vector>
+
+template <typename T, int& SZ>
+class Arr {
+	private:
+		std::vector<T> elems;
+
+	public:
+		Arr() : elems(SZ) {}
+
+		void print() const {
+			for(int i=0;i<SZ;i++) {
+				std::cout<< elems[i] << " ";
+			}
+		}
+};
+
+int size =10;
+
+int main() {
+	// Arr<int&, size> y;
+
+	Arr<int,size> x;
+
+	x.print();
+	// size += 100;
+	x.print();
+	
+	return 0;
+}
+
+#endif
