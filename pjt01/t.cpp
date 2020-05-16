@@ -192,6 +192,9 @@ void handleUserInput(int argc, char* argv[]) {
 		else if ("-t07" == cmd || "-T07" == cmd) {
 			MyUU1::test07();
 		}
+		else if ("-t08" == cmd || "-T08" == cmd) {
+			MyUU1::test08(argc, argv);
+		}
 		else if ("-tc" == cmd || "-TC" == cmd) {
 			if (params.size() < 2)
 				continue;
@@ -236,7 +239,15 @@ int main(int argc, char *argv[]) {
 		MyIPC::testIPCMapFile(argc, argv, params);
 		return EXIT_SUCCESS;
 	}
+
 #endif
+	if (std::end(params) != std::find_if(std::begin(params), std::end(params), [&](std::string &s) {
+			return "-test08" == s;
+		})) {
+	
+		MyUU1::test08(argc, argv);
+		return EXIT_SUCCESS;
+	}
 
 	std::thread cinReader = std::thread(handleUserInput, argc, argv);
 

@@ -63,6 +63,7 @@ public:
 	static void test04();
 	static int test06();
 	static int test07();
+	static int test08(int argc, char* argv[]);
 
 	static constexpr int mypow(int base, int exp) noexcept {
 		return (exp == 0 ? 1 : base * MyUU1::mypow(base, exp - 1));

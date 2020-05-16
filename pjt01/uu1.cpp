@@ -11,6 +11,8 @@
 #include <list>
 #include <cmath>
 #include <bitset>
+#include <cstdlib>
+#include <ctime>
 
 #include "u.hpp"
 #include "uu1.hpp"
@@ -30,8 +32,8 @@ void MyUU1::registerTestEnumCode(const std::string& strCode, const MyTestCodeEnu
 	}
 	testCodeEnumMap.emplace(strCode, e);
 
-	if (T_IS_DEBUG)
-		std::cout << "[D] MyUU1::testCodeEnumMap.registerTestEnumCode" << strCode << ", " << e << std::endl;
+	// if (T_IS_DEBUG)
+		// std::cout << "[D] MyUU1::testCodeEnumMap.registerTestEnumCode" << strCode << ", " << e << std::endl;
 
 }
 
@@ -102,6 +104,32 @@ int MyUU1::test07() {
 
 	cout<< "sum(0.1 x 1000) = " << sum << std::endl;
 
+	return EXIT_SUCCESS;
+}
+
+
+int MyUU1::test08(int argc, char* argv[]) {
+	int cnt = 10000;	
+	std::stringstream ss;
+
+	for(int i = 1;i<argc;i++) { 
+		if(!strcmp("-test08.cnt", argv[i]) && i+1<argc) { 
+			cnt = atoi(argv[i+1]);i++;
+			break;
+		}
+	}
+
+	char a[100];
+	std::srand(std::time(nullptr));
+	
+	using namespace std;
+	for(int i = 0;i<cnt;i++) {
+		sprintf(a, "%c{ y:'%d', a:%d, b:%d }\n",(i>0?',':' '), 1900+(i%200), rand()%100, rand()%100);
+		ss<<a;
+	}
+
+	std::cout << ss.str() << std::endl;
+		
 	return EXIT_SUCCESS;
 }
 
