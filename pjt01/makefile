@@ -1,13 +1,11 @@
 ######################  Init All Variables ###############################################
-CXX      := g++ 
-BUILD     := build
-APP_DIR   := $(BUILD)/apps
-OBJ_DIR   := $(BUILD)/objects
+CXX      		:= g++ 
+BUILD     		:= build
 
-DEFAULT_TARGET := t
+DEFAULT_TARGET 	:= t
 
 ifeq ($(OS),Windows_NT)
-	RM = del /Q /F
+	RM = del /Q /F /S
 	RRM = rd /Q /S
 	OSFLAG += -D WIN32
 	MKDIR = mkdir
@@ -20,6 +18,9 @@ ifeq ($(OS),Windows_NT)
 
 	APP_DIR   := $(BUILD)\apps
 	OBJ_DIR   := $(BUILD)\objects
+
+	MKDIRS    := MKDIRS_WIN
+	CLEANS    := CLEANS_WIN
 else
 
 	RM = rm -f
@@ -45,6 +46,9 @@ else
 
 	APP_DIR   := $(BUILD)/apps
 	OBJ_DIR   := $(BUILD)/objects
+
+	MKDIRS    := MKDIRS_OTHER
+	CLEANS	  := CLEANS_OTHER
 endif
 
 
@@ -61,9 +65,9 @@ endif
 
 ifeq ($(strip $(TARGET)),)
 	TARGET  := $(DEFAULT_TARGET)
-	SRC:=$(TARGET:%=%.cpp)
+	SRC 	:= $(TARGET:%=%.cpp)
 else
-	SRC := $(TARGET:%=%.cpp)
+	SRC 	:= $(TARGET:%=%.cpp)
 endif
 
 #SRC   := $(TARGET:%=%.cpp)
@@ -88,31 +92,34 @@ CXXFLAGS  += -Wno-unused-parameter
 CXXFLAGS  += -DUSE_BOOST
 
 INC_PATH  += -I.
-INC_PATH  += -Iinc    
+INC_PATH  += -Iinc
 ifeq ($(OS),Windows_NT)
 	ifeq ($(BOOST_HOME),)
-		INC_PATH  += -I D:\Programs\boost\1.72\include\boost-1_73
+		INC_PATH	+= -ID:\Programs\boost\1.72\include\boost-1_73
+	endif
+else
+	ifeq ($(BOOST_HOME),)
+		BOOST_HOME = /d/Programs/boost/1.72
 	endif
 endif
 
-LFLAGS    :=
-LDFLAGS   :=
-
-ifeq ($(OS),Windows_NT)
-    LDFLAGS  := -static
-	LDFLAGS  += -lws2_32
-#	LDFLAGS  += -Wl,-Bdynamic
-else
-	LDFLAGS  += -lrt
-endif
-
+LFLAGS    		:=
+LDFLAGS   		:=
 
 LDFLAGS   += -lstdc++
 LDFLAGS   += -lm
 LDFLAGS   += -pthread
-
-
 #LDFLAGS   += -lwsock32
+# -lws2_32 must be in end of LDFLAGS ( by SGK 2020516) to prevent link error : 'undefined reference to
+#  `__imp_WSAStartup`
+ifeq ($(OS),Windows_NT)
+    LDFLAGS  += -static
+    LDFLAGS  += -lws2_32
+#	LDFLAGS  += -Wl,-Bdynamic
+else
+    LDFLAGS  += -lrt
+endif
+
 
 ifeq ($(OS),Windows_NT)
 	LIB_PATH  := -L$(MINGW_HOME)/x86_64-w64-mingw32/lib
@@ -121,62 +128,66 @@ else
 endif
 
 ################## BOOST #################################
-ifneq ($(BOOST_HOME),)
-	BOOST_INC := $(BOOST_HOME)/../boost_inc
-	BOOST_LIB := $(BOOST_HOME)/lib
-else
-	BOOST_INC := /usr/include
-	BOOST_LIB := /usr/lib
+
+ifeq ($(OS),Windows_NT)
+	ifneq ($(BOOST_HOME),)
+		BOOST_INC := $(BOOST_HOME)/../boost_inc
+		BOOST_LIB := $(BOOST_HOME)/lib
+	endif
 endif
 
-INC_PATH  += -I$(BOOST_INC)
-LIB_PATH  += -L$(BOOST_LIB)
-
-
-##########################################################
-OBJS 	:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
-##########################################################
-
-#################  all (Default)      ######
-
-all: mkdirs $(TARGET)
+ifneq ($(BOOST_INC),) 
+	INC_PATH  		+= -I$(BOOST_INC)
+endif
+ifneq ($(BOOST_LIB),)
+	LIB_PATH  		+= -L$(BOOST_LIB)
+endif
 
 ##########################################################
+OBJS 			:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+##########################################################
 
-#################             Compile            ######
+#################  all (Default)      #########
+
+all: MK_DIRS $(TARGET)
+
+##########################################################
+
+################# Compile ######
 $(OBJ_DIR)/%.o: %.cpp
-#	-@if NOT EXIST "$(@D)" . \
-#		mkdir -p "$(@D)".       \
-#	fi
-	-@$(MKDIR) $(@D)
+	$(MK_DIRS)
+#	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $? -o $@ 
 	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $? -o $@ 
 
 ##########################################################
 
-##########          Link               ######
+######################## Link ######
 $(TARGET): $(OBJS)
-#	$(CXX) $(CXXFLAGS) $(INC_PATH) -o $(APP_DIR)/$(TARGET) $(OBJS) $(LDFLAGS) 
-#   -lws2_32, -lwsock32 should be added to end of LDFLAGS and end of link command 	
-	-@$(MKDIR) $(@D)
-	$(CXX) -o $@ $^ $(LIB_PATH) $(LDFLAGS)
+	$(MK_DIRS)
+	$(CXX) $(LIB_PATH) $^ -o $@ $(LDFLAGS)
 
 ##########################################################
 
 ##########             Build All always SRC or SRC_OTHERS is changed without target removed ########
-.PHONY: all build clean debug release
+.PHONY: all build CLEANS debug release MK_DIRS
 
 ##########################################################
 
 ##########             Make Directory to store obj, target files ######################
-mkdirs:
+MK_DIRS:$(MKDIRS)
+	-@echo Complete $@
+
+MKDIRS_WIN:
+	-@echo Start $@
+	-@IF NOT EXIST $(APP_DIR) ( $(MKDIR) $(APP_DIR) )
+	-@IF NOT EXIST $(OBJ_DIR) ( $(MKDIR) $(OBJ_DIR) )
+	-@echo Complete $@
+
+MKDIRS_OTHER:
+	-@echo Start %@
 	-@$(MKDIR) $(APP_DIR)
 	-@$(MKDIR) $(OBJ_DIR)
-#	-@if NOT EXIST "$(APP_DIR)" \
-#		mkdir -p "$(APP_DIR)".  \
-#	fi
-#	-@if NOT EXIST "$(OBJ_DIR)" \
-#		mkdir -p "$(OBJ_DIR)".  \
-#	fi
+	-@echo Complete %@
 
 ##########################################################
 
@@ -197,18 +208,23 @@ release_this:
 ##########################################################
 
 ##########            Clean Target, Object and Current Path Target Files    #########################
-clean:
-	-@echo Starting clean.
-	-@$(RM) $(TARGET)
-	-@$(RM) $(OBJ_DIR)/*.*
-	-@$(RM) $(APP_DIR)/*.*
-#
-#	-@rm -rf "$(OBJ_DIR)"/*.*
-#	-@rm -rf "$(APP_DIR)"/*.*
-#	-@if EXIST "$(TARGET)"  \
-#		del /F "$(TARGET)".     \
-#	fi
-	-@echo Clean done.
+clean: $(CLEANS)
+	-@echo Complete $@
+
+CLEANS_WIN:
+	-@echo Starting $@
+	-@IF EXIST $(TARGET) ( $(RM) $(TARGET) )
+	-@IF EXIST $(OBJ_DIR) ( $(RM) $(OBJ_DIR)\* )
+	-@IF EXIST $(APP_DIR) ( $(RM) $(APP_DIR)\* )
+	-@echo Complete $@
+
+CLEANS_OTHER:
+	-@echo Starting $@
+	-@if [ -f $(TARGET) ]; then $(RM) $(TARGET); fi 
+	-@if [ -d $(OBJ_DIR) ]; then $(RM) $(OBJ_DIR)/*.o; fi 
+	-@if [ -d $(APP_DIR) ]; then $(RM) $(APP_DIR)/$(TARGET); fi 
+	-@echo Complete $@
+	-@echo Complete $@
 
 ##########################################################
 

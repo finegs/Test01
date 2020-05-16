@@ -225,7 +225,7 @@ int handle_recv() {
 		//clear the buffer by filling null, it might have previously received data
 		memset(rcvbuf, 0, buflen);
 		//try to receive some data, this is a blocking call
-		// if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == SOCKET_ERROR)
+		// if (recvfroms, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == SOCKET_ERROR)
 		if (recv(s, rcvbuf, buflen, 0) == SOCKET_ERROR) {
 			printf("recv() failed with error code : %d" , WSAGetLastError());
 			exit(EXIT_FAILURE);
