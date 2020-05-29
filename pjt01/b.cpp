@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iostream>
 #include <memory>
 #include <string>
 
@@ -11,10 +10,24 @@ class Person {
 
 		Person();
 		~Person();
+		friend 
+			std::ostream& operator<<(std::ostream& os, const Person& o);
+		friend
+			std::istream& operator>>(std::istream& is, Person& o;
 };
 
 Person::Person() {}
 Person::~Person() {}
+
+std::ostream& operator<<(std::ostream& os, const Person& o) {
+	os << o.name;
+	return os;
+}
+
+std::istream& operator>>(std::istream& is, Person& o) {
+	is >> o.name;
+	return is;
+}
 
 Person* createPerson(string _name) {
 	Person* p = new Person();

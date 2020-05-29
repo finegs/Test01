@@ -1,4 +1,5 @@
 #if 1
+
 #include <cstdio>
 
 bool first = true;
@@ -19,11 +20,10 @@ void f(int n) {
 }
 
 int main() {
-
 	int n;
-	scanf("%d", &n);
+	printf("Enter number:"); fflush(stdout);
+	scanf("%d", &n); fflush(stdin);
 	f(n);
-
 	return 0;
 }
 

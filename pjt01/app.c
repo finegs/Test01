@@ -1,10 +1,9 @@
 #include <stdio.h>
-
-size_t signum(size_t input);
+#include "ml.h"
 
 int main() {
 	size_t input = -10;
-	printf("signum of (%ld) == %ld\n", input, signum(input));
+	printf("signum of (%zu) == %zu\n", input, signum(input));
 	return 0;
 }
 
