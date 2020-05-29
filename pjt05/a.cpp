@@ -3,7 +3,8 @@
 int main() {
 	int nInput = 0, i = 0;
 
-	scanf("%d", &nInput);
+	printf("Enter Number:"); fflush(stdout);
+	scanf("%d", &nInput);fflush(stdin);
 	if(nInput<1) nInput = 1;
 	else if(nInput>9) nInput = 9;
 
