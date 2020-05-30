@@ -1,4 +1,5 @@
-#if 0
+#if 1
+
 #include <iostream>
 #include "uu1.hpp"
 #include <functional>
@@ -14,7 +15,7 @@ int some_function(const std::string& a) {
 
 struct S001 {
 	int operator()(int argc, char* argv[]) {
-		std::cout << "S Function is called" << std::endl;
+		std::cout << "S Function is called, argc : " << argc << ", argv[0] : " << (argc>0?argv[0]:"") << std::endl;
 		return EXIT_SUCCESS;
 	}
 };
@@ -26,7 +27,7 @@ int main() {
 	
 	std::function<int(const std::string&)> f1 = some_function;
 	std::function<int(int argc, char* argv[])> f2 = S001();
-	std::function<void(const char* str)> f3 = [](const char* str) { std::cout << "function3 called" << std::endl; };
+	std::function<void(const char* str)> f3 = [](const char* str) { std::cout << "function3 called, str : " << str << std::endl; };
 
 	f1("Hello");
 	
@@ -45,14 +46,12 @@ int main() {
 	}
 	delete[] param;
 
-
 	return EXIT_SUCCESS;
 }
 
-
 #endif
 
-#if 1
+#if 0
 
 #include <iostream>
 #include <vector>
