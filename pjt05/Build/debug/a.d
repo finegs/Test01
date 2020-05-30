@@ -1,1 +1,1 @@
-Build\debug/a.o: a.cpp
+Build/debug/a.o: a.cpp

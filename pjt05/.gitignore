@@ -1,0 +1,10 @@
+*~
+*.exe
+*.o
+*.swo
+tags
+*.swo
+*.swp
+/T/
+/*.obj/
+/*.tlog/

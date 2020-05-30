@@ -25,9 +25,11 @@ CONFIG    = debug
 ifeq ($(OS),Windows_NT)
 	BUILD_DIR = Build\$(CONFIG)
 	CLEAN = clean_win
+	MKDIRS_RUN = MKDIRS_WIN
 else
 	BUILD_DIR = ./Build/$(CONFIG)
 	CLEAN = clean_xNIX
+	MKDIRS_RUN = MKDIRS_xNIX
 endif
 TARGET    = $(BUILD_DIR)/execute
 
@@ -181,8 +183,12 @@ PRE_BUILD: MKDIRS
 #################################
 # Make DIRS
 # 
-MKDIRS:
-	@if not exist $(BUILD_DIR) mkdir $(BUILD_DIR)
+MKDIRS:$(MKDIRS_RUN)
+
+MKDIRS_WIN:
+	-@if not exist $(BUILD_DIR) mkdir $(BUILD_DIR)
+MKDIRS_xNIX:
+	-@test -d $(BUILD_DIR) ||mkdir $(BUILD_DIR)
 
 ##################################
 # Build가 종료되었다.
