@@ -154,8 +154,8 @@ all: MK_DIRS $(TARGET)
 ##########################################################
 
 ################# Compile ######
-$(OBJ_DIR)/%.o: %.cpp
-	$(MK_DIRS)
+$(OBJ_DIR)/%.o:%.cpp
+#	$(MK_DIRS)
 #	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $? -o $@ 
 	$(CXX) $(CXXFLAGS) $(INC_PATH) -c $? -o $@ 
 
@@ -163,7 +163,7 @@ $(OBJ_DIR)/%.o: %.cpp
 
 ######################## Link ######
 $(TARGET): $(OBJS)
-	$(MK_DIRS)
+#	$(MK_DIRS)
 	$(CXX) $(LIB_PATH) $^ -o $@ $(LDFLAGS)
 
 ##########################################################
@@ -184,10 +184,10 @@ MKDIRS_WIN:
 	-@echo Complete $@
 
 MKDIRS_OTHER:
-	-@echo Start %@
-	-@$(MKDIR) $(APP_DIR)
-	-@$(MKDIR) $(OBJ_DIR)
-	-@echo Complete %@
+	-@echo Start $@
+	-@test -d $(APP_DIR) || $(MKDIR) $(APP_DIR)
+	-@test -d $(OBJ_DIR) || $(MKDIR) $(OBJ_DIR)
+	-@echo Complete $@
 
 ##########################################################
 

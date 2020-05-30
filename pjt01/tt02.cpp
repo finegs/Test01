@@ -1,12 +1,26 @@
 #if 1
 
+#include <cstdlib>
 #include <iostream>
 #include "uu1.hpp"
 #include <functional>
 #include <string>
 #include <cstring>
+#include <unordered_map>
 
 using namespace std;
+
+
+using FService = std::function<int(int argc, char* argv[])>;
+using FSvcMap = std::unordered_map<std::string, FService>;
+
+std::unordered_map<std::string, FService> fsvcmap;
+
+int getService(FSvcMap svcMap, std::string svc_name, FService& svc) {
+	auto r = svcMap.find(svc_name);
+	if(r != svcMap.end()) { svc = r->second; return EXIT_SUCCESS; }
+	return EXIT_FAILURE;
+}
 
 int some_function(const std::string& a) {
 	std::cout << "some_function called : " << a << std::endl;
@@ -29,6 +43,8 @@ int main() {
 	std::function<int(int argc, char* argv[])> f2 = S001();
 	std::function<void(const char* str)> f3 = [](const char* str) { std::cout << "function3 called, str : " << str << std::endl; };
 
+	fsvcmap["f2"] = S001();
+
 	f1("Hello");
 	
 	int paramLen = 1;
@@ -38,6 +54,10 @@ int main() {
 	memset(param[0], '\0', strlength);
 	strncpy(param[0], "Good", strlength);
 	f2(paramLen, param);
+
+	fsvcmap["f2"](paramLen, param);
+	FService svc;
+	if(!getService(fsvcmap, "f2", svc)) svc(paramLen, param);
 
 	f3("f3");
 
