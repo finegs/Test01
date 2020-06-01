@@ -1,1 +1,1 @@
-Build\debug/b.o: b.c
+Build/debug/b.o: b.c

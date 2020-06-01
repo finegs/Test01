@@ -1,13 +1,33 @@
+<<<<<<< HEAD
 #include <cstdio>
 #include <iostream>
 
 
+=======
+#include <stdio.h>
+#include <stdlib.h>
+>>>>>>> 03873369b1480504f615fe284936773416297544
 
 int main() {
-	int nInput = 0, i = 0;
+	int nInput = 0;
+	int n2;
+	// int i = 0;
 
 	printf("Enter Number:"); fflush(stdout);
 	scanf("%d", &nInput);fflush(stdin);
+
+	printf("2-Comp(%d) : %d\n", nInput, n2=(~nInput)+1);
+	printf("OV(%d) : %d\n", nInput, (~n2)+1);
+	printf("-OV(%d) : %d\n", nInput, ((1<<31) | nInput)+1);
+	printf("~OV(%d) : %d\n", nInput, ~nInput);
+	printf("1<<31(%d) : %d\n", 1, 1<<31);
+	int n3=nInput;
+	for(int i = 0;i<31;i++) {
+		n3 <<=1; n3|=1;
+	}
+	printf("OV(%d)<<1 |1 = %d\n", nInput, n3);
+
+#if 0
 	if(nInput<1) nInput = 1;
 	else if(nInput>9) nInput = 9;
 
@@ -17,5 +37,6 @@ int main() {
 	}
 
 	putchar('\n');
+#endif
 	return 0;
 }
