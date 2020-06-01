@@ -69,6 +69,7 @@ public:
 		return (exp == 0 ? 1 : base * MyUU1::mypow(base, exp - 1));
 	}
 	static int matoi(const char *s);
+	static char** mtail(const char* fileName, int lineNo, int printLine);
 	static void makeLogEntry(void *ptr);
 	static void testCode(const std::string &strNum, int argc, char* argv[], std::vector<std::string>& params);
 	static void registerTestEnumCode(const std::string& strCode, const MyTestCodeEnum &e);
@@ -120,6 +121,8 @@ class Test01 : MyTest {
 
 typedef std::function<int(int argc, char*[])> m_handler;
 
+void sleep(unsigned int n);
+void mtail2(FILE* in, int n);
 //std::unordered_map<const std::string, std::function<int(int argc, char* argv[])[]>> test_funs;
 // std::unordered_map<const std::string, m_handler> test_funs;
 
