@@ -1,4 +1,7 @@
-#include <stdio.h>
+#include <cstdio>
+#include <iostream>
+
+
 
 int main() {
 	int nInput = 0, i = 0;
