@@ -1,12 +1,5 @@
-<<<<<<< HEAD
 #include <cstdio>
 #include <iostream>
-
-
-=======
-#include <stdio.h>
-#include <stdlib.h>
->>>>>>> 03873369b1480504f615fe284936773416297544
 
 int main() {
 	int nInput = 0;
