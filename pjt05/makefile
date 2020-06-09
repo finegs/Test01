@@ -26,10 +26,12 @@ ifeq ($(OS),Windows_NT)
 	BUILD_DIR = Build\$(CONFIG)
 	CLEAN = clean_win
 	MKDIRS_RUN = MKDIRS_WIN
+	CP = copy /Y
 else
 	BUILD_DIR = ./Build/$(CONFIG)
 	CLEAN = clean_xNIX
 	MKDIRS_RUN = MKDIRS_xNIX
+	CP = cp
 endif
 TARGET    = $(BUILD_DIR)/execute
 
@@ -177,8 +179,9 @@ $(GROUP.02.OBJ): $(BUILD_DIR)/%.o: %.c
 # 필요한 전처리가 있다면 구현한다.
 PRE_BUILD: MKDIRS
 	@echo ========================================
-	@echo Make file started [config =\> $(CONFIG)]
+	@echo Make file started [config = $(CONFIG)]
 	@echo ========================================
+
 
 #################################
 # Make DIRS
@@ -195,9 +198,10 @@ MKDIRS_xNIX:
 # 필요한 후처리가 있다면 구현한다.
 POST_BUILD:
 	@echo ========================================
-	@echo Make file finished [config =\> $(CONFIG)]
+	@echo Make file finished [config = $(CONFIG)]
 	@echo ========================================
-
+#	@echo $(CP) $(TARGET) .
+#	@$(CP) $(TARGET) .
 ##################################
 # Clean up 한다.
 clean:$(CLEAN)
@@ -209,7 +213,7 @@ clean_xNIX:
 	rm -f $(GROUP.02.DEP)
 	rm -f $(TARGET)
 	@echo ----------------------------------------
-	@echo Clean work finished [config =\> $(CONFIG)]
+	@echo Clean work finished [config = $(CONFIG)]
 	@echo ----------------------------------------
 
 clean_win:
@@ -219,7 +223,7 @@ clean_win:
 	@if exist $(subst /,\\,$(GROUP.02.DEP)) del /Q /F $(subst /,\\,$(GROUP.02.DEP))
 	@if exist $(subst /,\\,$(TARGET)) del /Q /F $(subst /,\\,$(TARGETT))
 	@echo ----------------------------------------
-	@echo Clean work finished [config =\> $(CONFIG)]
+	@echo Clean work finished [config = $(CONFIG)]
 	@echo ----------------------------------------
 
 ##################################

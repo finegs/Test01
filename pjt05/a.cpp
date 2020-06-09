@@ -1,7 +1,19 @@
 #include <cstdio>
 #include <iostream>
-
+#include <iomanip>
+#include <ctime>
+#include <stdlib.h> // defines putenv in POSIX
 int main() {
+
+    std::time_t t = std::time(nullptr);
+    std::cout << "UTC:       " << std::put_time(std::gmtime(&t), "%c %Z") << '\n';
+    std::cout << "local:     " << std::put_time(std::localtime(&t), "%c %Z") << '\n';
+    // POSIX-specific:
+    std::string tz = "TZ=Asia/Seoul";
+    putenv(tz.data());
+    std::cout << "Seoul: " << std::put_time(std::localtime(&t), "%c %Z") << '\n';
+
+#if 0
 	int nInput = 0;
 	int n2;
 	// int i = 0;
@@ -19,6 +31,7 @@ int main() {
 		n3 <<=1; n3|=1;
 	}
 	printf("OV(%d)<<1 |1 = %d\n", nInput, n3);
+#endif
 
 #if 0
 	if(nInput<1) nInput = 1;
