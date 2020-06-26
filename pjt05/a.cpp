@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <iomanip>
 #include <ctime>
@@ -11,7 +12,7 @@ int main() {
     std::cout << "local:     " << std::put_time(std::localtime(&t), "%c %Z") << "\n";
     // POSIX-specific:
     std::string tz = "TZ=Asia/Seoul";
-    putenv(tz.data());
+    putenv((char*)tz.data());
     std::cout << "Seoul: " << std::put_time(std::localtime(&t), "%c %Z") << std::endl;
 
 	std::cout << "aaaaaaaaaaa";
