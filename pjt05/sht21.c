@@ -8,6 +8,7 @@
 // http://www.bristolwatch.com/rpi/ads1115.html
 
 #include <stdio.h>
+#include <string.h>
 #include <sys/types.h> // open
 #include <sys/stat.h>  // open
 #include <fcntl.h>     // open
@@ -77,9 +78,11 @@ int main() {
 
   sht20_reset(fd);
 
+  memset(&buf, 0, 2);
   read_temperature(fd, &buf);
   printf("Temperature : %d\n", buf);
 
+  memset(&buf, 0, 2);
   read_humidity(fd, &buf);
   printf("Humidity : %d\n", buf);
 
@@ -116,8 +119,6 @@ int main() {
   }
   while ((writeBuf[0] & 0x80) == 0);
 
-
-
   // read conversion register
   // write register pointer first
   readBuf[0] = 0;   // conversion register is 0
@@ -150,10 +151,12 @@ int main() {
 int sht20_reset(int fd) {
 
 	int rc;
-	uint8_t b[1] = {SHT20_CMD_SOFTRESET};
+	uint8_t addr = ads_address << 7;
+	addr = addr | 1;	
+	uint8_t b[2] = {addr, SHT20_CMD_SOFTRESET};
 
-	if ((rc = write(fd, b, 1)) != 1) {
-		perror("sht20 reset  failed");
+	if ((rc = write(fd, b, 2)) != 2) {
+		perror("sht20 reset : write  failed");
 		return 1;
 	}
 
@@ -165,18 +168,20 @@ int sht20_reset(int fd) {
 int read_temperature(int fd, uint16_t* var) {
 
 	*var = 0;
-	uint8_t b[3] = {SHT20_CMD_TEMPERATURE_NO_HOLD};
+	uint8_t addr = ads_address << 7;
+	addr = addr | 1;	
+	uint8_t b[3] = {addr, SHT20_CMD_TEMPERATURE_NO_HOLD, 0};
 
 	if (write(fd, b, 1) != 1) {
-		perror("Write register select");
+		perror("read_temperature : Write register select failed");
 		return 1;
 	}
 
 	usleep(STH20_TEMPERATURE_WAITINTIME*1000);
 
-	*b = 0;
+	memset(b, 0, 3);
 	if(read(fd, b, 3) != 3) {
-		perror("Read register failed");
+		perror("read_temperature : Read register failed");
 		return 2;
 	}
 
@@ -190,10 +195,12 @@ int read_temperature(int fd, uint16_t* var) {
 int read_humidity(int fd, uint16_t* var) {
 
 	*var = 0;
-	uint8_t b[3] = {SHT20_CMD_HUMIDITY_NO_HOLD};
+	uint8_t addr = ads_address << 7;
+	addr = addr | 1;	
+	uint8_t b[3] = {addr, SHT20_CMD_HUMIDITY_NO_HOLD, 0};
 
 	if (write(fd, b, 1) != 1) {
-		perror("Write register select");
+		perror("read_humidity : Write register select");
 		return 1;
 	}
 
@@ -201,7 +208,7 @@ int read_humidity(int fd, uint16_t* var) {
 
 	*b = 0;
 	if(read(fd, b, 3) != 3) {
-		perror("Read register failed");
+		perror("read_humidity : Read register failed");
 		return 2;
 	}
 
@@ -215,8 +222,10 @@ int calc_checksum(uint8_t* b, size_t l) {
 	int crc = 0;
 	for(size_t i=0;i<l;i++) {
 		crc ^= *(b+i);
-		if(crc & 0x80) crc = (crc << 1) ^ pp;
-		else crc = (crc << 1);
+		for (size_t j=8;j>0;j--) {
+			if(crc & 0x80) crc = (crc << 1) ^ pp;
+			else crc = (crc << 1);
+		}
 	}
 	return crc;
 }
