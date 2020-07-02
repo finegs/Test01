@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 2.8.12)
+ 
+project(libfoo C)
+ 
+# 1. INTERFACE_INCLUDE_DIRECTORIES 에 소스 디렉토리와 빌드 디렉토리를 자동으로 추가한다.
+set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
+ 
+# 2. 라이브러리의 빌드 지정
+add_library(foo SHARED foo.c)
+ 
+# 3. 설치 할 헤더 파일을 지정해 둔다.
+# 지정한 파일에는 INSTALL(TARGETS) 의 PUBLIC_HEADER 로 지정한 디렉토리에 설치된다.
+set_target_properties(foo PROPERTIES
+        PUBLIC_HEADER foo/foo.h
+)
+ 
+# 4. foo 라이브러리가 의존하는 라이브러리를 지정한다.(옵션)
+# PUBLIC 지정하여 링크하면 의존 라이브러리가 export된다
+target_link_libararies(foo PUBLIC bar)
+ 
+# 5. 타겟의 설치 지정
+install(TARGETS foo
+    EXPORT foo-export                         # 5.a EXPORT 옵션으로 export 이름을 지정한다
+    LIBRARY        DESTINATION lib            # 5.b 라이브러리 설치할 곳
+    INCLUDES       DESTINATION include        # 5.c export 시에 include 패스에 포함하는 패스를 지정한다
+    PUBLIC_HEADER  DESTINATION include/foo)   # 헤더 설치할 곳
+ 
+# 6. foo-config.cmake 을 자동 생성하여 설치한다
+install(EXPORT foo-export                     # 6.a
+    FILE foo-config.cmake                     # 6.b 파일 이름을 지정한다
+    DESTINATION share/cmake/foo/              # 6.c 설치할 곳
+    EXPORT_LINK_INTERFACE_LIBRARIES)          # 6.d 동시에 링크해야할 라이브러리를 export 한다
