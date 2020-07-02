@@ -1,0 +1,11 @@
+# plotting_aa.txt
+# First data block (index 0)
+#	X	Y
+	-2	99
+	-1	0
+	0	55
+	1	2
+	2	4
+	3	6
+	4	8
+	5	15
