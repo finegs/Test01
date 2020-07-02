@@ -31,7 +31,6 @@ int main(int argc, char* argv[]) {
 		cout << "[" << iter->first << "," << iter->second << "] ";
 	}
 
-
 	cout << endl << endl;
 
 	mm.insert({40,440});

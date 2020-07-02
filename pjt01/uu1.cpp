@@ -11,6 +11,8 @@
 #include <list>
 #include <cmath>
 #include <bitset>
+#include <cstdlib>
+#include <ctime>
 
 #include "u.hpp"
 #include "uu1.hpp"
@@ -30,8 +32,8 @@ void MyUU1::registerTestEnumCode(const std::string& strCode, const MyTestCodeEnu
 	}
 	testCodeEnumMap.emplace(strCode, e);
 
-	if (T_IS_DEBUG)
-		std::cout << "[D] MyUU1::testCodeEnumMap.registerTestEnumCode" << strCode << ", " << e << std::endl;
+	// if (T_IS_DEBUG)
+		// std::cout << "[D] MyUU1::testCodeEnumMap.registerTestEnumCode" << strCode << ", " << e << std::endl;
 
 }
 
@@ -102,6 +104,32 @@ int MyUU1::test07() {
 
 	cout<< "sum(0.1 x 1000) = " << sum << std::endl;
 
+	return EXIT_SUCCESS;
+}
+
+
+int MyUU1::test08(int argc, char* argv[]) {
+	int cnt = 10000;	
+	std::stringstream ss;
+
+	for(int i = 1;i<argc;i++) { 
+		if(!strcmp("-test08.cnt", argv[i]) && i+1<argc) { 
+			cnt = atoi(argv[i+1]);i++;
+			break;
+		}
+	}
+
+	char a[100];
+	std::srand(std::time(nullptr));
+	
+	using namespace std;
+	for(int i = 0;i<cnt;i++) {
+		sprintf(a, "%c{ y:'%d', a:%d, b:%d }\n",(i>0?',':' '), 1900+(i%200), rand()%100, rand()%100);
+		ss<<a;
+	}
+
+	std::cout << ss.str() << std::endl;
+		
 	return EXIT_SUCCESS;
 }
 
@@ -322,6 +350,110 @@ void MyUU1::testCInWithAsyncReader()
 	std::cout << "c : " << c << std::endl;
 	std::cout << "d1 : " << d1 << std::endl;
 }
+
+char** MyUU1::mtail(const char* fileName, int lineNo, int f) {
+	FILE* fp=NULL;
+	char c = '\0';
+	long leng = 1l;
+	long lineSize = 512;
+	char* oneLine;
+	char** lines;
+	extern int errno;
+
+	if((fp = fopen(fileName, "rb")) == NULL) {
+		fprintf(stderr, "File Open Error, ErrorCode=%d, File=%s\n", errno, fileName);
+	}
+
+	if(f) {
+		oneLine = (char*)malloc(sizeof(char)*lineSize);
+		while(leng++<lineNo) {
+			fseek(fp, -(leng), SEEK_END);
+			if(c=='\n') {
+				fgets(oneLine, leng, fp);
+				fprintf(stdout, "%s\n", oneLine);
+			}
+		}
+		free(oneLine);
+		oneLine = NULL;
+	}
+	else {
+		for(int i = 0;i<lineNo;i++) {
+			*lines++ = (char*)malloc(sizeof(char)*lineSize);
+		}
+
+		while(leng++<lineNo) {
+			fseek(fp, -(leng), SEEK_END);
+			if(c=='\n') {
+				fgets(*lines++, leng, fp);
+			}
+		}
+
+		for(int i = 0;i<lineNo;i++) {
+			free(*lines);
+			*lines++ = NULL;
+		}
+		lines = NULL;
+	}
+
+	return lines;		
+}
+			
+
+#define SIZE 100 
+  
+// Utility function to sleep for n seconds 
+void sleep(unsigned int n) 
+{ 
+    clock_t goal = n * 1000 + clock(); 
+    while (goal > clock()); 
+} 
+  
+// function to read last n lines from the file 
+// at any point without reading the entire file 
+void mtail2(FILE* in, int n) { 
+    int count = 0;  // To count '\n' characters 
+  
+    // unsigned long long pos (stores upto 2^64 – 1 
+    // chars) assuming that long long int takes 8  
+    // bytes 
+    unsigned long long pos; 
+    char str[2*SIZE]; 
+  
+    // Go to End of file 
+    if (fseek(in, 0, SEEK_END)) {
+        perror("fseek() failed"); 
+	} 
+	else { 
+        // pos will contain no. of chars in 
+        // input file. 
+        pos = ftell(in); 
+  
+        // search for '\n' characters 
+        while (pos) { 
+            // Move 'pos' away from end of file. 
+            if (!fseek(in, --pos, SEEK_SET)) { 
+
+                if (fgetc(in) == '\n') {
+                    // stop reading when n newlines 
+                    // is found 
+                    if (count++ == n) 
+                        break; 
+				}
+            } 
+            else {
+                perror("fseek() failed"); 
+			}
+        } 
+  
+        // print last n lines 
+        printf("Printing last %d lines -\n", n); 
+        while (fgets(str, sizeof(str), in)) 
+            printf("%s", str); 
+    } 
+    printf("\n\n"); 
+} 
+
+
 
 
 int Test01::test(int argc, char* argv[]) {

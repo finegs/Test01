@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main() {
+int main2() {
 	int nInput = 0, i = 0;
 
 	scanf("%d", &nInput);
