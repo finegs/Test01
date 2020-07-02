@@ -1,0 +1,14 @@
+*~
+*.exe
+*.o
+*.swo
+tags
+*.swo
+*.swp
+/T/
+/*.obj/
+/*.tlog/
+CMakeCache.txt
+CMakeFiles/*
+.gitignore
+cmake_install.cmake

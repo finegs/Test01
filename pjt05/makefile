@@ -16,12 +16,24 @@
 # BUILD_DIR는 빌드에 사용될 경로를 지정한다.
 # TARGET은 최종 빌드의 산출물을 지정한다. 빌드 상대 경로를 포함시킨다.
 CC        = g++
-CFLAGS    = -I/usr/local/include
-CPPFLAGS  = -I/usr/local/include
+#CFLAGS    = -I/usr/local/include
+#CPPFLAGS  = -I/usr/local/include
 LFLAGS    =
+
 CONFIG    = debug
-BUILD_DIR = ./Build/$(CONFIG)
-TARGET    = $(BUILD_DIR)/Execute
+
+ifeq ($(OS),Windows_NT)
+	BUILD_DIR = Build\$(CONFIG)
+	CLEAN = clean_win
+	MKDIRS_RUN = MKDIRS_WIN
+	CP = copy /Y
+else
+	BUILD_DIR = ./Build/$(CONFIG)
+	CLEAN = clean_xNIX
+	MKDIRS_RUN = MKDIRS_xNIX
+	CP = cp
+endif
+TARGET    = $(BUILD_DIR)/execute
 
 ##################################
 # makefile에 들어온 argument를 구한다.
@@ -137,56 +149,81 @@ $(TARGET): $(GROUP.01.OBJ) $(GROUP.02.OBJ)
 	@echo Link : $(TARGET)
 	@echo ----------------------------------------
 	$(CC) $(LFLAGS) $(GROUP.01.OBJ) $(GROUP.02.OBJ) -o $(TARGET)
-	@echo
+	@echo .
 
 ##################################
 # [Compile] Compile Part
 # Group1 소스(*.cpp)들에 대해, 대상경로($(@D))를 생성하고, dependency 파일을 생성한뒤 컴파일 한다.
+#@test -d $(@D) || mkdir -p $(@D)
 $(GROUP.01.OBJ): $(BUILD_DIR)/%.o: %.cpp
 	@echo ----------------------------------------
 	@echo Compile : [GROUP.01] $<
 	@echo ----------------------------------------
-	@test -d $(@D) || mkdir -p $(@D)
+#	@if not exist $(subst /,\\,$(@D)) mkdir $(subst /,\\,$(@D))
 	$(CC) -MM -MF $(DEPEND_FILE) -MT"$(DEPEND_FILE:.d=.o)" $(CFLAGS) $<
 	$(CC) $(CFLAGS) -c -o $@ $<
-	@echo
+	@echo .
 
+#	@test -d $(@D) || mkdir -p $(@D)
 $(GROUP.02.OBJ): $(BUILD_DIR)/%.o: %.c
 	@echo ----------------------------------------
 	@echo Compile : [GROUP.02] $<
 	@echo ----------------------------------------
-	@test -d $(@D) || mkdir -p $(@D)
+#	@if not exist $(subst /,\\,$(@D)) mkdir $(subst /,\\,$(@D))
 	$(CC) -MM -MF $(DEPEND_FILE) -MT"$(DEPEND_FILE:.d=.o)" $(CFLAGS) $<
 	$(CC) $(CFLAGS) -DSPECIAL_DEFINE -c -o $@ $<
-	@echo
+	@echo .
 	
 ##################################
 # Build가 시작되었다.
 # 필요한 전처리가 있다면 구현한다.
-PRE_BUILD:
+PRE_BUILD: MKDIRS
 	@echo ========================================
-	@echo Make file started [config =\> $(CONFIG)]
+	@echo Make file started [config = $(CONFIG)]
 	@echo ========================================
-	@echo 
+
+
+#################################
+# Make DIRS
+# 
+MKDIRS:$(MKDIRS_RUN)
+
+MKDIRS_WIN:
+	-@if not exist $(BUILD_DIR) mkdir $(BUILD_DIR)
+MKDIRS_xNIX:
+	-@test -d $(BUILD_DIR) ||mkdir $(BUILD_DIR)
 
 ##################################
 # Build가 종료되었다.
 # 필요한 후처리가 있다면 구현한다.
 POST_BUILD:
 	@echo ========================================
-	@echo Make file finished [config =\> $(CONFIG)]
+	@echo Make file finished [config = $(CONFIG)]
 	@echo ========================================
-
+#	@echo $(CP) $(TARGET) .
+#	@$(CP) $(TARGET) .
 ##################################
 # Clean up 한다.
-clean:
+clean:$(CLEAN)
+
+clean_xNIX:
 	rm -f $(GROUP.01.OBJ)
 	rm -f $(GROUP.01.DEP)
 	rm -f $(GROUP.02.OBJ)
 	rm -f $(GROUP.02.DEP)
 	rm -f $(TARGET)
 	@echo ----------------------------------------
-	@echo Clean work finished [config =\> $(CONFIG)]
+	@echo Clean work finished [config = $(CONFIG)]
+	@echo ----------------------------------------
+
+clean_win:
+	@if exist $(subst /,\\,$(GROUP.01.OBJ)) del /Q /F $(subst /,\\,$(GROUP.01.OBJ))
+	@if exist $(subst /,\\,$(GROUP.01.DEP)) del /Q /F $(subst /,\\,$(GROUP.01.DEP))
+	@if exist $(subst /,\\,$(GROUP.02.OBJ)) del /Q /F $(subst /,\\,$(GROUP.02.OBJ))
+	@if exist $(subst /,\\,$(GROUP.02.DEP)) del /Q /F $(subst /,\\,$(GROUP.02.DEP))
+	@if exist $(subst /,\\,$(TARGET)) del /Q /F $(subst /,\\,$(TARGETT))
+	@echo ----------------------------------------
+	@echo Clean work finished [config = $(CONFIG)]
 	@echo ----------------------------------------
 
 ##################################
