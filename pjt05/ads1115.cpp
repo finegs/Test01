@@ -8,7 +8,6 @@
 // http://www.bristolwatch.com/rpi/ads1115.html
 
 #include <stdio.h>
-#include <string.h>
 #include <sys/types.h> // open
 #include <sys/stat.h>  // open
 #include <fcntl.h>     // open
@@ -49,12 +48,12 @@ The resolution of the ADC in single ended
 mode we have 15 bit rather than 16 bit resolution, 
 the 16th bit being the sign of the differential reading.
 */
-int sht20_reset(int fd);
-int read_temperature(int fd, uint16_t* var);
-int read_humidity(int fd, uint16_t* var);
+int read_temperature();
+int read_humidity();
 int calc_checksum(uint8_t* b, size_t l);
 int calc_temperature(uint8_t* b, size_t l, uint16_t* result);
 int calc_humidity(uint8_t* b, size_t l, uint16_t* result);
+
 
 
 int main() {
@@ -74,19 +73,6 @@ int main() {
     exit (1);
   }
 
-  uint16_t buf;
-
-  sht20_reset(fd);
-
-  memset(&buf, 0, 2);
-  read_temperature(fd, &buf);
-  printf("Temperature : %d\n", buf);
-
-  memset(&buf, 0, 2);
-  read_humidity(fd, &buf);
-  printf("Humidity : %d\n", buf);
-
-#ifdef USE_ADS1115
   // set config register and start conversion
   // ANC1 and GND, 4.096v, 128s/s
   writeBuf[0] = 1;    // config register is 1
@@ -119,6 +105,8 @@ int main() {
   }
   while ((writeBuf[0] & 0x80) == 0);
 
+
+
   // read conversion register
   // write register pointer first
   readBuf[0] = 0;   // conversion register is 0
@@ -142,46 +130,27 @@ int main() {
 
   printf("Values: HEX 0x%02x DEC %d reading %4.3f volts.\n",
          val, val, myfloat);
-#endif  
+         
   close(fd);
 
   return 0;
 }
 
-int sht20_reset(int fd) {
-
-	int rc;
-	// uint8_t addr = ads_address << 7;
-	// addr = addr | 1;	
-	uint8_t b[1] = {SHT20_CMD_SOFTRESET};
-
-	if ((rc = write(fd, b, 1)) != 1) {
-		perror("sht20 reset : write  failed");
-		return 1;
-	}
-
-	usleep(50*1000);
-
-	return 0;
-}
-
 int read_temperature(int fd, uint16_t* var) {
 
 	*var = 0;
-	uint8_t b[3] = {SHT20_CMD_TEMPERATURE_NO_HOLD, 0, 0};
+	uint8_t b[3] = {SHT20_CMD_TEMPERATURE_NO_HOLD};
 
 	if (write(fd, b, 1) != 1) {
-		perror("read_temperature : Write register select failed");
+		perror("Write register select");
 		return 1;
 	}
 
 	usleep(STH20_TEMPERATURE_WAITINTIME*1000);
 
-	memset(b, 0, 3);
-	int rc;
-	if((rc = read(fd, b, 3)) != 3) {
-		fprintf(stderr, "read temperature : read register failed. rc=%d\n", rc);
-		perror("read_temperature : Read register failed");
+	*b = 0;
+	if(read(fd, b, 3)) {
+		perror("Read register failed");
 		return 2;
 	}
 
@@ -195,19 +164,18 @@ int read_temperature(int fd, uint16_t* var) {
 int read_humidity(int fd, uint16_t* var) {
 
 	*var = 0;
+	uint8_t b[3] = {SHT20_CMD_HUMIDITY_NO_HOLD};
 
-	uint8_t c[1] = {SHT20_CMD_HUMIDITY_NO_HOLD};
-	if (write(fd, c, 1) != 1) {
-		perror("read_humidity : Write register select");
+	if (write(fd, b, 1) != 1) {
+		perror("Write register select");
 		return 1;
 	}
 
 	usleep(STH20_HUMIDITY_WAITINTIME*1000);
 
-	uint8_t b[3];
-	memset(b, 0, 3);
-	if(read(fd, b, 3) != 3) {
-		perror("read_humidity : Read register failed");
+	*b = 0;
+	if(read(fd, b, 3)) {
+		perror("Read register failed");
 		return 2;
 	}
 
@@ -221,10 +189,8 @@ int calc_checksum(uint8_t* b, size_t l) {
 	int crc = 0;
 	for(size_t i=0;i<l;i++) {
 		crc ^= *(b+i);
-		for (size_t j=8;j>0;j--) {
-			if(crc & 0x80) crc = (crc << 1) ^ pp;
-			else crc = (crc << 1);
-		}
+		if(crc & 0x80) crc = (crc << 1) ^ pp;
+		else crc = (crc << 1);
 	}
 	return crc;
 }
