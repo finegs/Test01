@@ -3,13 +3,13 @@
 #include "wiringPi.h"
 #include "wiringPiI2C.h"
 
-#include "HTU21D.h"
+#include "sht2x.h"
 
 // Get temperature
 double getTemperature(int fd)
 {
 	unsigned char buf [4];
-	wiringPiI2CWrite(fd, HTU21D_TEMP);
+	wiringPiI2CWrite(fd, SHT2x_TEMP);
 	delay(100);
 	read(fd, buf, 3);
 	unsigned int temp = (buf [0] << 8 | buf [1]) & 0xFFFC;
@@ -23,7 +23,7 @@ double getTemperature(int fd)
 double getHumidity(int fd)
 {
 	unsigned char buf [4];
-	wiringPiI2CWrite(fd, HTU21D_HUMID);
+	wiringPiI2CWrite(fd, SHT2x_HUMID);
 	delay(100);
 	read(fd, buf, 3);
   	unsigned int humid = (buf [0] << 8 | buf [1]) & 0xFFFC;
