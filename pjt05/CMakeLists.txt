@@ -12,7 +12,7 @@ SET ( CMAKE_VERBOSE_MAKEFILE true )
  
 # 빌드 대상 바이너리 파일명 및 소스파일 목록
 SET ( OUTPUT_ELF
-        "${CMAKE_PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
+		"${CMAKE_PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
     )
 SET ( SRC_FILES
      a.cpp
@@ -25,7 +25,9 @@ SET ( SRC_FILES
 SET ( CMAKE_C_COMPILER g++ )
  
 # 공통 헤더 파일 Include 디렉토리 (-I)
-INCLUDE_DIRECTORIES ( D:/Programs/boost/boost_1_70_0/include/boost-1_70 )
+IF(WIN32)
+	INCLUDE_DIRECTORIES ( D:/Programs/boost/boost_1_70_0/include/boost-1_70 )
+ENDIF()
  
 # 공통 컴파일 옵션, 링크 옵션
 ADD_COMPILE_OPTIONS ( -std=c++17 )
@@ -35,11 +37,13 @@ ADD_COMPILE_OPTIONS ( -std=c++17 )
 IF(WIN32)
 	LINK_LIBRARIES( -lws2_32 -pthread )
 ELSE()
-	add_executable(sht21 sht21.c myi2c.c)
+	#	add_executable(my_sht21 sht21.c myi2c.c)
 ENDIF()
  
 # 공통 링크 라이브러리 디렉토리 (-L)
-LINK_DIRECTORIES ( D:/Programs/boost/boost_1_70_0/lib )
+IF(WIN32)
+	LINK_DIRECTORIES ( D:/Programs/boost/boost_1_70_0/lib )
+ENDIF()
  
 # "Debug" 형상 한정 컴파일 옵션, 링크 옵션
 SET ( CMAKE_C_FLAGS_DEBUG "-g " )
@@ -64,3 +68,8 @@ IF(NOT WIN32)
 ENDIF()
 
 
+add_executable(hello a.cpp b.c)
+#add_executable(sht21 sht21.c myi2c.c)
+add_executable(sht2x sht2x.c sht2x_main.c)
+
+target_link_libraries(sht2x "-lwiringPi -lcrypt -pthread -lm -lrt")
