@@ -16,6 +16,8 @@ SET ( OUTPUT_ELF
     )
 SET ( SRC_FILES
      a.cpp
+	 b.c
+	 pool.c
 #     b.c
     )
  
@@ -40,7 +42,7 @@ ENDIF()
 LINK_DIRECTORIES ( D:/Programs/boost/boost_1_70_0/lib )
  
 # "Debug" 형상 한정 컴파일 옵션, 링크 옵션
-SET ( CMAKE_C_FLAGS_DEBUG "-g" )
+SET ( CMAKE_C_FLAGS_DEBUG "-g " )
 #SET ( CMAKE_EXE_LINKER_FLAGS_DEBUG "-lws2_32" "-pthread" )
 SET ( CMAKE_EXE_LINKER_FLAGS_DEBUG  )
  
@@ -57,7 +59,7 @@ SET ( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BUILD_TYPE}/lib )
 # 빌드 대상 바이너리 추가
 ADD_EXECUTABLE( ${OUTPUT_ELF} ${SRC_FILES} )
 
-IF(!WIN32)
+IF(NOT WIN32)
 	ADD_EXECUTABLE(t t.cpp)
 ENDIF()
 
