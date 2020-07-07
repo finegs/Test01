@@ -5,6 +5,35 @@
 #include <ctime>
 #include <cstdlib> // defines putenv in POSIX
 #include <vector>
+
+void* operator new(size_t size) {
+	std::cout << "Allocating " << size << " bytes";
+	return malloc(size);
+}
+
+struct Object {
+	int x,y,z;
+};
+
+class Singleton {
+	public:
+		static Singleton& getInstance() {
+			return s_Instance;
+		}
+
+		void function() {
+		}
+
+	private:
+		Singleton() {}
+		Singleton(const Singleton&) = delete;
+
+		static Singleton s_Instance;
+};
+
+Singleton Singleton::s_Instance;
+
+
 int main() {
 
 	int nInput;
@@ -32,7 +61,14 @@ int main() {
 	std::cout << std::endl;
 	std::cout << "Good" << std::endl;
 
+	Object* o = new Object();
+
+	Singleton& instance = Singleton::getInstance();
+
+	instance.function();
+
 #if 0
+	EFEM Temp
 	int nInput = 0;
 	int n2;
 	// int i = 0;

@@ -70,6 +70,8 @@ ENDIF()
 
 add_executable(hello a.cpp b.c)
 #add_executable(sht21 sht21.c myi2c.c)
-add_executable(sht2x sht2x.c sht2x_main.c)
+IF(!WIN32)
+	add_executable(sht2x sht2x.c sht2x_main.c)
+	target_link_libraries(sht2x "-lwiringPi -lcrypt -pthread -lm -lrt")
+ENDIF()
 
-target_link_libraries(sht2x "-lwiringPi -lcrypt -pthread -lm -lrt")
