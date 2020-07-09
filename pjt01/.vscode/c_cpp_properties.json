@@ -1,4 +1,5 @@
 {
+    "env": {"BOOST_INC":"D:\\Programs\\boost\\1.72\\include\\boost-1_73"},
 "configurations": [
         {
             "name": "Win32",
