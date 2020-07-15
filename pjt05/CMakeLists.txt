@@ -11,18 +11,12 @@ SET ( CMAKE_BUILD_TYPE Debug )
 SET ( CMAKE_VERBOSE_MAKEFILE true )
  
 # 빌드 대상 바이너리 파일명 및 소스파일 목록
-SET ( OUTPUT_ELF
-		"${CMAKE_PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
-    )
-SET ( SRC_FILES
-     a.cpp
-	 b.c
-	 pool.c
-#     b.c
-    )
+SET ( OUTPUT_ELF "${CMAKE_PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
+SET ( SRC_FILES a.cpp pool.c )
  
 # 공통 컴파일러
-SET ( CMAKE_C_COMPILER g++ )
+SET ( CMAKE_C_COMPILER gcc )
+SET ( CMAKE_CXX_COMPILER g++ )
  
 # 공통 헤더 파일 Include 디렉토리 (-I)
 IF(WIN32)
@@ -30,7 +24,11 @@ IF(WIN32)
 ENDIF()
  
 # 공통 컴파일 옵션, 링크 옵션
-ADD_COMPILE_OPTIONS ( -std=c++17 )
+#ADD_COMPILE_OPTIONS ( -std=c++17 )
+
+set(CMAKE_C_FLAGS -std=c99)
+set(CMAKE_CXX_FLAGS -std=c++17)
+
 #SET ( CMAKE_EXE_LINKER_FLAGS "-lws2_32" "-pthread" )
  
 # 공통 링크 라이브러리 (-l)
@@ -67,11 +65,11 @@ IF(NOT WIN32)
 	ADD_EXECUTABLE(t t.cpp)
 ENDIF()
 
-
-add_executable(hello a.cpp b.c)
+add_executable(hello a.cpp)
+add_executable(b b.c)
 #add_executable(sht21 sht21.c myi2c.c)
 IF(!WIN32)
-	add_executable(sht2x sht2x.c sht2x_main.c)
+	add_executale(sht2x sht2x.c sht2x_main.c)
 	target_link_libraries(sht2x "-lwiringPi -lcrypt -pthread -lm -lrt")
 ENDIF()
 
