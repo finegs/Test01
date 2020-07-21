@@ -81,6 +81,37 @@
             "problemMatcher": [
                 "$gcc"
             ]
-        }
+        },
+        {
+            "label": "build & run",     //It's name of the task , you can have several tasks 
+            "type": "shell",    //type can be either 'shell' or 'process' , more details will be given below
+            "command": "g++",   
+            "args": [
+                "-g",
+                "-DDEBUG",
+                "-DUSE_BOOST",
+                "-Iinc",
+                "-I${config:BOOST_INC}",
+                "${file}",  //${file} gives full path of the file
+                "ml.c",
+                "-o",   
+                "${workspaceFolder}\\${fileBasenameNoExtension}",    //output file name
+                "&&",   //to join building and running of the file
+                "${workspaceFolder}\\${fileBasenameNoExtension}"
+            ],
+            "group": {
+                "kind": "build",    //defines to which group the task belongs
+                "isDefault": true
+            },
+            "presentation": {   
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "clear": false,
+                "showReuseMessage": false
+            },
+            "problemMatcher": "$gcc"
+        },
     ]
 }

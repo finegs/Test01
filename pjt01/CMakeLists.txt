@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
 
+set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
+set(CMAKE_C_FLAGS "")
 set(CMAKE_CXX_FLAGS "")
 
 add_definitions("-std=c++17 -Wall -Wextra -Wno-unused-parameter")
