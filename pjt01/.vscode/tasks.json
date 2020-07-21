@@ -35,8 +35,10 @@
             "label": "build batch",
             "command": "cmd",
             "type": "shell",
-            "args": ["build.bat"],
-            "group": "build",
+            "args": [
+                "build.bat"
+            ],
+            "group": "build"
         },
         {
             "label": "make all",
@@ -49,7 +51,7 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "group" : {
+            "group": {
                 "kind": "build",
                 "isDefault": true
             }
@@ -61,20 +63,24 @@
             "args": [
                 "-g",
                 "-DDEBUG",
+                "-DUSE_BOOST",
                 "-Iinc",
-                "-I${BOOST_INC}",
+                "-I${config:BOOST_INC}",
                 "-o",
-                "${workspaceFolder}\tt.exe",
+                "${workspaceFolder}\\tt.exe",
                 "t.cpp",
                 "u.cpp",
                 "uu1.cpp",
                 "mipc.cpp",
-                "-L${BOOST_LIB}",
+                "-L${config:BOOST_LIB}",
                 "-L.",
                 "-lm",
                 "-lws2_32"
             ],
-            "group": "build"
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ]
         }
     ]
 }

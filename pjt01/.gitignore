@@ -8,3 +8,7 @@ tags
 /T/
 /*.obj/
 /*.tlog/
+CMakeFiles/**/*
+**/**/*~
+**/**/*.cmake
+build/**/*.*
