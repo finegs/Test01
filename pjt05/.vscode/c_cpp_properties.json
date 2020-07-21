@@ -16,7 +16,7 @@
                 "${config:MINGW_HOME}/x86_64-w64-mingw32/include",
                 "${config:BOOST_INC}"
             ],
-            "compilerPath": "${MINGW_HOME}/bin/g++.exe",
+            "compilerPath": "${config:MINGW_HOME}/bin/g++.exe",
             "intelliSenseMode": "gcc-x64",
             "browse": {
                 "path": [

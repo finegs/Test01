@@ -20,6 +20,12 @@
     },
     "tasks": [
         {
+            "label": "cmake -G \"MinGW Makefiles\"",
+            "command": "cmake -G \"MinGW Makefiles\" .",
+            "type": "shell",
+            "args": [""]
+        },
+        {
             "label": "make clean",
             "command": "make",
             "type": "shell",
@@ -57,7 +63,7 @@
             }
         },
         {
-            "label": "build task",
+            "label": "build current file",
             "type": "shell",
             "command": "g++",
             "args": [
@@ -67,15 +73,13 @@
                 "-Iinc",
                 "-I${config:BOOST_INC}",
                 "-o",
-                "${workspaceFolder}\\tt.exe",
-                "t.cpp",
-                "u.cpp",
-                "uu1.cpp",
-                "mipc.cpp",
+                "${workspaceFolder}/${fileBasenameNoExtension}",
+                "${file}",
                 "-L${config:BOOST_LIB}",
                 "-L.",
                 "-lm",
-                "-lws2_32"
+                "-lws2_32",
+                "-pthread"
             ],
             "group": "build",
             "problemMatcher": [
@@ -93,11 +97,15 @@
                 "-Iinc",
                 "-I${config:BOOST_INC}",
                 "${file}",  //${file} gives full path of the file
-                "ml.c",
+                "-L${config:BOOST_LIB}",
+                "-L.",
+                "-lm",
+                "-lws2_32",
+                "-pthread",
                 "-o",   
-                "${workspaceFolder}\\${fileBasenameNoExtension}",    //output file name
+                "${workspaceFolder}/${fileBasenameNoExtension}",    //output file name
                 "&&",   //to join building and running of the file
-                "${workspaceFolder}\\${fileBasenameNoExtension}"
+                "${workspaceFolder}/${fileBasenameNoExtension}"
             ],
             "group": {
                 "kind": "build",    //defines to which group the task belongs
