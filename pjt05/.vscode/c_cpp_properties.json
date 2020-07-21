@@ -6,6 +6,8 @@
                 "_DEBUG",
                 "UNICODE"
             ],
+            "cStandard": "${default}",
+            "cppStandard": "${default}",
             "includePath": [
                 ".",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++",

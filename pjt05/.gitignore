@@ -12,3 +12,6 @@ CMakeCache.txt
 CMakeFiles/*
 .gitignore
 cmake_install.cmake
+*/**/*.*~
+*/**/*.exe
+Makefile

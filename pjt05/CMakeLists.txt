@@ -35,13 +35,9 @@ set(CMAKE_CXX_FLAGS -std=c++17)
 IF(WIN32)
 	LINK_LIBRARIES( -lws2_32 -pthread )
 ELSE()
-	#	add_executable(my_sht21 sht21.c myi2c.c)
+	#	ADD_EXECUTABLE(my_sht21 sht21.c myi2c.c)
 ENDIF()
  
-# 공통 링크 라이브러리 디렉토리 (-L)
-IF(WIN32)
-	LINK_DIRECTORIES ( D:/Programs/boost/boost_1_70_0/lib )
-ENDIF()
  
 # "Debug" 형상 한정 컴파일 옵션, 링크 옵션
 SET ( CMAKE_C_FLAGS_DEBUG "-g " )
@@ -61,15 +57,22 @@ SET ( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BUILD_TYPE}/lib )
 # 빌드 대상 바이너리 추가
 ADD_EXECUTABLE( ${OUTPUT_ELF} ${SRC_FILES} )
 
-IF(NOT WIN32)
-	ADD_EXECUTABLE(t t.cpp)
-ENDIF()
+ADD_EXECUTABLE(a a.cpp)
+ADD_EXECUTABLE(b b.c)
 
-add_executable(hello a.cpp)
-add_executable(b b.c)
-#add_executable(sht21 sht21.c myi2c.c)
-IF(!WIN32)
-	add_executale(sht2x sht2x.c sht2x_main.c)
-	target_link_libraries(sht2x "-lwiringPi -lcrypt -pthread -lm -lrt")
+IF(WIN32)
+
+	LINK_DIRECTORIES ( D:/Programs/boost/boost_1_70_0/lib )
+
+ELSE()
+
+	#ADD_EXECUTABLE(sht21 sht21.c myi2c.c)
+
+	ADD_EXECUTABLE(t t.cpp)
+
+
+	ADD_EXECUTABLE(sht2x sht2x.c sht2x_main.c)
+
+	TARGET_LINK_LIBRARIES(sht2x "-lwiringPi -lcrypt -pthread -lm -lrt")
 ENDIF()
 
