@@ -20,13 +20,13 @@
     },
     "tasks": [
         {
-            "label": "cmake -G \"MinGW Makefiles\"",
-            "command": "cmake -G \"MinGW Makefiles\" .",
+            "label": "Cmake -G \"MinGW Makefiles\"",
+            "command": "cmake",
             "type": "shell",
-            "args": [""]
+            "args": ["-G", "\"MinGW Makefiles\"", "."]
         },
         {
-            "label": "make clean",
+            "label": "Make clean",
             "command": "make",
             "type": "shell",
             "args": [
@@ -38,7 +38,7 @@
             ]
         },
         {
-            "label": "build batch",
+            "label": "Build batch",
             "command": "cmd",
             "type": "shell",
             "args": [
@@ -47,7 +47,7 @@
             "group": "build"
         },
         {
-            "label": "make all",
+            "label": "Make all",
             "command": "make",
             "type": "shell",
             "args": [
@@ -63,7 +63,7 @@
             }
         },
         {
-            "label": "build current file",
+            "label": "Build current file",
             "type": "shell",
             "command": "g++",
             "args": [
@@ -87,7 +87,7 @@
             ]
         },
         {
-            "label": "build & run",     //It's name of the task , you can have several tasks 
+            "label": "Build & Run",     //It's name of the task , you can have several tasks 
             "type": "shell",    //type can be either 'shell' or 'process' , more details will be given below
             "command": "g++",   
             "args": [

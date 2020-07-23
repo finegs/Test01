@@ -79,6 +79,7 @@ Singleton Singleton::s_Instance;
 
 int main() {
 
+#if 0
 	int nInput;
 	printf("n:"); fflush(stdout);
 	scanf("%d", &nInput);
@@ -111,6 +112,17 @@ int main() {
 	instance.function();
 
 	std::cout << MyTimeStamp::ts() << "Enter any keyboard : "; std::cout.flush();
+
+#endif
+
+	std::string m = "Hello";
+	m.insert(3, "  ");
+	m.replace(3, 2, "");
+
+	m.replace(m.find("Hell"), 4, "****");
+	std::cout << m << std::endl;
+
+
 
 	std::string line;
 	std::getline(std::cin, line);
