@@ -20,7 +20,7 @@
     },
     "tasks": [
         {
-            "label": "Cmake -G \"MinGW Makefiles\"",
+            "label": "CMake -G \"MinGW Makefiles\"",
             "command": "cmake",
             "type": "shell",
             "args": ["-G", "\"MinGW Makefiles\"", "."]
@@ -38,7 +38,7 @@
             ]
         },
         {
-            "label": "Build batch",
+            "label": "Execute build.bat",
             "command": "cmd",
             "type": "shell",
             "args": [
@@ -63,13 +63,14 @@
             }
         },
         {
-            "label": "Build current file",
+            "label": "Build Current File",
             "type": "shell",
             "command": "g++",
             "args": [
                 "-g",
                 "-DDEBUG",
                 "-DUSE_BOOST",
+                "-std=c++17",
                 "-Iinc",
                 "-I${config:BOOST_INC}",
                 "-o",
@@ -87,7 +88,7 @@
             ]
         },
         {
-            "label": "Build & Run",     //It's name of the task , you can have several tasks 
+            "label": "Build Current File & Run",     //It's name of the task , you can have several tasks 
             "type": "shell",    //type can be either 'shell' or 'process' , more details will be given below
             "command": "g++",   
             "args": [

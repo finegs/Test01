@@ -1,7 +1,7 @@
 {
-    "MINGW_HOME": "D:/Programs/mingw64/mingw64",
-    "BOOST_INC": "D:/Programs/boost/1.73/include/boost-1_73",
-    "BOOST_LIB": "D:/Programs/boost/1.73/lib",
+    "MINGW_HOME": "D:/Programs/msys64/mingw64",
+    "BOOST_INC": "D:/Programs/boost/boost/include/boost-1_70",
+    "BOOST_LIB": "D:/Programs/boost/boost/lib",
     "files.associations": {
         "*.tcc": "cpp",
         "deque": "cpp",
@@ -55,10 +55,12 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "sstream": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "thread": "cpp"
     },
     "C_Cpp.default.cStandard": "c11",
-    "C_Cpp.default.cppStandard": "c++17"
+    "C_Cpp.default.cppStandard": "c++17",
+    "cmake.configureOnOpen": false
 }
 
     
