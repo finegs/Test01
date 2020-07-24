@@ -208,6 +208,36 @@ b.c.s:
 	$(MAKE) -f CMakeFiles\b.dir\build.make CMakeFiles/b.dir/b.c.s
 .PHONY : b.c.s
 
+my.obj: my.cpp.obj
+
+.PHONY : my.obj
+
+# target to build an object file
+my.cpp.obj:
+	$(MAKE) -f CMakeFiles\main-0.1.dir\build.make CMakeFiles/main-0.1.dir/my.cpp.obj
+	$(MAKE) -f CMakeFiles\a.dir\build.make CMakeFiles/a.dir/my.cpp.obj
+.PHONY : my.cpp.obj
+
+my.i: my.cpp.i
+
+.PHONY : my.i
+
+# target to preprocess a source file
+my.cpp.i:
+	$(MAKE) -f CMakeFiles\main-0.1.dir\build.make CMakeFiles/main-0.1.dir/my.cpp.i
+	$(MAKE) -f CMakeFiles\a.dir\build.make CMakeFiles/a.dir/my.cpp.i
+.PHONY : my.cpp.i
+
+my.s: my.cpp.s
+
+.PHONY : my.s
+
+# target to generate assembly for a file
+my.cpp.s:
+	$(MAKE) -f CMakeFiles\main-0.1.dir\build.make CMakeFiles/main-0.1.dir/my.cpp.s
+	$(MAKE) -f CMakeFiles\a.dir\build.make CMakeFiles/a.dir/my.cpp.s
+.PHONY : my.cpp.s
+
 pool.obj: pool.c.obj
 
 .PHONY : pool.obj
@@ -252,6 +282,9 @@ help:
 	@echo ... b.obj
 	@echo ... b.i
 	@echo ... b.s
+	@echo ... my.obj
+	@echo ... my.i
+	@echo ... my.s
 	@echo ... pool.obj
 	@echo ... pool.i
 	@echo ... pool.s

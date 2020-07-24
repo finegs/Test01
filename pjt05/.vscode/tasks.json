@@ -23,7 +23,14 @@
             "label": "CMake -G \"MinGW Makefiles\"",
             "command": "cmake",
             "type": "shell",
-            "args": ["-G", "\"MinGW Makefiles\"", "."]
+            "args": [
+                "-G",
+                "\"MinGW Makefiles\"",
+                "."
+            ],
+            "problemMatcher": [
+                "$msCompile"
+            ]
         },
         {
             "label": "Make clean",
@@ -63,7 +70,7 @@
             }
         },
         {
-            "label": "Build Current File",
+            "label": "Build Current File - Debug",
             "type": "shell",
             "command": "g++",
             "args": [
@@ -74,8 +81,9 @@
                 "-Iinc",
                 "-I${config:BOOST_INC}",
                 "-o",
-                "${workspaceFolder}/${fileBasenameNoExtension}",
+                "${workspaceFolder}/Debug/bin/${fileBasenameNoExtension}",
                 "${file}",
+                "${config:MYUTIL_SRC}",
                 "-L${config:BOOST_LIB}",
                 "-L.",
                 "-lm",
@@ -88,31 +96,32 @@
             ]
         },
         {
-            "label": "Build Current File & Run",     //It's name of the task , you can have several tasks 
-            "type": "shell",    //type can be either 'shell' or 'process' , more details will be given below
-            "command": "g++",   
+            "label": "Build Current File & Run - Debug",
+            "type": "shell",
+            "command": "g++",
             "args": [
                 "-g",
                 "-DDEBUG",
                 "-DUSE_BOOST",
                 "-Iinc",
                 "-I${config:BOOST_INC}",
-                "${file}",  //${file} gives full path of the file
+                "${file}",
+                "${config:MYUTIL_SRC}",
                 "-L${config:BOOST_LIB}",
                 "-L.",
                 "-lm",
                 "-lws2_32",
                 "-pthread",
-                "-o",   
-                "${workspaceFolder}/${fileBasenameNoExtension}",    //output file name
-                "&&",   //to join building and running of the file
-                "${workspaceFolder}/${fileBasenameNoExtension}"
+                "-o",
+                "${workspaceFolder}/Debug/bin/${fileBasenameNoExtension}",
+                "&&",
+                "${workspaceFolder}/Debug/bin/${fileBasenameNoExtension}"
             ],
             "group": {
-                "kind": "build",    //defines to which group the task belongs
+                "kind": "build",
                 "isDefault": true
             },
-            "presentation": {   
+            "presentation": {
                 "echo": false,
                 "reveal": "always",
                 "focus": true,
@@ -122,5 +131,14 @@
             },
             "problemMatcher": "$gcc"
         },
+        {
+            "type": "shell",
+            "label": "execute",
+            "command": "cd ${workspaceFolder}/Debug/bin && ${fileBasenameNoExtension}",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
     ]
 }

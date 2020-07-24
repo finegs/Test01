@@ -9,9 +9,11 @@ tags
 /*.obj/
 /*.tlog/
 CMakeCache.txt
-CMakeFiles/*
 .gitignore
 cmake_install.cmake
 */**/*.*~
 */**/*.exe
 Makefile
+Build/**/*
+**/*.exe
+CMakeFiles/**/*

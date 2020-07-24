@@ -12,7 +12,7 @@ SET ( CMAKE_VERBOSE_MAKEFILE true )
  
 # 빌드 대상 바이너리 파일명 및 소스파일 목록
 SET ( OUTPUT_ELF "${CMAKE_PROJECT_NAME}-${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
-SET ( SRC_FILES a.cpp pool.c )
+SET ( SRC_FILES a.cpp pool.c my.cpp)
  
 # 공통 컴파일러
 SET ( CMAKE_C_COMPILER gcc )
@@ -26,7 +26,7 @@ ENDIF()
 # 공통 컴파일 옵션, 링크 옵션
 #ADD_COMPILE_OPTIONS ( -std=c++17 )
 
-set(CMAKE_C_FLAGS -std=c99)
+set(CMAKE_C_FLAGS -std=c11)
 set(CMAKE_CXX_FLAGS -std=c++17)
 
 #SET ( CMAKE_EXE_LINKER_FLAGS "-lws2_32" "-pthread" )
@@ -57,8 +57,8 @@ SET ( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BUILD_TYPE}/lib )
 # 빌드 대상 바이너리 추가
 ADD_EXECUTABLE( ${OUTPUT_ELF} ${SRC_FILES} )
 
-ADD_EXECUTABLE(a a.cpp)
-ADD_EXECUTABLE(b b.c)
+ADD_EXECUTABLE(a a.cpp my.cpp)
+ADD_EXECUTABLE(b b.c )
 
 IF(WIN32)
 
@@ -68,7 +68,7 @@ ELSE()
 
 	#ADD_EXECUTABLE(sht21 sht21.c myi2c.c)
 
-	ADD_EXECUTABLE(t t.cpp)
+	ADD_EXECUTABLE(t t.cpp my.cpp)
 
 
 	ADD_EXECUTABLE(sht2x sht2x.c sht2x_main.c)
