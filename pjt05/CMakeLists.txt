@@ -59,6 +59,7 @@ ADD_EXECUTABLE( ${OUTPUT_ELF} ${SRC_FILES} )
 
 ADD_EXECUTABLE(a a.cpp)
 ADD_EXECUTABLE(b b.c)
+ADD_EXECUTABLE(test_signals test_signals.cpp)
 
 IF(WIN32)
 
