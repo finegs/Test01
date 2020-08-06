@@ -66,10 +66,7 @@ IF(WIN32)
 
 ELSE()
 
-	#ADD_EXECUTABLE(sht21 sht21.c myi2c.c)
-
 	ADD_EXECUTABLE(t t.cpp my.cpp)
-
 
 	ADD_EXECUTABLE(sht2x sht2x.c sht2x_main.c)
 
