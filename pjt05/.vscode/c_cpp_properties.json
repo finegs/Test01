@@ -1,0 +1,41 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "defines": [
+                "_DEBUG",
+                "UNICODE"
+            ],
+            "cStandard": "${default}",
+            "cppStandard": "${default}",
+            "includePath": [
+                ".",
+                "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++",
+                "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32",
+                "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward",
+                "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include",
+                "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed",
+                "${config:MINGW_HOME}/x86_64-w64-mingw32/include",
+                "${config:BOOST_INC}"
+            ],
+            "compilerPath": "${config:MINGW_HOME}/bin/g++.exe",
+            "intelliSenseMode": "gcc-x64",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++",
+                    "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32",
+                    "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward",
+                    "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include",
+                    "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed",
+                    "${config:MINGW_HOME}/x86_64-w64-mingw32/include",
+                    "${config:BOOST_INC}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}

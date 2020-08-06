@@ -1,4 +1,7 @@
 {
+    "MINGW_HOME": "C:/Programs/mingw-w64/mingw64",
+    "BOOST_INC": "C:/Programs/boost/boost/include/boost-1_70",
+    "BOOST_LIB": "C:/Programs/boost/boost/lib",
     "files.associations": {
         "*.tcc": "cpp",
         "deque": "cpp",
@@ -11,4 +14,6 @@
         "optional": "cpp",
         "variant": "cpp"
     }
+}
 
+    

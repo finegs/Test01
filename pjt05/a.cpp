@@ -5,34 +5,89 @@
 #include <ctime>
 #include <cstdlib> // defines putenv in POSIX
 #include <vector>
+#include <string>
+#include <chrono>
+#include <sstream>
+#include "my.hpp"
+
+void* operator new(size_t size) {
+	std::cout << "Allocating " << size << " bytes" << std::endl;
+	return malloc(size);
+}
+
+struct Object {
+	int x,y,z;
+};
+
+class Singleton {
+	public:
+		static Singleton& getInstance() {
+			return s_Instance;
+		}
+
+		void function() {
+		}
+
+	private:
+		Singleton() {}
+		Singleton(const Singleton&) = delete;
+
+		static Singleton s_Instance;
+};
+
+Singleton Singleton::s_Instance;
+
+
 int main() {
 
+#if 0
 	int nInput;
 	printf("n:"); fflush(stdout);
 	scanf("%d", &nInput);
 
-	printf("#######################");
+	std::cout << MyTimeStamp::ts() << ("#######################\n");
     std::time_t t = std::time(nullptr);
-    std::cout << "UTC:       " << std::put_time(std::gmtime(&t), "%c %Z") << "\n";
-    std::cout << "local:     " << std::put_time(std::localtime(&t), "%c %Z") << "\n";
+    std::cout << MyTimeStamp::ts() << "UTC:       " << std::put_time(std::gmtime(&t), "%c %Z") << "\n";
+    std::cout << MyTimeStamp::ts() << "local:     " << std::put_time(std::localtime(&t), "%c %Z") << "\n";
     // POSIX-specific:
     std::string tz = "TZ=Asia/Seoul";
     putenv((char*)tz.data());
-    std::cout << "Seoul: " << std::put_time(std::localtime(&t), "%c %Z") << std::endl;
+    std::cout << MyTimeStamp::ts() << "Seoul: " << std::put_time(std::localtime(&t), "%c %Z") << std::endl;
 
-	std::cout << "aaaaaaaaaaa";
 	std::vector<uint8_t> v;
 	v.push_back((uint8_t)0);
 	
-	std::cout << " ##################" << std::endl;
+	std::cout << MyTimeStamp::ts() << " ##################" << std::endl;
+	std::cout << MyTimeStamp::ts();
 	for(size_t i = 0;i<v.size();i++) {
 		std::cout << std::to_string(v[i]);
 		std::cout << ((i%5==0) ? "\n" : "\t");
 	}
 	std::cout << std::endl;
-	std::cout << "Good" << std::endl;
+	std::cout << MyTimeStamp::ts() << "Good" << std::endl;
+
+	Object* o = new Object();
+
+	Singleton& instance = Singleton::getInstance();
+
+	instance.function();
+
+	std::cout << MyTimeStamp::ts() << "Enter any keyboard : "; std::cout.flush();
+
+#endif
+
+	std::string m = "Hello";
+	m.insert(3, "  ");
+	m.replace(3, 2, "");
+
+	m.replace(m.find("Hell"), 4, "****");
+	std::cout << my::ts() << m << std::endl;
+
+	std::string line;
+	std::getline(std::cin, line);
 
 #if 0
+	EFEM Temp
 	int nInput = 0;
 	int n2;
 	// int i = 0;

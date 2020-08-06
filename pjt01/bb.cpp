@@ -1,7 +1,7 @@
 
 #if 1
 
-#include <stdio.h>
+#include <cstdio>
 #include <chrono>
 #include <ctime>
 
