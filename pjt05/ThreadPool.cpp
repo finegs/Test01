@@ -3,10 +3,11 @@
 #include <chrono>
 
 #include "ThreadPool.hpp"
+#include "my.hpp"
 
 
 int main(int argc, char* argv[]) {
-    
+
     ThreadPool pool(4);
 
     std::vector<std::future<int>> results;
@@ -15,9 +16,9 @@ int main(int argc, char* argv[]) {
     {
         results.emplace_back(
             pool.enqueue([i]{
-                std::cout << "hello " << i << std::endl;
+                std::cout << my::ts() << "hello " << i << std::endl;
                 std::this_thread::sleep_for(std::chrono::seconds(1));
-                std::cout << "world " << i << std::endl;
+                std::cout << my::ts() << "world " << i << std::endl;
                 return i*i;
             })
         );
@@ -25,7 +26,7 @@ int main(int argc, char* argv[]) {
     
 
     for(auto&& result: results)
-        std::cout << result.get() << ' ';
+        std::cout <<  my::ts() << result.get() << ' ';
 
     std::cout<< std::endl;
 

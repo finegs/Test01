@@ -8,51 +8,12 @@
 #include <string>
 #include <chrono>
 #include <sstream>
+#include "my.hpp"
 
 void* operator new(size_t size) {
 	std::cout << "Allocating " << size << " bytes" << std::endl;
 	return malloc(size);
 }
-
-class MyTimeStamp {
-	private:
-
-	MyTimeStamp() {}
-
-	public:
-	static MyTimeStamp ts() {
-		MyTimeStamp a;
-		return a;
-	}
-	friend std::ostream& operator<<(std::ostream& os, const MyTimeStamp& o);
-};
-
-std::ostream& operator<<(std::ostream& os, const MyTimeStamp& o) {
-    using namespace std::chrono;
-
-    // get current time
-    auto now = system_clock::now();
-
-    // get number of milliseconds for the current second
-    // (remainder after division into seconds)
-    auto ms = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
-
-    // convert to std::time_t in order to convert to std::tm (broken time)
-    auto timer = system_clock::to_time_t(now);
-
-    // convert to broken time
-    std::tm bt = *std::localtime(&timer);
-
-    std::ostringstream oss;
-
-    oss << std::put_time(&bt, "%H:%M:%S"); // HH:MM:SS
-    oss << '.' << std::setfill('0') << std::setw(3) << ms.count();
-	oss << " : ";
-
-	os << oss.str();
-
-	return os;
-};
 
 struct Object {
 	int x,y,z;
@@ -120,9 +81,7 @@ int main() {
 	m.replace(3, 2, "");
 
 	m.replace(m.find("Hell"), 4, "****");
-	std::cout << m << std::endl;
-
-
+	std::cout << my::ts() << m << std::endl;
 
 	std::string line;
 	std::getline(std::cin, line);

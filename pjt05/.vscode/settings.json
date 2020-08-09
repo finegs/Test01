@@ -1,7 +1,9 @@
 {
-    "MINGW_HOME": "D:/Programs/msys64/mingw64",
-    "BOOST_INC": "D:/Programs/boost/boost/include/boost-1_70",
-    "BOOST_LIB": "D:/Programs/boost/boost/lib",
+    "MINGW_HOME": "D:\\Programs\\mingw64\\mingw64",
+    "BOOST_INC": "D:\\Programs\\boost\\include",
+    "BOOST_LIB": "D:\\Programs\\boost\\lib",
+    
+    "MYUTIL_SRC":"my.cpp",
     "files.associations": {
         "*.tcc": "cpp",
         "deque": "cpp",
