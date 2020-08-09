@@ -41,6 +41,7 @@ ENDIF()
  
 # "Debug" 형상 한정 컴파일 옵션, 링크 옵션
 SET ( CMAKE_C_FLAGS_DEBUG "-g " )
+SET ( CMAKE_CXX_FLAGS_DEBUG "-g " )
 #SET ( CMAKE_EXE_LINKER_FLAGS_DEBUG "-lws2_32" "-pthread" )
 SET ( CMAKE_EXE_LINKER_FLAGS_DEBUG  )
  
@@ -55,12 +56,14 @@ SET ( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BUILD_TYPE}/lib )
 SET ( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BUILD_TYPE}/lib )
  
 # 빌드 대상 바이너리 추가
-ADD_EXECUTABLE( ${OUTPUT_ELF} ${SRC_FILES} )
+# ADD_EXECUTABLE( ${OUTPUT_ELF} ${SRC_FILES} )
 
-ADD_EXECUTABLE(a a.cpp my.cpp)
-ADD_EXECUTABLE(b b.c )
-ADD_EXECUTABLE(main main.cpp)
-ADD_EXECUTABLE(test_signals test_signals.cpp)
+# ADD_EXECUTABLE(a a.cpp my.cpp)
+# ADD_EXECUTABLE(b b.c )
+# ADD_EXECUTABLE(main main.cpp)
+# ADD_EXECUTABLE(test_signals test_signals.cpp)
+ADD_EXECUTABLE(test_main test_main.cpp)
+
 
 IF(WIN32)
 

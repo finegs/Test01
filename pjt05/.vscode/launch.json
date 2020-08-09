@@ -5,17 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "g++.exe - 활성 파일 빌드 및 디버그",
+            "name": "gdb - Launch CurrentFile",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/Debug/bin/${fileBasenameNoExtension}.exe",
+            "program": "${fileDirname}/build/Debug/${fileBasenameNoExtension}.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "${config:MINGW_HOME}/bin/gdb.exe",
+            // "miDebuggerPath": "${config:MINGW_HOME}/bin/gdb.exe",
+            "miDebuggerPath": "D:/Programs/mingw-w64/mingw64/bin/gdb.exe",
             "setupCommands": [
                 {
                     "description": "gdb에 자동 서식 지정 사용",

@@ -113,207 +113,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named main
+# Target rules for targets named test_main
 
 # Build rule for target.
-main: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 main
-.PHONY : main
+test_main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles\Makefile2 test_main
+.PHONY : test_main
 
 # fast build rule for target.
-main/fast:
-	$(MAKE) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/build
-.PHONY : main/fast
+test_main/fast:
+	$(MAKE) -f CMakeFiles\test_main.dir\build.make CMakeFiles/test_main.dir/build
+.PHONY : test_main/fast
 
-#=============================================================================
-# Target rules for targets named main-0.1
+test_main.obj: test_main.cpp.obj
 
-# Build rule for target.
-main-0.1: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 main-0.1
-.PHONY : main-0.1
-
-# fast build rule for target.
-main-0.1/fast:
-	$(MAKE) -f CMakeFiles\main-0.1.dir\build.make CMakeFiles/main-0.1.dir/build
-.PHONY : main-0.1/fast
-
-#=============================================================================
-# Target rules for targets named a
-
-# Build rule for target.
-a : cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 a
-.PHONY : a
-
-# fast build rule for target.
-a/fast:
-	$(MAKE) -f CMakeFiles\a.dir\build.make CMakeFiles/a.dir/build
-.PHONY : a/fast
-
-#=============================================================================
-# Target rules for targets named b
-
-# Build rule for target.
-b : cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 b
-.PHONY : b
-
-# fast build rule for target.
-b/fast:
-	$(MAKE) -f CMakeFiles\b.dir\build.make CMakeFiles/b.dir/build
-.PHONY : b/fast
-
-#=============================================================================
-# Target rules for targets named test_signals
-
-# Build rule for target.
-test_signals: cmake_check_build_system
-	$(MAKE) -f CMakeFiles\Makefile2 test_signals
-.PHONY : test_signals
-
-# fast build rule for target.
-test_signals/fast:
-	$(MAKE) -f CMakeFiles\test_signals.dir\build.make CMakeFiles/test_signals.dir/build
-.PHONY : test_signals/fast
-
-a.obj: a.cpp.obj
-
-.PHONY : a.obj
+.PHONY : test_main.obj
 
 # target to build an object file
-a.cpp.obj:
-	$(MAKE) -f CMakeFiles\main-0.1.dir\build.make CMakeFiles/main-0.1.dir/a.cpp.obj
-	$(MAKE) -f CMakeFiles\a.dir\build.make CMakeFiles/a.dir/a.cpp.obj
-.PHONY : a.cpp.obj
+test_main.cpp.obj:
+	$(MAKE) -f CMakeFiles\test_main.dir\build.make CMakeFiles/test_main.dir/test_main.cpp.obj
+.PHONY : test_main.cpp.obj
 
-a.i: a.cpp.i
+test_main.i: test_main.cpp.i
 
-.PHONY : a.i
-
-# target to preprocess a source file
-a.cpp.i:
-	$(MAKE) -f CMakeFiles\main-0.1.dir\build.make CMakeFiles/main-0.1.dir/a.cpp.i
-	$(MAKE) -f CMakeFiles\a.dir\build.make CMakeFiles/a.dir/a.cpp.i
-.PHONY : a.cpp.i
-
-a.s: a.cpp.s
-
-.PHONY : a.s
-
-# target to generate assembly for a file
-a.cpp.s:
-	$(MAKE) -f CMakeFiles\main-0.1.dir\build.make CMakeFiles/main-0.1.dir/a.cpp.s
-	$(MAKE) -f CMakeFiles\a.dir\build.make CMakeFiles/a.dir/a.cpp.s
-.PHONY : a.cpp.s
-
-b.obj: b.c.obj
-
-.PHONY : b.obj
-
-# target to build an object file
-b.c.obj:
-	$(MAKE) -f CMakeFiles\b.dir\build.make CMakeFiles/b.dir/b.c.obj
-.PHONY : b.c.obj
-
-b.i: b.c.i
-
-.PHONY : b.i
+.PHONY : test_main.i
 
 # target to preprocess a source file
-b.c.i:
-	$(MAKE) -f CMakeFiles\b.dir\build.make CMakeFiles/b.dir/b.c.i
-.PHONY : b.c.i
+test_main.cpp.i:
+	$(MAKE) -f CMakeFiles\test_main.dir\build.make CMakeFiles/test_main.dir/test_main.cpp.i
+.PHONY : test_main.cpp.i
 
-b.s: b.c.s
+test_main.s: test_main.cpp.s
 
-.PHONY : b.s
-
-# target to generate assembly for a file
-b.c.s:
-	$(MAKE) -f CMakeFiles\b.dir\build.make CMakeFiles/b.dir/b.c.s
-.PHONY : b.c.s
-
-main.obj: main.cpp.obj
-
-.PHONY : main.obj
-
-# target to build an object file
-main.cpp.obj:
-	$(MAKE) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/main.cpp.obj
-.PHONY : main.cpp.obj
-
-main.i: main.cpp.i
-
-.PHONY : main.i
-
-# target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/main.cpp.i
-.PHONY : main.cpp.i
-
-main.s: main.cpp.s
-
-.PHONY : main.s
+.PHONY : test_main.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles\main.dir\build.make CMakeFiles/main.dir/main.cpp.s
-.PHONY : main.cpp.s
-
-pool.obj: pool.c.obj
-
-.PHONY : pool.obj
-
-# target to build an object file
-pool.c.obj:
-	$(MAKE) -f CMakeFiles\main-0.1.dir\build.make CMakeFiles/main-0.1.dir/pool.c.obj
-.PHONY : pool.c.obj
-
-pool.i: pool.c.i
-
-.PHONY : pool.i
-
-# target to preprocess a source file
-pool.c.i:
-	$(MAKE) -f CMakeFiles\main-0.1.dir\build.make CMakeFiles/main-0.1.dir/pool.c.i
-.PHONY : pool.c.i
-
-pool.s: pool.c.s
-
-.PHONY : pool.s
-
-# target to generate assembly for a file
-pool.c.s:
-	$(MAKE) -f CMakeFiles\main-0.1.dir\build.make CMakeFiles/main-0.1.dir/pool.c.s
-.PHONY : pool.c.s
-
-test_signals.obj: test_signals.cpp.obj
-
-.PHONY : test_signals.obj
-
-# target to build an object file
-test_signals.cpp.obj:
-	$(MAKE) -f CMakeFiles\test_signals.dir\build.make CMakeFiles/test_signals.dir/test_signals.cpp.obj
-.PHONY : test_signals.cpp.obj
-
-test_signals.i: test_signals.cpp.i
-
-.PHONY : test_signals.i
-
-# target to preprocess a source file
-test_signals.cpp.i:
-	$(MAKE) -f CMakeFiles\test_signals.dir\build.make CMakeFiles/test_signals.dir/test_signals.cpp.i
-.PHONY : test_signals.cpp.i
-
-test_signals.s: test_signals.cpp.s
-
-.PHONY : test_signals.s
-
-# target to generate assembly for a file
-test_signals.cpp.s:
-	$(MAKE) -f CMakeFiles\test_signals.dir\build.make CMakeFiles/test_signals.dir/test_signals.cpp.s
-.PHONY : test_signals.cpp.s
+test_main.cpp.s:
+	$(MAKE) -f CMakeFiles\test_main.dir\build.make CMakeFiles/test_main.dir/test_main.cpp.s
+.PHONY : test_main.cpp.s
 
 # Help Target
 help:
@@ -321,28 +158,12 @@ help:
 	@echo ... all (the default if no target is provided)
 	@echo ... clean
 	@echo ... depend
+	@echo ... test_main
 	@echo ... edit_cache
-	@echo ... main
-	@echo ... main-0.1
-	@echo ... a
 	@echo ... rebuild_cache
-	@echo ... b
-	@echo ... test_signals
-	@echo ... a.obj
-	@echo ... a.i
-	@echo ... a.s
-	@echo ... b.obj
-	@echo ... b.i
-	@echo ... b.s
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
-	@echo ... pool.obj
-	@echo ... pool.i
-	@echo ... pool.s
-	@echo ... test_signals.obj
-	@echo ... test_signals.i
-	@echo ... test_signals.s
+	@echo ... test_main.obj
+	@echo ... test_main.i
+	@echo ... test_main.s
 .PHONY : help
 
 

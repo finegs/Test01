@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <cstdio>
 #include <map>
 
 
@@ -20,7 +21,6 @@ int main(int argc, char* argv[]) {
 	mm.insert({90,9});
 	mm.insert({40,11});
 	mm.insert({70,17});
-
 
 	multimap<int, int>::iterator iter;
 
@@ -43,6 +43,8 @@ int main(int argc, char* argv[]) {
 	for(iter = mm.begin();iter != mm.end();iter++) {
 		cout << "[" << iter->first << "," << iter->second << "] ";
 	}
+
+	std::getchar();
 
 	return 0;
 }
