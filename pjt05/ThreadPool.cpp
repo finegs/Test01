@@ -7,7 +7,6 @@
 
 int main(int argc, char* argv[]) {
     
-
     ThreadPool pool(4);
 
     std::vector<std::future<int>> results;

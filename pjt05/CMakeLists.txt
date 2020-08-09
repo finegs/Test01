@@ -1,5 +1,5 @@
 # 요구 CMake 최소 버전
-CMAKE_MINIMUM_REQUIRED ( VERSION 2.8 )
+CMAKE_MINIMUM_REQUIRED ( VERSION 3.0.0 )
  
 # 프로젝트 이름 및 버전
 PROJECT ( main )
@@ -7,6 +7,8 @@ SET ( PROJECT_VERSION_MAJOR 0 )
 SET ( PROJECT_VERSION_MINOR 1 )
  
 # 빌드 형상(Configuration) 및 주절주절 Makefile 생성 여부
+SET ( CMAKE_C_COMPILER gcc)
+SET ( CMAKE_CXX_COMPILER g++)
 SET ( CMAKE_BUILD_TYPE Debug )
 SET ( CMAKE_VERBOSE_MAKEFILE true )
  
@@ -24,13 +26,9 @@ IF(WIN32)
 ENDIF()
  
 # 공통 컴파일 옵션, 링크 옵션
-#ADD_COMPILE_OPTIONS ( -std=c++17 )
-
 set(CMAKE_C_FLAGS -std=c99)
 set(CMAKE_CXX_FLAGS -std=c++17)
 
-#SET ( CMAKE_EXE_LINKER_FLAGS "-lws2_32" "-pthread" )
- 
 # 공통 링크 라이브러리 (-l)
 IF(WIN32)
 	LINK_LIBRARIES( -lws2_32 -pthread )
@@ -60,6 +58,8 @@ ADD_EXECUTABLE( ${OUTPUT_ELF} ${SRC_FILES} )
 ADD_EXECUTABLE(a a.cpp)
 ADD_EXECUTABLE(b b.c)
 ADD_EXECUTABLE(test_signals test_signals.cpp)
+
+ADD_EXECUTABLE(main main.cpp)
 
 IF(WIN32)
 
