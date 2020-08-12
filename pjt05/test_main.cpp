@@ -2,9 +2,11 @@
 #include <iostream>
 #include <cstdio>
 #include <map>
+#include "my.hpp"
 
 
 using namespace std;
+using namespace my;
 
 int main(int argc, char* argv[]) {
 
@@ -24,25 +26,28 @@ int main(int argc, char* argv[]) {
 
 	multimap<int, int>::iterator iter;
 
-	cout << "mm.size() : " << mm.size() << endl;
-	cout << "mm.count() : " << mm.count(40) << endl;
+	std::cout << MyTimeStamp::ts() << "mm.size() : " << mm.size() << endl;
+	std::cout << MyTimeStamp::ts() << "mm.count() : " << mm.count(40) << endl;
 
+	cout << MyTimeStamp::ts() << "mm = [";
 	for(iter = mm.begin();iter != mm.end();iter++) {
-		cout << "[" << iter->first << "," << iter->second << "] ";
+		cout << (iter == mm.begin() ? "" : ", " ) <<"{" << iter->first << "," << iter->second << "}";
 	}
 
-	cout << endl << endl;
+	cout << "]\n";
 
 	mm.insert({40,440});
 	mm.insert({40,3});
 
-	cout << "mm.size():"<<mm.size()<<endl;
-	cout << "mm.count(40):"<<mm.count(40)<<endl;
+	cout << MyTimeStamp::ts() << "mm.size():"<<mm.size()<<endl;
+	cout <<  MyTimeStamp::ts() << "mm.count(40):"<<mm.count(40)<<endl;
 
 
 	for(iter = mm.begin();iter != mm.end();iter++) {
-		cout << "[" << iter->first << "," << iter->second << "] ";
+		cout << (iter == mm.begin() ? "" : ", " ) << "{" << iter->first << "," << iter->second << "}";
 	}
+
+	cout << "\n";
 
 	std::getchar();
 

@@ -62,8 +62,7 @@ SET ( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BUILD_TYPE}/lib )
 # ADD_EXECUTABLE(b b.c )
 # ADD_EXECUTABLE(main main.cpp)
 # ADD_EXECUTABLE(test_signals test_signals.cpp)
-ADD_EXECUTABLE(test_main test_main.cpp)
-
+ADD_EXECUTABLE(test_main test_main.cpp my.cpp)
 
 IF(WIN32)
 
@@ -71,9 +70,9 @@ IF(WIN32)
 
 ELSE()
 
-	ADD_EXECUTABLE(t t.cpp my.cpp)
-
 	ADD_EXECUTABLE(sht2x sht2x.c sht2x_main.c)
+
+	ADD_EXECUTABLE(test_mcp3208 mcp3208.c)
 
 	TARGET_LINK_LIBRARIES(sht2x "-lwiringPi -lcrypt -pthread -lm -lrt")
 ENDIF()

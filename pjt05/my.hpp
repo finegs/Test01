@@ -6,6 +6,7 @@
 
 namespace my {
 	class TimeStamp {
+		public:
 		friend std::ostream& operator<<(std::ostream& os, const TimeStamp& o);
 	};
 
