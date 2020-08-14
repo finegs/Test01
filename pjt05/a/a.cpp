@@ -45,26 +45,26 @@ int main() {
 	printf("n:"); fflush(stdout);
 	scanf("%d", &nInput);
 
-	std::cout << MyTimeStamp::ts() << ("#######################\n");
+	std::cout << my::ts() << ("#######################\n");
     std::time_t t = std::time(nullptr);
-    std::cout << MyTimeStamp::ts() << "UTC:       " << std::put_time(std::gmtime(&t), "%c %Z") << "\n";
-    std::cout << MyTimeStamp::ts() << "local:     " << std::put_time(std::localtime(&t), "%c %Z") << "\n";
+    std::cout << my::ts() << "UTC:       " << std::put_time(std::gmtime(&t), "%c %Z") << "\n";
+    std::cout << my::ts() << "local:     " << std::put_time(std::localtime(&t), "%c %Z") << "\n";
     // POSIX-specific:
     std::string tz = "TZ=Asia/Seoul";
     putenv((char*)tz.data());
-    std::cout << MyTimeStamp::ts() << "Seoul: " << std::put_time(std::localtime(&t), "%c %Z") << std::endl;
+    std::cout << my::ts() << "Seoul: " << std::put_time(std::localtime(&t), "%c %Z") << std::endl;
 
 	std::vector<uint8_t> v;
 	v.push_back((uint8_t)0);
 	
-	std::cout << MyTimeStamp::ts() << " ##################" << std::endl;
-	std::cout << MyTimeStamp::ts();
+	std::cout << my::ts() << " ##################" << std::endl;
+	std::cout << my::ts();
 	for(size_t i = 0;i<v.size();i++) {
 		std::cout << std::to_string(v[i]);
 		std::cout << ((i%5==0) ? "\n" : "\t");
 	}
 	std::cout << std::endl;
-	std::cout << MyTimeStamp::ts() << "Good" << std::endl;
+	std::cout << my::ts() << "Good" << std::endl;
 
 	Object* o = new Object();
 
@@ -72,7 +72,7 @@ int main() {
 
 	instance.function();
 
-	std::cout << MyTimeStamp::ts() << "Enter any keyboard : "; std::cout.flush();
+	std::cout << my::ts() << "Enter any keyboard : "; std::cout.flush();
 
 #endif
 

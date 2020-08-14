@@ -6,10 +6,11 @@
 
 namespace my {
 	class TimeStamp {
+		public:
 		friend std::ostream& operator<<(std::ostream& os, const TimeStamp& o);
 	};
 
-	inline TimeStamp ts() { return TimeStamp(); }
+	static inline TimeStamp ts() { return TimeStamp(); }
 }
 
 #endif

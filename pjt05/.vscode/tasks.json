@@ -81,7 +81,7 @@
                 "-Iinc",
                 "-I${config:BOOST_INC}",
                 "-o",
-                "${workspaceFolder}/Debug/bin/${fileBasenameNoExtension}",
+                "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}",
                 "${file}",
                 "${config:MYUTIL_SRC}",
                 "-L${config:BOOST_LIB}",
@@ -113,9 +113,9 @@
                 "-lws2_32",
                 "-pthread",
                 "-o",
-                "${workspaceFolder}/Debug/bin/${fileBasenameNoExtension}",
+                "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}",
                 "&&",
-                "${workspaceFolder}/Debug/bin/${fileBasenameNoExtension}"
+                "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}"
             ],
             "group": {
                 "kind": "build",
@@ -134,7 +134,7 @@
         {
             "type": "shell",
             "label": "execute",
-            "command": "cd ${workspaceFolder}/Debug/bin && ${fileBasenameNoExtension}",
+            "command": "cd ${workspaceFolder}/build/Debug && ${fileBasenameNoExtension}",
             "group": {
                 "kind": "test",
                 "isDefault": true

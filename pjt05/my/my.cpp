@@ -5,7 +5,6 @@
 
 #include <my.hpp>
 
-
 namespace my {
 
 	std::ostream &operator<<(std::ostream &os, const TimeStamp &o)
