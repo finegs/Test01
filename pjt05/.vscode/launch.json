@@ -8,15 +8,15 @@
             "name": "gdb - Launch CurrentFile",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/build/Debug/${fileBasenameNoExtension}.exe",
+            "program": "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/build/Debug",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
             // "miDebuggerPath": "${config:MINGW_HOME}/bin/gdb.exe",
-            "miDebuggerPath": "D:/Programs/mingw-w64/mingw64/bin/gdb.exe",
+            "miDebuggerPath": "${config:MINGW_HOME}/bin/gdb.exe",
             "setupCommands": [
                 {
                     "description": "gdb에 자동 서식 지정 사용",
@@ -24,7 +24,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "Build Current File - Debug"
+            "preLaunchTask": "Build Only -- Debug"
         }
     ]
 }

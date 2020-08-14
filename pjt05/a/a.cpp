@@ -15,6 +15,7 @@ void* operator new(size_t size) {
 	return malloc(size);
 }
 
+
 struct Object {
 	int x,y,z;
 };

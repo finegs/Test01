@@ -10,7 +10,7 @@ SET ( PROJECT_VERSION_MINOR 1 )
 # 빌드 형상(Configuration) 및 주절주절 Makefile 생성 여부
 SET ( CMAKE_C_COMPILER gcc)
 SET ( CMAKE_CXX_COMPILER g++)
-SET ( CMAKE_BUILD_TYPE Debug )
+SET ( CMAKE_BUILD_TYPE Release )
 SET ( CMAKE_VERBOSE_MAKEFILE true )
 
 SET (BOOST_INC "D:/Programs/boost/boost_1_70_0/include/boost-1_70")

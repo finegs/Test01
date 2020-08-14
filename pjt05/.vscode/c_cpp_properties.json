@@ -6,8 +6,8 @@
                 "_DEBUG",
                 "UNICODE"
             ],
-            "cStandard": "${default}",
-            "cppStandard": "${default}",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
             "includePath": [
                 ".",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++",
@@ -16,7 +16,8 @@
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed",
                 "${config:MINGW_HOME}/x86_64-w64-mingw32/include",
-                "${config:BOOST_INC}"
+                "${config:BOOST_INC}",
+                "${workspaceFolder}/include"
             ],
             "compilerPath": "${config:MINGW_HOME}/bin/g++.exe",
             "intelliSenseMode": "gcc-x64",
@@ -29,7 +30,8 @@
                     "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include",
                     "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed",
                     "${config:MINGW_HOME}/x86_64-w64-mingw32/include",
-                    "${config:BOOST_INC}"
+                    "${config:BOOST_INC}",
+                    "${workspaceFolder}/include"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""

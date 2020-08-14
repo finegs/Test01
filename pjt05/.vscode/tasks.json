@@ -70,7 +70,7 @@
             }
         },
         {
-            "label": "Build Current File - Debug",
+            "label": "Build Only -- Debug",
             "type": "shell",
             "command": "g++",
             "args": [
@@ -78,8 +78,8 @@
                 "-DDEBUG",
                 "-DUSE_BOOST",
                 "-std=c++17",
-                "-Iinc",
                 "-I${config:BOOST_INC}",
+                "-I${workspaceFolder}/include",
                 "-o",
                 "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}",
                 "${file}",
@@ -96,7 +96,7 @@
             ]
         },
         {
-            "label": "Build Current File & Run - Debug",
+            "label": "Build & Run Debug -- Debug",
             "type": "shell",
             "command": "g++",
             "args": [
@@ -105,6 +105,7 @@
                 "-DUSE_BOOST",
                 "-Iinc",
                 "-I${config:BOOST_INC}",
+                "-I${workspaceFolder}/include",
                 "${file}",
                 "${config:MYUTIL_SRC}",
                 "-L${config:BOOST_LIB}",
