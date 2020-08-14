@@ -8,7 +8,7 @@
 #include <string>
 #include <chrono>
 #include <sstream>
-#include "my.hpp"
+#include <my.hpp>
 
 void* operator new(size_t size) {
 	std::cout << "Allocating " << size << " bytes" << std::endl;

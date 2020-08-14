@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "pool.h"
+#include <pool.h>
 
 #ifndef max
 #define max(a,b) ((a)<(b)?(b):(a))
