@@ -11,6 +11,7 @@ namespace my {
 	};
 
 	static inline TimeStamp ts() { return TimeStamp(); }
-}
+
+};
 
 #endif

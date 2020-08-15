@@ -44,15 +44,16 @@
                 "$gcc"
             ]
         },
-        {
-            "label": "Execute build.bat",
-            "command": "cmd",
-            "type": "shell",
-            "args": [
-                "build.bat"
-            ],
-            "group": "build"
-        },
+//        
+//        {
+//            "label": "Execute build.bat",
+//            "command": "cmd",
+//            "type": "shell",
+//            "args": [
+//                "build.bat"
+//            ],
+//            "group": "build"
+//        },
         {
             "label": "Make all",
             "command": "make",
@@ -66,7 +67,7 @@
             ],
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": false
             }
         },
         {
@@ -90,7 +91,10 @@
                 "-lws2_32",
                 "-pthread"
             ],
-            "group": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": [
                 "$gcc"
             ]
