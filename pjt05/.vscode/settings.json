@@ -1,7 +1,7 @@
 {
-    "MINGW_HOME": "D:/Programs/mingw64/mingw64",
-    "BOOST_INC": "D:/Programs/boost/include",
-    "BOOST_LIB": "D:/Programs/boost/lib",
+    "MINGW_HOME": "${env:MINGW_HOMW}",
+    "BOOST_INC": "${env:BOOST_INC}",
+    "BOOST_LIB": "${env:BOOST_LIB}",
     "MYUTIL_SRC":"my/my.cpp",
     "files.associations": {
         "*.tcc": "cpp",
@@ -79,7 +79,7 @@
     "cmake.configureOnOpen": false,
     "cmake.generator": "MinGW Makefiles",
     "cmake.debugConfig": {
-        "miDebuggerPath": "${config:MINGW_HOME}/bin/gdb.exe"
+        "miDebuggerPath": "${env:MINGW_HOME}/bin/gdb.exe"
     }
 
 }

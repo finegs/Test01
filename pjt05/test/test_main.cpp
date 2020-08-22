@@ -79,7 +79,7 @@ void print(T t, typename... Types) {
 
 #endif
 
-#if 1
+#if 0
 
 #include <iostream>
 #include <string>
@@ -212,3 +212,71 @@ int main() {
 	}
 }
 #endif
+
+#include <mutex>
+#include <thread>
+#include <chrono>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <sstream>
+#include <string>
+#include <my.hpp>
+
+struct Box {
+	explicit Box(const std::string& _name, int num) : name(_name), num_things{num} {}
+
+	std::string name;
+	int num_things;
+	std::mutex m;
+	friend std::ostream& operator<<(std::ostream& os, const Box& o);
+};
+
+
+std::ostream& operator<<(std::ostream& os, const Box& o) {
+	os << o.name << ":" << o.num_things;
+	return os;
+}
+
+void transfer(Box &from, Box &to, int num) {
+	std::unique_lock<std::mutex> lock1(from.m, std::defer_lock);
+	std::unique_lock<std::mutex> lock2(to.m, std::defer_lock);
+
+
+	std::lock(lock1, lock2);
+
+	from.num_things -= num;
+	to.num_things  += num;
+}
+
+std::vector<std::string> parse(std::string str) {
+	std::vector<std::string> rt;
+	std::stringstream ss;
+	ss.str(str);
+	for(std::string s; ss>>s;) {
+		rt.push_back(s);
+	}
+	return rt;
+}
+
+
+int main() {
+	Box acc1("acc1", 100);
+	Box acc2("acc2", 50);
+
+	std::thread t1(transfer, std::ref(acc1), std::ref(acc2), 10);
+	std::thread t2(transfer, std::ref(acc2), std::ref(acc1), 5);
+
+	t1.join();
+	t2.join();
+
+	std::cout << acc1 << std::endl;
+	std::cout << acc2 << std::endl;
+
+	int i = 0;
+	auto l = parse("aa bb cc");
+	std::for_each(l.begin(), l.end(), 
+		[&](std::string& s) { std::cout << my::ts() << " [" << i++ << "]" << s << "\n";});
+		
+
+}
