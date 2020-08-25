@@ -1,5 +1,5 @@
 {
-    "MINGW_HOME": "${env:MINGW_HOMW}",
+    "MINGW_HOME": "${env:MINGW_HOME}",
     "BOOST_INC": "${env:BOOST_INC}",
     "BOOST_LIB": "${env:BOOST_LIB}",
     "MYUTIL_SRC":"my/my.cpp",

@@ -5,7 +5,6 @@
 tags
 *.swo
 *.swp
-/T/
 /*.obj/
 /*.tlog/
 CMakeCache.txt
@@ -16,5 +15,5 @@ cmake_install.cmake
 Makefile
 Build/**/*
 **/*.exe
-CMakeFiles/**/*
 Makefile
+**/CMakeFiles/**
