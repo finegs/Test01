@@ -75,7 +75,6 @@
     },
     "C_Cpp.default.cStandard": "c11",
     "C_Cpp.default.cppStandard": "c++17",
-    "cmake.useCMakeServer":false,
     "cmake.configureOnOpen": false,
     "cmake.generator": "MinGW Makefiles",
     "cmake.debugConfig": {
