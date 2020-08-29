@@ -79,89 +79,26 @@ void print(T t, typename... Types) {
 
 #endif
 
-#if 0
+#if 1
 
 #include <iostream>
 #include <string>
-#include <queue>
-#include <mutex>
-#include <condition_variable>
 #include <chrono>
 #include <thread>
 #include <sstream>
 #include <atomic>
 
-class MyInst {
-	private:
-	MyInst(){
-		run.store(true);
-		pause.store(false);
-	}
+#include <my.hpp>
 
-	std::mutex mtx;
-	std::condition_variable cv;
-	std::queue<std::string> queue;
-	static std::mutex s_mtx;
-	static MyInst* inst;
-
-	public:
-	static MyInst& getInstance(){
-		// std::lock_guard<std::mutex> lg(*mtx);
-		// if(inst == NULL) inst = new MyInst();
-		// return inst*;
-		if(inst != NULL) return *inst;
-		std::lock_guard<std::mutex> lg(s_mtx);
-		if(inst == NULL) inst = new MyInst();
-		return *inst;
-	}
-	std::atomic_bool run;
-	std::atomic_bool pause;
-
-	void push(std::string msg);
-	std::string pop();
-	void clearQueue();
-};
-
-
-void MyInst::push(std::string msg) {
-	std::unique_lock<std::mutex> lk(mtx);
-
-	cv.wait(lk, [&]() { return queue.size() < 10; });
-
-	queue.push(msg);
-
-	cv.notify_all();
-}
-
-std::string MyInst::pop() {
-	std::unique_lock<std::mutex> lk(mtx);
-	cv.wait(lk, [&] () { return !queue.empty(); });
-
-	std::string msg = queue.front();
-	queue.pop();
-	// lk.unlock();
-	cv.notify_all();
-	return msg;
-}
-
-
-void MyInst::clearQueue() {
-
-	if(queue.empty()) return;
-	std::unique_lock<std::mutex> lk(mtx);
-
-	std::queue<std::string> eq;
-	std::swap(queue, eq);
-	// lk.unlock();
-	// cv.notify_all();
-}
 
 using namespace std::literals::chrono_literals;
+using namespace my;
 
-std::mutex MyInst::s_mtx;
-MyInst* MyInst::inst;
+// std::mutex MyInst::s_mtx;
+// MyInst* MyInst::inst = nullptr;
 
-int main() {
+int main(int argc, char* argv[]) {
+
 
 	MyInst::getInstance();
 
@@ -212,6 +149,8 @@ int main() {
 	}
 }
 #endif
+
+#if 0
 
 #include <mutex>
 #include <thread>
@@ -277,6 +216,7 @@ int main() {
 	auto l = parse("aa bb cc");
 	std::for_each(l.begin(), l.end(), 
 		[&](std::string& s) { std::cout << my::ts() << " [" << i++ << "]" << s << "\n";});
-		
 
 }
+
+#endif

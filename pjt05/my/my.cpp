@@ -5,7 +5,8 @@
 
 #include <my.hpp>
 
-namespace my {
+namespace my
+{
 
 	std::ostream &operator<<(std::ostream &os, const TimeStamp &o)
 	{
@@ -33,4 +34,53 @@ namespace my {
 		os << oss.str();
 		return os;
 	}
-}
+
+	MyInst& MyInst::getInstance()
+	{
+		if (inst != NULL)
+			return *inst;
+		std::lock_guard<std::mutex> lg(s_mtx);
+		if (inst == NULL)
+			inst = new MyInst();
+		return *inst;
+	}
+
+	void MyInst::push(std::string msg)
+	{
+		std::unique_lock<std::mutex> lk(mtx);
+
+		cv.wait(lk, [&]() { return queue.size() < 10; });
+
+		queue.push(msg);
+
+		cv.notify_all();
+	}
+
+	std::string MyInst::pop()
+	{
+		std::unique_lock<std::mutex> lk(mtx);
+		cv.wait(lk, [&]() { return !queue.empty(); });
+
+		std::string msg = queue.front();
+		queue.pop();
+		// lk.unlock();
+		cv.notify_all();
+		return msg;
+	}
+
+	void MyInst::clearQueue()
+	{
+
+		if (queue.empty())
+			return;
+		std::unique_lock<std::mutex> lk(mtx);
+
+		std::queue<std::string> eq;
+		std::swap(queue, eq);
+		// lk.unlock();
+		// cv.notify_all();
+	}
+
+	std::mutex MyInst::s_mtx;
+	MyInst* MyInst::inst = nullptr;
+} // namespace my
