@@ -213,6 +213,8 @@ int main() {
 }
 #endif
 
+#if 1
+
 #include <mutex>
 #include <thread>
 #include <chrono>
@@ -222,6 +224,7 @@ int main() {
 #include <algorithm>
 #include <sstream>
 #include <string>
+
 #include <my.hpp>
 
 struct Box {
@@ -232,7 +235,6 @@ struct Box {
 	std::mutex m;
 	friend std::ostream& operator<<(std::ostream& os, const Box& o);
 };
-
 
 std::ostream& operator<<(std::ostream& os, const Box& o) {
 	os << " Box {\"name\": " << o.name << ", \"num\":" << o.num_things << "}";
@@ -268,6 +270,16 @@ std::ostream& operator<<(std::ostream& out, const std::vector<T>& v) {
 	return out;
 }
 
+template<auto...> struct C {};
+C<'C', 0, 2L, nullptr> x;
+
+
+// struct AA { friend bool operator==(const AA&, const AA&) = default; };
+// template<AA a> void f() {
+// 	&a;
+// 	const AA& ra = a, &rb = a;
+// 	assert(&ra == &rb);
+// }
 
 int main() {
 	Box acc1("acc1", 100);
@@ -293,6 +305,9 @@ int main() {
 
 	std::cout << l << '\n';
 
+	std::cin.get();
 
 	return 0;
 }
+
+#endif

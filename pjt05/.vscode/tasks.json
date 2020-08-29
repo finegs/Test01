@@ -18,6 +18,13 @@
     "presentation": {
         "reveal": "always"
     },
+    "inputs":[
+        {
+            "id":"MakeUserInput",
+            "type": "promptString",
+            "description": "type of input variables"
+        }
+    ],
     "tasks": [
         {
             "label": "CMake -G \"MinGW Makefiles\"",
@@ -43,6 +50,23 @@
             "problemMatcher": [
                 "$gcc"
             ]
+        },
+        {
+            "label": "Make Target - UserInput",
+            "command": "make",
+            "type": "shell",
+            "args": [
+                "-f",
+                "Makefile",
+                "${input:MakeUserInput}"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
 //        
 //        {
@@ -79,12 +103,12 @@
                 "-DDEBUG",
                 "-DUSE_BOOST",
                 "-std=c++17",
-                "-Iinclude",
+                "-I${workspaceFolder}/include",
                 "-I${config:BOOST_INC}",
                 "-o",
                 "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}",
                 "${file}",
-                "${config:MYUTIL_SRC}",
+                "${config:myDefaultSrc}",
                 "-L${config:BOOST_LIB}",
                 "-L.",
                 "-lm",
@@ -107,11 +131,11 @@
                 "-g",
                 "-DDEBUG",
                 "-DUSE_BOOST",
-                "-Iinclude",
-                "-I${config:BOOST_INC}",
+                "-I${workspaceFolder}/include",
+                "-I${env:BOOST_INC}",
                 "${file}",
-                "${config:MYUTIL_SRC}",
-                "-L${config:BOOST_LIB}",
+                "${config:myDefaultSrc}",
+                "-L${env:BOOST_LIB}",
                 "-L.",
                 "-lm",
                 "-lws2_32",
