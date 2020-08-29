@@ -85,7 +85,7 @@
     "C_Cpp.default.cppStandard": "c++17",
     "cmake.configureOnOpen": false,
     "cmake.ctest.parallelJobs": 2,
-    "cmake.generator": "",
+    "cmake.generator": "MinGW Makefiles",
     "cmake.debugConfig": {
         "miDebuggerPath": "gdb"
     },

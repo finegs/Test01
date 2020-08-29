@@ -4,18 +4,12 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "Python: Current File",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal"
-        },
+
         {
             "name": "gdb - Launch CurrentFile",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}.exe",
+            "program": "${workspaceFolder}/build/Debug/${file}/${fileBasenameNoExtension}.exe",
             "stopAtEntry": false,
             "envFile": "${workspaceFolder}/project.env",
             "cwd": "${workspaceFolder}/build/Debug",
@@ -30,6 +24,13 @@
                 }
             ],
             "preLaunchTask": "Build Only -- Debug"
+        }
+        ,{
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
         }
     ]
 }
