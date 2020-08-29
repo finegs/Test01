@@ -5,6 +5,18 @@
 #include <ctime>
 #include <cstdlib> // defines putenv in POSIX
 #include <vector>
+
+//template<typename T>
+//int m_for_each(const std::vector<T>& v, int(*func)(T t)) {
+//	for(T t : v) func(t);
+//	return 0;
+//}
+
+int m_for_each(const std::vector<uint8_t>& values, int(*func)(uint8_t t)) {
+	for(uint8_t t:values) func(t);
+	return 0;
+}
+
 int main() {
 
 	int nInput;
@@ -20,17 +32,18 @@ int main() {
     putenv((char*)tz.data());
     std::cout << "Seoul: " << std::put_time(std::localtime(&t), "%c %Z") << std::endl;
 
-	std::cout << "aaaaaaaaaaa";
 	std::vector<uint8_t> v;
-	v.push_back((uint8_t)0);
 	
+	for(int i=0;i<nInput;i++) v.push_back((uint8_t)nInput);
+
 	std::cout << " ##################" << std::endl;
-	for(size_t i = 0;i<v.size();i++) {
-		std::cout << std::to_string(v[i]);
-		std::cout << ((i%5==0) ? "\n" : "\t");
-	}
+	
+	m_for_each(v, [](uint8_t i) { std::cout<<std::to_string(i); std::cout<<((i%5==0)?"\n":"\t"); return 0;});
+
 	std::cout << std::endl;
 	std::cout << "Good" << std::endl;
+
+	std::cin.get();
 
 #if 0
 	int nInput = 0;
