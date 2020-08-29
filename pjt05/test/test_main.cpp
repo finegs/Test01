@@ -216,6 +216,7 @@ int main() {
 #if 1
 
 #include <mutex>
+#include <cstdlib>
 #include <thread>
 #include <chrono>
 #include <iostream>
