@@ -57,10 +57,9 @@ ADD_SUBDIRECTORY(test)
 ADD_DEPENDENCIES(t my)
 
 IF (WIN32)
-
 	LINK_DIRECTORIES ( ${BOOST_LIB} )
-
+	MESSAGE(INFO " : Link Boost Librarys(${BOOST_LIB})")
+	LINK_LIBRARIES("-lcrypt -pthread -lm -lrt")
 ELSE()
-	ADD_SUBDIRECTORY(sht25)
-	TARGET_LINK_LIBRARIES(sht2x "-lwiringPi -lcrypt -pthread -lm -lrt")
+	LINK_LIBRARIES("-lcrypt -lpthread -lm -lrt")
 ENDIF()

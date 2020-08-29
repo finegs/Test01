@@ -33,6 +33,17 @@
             ]
         },
         {
+            "label": "CMake -G \".\"",
+            "command": "cmake",
+            "type": "shell",
+            "args": [
+                "."
+            ],
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
             "label": "Make clean",
             "command": "make",
             "type": "shell",
@@ -60,7 +71,7 @@
             "type": "shell",
             "args": [
                 "-f",
-                "makefile"
+                "Makefile"
             ],
             "problemMatcher": [
                 "$gcc"

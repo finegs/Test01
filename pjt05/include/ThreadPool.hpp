@@ -1,6 +1,7 @@
 #ifndef __THREAD_POOL_HPP
 #define __THREAD_POOL_HPP
 
+#include<cstdlib>
 #include <vector>
 #include <queue>
 #include <memory>

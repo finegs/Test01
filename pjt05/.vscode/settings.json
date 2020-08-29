@@ -76,9 +76,9 @@
     "C_Cpp.default.cStandard": "c11",
     "C_Cpp.default.cppStandard": "c++17",
     "cmake.configureOnOpen": false,
-    "cmake.generator": "MinGW Makefiles",
+    "cmake.generator": "Unix Makefiles",
     "cmake.debugConfig": {
-        "miDebuggerPath": "${env:MINGW_HOME}/bin/gdb.exe"
+        "miDebuggerPath": "gdb"
     }
 
 }

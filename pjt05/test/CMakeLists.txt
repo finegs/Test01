@@ -12,6 +12,10 @@ TARGET_INCLUDE_DIRECTORIES(t_main
 TARGET_LINK_LIBRARIES(t_main
     PUBLIC
         my
+        pthread
+        rt
+        crypt
+        m
 )
 
 TARGET_INCLUDE_DIRECTORIES(ThreadPool 
@@ -22,4 +26,8 @@ TARGET_INCLUDE_DIRECTORIES(ThreadPool
 TARGET_LINK_LIBRARIES(ThreadPool
     PUBLIC
         my
+        pthread
+        rt
+        crypt
+        m
 )
