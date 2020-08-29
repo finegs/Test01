@@ -1,0 +1,148 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "runner": "terminal",
+    "windows": {
+      "command": "cmd",
+      "args": [ "/C" ]
+    },
+    "linux": {
+      "command": "sh",
+      "args": [ "-c" ]
+    },
+    "osx": {
+      "command": "sh",
+      "args": [ "-c" ]
+    },
+    "presentation": {
+        "reveal": "always"
+    },
+    "tasks": [
+        {
+            "label": "CMake -G \"MinGW Makefiles\"",
+            "command": "cmake",
+            "type": "shell",
+            "args": [
+                "-G",
+                "\"MinGW Makefiles\"",
+                "."
+            ],
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "Make clean",
+            "command": "make",
+            "type": "shell",
+            "args": [
+                "tc=win32",
+                "clean"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+//        
+//        {
+//            "label": "Execute build.bat",
+//            "command": "cmd",
+//            "type": "shell",
+//            "args": [
+//                "build.bat"
+//            ],
+//            "group": "build"
+//        },
+        {
+            "label": "Make all",
+            "command": "make",
+            "type": "shell",
+            "args": [
+                "-f",
+                "makefile"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build Only -- Debug",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-DDEBUG",
+                "-DUSE_BOOST",
+                "-std=c++17",
+                "-Iinclude",
+                "-I${config:BOOST_INC}",
+                "-o",
+                "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}",
+                "${file}",
+                "${config:MYUTIL_SRC}",
+                "-L${config:BOOST_LIB}",
+                "-L.",
+                "-lm",
+                "-lws2_32",
+                "-pthread"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Build & Run Debug -- Debug",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-DDEBUG",
+                "-DUSE_BOOST",
+                "-Iinclude",
+                "-I${config:BOOST_INC}",
+                "${file}",
+                "${config:MYUTIL_SRC}",
+                "-L${config:BOOST_LIB}",
+                "-L.",
+                "-lm",
+                "-lws2_32",
+                "-pthread",
+                "-o",
+                "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}",
+                "&&",
+                "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "clear": false,
+                "showReuseMessage": false
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "type": "shell",
+            "label": "execute",
+            "command": "cd ${workspaceFolder}/build/Debug && ${fileBasenameNoExtension}",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
+    ]
+}

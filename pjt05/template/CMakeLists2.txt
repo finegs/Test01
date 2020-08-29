@@ -1,0 +1,3 @@
+project(pjt05 LANGUAGES CXX VERSION 0.0.1)
+
+add_subdiretory(a)
