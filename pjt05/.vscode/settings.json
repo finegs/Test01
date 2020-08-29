@@ -1,8 +1,16 @@
 {
-    "MINGW_HOME": "${env:MINGW_HOME}",
-    "BOOST_INC": "${env:BOOST_INC}",
-    "BOOST_LIB": "${env:BOOST_LIB}",
-    "MYUTIL_SRC":"my/my.cpp",
+    "MINGW_HOME": "D:/Programs/mingw64/mingw64",
+    "BOOST_HOME": "D:/Programs/boost",
+    "BOOST_INC": "D:/Programs/boost/include",
+    "BOOST_LIB": "D:/Programs/boost/lib",
+    "myDefaultSrc": [
+        "my/my.cpp"
+    ],
+    "myDefaultInputPath": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/include"
+    ],
+    
     "files.associations": {
         "*.tcc": "cpp",
         "deque": "cpp",
@@ -75,13 +83,16 @@
     },
     "C_Cpp.default.cStandard": "c11",
     "C_Cpp.default.cppStandard": "c++17",
-    "cmake.useCMakeServer":false,
     "cmake.configureOnOpen": false,
-    "cmake.generator": "MinGW Makefiles",
+    "cmake.ctest.parallelJobs": 2,
+    "cmake.generator": "",
     "cmake.debugConfig": {
-        "miDebuggerPath": "${env:MINGW_HOME}/bin/gdb.exe"
-    }
-
+        "miDebuggerPath": "gdb"
+    },
+    "cmake.preferredGenerators": [
+        "MinGW Makefiles",
+        "Unix Makefiles"
+    ]
 }
 
     

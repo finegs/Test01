@@ -16,13 +16,12 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}.exe",
-            "args": [],
             "stopAtEntry": false,
+            "envFile": "${workspaceFolder}/project.env",
             "cwd": "${workspaceFolder}/build/Debug",
-            "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "${env:MINGW_HOME}/bin/gdb.exe",
+            "miDebuggerPath": "gdb.exe",
             "setupCommands": [
                 {
                     "description": "gdb에 자동 서식 지정 사용",

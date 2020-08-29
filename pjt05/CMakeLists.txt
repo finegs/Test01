@@ -10,7 +10,7 @@ SET ( PROJECT_VERSION_MINOR 1 )
 # 빌드 형상(Configuration) 및 주절주절 Makefile 생성 여부
 SET ( CMAKE_C_COMPILER gcc)
 SET ( CMAKE_CXX_COMPILER g++)
-SET ( CMAKE_BUILD_TYPE Release )
+SET ( CMAKE_BUILD_TYPE Debug )
 SET ( CMAKE_VERBOSE_MAKEFILE true )
 
 SET (BOOST_INC "D:/Programs/boost/boost_1_70_0/include/boost-1_70")
@@ -31,10 +31,13 @@ SET(CMAKE_C_FLAGS -std=c11)
 SET(CMAKE_CXX_FLAGS -std=c++17)
 
 # 공통 링크 라이브러리 (-l)
-IF(WIN32)
-	LINK_LIBRARIES( -lws2_32 -pthread )
+IF(WIN32 OR WIN64 )
+    LINK_DIRECTORIES ( ${BOOST_LIB} )
+	MESSAGE(INFO " : Link Boost Librarys(${BOOST_LIB})")
+	LINK_LIBRARIES(-lws2_32 -pthread -lm )
+ELSE()
+	LINK_LIBRARIES(-lcrypt -lpthread -lm -lrt)
 ENDIF()
- 
  
 # "Debug" 형상 한정 컴파일 옵션, 링크 옵션
 SET ( CMAKE_C_FLAGS_DEBUG "-g " )
@@ -56,11 +59,4 @@ ADD_SUBDIRECTORY(test)
 
 ADD_DEPENDENCIES(t my)
 
-IF (WIN32)
 
-	LINK_DIRECTORIES ( ${BOOST_LIB} )
-
-ELSE()
-	ADD_SUBDIRECTORY(sht25)
-	TARGET_LINK_LIBRARIES(sht2x "-lwiringPi -lcrypt -pthread -lm -lrt")
-ENDIF()

@@ -150,16 +150,19 @@ int main(int argc, char* argv[]) {
 }
 #endif
 
-#if 0
+#if 1
 
 #include <mutex>
+#include <cstdlib>
 #include <thread>
 #include <chrono>
 #include <iostream>
+#include <iterator>
 #include <vector>
 #include <algorithm>
 #include <sstream>
 #include <string>
+
 #include <my.hpp>
 
 struct Box {
@@ -171,16 +174,14 @@ struct Box {
 	friend std::ostream& operator<<(std::ostream& os, const Box& o);
 };
 
-
 std::ostream& operator<<(std::ostream& os, const Box& o) {
-	os << o.name << ":" << o.num_things;
+	os << " Box {\"name\": " << o.name << ", \"num\":" << o.num_things << "}";
 	return os;
 }
 
 void transfer(Box &from, Box &to, int num) {
 	std::unique_lock<std::mutex> lock1(from.m, std::defer_lock);
 	std::unique_lock<std::mutex> lock2(to.m, std::defer_lock);
-
 
 	std::lock(lock1, lock2);
 
@@ -198,6 +199,25 @@ std::vector<std::string> parse(std::string str) {
 	return rt;
 }
 
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::vector<T>& v) {
+	if(v.empty()) return out;
+	out << "[";
+	std::copy(v.begin(), v.end(), std::ostream_iterator<T>(out, ", "));
+	out << "\b\b]";
+	return out;
+}
+
+template<auto...> struct C {};
+C<'C', 0, 2L, nullptr> x;
+
+
+// struct AA { friend bool operator==(const AA&, const AA&) = default; };
+// template<AA a> void f() {
+// 	&a;
+// 	const AA& ra = a, &rb = a;
+// 	assert(&ra == &rb);
+// }
 
 int main() {
 	Box acc1("acc1", 100);
@@ -216,7 +236,17 @@ int main() {
 	auto l = parse("aa bb cc");
 	std::for_each(l.begin(), l.end(), 
 		[&](std::string& s) { std::cout << my::ts() << " [" << i++ << "]" << s << "\n";});
+	
+	std::cout << '\n';
 
+	std::cout << " 2. " << '\n';
+
+	std::cout << l << '\n';
+
+	std::cin.get();
+
+	return 0;
 }
 
+>>>>>>> df05d5717327741c22452b701dcc7cd8cb2244cb
 #endif

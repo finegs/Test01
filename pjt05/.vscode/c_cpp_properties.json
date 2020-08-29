@@ -1,4 +1,11 @@
 {
+    "env": {
+        "myDefaultInputPath": [
+            "${config:BOOST_INC}",
+            "${workspaceFolder}",
+            "${workspaceFolder}/include"
+        ]
+    },
     "configurations": [
         {
             "name": "Win32",
@@ -6,32 +13,29 @@
                 "_DEBUG",
                 "UNICODE"
             ],
+            "compilerArgs": ["-pedantic"],
             "cStandard": "c11",
             "cppStandard": "c++17",
             "includePath": [
-                ".",
+                "${myDefaultInputPath}",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed",
-                "${config:MINGW_HOME}/x86_64-w64-mingw32/include",
-                "${config:BOOST_INC}",
-                "${workspaceFolder}/include"
+                "${config:MINGW_HOME}/x86_64-w64-mingw32/include"
             ],
             "compilerPath": "${config:MINGW_HOME}/bin/g++.exe",
             "intelliSenseMode": "gcc-x64",
             "browse": {
                 "path": [
-                    "${workspaceFolder}",
+                    "${myDefaultInputPath}",
                     "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++",
                     "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32",
                     "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward",
                     "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include",
                     "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed",
-                    "${config:MINGW_HOME}/x86_64-w64-mingw32/include",
-                    "${config:BOOST_INC}",
-                    "${workspaceFolder}/include"
+                    "${config:MINGW_HOME}/x86_64-w64-mingw32/include"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
