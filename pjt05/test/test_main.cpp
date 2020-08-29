@@ -79,7 +79,7 @@ void print(T t, typename... Types) {
 
 #endif
 
-#if 1
+#if 0
 
 #include <iostream>
 #include <string>
@@ -248,5 +248,4 @@ int main() {
 	return 0;
 }
 
->>>>>>> df05d5717327741c22452b701dcc7cd8cb2244cb
 #endif
