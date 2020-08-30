@@ -79,13 +79,15 @@
         "ratio": "cpp",
         "fstream": "cpp",
         "future": "cpp",
-        "mutex": "cpp"
+        "mutex": "cpp",
+        "scoped_allocator": "cpp"
     },
     "C_Cpp.default.cStandard": "c11",
     "C_Cpp.default.cppStandard": "c++17",
     "cmake.configureOnOpen": false,
     "cmake.ctest.parallelJobs": 2,
     "cmake.generator": "MinGW Makefiles",
+    "cmake.buildDirectory": "${workspaceFolder}/build/Debug",
     "cmake.debugConfig": {
         "miDebuggerPath": "gdb"
     },
