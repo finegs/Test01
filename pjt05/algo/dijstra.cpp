@@ -64,18 +64,18 @@ void Graph::shortestPath(int src) {
     dist[src] = 0;
 
     while(!pq.empty()) {
-        int u = pq.top().second;
+        int cur = pq.top().second;
         pq.pop();
 
         list<pair<int, int>>::iterator i;
-        for(i = adj[u].begin();i != adj[u].end();++i) {
-            int v = (*i).first;
+        for(i = adj[cur].begin();i != adj[cur].end();++i) {
+            int adjNode = (*i).first;
             int weight = (*i).second;
 
-            if(dist[v] > dist[u] + weight) {
-                dist[v] = dist[u] + weight;
+            if(dist[adjNode] > dist[cur] + weight) {
+                dist[adjNode] = dist[cur] + weight;
 
-                pq.push({dist[v], v});
+                pq.push({dist[adjNode], adjNode});
             }
         }
     }
