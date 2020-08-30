@@ -23,7 +23,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "Build Only -- Debug"
+            "preLaunchTask": "Build Only -- build/Debug"
         }
         ,{
             "name": "Python: Current File",

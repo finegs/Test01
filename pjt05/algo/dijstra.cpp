@@ -16,12 +16,14 @@
 #include <algorithm>
 #include <unordered_map>
 #include <string>
+#include <my.hpp>
 
 #define INF 0x3f3f3f3f
 using namespace  std;
 
 
-typedef pair<int, int> iPair;
+// typedef pair<int, int> iPair;
+using iPair = pair<int,int>;
 
 class Graph {
     int V;
@@ -43,7 +45,7 @@ Graph::Graph(int v) {
 
 void Graph::addEdge(int u, int v, int w) {
     adj[u].push_back({v,w});
-    adj[u].push_back({u,w});
+    adj[v].push_back({u,w});
 }
 
 
@@ -78,7 +80,7 @@ void Graph::shortestPath(int src) {
         }
     }
 
-    cout << "Vertex Distance from source \n";
+    cout << my::ts() << "Vertex Distance from source \n";
     for(int i = 0;i<V;++i) {
         printf("%d \t\t %d\n", i, dist[i]);
     }
@@ -108,12 +110,14 @@ int main(int argc, char* argv[]) {
 
     fstream fs(fileName, fs.binary|fs.in);
     
+    int i;
     string line;
     stringstream ss;
     vector<tuple<int,int,int>> tl;
     while(getline(fs,line)) {
         int s,d,w;
         ss.str(line);
+        cout << my::ts() << (i++) << " : " << line << '\n';
         ss >> s >> d >> w;
         tl.push_back({s,d,w});
     }
@@ -127,6 +131,8 @@ int main(int argc, char* argv[]) {
     }
     
     g.shortestPath(0);
+
+    getline(cin, line);
 }
 
 #endif
