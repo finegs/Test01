@@ -162,6 +162,8 @@ int main(int argc, char* argv[]) {
 #include <algorithm>
 #include <sstream>
 #include <string>
+#include <queue>
+#include <vector>
 
 #include <my.hpp>
 
@@ -281,6 +283,20 @@ int main() {
 
 	std::cout << "yy : " << yy << '\n';
 	delete yy;
+
+	std::priority_queue<int, std::vector<int>, std::greater<int>> pq;
+
+	srand(NULL);
+	size_t n;
+	for (size_t i = 0; i < 10; i++)
+	{
+		pq.push(n = (rand()%100));
+		std::cout << i << ":" << n;
+		std::cout << " " << '\n';
+	}
+
+	while(!pq.empty()) { std::cout << pq.top() << " "; pq.pop(); }
+	std::cout << '\n';
 
 	std::cin.get();
 

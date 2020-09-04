@@ -37,8 +37,7 @@
                     "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed",
                     "${config:MINGW_HOME}/x86_64-w64-mingw32/include"
                 ],
-                "limitSymbolsToIncludedHeaders": true,
-                "databaseFilename": ""
+                "limitSymbolsToIncludedHeaders": true
             },
             "configurationProvider": "ms-vscode.cmake-tools"
         }
