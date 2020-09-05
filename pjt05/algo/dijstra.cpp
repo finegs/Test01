@@ -96,11 +96,12 @@ void foreach(Iter current, Iter end, Callable op, Args const&... args) {
     }
 }
 
-template<typename Map, typename Key, typename... Args>
-int invokeOnKey(Map map, Key key, Args const&... args) {
+template<typename Map, typename Key, typename ResultCode, typename... Args>
+int invokeOnKey(Map map, Key key, ResultCode rc, Args const&... args) {
     if(map.end() == map.find(key)) return -1;
-    Callable& op = map[key];
-    return std::invoke(op, args...);
+	// Callable& op = map[key];
+	auto& op = map[key];
+    return std::invoke(op, args..., rc);
 }
 
 int main(int argc, char* argv[]) {
@@ -150,7 +151,6 @@ int main(int argc, char* argv[]) {
     
     g.shortestPath(0);
 
-
     std::cout << my::ts() << " foreach test" << '\n';
 
     foreach(tl.begin(), tl.end(), [](tuple<int,int,int> t) {
@@ -160,14 +160,16 @@ int main(int argc, char* argv[]) {
     typedef std::function<int(const std::string&...)> Func;
     std::unordered_map<std::string, Func> fmap;
 
-    Func ff1 = [](const std::string& a, const std::string& b) {
+    Func ff1 = [](const std::string& a, const std::string& b) int {
         std::cout << a + b << '\n';
         return 0;
     };
 
-    fmap.insert({"f1", ff1});
+    fmap.emplace("f1", ff1);
 
-    invokeOnKey(fmap, "f1", "abc", "def");
+	int rc;
+
+    invokeOnKey(fmap, rc, "f1", "abc", "def");
 
     getline(cin, line);
 }
