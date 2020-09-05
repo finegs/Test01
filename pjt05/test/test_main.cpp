@@ -162,11 +162,14 @@ int main(int argc, char* argv[]) {
 #include <algorithm>
 #include <sstream>
 #include <string>
+#include <queue>
+#include <vector>
 
 #include <my.hpp>
 
 struct Box {
-	explicit Box(const std::string& _name, int num) : name(_name), num_things{num} {}
+	explicit Box(const std::string& _name, int num) 
+		: name(_name), num_things{num} {}
 
 	std::string name;
 	int num_things;
@@ -211,6 +214,30 @@ std::ostream& operator<<(std::ostream& out, const std::vector<T>& v) {
 template<auto...> struct C {};
 C<'C', 0, 2L, nullptr> x;
 
+template<class T> struct A { 
+	A(T _a,T _b) : a(_a), b(_b) {}
+	T a;
+	T b;
+
+	template <class U>
+	friend std::ostream &operator<<(std::ostream &os, const A<U> &o);
+
+	template <class U>
+	friend std::istream &operator>>(std::istream &is, A<U> &o);
+};
+
+template<class U>
+std::ostream& operator<< (std::ostream& os, const A<U>& o) {
+	os << o.a << ":" << o.b << "";
+	return os;
+}
+
+template<class U>
+std::istream& operator>> (std::istream& is, A<U>& o) {
+	is >> o.a >> o.b;
+	return is;
+}
+auto y = new A{1,2};
 
 // struct AA { friend bool operator==(const AA&, const AA&) = default; };
 // template<AA a> void f() {
@@ -242,6 +269,34 @@ int main() {
 	std::cout << " 2. " << '\n';
 
 	std::cout << l << '\n';
+	
+	auto& ry = *y;
+
+	std::cout << "y : " << *y << '\n'; 
+
+	delete y;
+
+	auto yy = new A{0,0};
+
+	std::cout << "yy : (ex. a b)" << '\n';
+	std::cin >> *yy;
+
+	std::cout << "yy : " << yy << '\n';
+	delete yy;
+
+	std::priority_queue<int, std::vector<int>, std::greater<int>> pq;
+
+	srand(NULL);
+	size_t n;
+	for (size_t i = 0; i < 10; i++)
+	{
+		pq.push(n = (rand()%100));
+		std::cout << i << ":" << n;
+		std::cout << " " << '\n';
+	}
+
+	while(!pq.empty()) { std::cout << pq.top() << " "; pq.pop(); }
+	std::cout << '\n';
 
 	std::cin.get();
 

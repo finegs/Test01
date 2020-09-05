@@ -9,7 +9,7 @@
             "name": "gdb - Launch CurrentFile",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Debug/${file}/${fileBasenameNoExtension}.exe",
+            "program": "${workspaceFolder}/build/Debug/${fileBasenameNoExtension}.exe",
             "stopAtEntry": false,
             "envFile": "${workspaceFolder}/project.env",
             "cwd": "${workspaceFolder}/build/Debug",
@@ -23,7 +23,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "Build Only -- Debug"
+            "preLaunchTask": "Build Only -- build/Debug"
         }
         ,{
             "name": "Python: Current File",

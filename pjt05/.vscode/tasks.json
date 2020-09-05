@@ -106,7 +106,7 @@
             }
         },
         {
-            "label": "Build Only -- Debug",
+            "label": "Build Only -- build/Debug",
             "type": "shell",
             "command": "g++",
             "args": [
