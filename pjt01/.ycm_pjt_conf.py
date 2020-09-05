@@ -61,15 +61,10 @@ flags = [
 # For a C project, you would set this to 'c' instead of 'c++'.
 '-x', 'c++',
 '-std=c++17',
-#'-target', 'x86_64-pc-windows-gnu++',
-'-isystem', '/usr/include/c++/9',
-'-isystem', '/usr/include/arm-linux-gnueabihf/c++/9',
-'-isystem', '/usr/include/c++/9/backward',
-'-isystem', '/usr/lib/gcc/arm-linux-gnueabihf/9/include',
-'-isystem', '/usr/local/include',
-'-isystem', '/usr/lib/gcc/arm-linux-gnueabihf/9/include-fixed',
-'-isystem', '/usr/include/arm-linux-gnueabihf',
-'-isystem', '/usr/include',
+'-target', 'x86_64-pc-windows-gnu++',
+'-isystem', 'D:/Programs/mingw64/mingw64//lib/gcc/x86_64-w64-mingw32/8.1.0/include',
+'-isystem', 'D:/Programs/mingw64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed',
+'-isystem', 'D:/Programs/mingw64/mingw64/x86_64-w64-mingw32/include'
 ]
 
 # Clang automatically sets the '-std=' flag to 'c++14' for MSVC 2015 or later,

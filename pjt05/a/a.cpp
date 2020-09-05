@@ -9,12 +9,12 @@
 #include <chrono>
 #include <sstream>
 #include <my.hpp>
+#include <utility>
 
 void* operator new(size_t size) {
 	std::cout << "Allocating " << size << " bytes" << std::endl;
 	return malloc(size);
 }
-
 
 struct Object {
 	int x,y,z;
@@ -39,7 +39,78 @@ class Singleton {
 Singleton Singleton::s_Instance;
 
 
+template<typename T>
+T passR(T&& arg) {
+	std::remove_reference_t<T> x;
+	x = arg*arg;
+	arg += x;
+	return arg;
+}
+
+template<typename T>
+T add(T&& o) {
+	o++;
+	return o;
+}
+
+template<typename T>
+void g(T&);
+template<typename T>
+void g(T const&);
+template<typename T>
+void g(T&&);
+
+template<typename T>
+void forwardToG(T&& x) {
+	g(std::forward<T>(x));
+}
+
+class Clz {
+	public:
+		std::string name;
+	friend std::ostream& operator<<(std::ostream& os, const Clz& o);
+};
+
+std::ostream& operator<<(std::ostream& os, const Clz& o) {
+	os << "{\"name\":" << "\"" << o.name << "\"}";
+	return os;
+}
+
+// template<typename T>
+void g(Clz& o) {
+	std::cout << "T& : " <<  o << '\n';
+}
+
+void g(Clz const& o) {
+	std::cout << "T const& : " <<  o << '\n';
+}
+
+void g(Clz&& o) {
+	std::cout << "T&& : " <<  o << '\n';
+}
+
+using namespace std;
+
 int main() {
+
+// passR(42);
+// int i;
+// passR(i);
+
+	int i;
+	cout << " i : "; cout.flush();
+	cin >> i;
+	cin.clear(); 
+	cout << "add(" << i << ") : " << passR(i) << endl;
+
+	// string l;
+	// getline(cin, l);
+
+	Clz cc;
+	cc.name = "Name";
+	forwardToG(cc);
+
+	system("pause");
 
 #if 0
 	int nInput;
@@ -77,6 +148,7 @@ int main() {
 
 #endif
 
+#if 0
 	std::string m = "Hello";
 	m.insert(3, "  ");
 	m.replace(3, 2, "");
@@ -86,6 +158,7 @@ int main() {
 
 	std::string line;
 	std::getline(std::cin, line);
+#endif
 
 #if 0
 	EFEM Temp
