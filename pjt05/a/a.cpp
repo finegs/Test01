@@ -10,15 +10,28 @@
 #include <sstream>
 #include <my.hpp>
 #include <utility>
+#include <functional>
 
-void* operator new(size_t size) {
+void* operator new(size_t size, std::align_val_t al) {
+	std::cout << "Allocating " << size << " bytes" << std::endl;
+	return malloc(size);
+}
+
+void* operator new[](size_t size, std::align_val_t al) {
 	std::cout << "Allocating " << size << " bytes" << std::endl;
 	return malloc(size);
 }
 
 struct Object {
 	int x,y,z;
+	friend std::ostream& operator<<(std::ostream& os, const Object& o);
 };
+
+std::ostream& operator<<(std::ostream& os, const Object& o) {
+	os << "{" << o.x << "," << o.y << "," << o.z << ")";
+	return os;
+}
+
 
 class Singleton {
 	public:
@@ -96,6 +109,30 @@ int main() {
 // passR(42);
 // int i;
 // passR(i);
+
+	{
+		std::unique_ptr<Object[]> aaa = std::make_unique<Object[]>(10);
+
+		aaa[0].x = 100;
+		aaa[9].z = 200;
+
+		int ii = 0;
+		cout <<  __LINE__ << " : " << '\n';
+		for_each(next(aaa.get(), 0), next(aaa.get(), 10), [&](Object& o) {
+			o.z = o.x*1 + o.y*2 + ii++;
+		});
+		cout << '\n';
+
+		cout <<  __LINE__ << " : " << '\n';
+		for_each(&aaa[0], &aaa[10], [] (Object& o) { cout << o << ",";});
+		cout << '\n';
+
+		cout <<  __LINE__ << " : " << '\n';
+		for_each(std::next(aaa.get(), 0), next(aaa.get(), 10), [](const Object& o) {
+			cout << o << ',';
+		});
+		cout << '\n';
+	}
 
 	int i;
 	cout << " i : "; cout.flush();
