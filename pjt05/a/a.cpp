@@ -4,16 +4,21 @@
 #include <string>
 using namespace std;
 
+void (*queue_print)(int *queue, int *begin, int *end);
+
+void qprt(int *queue, int *begin,int *end);
+
 int main()
 {
     std::ios_base::sync_with_stdio();
     
-    int queue[10000] = {0,};
+	const int queue_size = 10000;
+    int queue[queue_size] = {0,};
     int begin = 0;
     int end = 0;
+	queue_print = &qprt;
 
     int n = 0;
-
     string command;
     int value;
     cin >> n;
@@ -23,9 +28,29 @@ int main()
         
         if (command == "push")
         {
-            cin >> value;
-            queue[end] = value;
-            end++;
+			cin >> value;
+			queue[end] = value;
+			end++;
+		}
+        else if (command == "npush")
+        {
+			int i = 0, cnt = 0;
+			cin >> cnt;
+			cout << "Command : " << command << ", n = " << n << ", cnt = " << cnt << " is started" << '\n';
+            while(i<cnt) {
+				try
+				{
+					cin >> value;
+					queue[end++] = value;
+					i++;
+				}
+				catch(const std::exception& e)
+				{
+					std::cerr << "fail to npush " << "currennt cnt = " << cnt << ", Reson = " << e.what() << '\n';
+					break;
+				}
+			}
+			cout << "Command : " << command << ", n = " << n << ", cnt = " << cnt << " is completed" << '\n';
         }
         else if (command == "pop")
         {
@@ -38,10 +63,39 @@ int main()
             cout << queue[begin] << '\n';
             begin++;
         }
+        else if (command == "npop")
+        {
+			int i = 0, cnt = 0;
+			cin >> cnt;
+			
+			while(i++<cnt) cout << queue[begin++] << '\n';
+
+			// queue_print(queue, queue+begin, queue+end;
+			// while (i < n && begin != end) {
+			// 	cout << "queue[" << end << "]=" << queue[begin++] << '\n';
+			// }
+            // if (begin == end) {
+            //     cout << "-1" << '\n';
+            //     continue;
+            // }
+
+            // cout << queue[begin] << '\n';
+            // begin++;
+        }
+		else if (command == "setn")
+        {
+			cin >> n;
+            cout << "Command : " << command << ", n = " << n << " executed" << '\n';
+        }
         else if (command == "size")
         {
             cout << end - begin << '\n';
         }
+		else if (command == "print") {
+			cout << "Command : " << command << ", n = " << n << " is started" << '\n';
+			queue_print(queue, queue+begin, queue+end);
+			cout << "Command : " << command << ", n = " << n << " is complited" << '\n';
+		}
         else if (command == "empty")
         {
             if (end - begin == 0)
@@ -73,7 +127,22 @@ int main()
 
             cout << queue[end - 1] << '\n';
         }
-    }
+		else {
+			cout << "Unsupported Command : n = " << n << ", Command : " << command << '\n';
+			cin.clear();
+		}
+	}
+
+	return 0;
+}
+
+void qprt(int *q, int* begin, int* end) {
+	int i = 0;
+	int *cur = begin;
+	while(cur != end) {
+		cout << "queue["<< i++ <<"]="<< (*cur++) << '\n';
+	}
+}
     
 #endif
 
@@ -191,7 +260,11 @@ int main() {
 	forwardToG(cc);
 
 	system("pause");
+
+		return 0;
+}
 #endif
+
 #if 0
 	int nInput;
 	printf("n:"); fflush(stdout);
@@ -226,6 +299,9 @@ int main() {
 
 	std::cout << my::ts() << "Enter any keyboard : "; std::cout.flush();
 
+	return 0;
+}
+
 #endif
 
 #if 0
@@ -238,6 +314,9 @@ int main() {
 
 	std::string line;
 	std::getline(std::cin, line);
+
+		return 0;
+}
 #endif
 
 #if 0
@@ -260,6 +339,9 @@ int main() {
 		n3 <<=1; n3|=1;
 	}
 	printf("OV(%d)<<1 |1 = %d\n", nInput, n3);
+
+		return 0;
+}
 #endif
 
 #if 0
@@ -272,6 +354,7 @@ int main() {
 	}
 	getchar();
 	putchar('\n');
-#endif
-	return 0;
+
+		return 0;
 }
+#endif
