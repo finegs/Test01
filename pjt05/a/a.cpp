@@ -2,7 +2,39 @@
 
 #include <iostream>
 #include <string>
+#include <memory>
+#include <vector>
 using namespace std;
+
+template<typename T, typename ... Args>
+class Widget {
+	Widget(Args &&... args_) {
+		for(auto args_:arg) args.push_back(arg);
+	}
+
+	template<typename T, typename ... Args>
+	friend
+	std::ostream& operator<<(std::ostream& os, const Widget<T, Args...> o);
+
+	std::vector<T> args;
+};
+
+
+template<typename T, typename ... Args>
+std::ostream operator<<(std::ostream& os, const Widget<T, Args...> o) {
+	int i = 0;
+	for(auto aa:o) os << (i==0?"":",") << aa;
+	os<<'\n';
+	return o;
+}
+
+template<typename ... Args>
+// template<typename ... Args2>
+std::unique_ptr<Widget<Args&&...>> create(Args&&... args) {
+s	auto uptr(std::make_unique<Widget>(std::forward<Args>(args)...) );
+	// return std::move(uptr);
+	return uptr;
+}
 
 void (*queue_print)(int *queue, int *begin, int *end);
 
