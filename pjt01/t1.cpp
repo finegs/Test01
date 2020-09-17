@@ -1,5 +1,6 @@
 #include <winsock2.h>
 #include <windows.h>
+#include <ioapiset.h>
 #include <stdio.h>
 
 #define PORT 5150
@@ -62,7 +63,7 @@ int main(int argc, char **argv)
 	    }
 	    else
 			printf("WSAStartup() is OK!\n");
- 
+
 
 	    // Setup an I/O completion port
 	    if ((CompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0)) == NULL)
@@ -73,7 +74,7 @@ int main(int argc, char **argv)
 	    else
 			printf("CreateIoCompletionPort() is damn OK!\n");
 
- 
+
 
 	    // Determine how many processors are on the system
 
@@ -99,7 +100,7 @@ int main(int argc, char **argv)
 			CloseHandle(ThreadHandle);
 	    }
 
- 
+
 
 	    // Create a listening socket
 
@@ -117,7 +118,7 @@ int main(int argc, char **argv)
 
 			printf("WSASocket() is OK!\n");
 
- 
+
 
 	    InternetAddr.sin_family = AF_INET;
 
@@ -125,7 +126,7 @@ int main(int argc, char **argv)
 
 	    InternetAddr.sin_port = htons(PORT);
 
- 
+
 
 	    if (bind(Listen, (PSOCKADDR) &InternetAddr, sizeof(InternetAddr)) == SOCKET_ERROR)
 
@@ -141,7 +142,7 @@ int main(int argc, char **argv)
 
 			printf("bind() is fine!\n");
 
- 
+
 
 	    // Prepare socket for listening
 
@@ -161,10 +162,11 @@ int main(int argc, char **argv)
 				printf("WSAAccept() failed with error %ul\n", WSAGetLastError());
 				return 1;
 			}
-			else
+			else {
 				printf("WSAAccept() looks fine!\n");
+			}
 
- 
+
 
 			// Create a socket information structure to associate with the socket
 
@@ -182,7 +184,11 @@ int main(int argc, char **argv)
 
 	    PerHandleData->Socket = Accept;
 
-	    if (CreateIoCompletionPort((HANDLE) Accept, CompletionPort, (DWORD) PerHandleData, 0) == NULL)
+	    if (CreateIoCompletionPort(
+	    		(HANDLE) Accept
+				, (HANDLE)CompletionPort
+				, (ULONG_PTR) PerHandleData
+				, 0) == NULL)
 	    {
 	    	printf("CreateIoCompletionPort() failed with error %lu\n", GetLastError());
 			return 1;
@@ -190,7 +196,7 @@ int main(int argc, char **argv)
 	    else
 			printf("CreateIoCompletionPort() is OK!\n");
 
- 
+
 
 	    // Create per I/O socket information structure to associate with the WSARecv call below
 
@@ -198,7 +204,7 @@ int main(int argc, char **argv)
 
 	    {
 
-			printf("GlobalAlloc() failed with error %d\n", GetLastError());
+			printf("GlobalAlloc() failed with error %lu\n", GetLastError());
 
 			return 1;
 
@@ -208,7 +214,7 @@ int main(int argc, char **argv)
 
 			printf("GlobalAlloc() for LPPER_IO_OPERATION_DATA is OK!\n");
 
- 
+
 
 	    ZeroMemory(&(PerIoData->Overlapped), sizeof(OVERLAPPED));
 
@@ -220,7 +226,7 @@ int main(int argc, char **argv)
 
 	    PerIoData->DataBuf.buf = PerIoData->Buffer;
 
- 
+
 
 	    Flags = 0;
 
@@ -246,18 +252,7 @@ int main(int argc, char **argv)
 
 }
 
- 
-
- 
-
-
- 
- 
-
- 
-
 DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
-
 {
 
 	    HANDLE CompletionPort = (HANDLE) CompletionPortID;
@@ -276,13 +271,13 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 
 	    {
 
-			if (GetQueuedCompletionStatus(CompletionPort, &BytesTransferred,
+			if (GetQueuedCompletionStatus(CompletionPort, (unsigned long int*)&BytesTransferred,
 
-				    (LPDWORD)&PerHandleData, (LPOVERLAPPED *) &PerIoData, INFINITE) == 0)
+				    (PULONG_PTR)&PerHandleData, (LPOVERLAPPED *) &PerIoData, INFINITE) == 0)
 
 			{
 
-				    printf("GetQueuedCompletionStatus() failed with error %d\n", GetLastError());
+				    printf("GetQueuedCompletionStatus() failed with error %lu\n", GetLastError());
 
 				    return 0;
 
@@ -304,7 +299,7 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 
 			{
 
-				    printf("Closing socket %d\n", PerHandleData->Socket);
+				    printf("Closing socket %0x\n", PerHandleData->Socket);
 
 				    if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
 

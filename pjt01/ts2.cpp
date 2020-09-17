@@ -64,7 +64,7 @@ int main(int argc, char **argv)
    SOCKET AcceptSocket;
    SOCKADDR_IN InternetAddr;
    WSADATA wsaData;
-   INT Ret;
+   int Ret;
    FD_SET WriteSet;
    FD_SET ReadSet;
    DWORD i;
@@ -76,6 +76,7 @@ int main(int argc, char **argv)
 
    int srcPort,dstPort;
 
+   srcPort = dstPort = -1;
     if(argc > 2) {
         srcPort = atoi(argv[1]);
         dstPort = atoi(argv[2]);
@@ -92,8 +93,9 @@ int main(int argc, char **argv)
       return 1;
    }
 
-   else
+   else {
       printf("WSAStartup() is fine!\n");
+   }
  
 
    // Prepare a socket to listen for connections
@@ -103,8 +105,9 @@ int main(int argc, char **argv)
       printf("WSASocket() failed with error %d\n", WSAGetLastError());
       return 1;
    }
-   else
+   else {
       printf("WSASocket() is OK!\n");
+   }
 
  
    InternetAddr.sin_family = AF_INET;
@@ -116,8 +119,9 @@ int main(int argc, char **argv)
       printf("bind() failed with error %d\n", WSAGetLastError());
       return 1;
    }
-   else
+   else {
       printf("bind() is OK!\n");
+   }
 
  
    if (listen(ListenSocket, 5))
@@ -125,8 +129,9 @@ int main(int argc, char **argv)
       printf("listen() failed with error %d\n", WSAGetLastError());
       return 1;
    }
-   else
+   else {
       printf("listen() is OK!\n");
+   }
 
  
    // Change the socket mode on the listening socket from blocking to
@@ -137,8 +142,9 @@ int main(int argc, char **argv)
       printf("ioctlsocket() failed with error %d\n", WSAGetLastError());
       return 1;
    }
-   else
+   else {
       printf("ioctlsocket() is OK!\n");
+   }
 
    while(TRUE)
    {
