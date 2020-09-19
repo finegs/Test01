@@ -21,8 +21,11 @@ void sll_appendNode(Node** head, Node* newNode) {
 		*head = newNode;
 	}
 	else {
-		Node* tail = *(head);
-		while(NULL != tail && tail->
+		Node* tail = *head;
+		while(NULL != tail && tail->next) { tail = tail->next; }
+		tail->next = newNode;
+	}
+}
 
 
 #endif
