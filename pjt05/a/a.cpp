@@ -4,17 +4,21 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <type_traits>
+#include <array>
 using namespace std;
 
 template<typename T, typename ... Args>
 class Widget {
-	Widget(Args &&... args_) {
-		for(auto args_:arg) args.push_back(arg);
+	Widget(Args&&... args_) {
+		static_assert((std::is_constructible_v<T, Args&&> && ...));
+		(args.push_back(std::forward<Args>(args_)), ...);
+		// for(auto args : args_...) args.push_back(arg);
 	}
 
-	template<typename T, typename ... Args>
+	template<typename TT, typename ... Argss>
 	friend
-	std::ostream& operator<<(std::ostream& os, const Widget<T, Args...> o);
+	std::ostream& operator<<(std::ostream& os, const Widget<TT, Argss...> o);
 
 	std::vector<T> args;
 };
@@ -23,7 +27,7 @@ class Widget {
 template<typename T, typename ... Args>
 std::ostream operator<<(std::ostream& os, const Widget<T, Args...> o) {
 	int i = 0;
-	for(auto aa:o) os << (i==0?"":",") << aa;
+	for(auto aa:o) os << (i==0?" ":",") << aa;
 	os<<'\n';
 	return o;
 }
@@ -31,10 +35,29 @@ std::ostream operator<<(std::ostream& os, const Widget<T, Args...> o) {
 template<typename ... Args>
 // template<typename ... Args2>
 std::unique_ptr<Widget<Args&&...>> create(Args&&... args) {
-s	auto uptr(std::make_unique<Widget>(std::forward<Args>(args)...) );
+	auto uptr(std::make_unique<Widget>(std::forward<Args>(args)...) );
 	// return std::move(uptr);
 	return uptr;
 }
+
+void tprintf(const char* format) // base function
+{
+    std::cout << format;
+}
+ 
+template<typename T, typename... Targs>
+void tprintf(const char* format, T value, Targs... Fargs) // recursive variadic function
+{
+    for ( ; *format != '\0'; format++ ) {
+        if ( *format == '%' ) {
+           std::cout << value;
+           tprintf(format+1, Fargs...); // recursive call
+           return;
+        }
+        std::cout << *format;
+    }
+}
+
 
 void (*queue_print)(int *queue, int *begin, int *end);
 
@@ -159,6 +182,27 @@ int main()
 
             cout << queue[end - 1] << '\n';
         }
+		else if(command == "wdget") {
+			int i = 0, cnt = 0;
+			cin >> cnt;
+			cout << "Command : " << command << ", n = " << n << ", cnt = " << cnt << " is started" << '\n';
+			vector<int> ar;
+            while(i<cnt) {
+				try
+				{
+					cin >> value;
+					ar.push_back(value);
+				}
+				catch(const std::exception& e)
+				{
+					std::cerr << "fail to npush " << "currennt cnt = " << cnt << ", Reson = " << e.what() << '\n';
+					break;
+				}
+			}
+			Widget<int, std::vector<int>> wd(ar);
+			cout << "Command : " << command << ", n = " << n << ", cnt = " << cnt << " is completed" << '\n';
+			cout << "\t\t Widget=" << wd << '\n';
+		}
 		else {
 			cout << "Unsupported Command : n = " << n << ", Command : " << command << '\n';
 			cin.clear();
