@@ -13,6 +13,8 @@ INCLUDE_DIRECTORIES($ENV{BOOST_HOME}/../boost_inc inc)
 LINK_DIRECTORIES($ENV{BOOST_HOME}/lib)
 
 add_executable(t t.cpp u.cpp mipc.cpp uu1.cpp)
+add_executable(aa aa.c)
+add_executable(a a.c)
 
 #TARGET_LINK_LIBRARIES(t ws2_32 stdc++ m pthread boost_thread boost_system boost_chrono)
 TARGET_LINK_LIBRARIES(t 

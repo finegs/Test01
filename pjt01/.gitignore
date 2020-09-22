@@ -11,5 +11,9 @@ tags
 CMakeFiles/**/*
 **/**/*~
 **/**/*.cmake
-build/**/*.*
+build/*
 /TS2/
+build/**/*
+**/CMakeCache*
+**/Makefile
+**/CMakeFiles
