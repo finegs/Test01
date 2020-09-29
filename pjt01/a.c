@@ -23,7 +23,7 @@ void f1(int case_n, int case_c, int case_idx, char arr[], char rarr[], int* cnt)
 		memset(ss, 0, 20);
 
 		sprintf(str, "%10d", *cnt);
-		for(size_t i = 1;i<case_idx;i++) {
+		for(int i = 1;i<case_idx;i++) {
 			sprintf(ss, "%s%d", (i>1?", " : " "), rarr[i]);
 			strcat(str, ss);
 		}
@@ -33,7 +33,7 @@ void f1(int case_n, int case_c, int case_idx, char arr[], char rarr[], int* cnt)
 		return;
 	}
 
-	for(size_t i = 1;i <= case_n;i++) {
+	for(int i = 1;i <= case_n;i++) {
 		if((g_mode == MODE_EXCEPT) && arr[i]) continue;
 		arr[i]=1;
 		rarr[case_idx]=i;
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 	memset(filename,0, 1024);
 	case_n = 6;
 	case_c = 3;
-	for(size_t i = 1;i < argc;i++) {
+	for(int i = 1;i < argc;i++) {
 		if ('-' == argv[i][0]) {
 			if(strlen(argv[i])>1) {
 				switch(argv[i][1]) {

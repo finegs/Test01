@@ -113,7 +113,7 @@ std::ostream& operator<<(std::ostream& os, const struct PacketHeader_& o) {
 	return os;
 }
 
-const size_t Packet::MaxDataSize = INITIAL_SIZE;
+size_t Packet::MaxDataSize = INITIAL_SIZE;
 
 SerializedPacket::SerializedPacket() : senderId(-1), sequenceNumber(-1) {
     data = new char[Packet::MaxDataSize];

@@ -54,7 +54,8 @@ typedef struct PacketHeader_ PacketHeader;
 
 class Packet
 {
-	enum PacketEnum { MaxDataSize = 1024 };
+	public:
+		static size_t MaxDataSize;
 
 	public:
 		int senderId;

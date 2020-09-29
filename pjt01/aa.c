@@ -28,9 +28,11 @@ typedef struct func_item_ {
 	int fn_item_size;
 } func_item;
 
-const int map_size = 100;
-const int key_max = 32;
-const int func_item_array_max = 10;
+enum AAConstants {
+	map_size = 100,
+	key_max = 32,
+	func_item_array_max = 10
+};
 
 func_item funcs[map_size];
 int funcs_put(const char* key, func f);
@@ -110,7 +112,10 @@ int main(int argc, char* argv[]) {
 		free(arr);
 	}
 	else if(f2) {
-		struct thread_params param = { sleepMsec, hz, duration };
+		struct thread_params param = {{{sleepMsec}, {hz}, {duration}}};
+		// param[0] = sleepMsec;
+        // param[1] = hz
+		// param[2] = duration;
 		DWORD t_decriptor;
 		if(async) {
 			CreateThread(NULL, 0, doBeep, (void*)&param, 0, &t_decriptor);
@@ -217,6 +222,9 @@ int isprime(int n, char* argv[]) {
 		}
 		i++;
 	}
+
+	if(!argv) return 1;
+
 	return 0;
 }
 
