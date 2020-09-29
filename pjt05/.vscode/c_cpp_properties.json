@@ -18,6 +18,7 @@
             "cppStandard": "c++17",
             "includePath": [
                 "${myDefaultInputPath}",
+                "${workspaceFolder}/include",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32",
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward",
