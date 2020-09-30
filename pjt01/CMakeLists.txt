@@ -29,9 +29,9 @@ TARGET_LINK_LIBRARIES(t
     stdc++ 
     m 
     pthread 
-    boost_thread-mgw81-mt-sd-x64-1_70 
-    boost_system-mgw81-mt-sd-x64-1_70 
-    boost_chrono-mgw81-mt-sd-x64-1_70
+    boost_thread
+    boost_system
+    boost_chrono
     )
 
 INSTALL(TARGETS
