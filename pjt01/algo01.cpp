@@ -1,3 +1,89 @@
+#if 1
+
+//  merge sort : 20201009
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void mmerge(int arr[], int arr_size, int tarr[], int start, int mid, int end);
+void mmsort(int arr[], int arr_size, int start, int end);
+
+void mmerge(int arr[], int tarr[], int start, int mid, int end) {
+	int i,j,k,l;
+
+	i = start;
+	j = mid+1;
+	k = start;
+
+	while(i<=mid && j<=end) {
+		if(arr[i]<=arr[j]) tarr[k++] = arr[i++];
+		else tarr[k++] = arr[j++];
+	}
+
+	if(i>mid)
+		for(l=j;l<=end;l++) tarr[k++]=arr[l];
+	else
+		for(l=i;l<=mid;l++) tarr[k++]=arr[l];
+
+	for(l=start;l<=end;l++) arr[l]=tarr[l];
+}
+
+void mmsort(int arr[], int tarr[], int start, int end) {
+	int mid;
+
+	if(start>=end) return;
+	mid = (start+end)/2;
+
+	mmsort(arr, tarr, start, mid);
+	mmsort(arr, tarr, mid+1, end);
+	mmerge(arr, tarr, start, mid, end);
+
+}
+
+
+int main(int argc, char* argv[]) {
+	int n,tt;
+	int *arr;
+	int *tarr;
+
+	if(argc>1)
+		n = atoi(argv[1]);
+	else
+		n = 100;
+
+	if(!(arr = (int*)malloc(sizeof(int)*n))) {
+		fprintf(stderr, "fail to malloc (arr) : %s.%d\n", __FILE__, __LINE__);
+		return -1;
+	}
+
+	if(!(tarr = (int*)malloc(sizeof(int)*n))) {
+		fprintf(stderr, "fail to malloc (tarr) : %s.%d\n", __FILE__, __LINE__);
+		return -1;
+	}
+
+	srand((unsigned int)time(NULL));
+
+	for(int i = 0;i<n;i++) arr[i]=((int)rand())%(n*n);
+	for(int i = 0;i<n;i++) tarr[i]=0;
+
+	tt = (int)time(NULL);
+	mmsort(arr, tarr, 0, n-1);
+
+	for(int i=0;i<n;i++) 
+		printf("%d%s", arr[i],((i> 0 && i%30==0)?"\n":" "));
+	printf("\n");
+	tt = (int)time(NULL)-tt;
+	printf("Elapsed Time  : %2d:%2d:%2d\n", (tt/3600), ((tt%3600)/60), ((tt%3600)%60));
+
+	free(tarr);
+
+	return 0;
+}
+
+
+#endif
+
 #if 0
 
 #include <cstdio>
