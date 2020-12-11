@@ -1,6 +1,9 @@
 #if 1
 
 #include <cstdio>
+#include <iostream>
+
+using namespace std;
 
 bool first = true;
 
@@ -13,7 +16,7 @@ void f(int n) {
 	if(first && (n%10) == 0) 
 		f(n/10);
 	else {
-		printf("%d", n%10); 
+		cout << n%10 << " ";
 		first = false;
 		f(n/10);
 	}
@@ -21,8 +24,9 @@ void f(int n) {
 
 int main() {
 	int n;
-	printf("Enter number:"); fflush(stdout);
-	scanf("%d", &n); fflush(stdin);
+
+	cout << "Enter number:"; cout.flush();
+	cin >> n; cin.clear();
 	f(n);
 	return 0;
 }

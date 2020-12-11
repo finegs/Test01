@@ -1,4 +1,26 @@
 #if 1
+#include<iostream>
+
+template<typename T>
+void foo() {
+	T x{};
+	std::cout << x << std::endl;
+}
+
+
+int main() {
+
+	foo<int>();
+
+	system("pause");
+
+	return 0;
+}
+
+#endif
+
+
+#if 0
 #include <vector>
 #include <string>
 #include <iostream>

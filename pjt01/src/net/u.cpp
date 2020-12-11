@@ -227,13 +227,7 @@ std::istream& operator>>(std::istream& is, My& o) {
 	return is;
 }
 
-void cls() {
-#ifdef _WIN32
-	system("cls");
-#else
-	system("clear");
-#endif
-}
+
 
 Door::Door(std::shared_ptr<Room> roomA, std::shared_ptr<Room> roomB) 
 		: roomA(roomA), roomB(roomB) {

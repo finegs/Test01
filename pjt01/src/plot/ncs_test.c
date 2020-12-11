@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <ncurses.h>
+#include <ncurses/ncurses.h>
 
 int main(int argc, char* argv[]) {
 
@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
 		fprintf(stdout, "### %s is started\n", argv[0]);
 	}
 
-	while(true) {
+	while(1) {
 
 		initscr();
 		noecho();

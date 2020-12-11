@@ -26,7 +26,8 @@
                 "${config:MINGW_HOME}/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed",
                 "${config:MINGW_HOME}/x86_64-w64-mingw32/include"
             ],
-            "compilerPath": "${config:MINGW_HOME}/bin/g++.exe",
+//            "compilerPath": "${config:MINGW_HOME}/bin/g++.exe",
+            "compilerPath": "g++.exe",
             "intelliSenseMode": "gcc-x64",
             "browse": {
                 "path": [

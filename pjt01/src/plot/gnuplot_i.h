@@ -81,7 +81,9 @@ typedef struct _DPOINT_ {
 #endif
 
 
+#ifdef __cpluscplus
 extern "C" {
+#endif
 
 /*---------------------------------------------------------------------------
                         Function ANSI C prototypes
@@ -102,7 +104,11 @@ void gnuplot_plot1d_var2v (gnuplot_ctrl *handle, double *x, double *y,
     int n_points, char *title );
 void gnuplot_plot_slope(gnuplot_ctrl *handle, double a, double b, char *title ) ; 
 void gnuplot_plot_equation(gnuplot_ctrl *h, char *equation, char *title ) ;
+
+#ifdef __cpluscplus
 }
+#endif
+
 
 #endif
 

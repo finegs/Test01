@@ -286,7 +286,7 @@ int main() {
 
 	std::priority_queue<int, std::vector<int>, std::greater<int>> pq;
 
-	srand(NULL);
+	srand(0);
 	size_t n;
 	for (size_t i = 0; i < 10; i++)
 	{

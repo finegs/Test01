@@ -13,7 +13,7 @@ class Person {
 		friend 
 			std::ostream& operator<<(std::ostream& os, const Person& o);
 		friend
-			std::istream& operator>>(std::istream& is, Person& o;
+			std::istream& operator>>(std::istream& is, Person& o);
 };
 
 Person::Person() {}

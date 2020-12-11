@@ -299,7 +299,7 @@ DWORD WINAPI ServerWorkerThread(LPVOID CompletionPortID)
 
 			{
 
-				    printf("Closing socket %0x\n", PerHandleData->Socket);
+				    printf("Closing socket %20x\n", PerHandleData->Socket);
 
 				    if (closesocket(PerHandleData->Socket) == SOCKET_ERROR)
 

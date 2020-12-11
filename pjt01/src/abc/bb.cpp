@@ -5,9 +5,18 @@
 #include <chrono>
 #include <ctime>
 
+#if defined(_WIN32) || defined(_WIN64)
+#include <windows.h>
+#else
+
+#include <sys/types.h>
+
+#endif
+
 void print_timediff(const char* prefix, const struct timespec& start, const 
 struct timespec& end)
 {
+
     double milliseconds = end.tv_nsec >= start.tv_nsec
                         ? (end.tv_nsec - start.tv_nsec) / 1e6 + (end.tv_sec - start.tv_sec) * 1e3
                         : (start.tv_nsec - end.tv_nsec) / 1e6 + (end.tv_sec - start.tv_sec - 1) * 1e3;

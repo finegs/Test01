@@ -1,8 +1,14 @@
 
-#include "StdAfx.h"
+#include <src/plot/pGNUPlot.h>
+
+//#include "StdAfx.h"
+
+#ifndef _T
+#define _T(t)  (t)
+#endif
+
 #include <stdarg.h>
 #include <string.h>
-#include "pGNUPlot.h"
 
 #define PARENTCLASS _T("wgnuplot_parent")
 #define TEXTCLASS   _T("wgnuplot_text")

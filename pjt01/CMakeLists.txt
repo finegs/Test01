@@ -11,33 +11,23 @@ SET(RUNTIME_OUTPUT_DIRECTORY bin)
 SET(LIBRARY_OUTPUT_DIRECTORY lib)
 SET(ARCHIVE_OUTPUT_DIRECTORY lib/static)
 
+IF (WIN32 OR WIN64)
+	ADD_DEFINITIONS("-Wall -Wextra -Wno-unused-parameter -Wpedantic-ms-format -posix")
+ELSE()
+	ADD_DEFINITIONS("-Wall -Wextra -Wno-unused-parameter -posix")
+ENDIF()
 
-ADD_DEFINITIONS("-Wall -Wextra -Wno-unused-parameter -Wpedantic-ms-format -posix")
 ADD_DEFINITIONS("-DUSE_NBOOST")
 
 
-INCLUDE_DIRECTORIES($ENV{BOOST_HOME}/../boost_inc inc)
-LINK_DIRECTORIES($ENV{BOOST_HOME}/lib)
+INCLUDE_DIRECTORIES($ENV{BOOST_HOME}/../boost_inc include)
+LINK_DIRECTORIES($ENV{BOOST_HOME}/lib lib mutil)
 
-add_executable(t t.cpp u.cpp mipc.cpp uu1.cpp)
-add_executable(aa aa.c)
-add_executable(a a.c)
+add_subdirectory(abc)
+add_subdirectory(mutil)
+#add_subdirectory(net)
+add_subdirectory(plot)
+add_subdirectory(algo)
 
-#TARGET_LINK_LIBRARIES(t ws2_32 stdc++ m pthread boost_thread boost_system boost_chrono)
-TARGET_LINK_LIBRARIES(t 
-    ws2_32 
-    stdc++ 
-    m 
-    pthread 
-    boost_thread
-    boost_system
-    boost_chrono
-    )
-
-INSTALL(TARGETS
-	a
-	RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin
-	LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/lib
-	ARCHIVE DESTINATION ${CMAKE_SOURCE_DIR}/lib/static
-	)
+add_dependencies(t mu)
 
