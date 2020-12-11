@@ -2,15 +2,20 @@
 // file name : udp_server.c
 // command   : cc -o udp_server udp_server.c
 // server start : udp_server 9999
-// client에서 전송되는 메시지를 buf.txt에 저장하고, 다시 client로 전송 후 유효성 체크
 // ------------------------------------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
+
+#if defined(_WIN32) || defined(_WIN64)
+#include <winsock2.h>
+#include <Windows.h>
+#else
 #include <sys/socket.h>
 #include <netinet/in.h>
+#endif
 
 #define MAXLINE	511
 #define BLOCK	255

@@ -5,6 +5,10 @@
 #include <string>
 #include <set>
 #include <memory>
+#include <utility>
+#include <set>
+
+
 #define INITIAL_SIZE 1024
 
 #define VERSION_U "v1.0.0_20190602_b01"
@@ -214,7 +218,7 @@ public:
 
 class World {
 	public:
-	std::set<std::shared_ptr<Room>> rooms = {};
+	std::set<std::shared_ptr<Room>> rooms;
 	World();
 
 	~World() = default;

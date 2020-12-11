@@ -1,3 +1,4 @@
+
 #if 1
 
 #include <cstring>
@@ -13,21 +14,23 @@
 #include <thread>
 #include <cstring>
 
-#include "aa.hpp"
+#include <src/abc/aa.hpp>
+
 #include "u.hpp"
 #include "uu1.hpp"
 #include "mipc.hpp"
+#include "mu.h"
+
 
 #define MY_DEBUG 1
 
 #define VERSION "v1.0.0_20190602_b02"
 
-extern void cls();
-
 extern bool IS_UU1_EXIT;
 extern bool T_IS_DEBUG;
 
 std::unordered_map<std::string, MyClz> m1;
+
 bool bExit = false;
 
 //#ifdef MY_DEBUG

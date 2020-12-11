@@ -22,11 +22,11 @@ void gotoxy(int x, int y);
 
 int main(void )
 {
-	char slide[] ="■", key=1;
+	char slide[] ="�뼚", key=1;
 
-    int x=1, y=1; //화면에출력될x, y의위치
+    int x=1, y=1; //�솕硫댁뿉異쒕젰�맆x, y�쓽�쐞移�
 
-    int h_slide_length=60, v_slide_length=19; //가로, 세로슬라이드길이
+    int h_slide_length=60, v_slide_length=19; //媛�濡�, �꽭濡쒖뒳�씪�씠�뱶湲몄씠
 
 
     do{
@@ -43,7 +43,7 @@ int main(void )
 
         move_arrow_key(key, &x, &y, h_slide_length, v_slide_length);
 
-    }while(key!=27); //ESC이전까지
+    }while(key!=27); //ESC�씠�쟾源뚯�
 
     return 0;
 
@@ -51,7 +51,7 @@ int main(void )
 
 void draw_v_slide(int x, int y, int length, char *s) {
 
-    int y_s=1; //y좌표시작 
+    int y_s=1; //y醫뚰몴�떆�옉 
     gotoxy(x,y_s); 
     draw_rectangle(1, length, x ,y_s); 
     gotoxy(x+2, y+1); 
@@ -63,7 +63,7 @@ void draw_v_slide(int x, int y, int length, char *s) {
  void draw_h_slide(int x, int y, int length, char *s) {
 
     int real_length=length/2; 
-    int x_s=7; //x좌표시작 
+    int x_s=7; //x醫뚰몴�떆�옉 
     gotoxy(x_s,y); 
     draw_rectangle(real_length+1, 1, x_s, y); 
     gotoxy(x_s+x+3, y+1); 
@@ -76,7 +76,7 @@ void draw_v_slide(int x, int y, int length, char *s) {
 
     int i, j;
 
-    unsigned char a=0xa6, b[7]; //─│┌┐┘└
+    unsigned char a=0xa6, b[7]; //���봻�뵆�뵍�뵖�뵒
  
 	h_slide_length/=2;
 
@@ -132,7 +132,7 @@ void draw_rectangle(int c, int r, int x, int y)
 
     int i, j;
 
-    unsigned char a=0xa6, b[7]; //─│┌┐┘└
+    unsigned char a=0xa6, b[7]; //���봻�뵆�뵍�뵖�뵒
  
 
     for(i=1;i<7;i++)
@@ -200,19 +200,19 @@ void draw_line(int x, int y, int h_slide_length, int v_slide_length)
 
     gotoxy(x+10,1);
 
-    printf("%c%c", 0xa6, 0xa8); //┬
+    printf("%c%c", 0xa6, 0xa8); //�뵮
 
     gotoxy(x+10,v_slide_length+2);
 
-    printf("%c%c", 0xa6, 0xaa); //┴
+    printf("%c%c", 0xa6, 0xaa); //�뵶
 
     gotoxy(7, y+1);
 
-    printf("%c%c", 0xa6, 0xa7); //├
+    printf("%c%c", 0xa6, 0xa7); //�뵜
 
     gotoxy(h_slide_length+11,y+1);
 
-    printf("%c%c", 0xa6, 0xa9); //┤
+    printf("%c%c", 0xa6, 0xa9); //�뵥
 
  
 
@@ -222,7 +222,7 @@ void draw_line(int x, int y, int h_slide_length, int v_slide_length)
 
         gotoxy(x+10,i);
 
-        printf("%c%c", 0xa6, 0xa2); //│
+        printf("%c%c", 0xa6, 0xa2); //�봻
 
         if(i==y+1)
 
@@ -234,7 +234,7 @@ void draw_line(int x, int y, int h_slide_length, int v_slide_length)
 
             {
 
-                printf("%c%c", 0xa6, 0xa1); //─
+                printf("%c%c", 0xa6, 0xa1); //��
 
             }
 
@@ -246,7 +246,7 @@ void draw_line(int x, int y, int h_slide_length, int v_slide_length)
 
     gotoxy(x+10,y+1);
 
-    printf("%c%c", 0xa6, 0xab); //┼
+    printf("%c%c", 0xa6, 0xab); //�뵾
 
 }
 
@@ -262,33 +262,33 @@ void move_arrow_key(char key, int *x1, int *y1, int x_b, int y_b)
 
     case 72:
 
-        (*y1)--; //위쪽(상) 방향의화살표키입력
+        (*y1)--; //�쐞履�(�긽) 諛⑺뼢�쓽�솕�궡�몴�궎�엯�젰
 
-        if(*y1<1) *y1=1; //y좌표의최솟값
+        if(*y1<1) *y1=1; //y醫뚰몴�쓽理쒖넖媛�
 
         break;
 
     case 75:
 
-        (*x1)-=2; //왼쪽(좌) 방향의화살표키입력
+        (*x1)-=2; //�쇊履�(醫�) 諛⑺뼢�쓽�솕�궡�몴�궎�엯�젰
 
-        if(*x1<1) *x1=1; //x좌표의최솟값
+        if(*x1<1) *x1=1; //x醫뚰몴�쓽理쒖넖媛�
 
         break;
 
     case 77:
 
-        (*x1)+=2; //오른쪽(우) 방향의화살표키입력
+        (*x1)+=2; //�삤瑜몄そ(�슦) 諛⑺뼢�쓽�솕�궡�몴�궎�엯�젰
 
-        if(*x1>x_b-1) *x1=x_b-1; //x좌표의최댓값
+        if(*x1>x_b-1) *x1=x_b-1; //x醫뚰몴�쓽理쒕뙎媛�
 
         break;
 
     case 80:
 
-        (*y1)++; //아래쪽(하) 방향의화살표키입력
+        (*y1)++; //�븘�옒履�(�븯) 諛⑺뼢�쓽�솕�궡�몴�궎�엯�젰
 
-        if(*y1>y_b) *y1=y_b; //y좌표의최댓값
+        if(*y1>y_b) *y1=y_b; //y醫뚰몴�쓽理쒕뙎媛�
 
         break;
 
@@ -366,7 +366,7 @@ Point Shape[][4][4]={
 
 enum { EMPTY, BRICK, WALL };
 
-const char *arTile[]={". ","■","□"};
+const char *arTile[]={". ","�뼚","�뼞"};
 
 int board[BW+2][BH+2];
 
@@ -470,9 +470,9 @@ void DrawScreen()
 
      gotoxy(50,3);puts("Tetris Ver 1.0");
 
-     gotoxy(50,5);puts("좌우:이동, 위:회전, 아래:내림");
+     gotoxy(50,5);puts("醫뚯슦:�씠�룞, �쐞:�쉶�쟾, �븘�옒:�궡由�");
 
-     gotoxy(50,6);puts("공백:전부 내림");
+     gotoxy(50,6);puts("怨듬갚:�쟾遺� �궡由�");
 
 }
 

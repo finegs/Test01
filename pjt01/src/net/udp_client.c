@@ -2,9 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+
+#if defined (_WIN32) || defined(_WIN64)
+#include <winsock2.h>
+#include <windows.h>
+#else
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#endif
+
 #include <unistd.h>
 
 #define MAXLINE 511

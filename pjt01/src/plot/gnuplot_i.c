@@ -28,7 +28,7 @@
                                 Includes
  ---------------------------------------------------------------------------*/
 
-#include "gnuplot_i.h"
+#include <src/plot/gnuplot_i.h>
 
 /*---------------------------------------------------------------------------
                                 Defines
@@ -138,7 +138,7 @@ char * gnuplot_get_program_path(char * pname)
         for (i=0; path[i]; ) {
             for (j=i ; (path[j]) && (path[j]!=':') ; j++);
             lg = j - i;
-            strncpy(buf, path + i, lg);
+            strncpy(buf, (const char*)path + i, lg);
             if (lg == 0) buf[lg++] = '.';
             buf[lg++] = '/';
             strcpy(buf + lg, pname);

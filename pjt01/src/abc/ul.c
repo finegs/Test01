@@ -23,7 +23,7 @@ int main() {
 
 int main() {
 
-	bool p;
+	int p;
 	if(p) puts("p is true");
 	if(!p) puts("p is false");
 

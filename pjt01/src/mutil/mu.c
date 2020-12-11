@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mu.h"
+//#include <mu.h>
 
 
 struct entry {
@@ -38,8 +38,9 @@ int hashmap_new(hashmap *hmap, const size_t size,
 
     // hmap->slot = calloc(size, sizeof hmap->slot[0]);
 	hmap->slot = (struct entry**)malloc(size*sizeof(hmap->slot[0]));
-    if (!hmap->slot)
+    if (!(hmap->slot)) {
         return -1; /* Not enough memory */
+    }
 	memset(hmap->slot, 0, sizeof(hmap->slot[0])*size);
     hmap->size = size;
     hmap->hash = hash;
@@ -85,14 +86,14 @@ int hashmap_add(hashmap *hmap, const unsigned char *name,
                 const void *data, const size_t data_size,
                 const int data_type)
 {
-    const size_t  namelen = (name) ? strlen(name) : 0;
+    const size_t  namelen = (name) ? strlen((const char*)name) : 0;
     struct entry *curr;
     size_t        i;
 
     if (!hmap)
         return -1; /* No hashmap specified. */
 
-    if (name_len < 1)
+    if (namelen < 1)
         return -1; /* NULL or empty name. */
 
     /* Allocate memory for the hashmap entry,
@@ -153,12 +154,12 @@ int hashmap_find(hashmap *hmap, const unsigned char *name,
     if (!name || !*name)
         return -1; /* NULL or empty name. */
 
-    hash = hmap->hash(name, strlen(name));
+    hash = hmap->hash(name, strlen((const char*)name));
     curr = hmap->slot[hash % hmap->size];
 
     for (curr = hmap->slot[hash % hmap->size]; curr != NULL; curr = curr->next) {
         if (curr->data_type == data_type && curr->hash == hash &&
-            !strcmp(curr->name, name)) {
+            !strcmp((const char*)curr->name, (const char*)name)) {
             /* Data type an name matches. Save size if requested. */
             if (size_to)
                 *size_to = curr->data_size;
@@ -169,4 +170,12 @@ int hashmap_find(hashmap *hmap, const unsigned char *name,
     }
 
     return -1; /* Not found. */
+}
+
+void cls() {
+#ifdef _WIN32
+	system("cls");
+#else
+	system("clear");
+#endif
 }
