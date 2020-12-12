@@ -7,6 +7,14 @@ environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.11
 environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1233336484/C_INCLUDE_PATH/operation=remove
 environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1233336484/append=true
 environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1233336484/appendContributed=true
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/CPATH/delimiter=;
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/CPATH/operation=remove
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/CPLUS_INCLUDE_PATH/delimiter=;
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/CPLUS_INCLUDE_PATH/operation=remove
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/C_INCLUDE_PATH/delimiter=;
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/C_INCLUDE_PATH/operation=remove
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/append=true
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/appendContributed=true
 environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566/CPATH/delimiter=;
 environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566/CPATH/operation=remove
 environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566/CPLUS_INCLUDE_PATH/delimiter=;
@@ -27,6 +35,10 @@ environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.11
 environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1233336484/LIBRARY_PATH/operation=remove
 environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1233336484/append=true
 environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1233336484/appendContributed=true
+environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/LIBRARY_PATH/delimiter=;
+environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/LIBRARY_PATH/operation=remove
+environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/append=true
+environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007/appendContributed=true
 environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566/LIBRARY_PATH/delimiter=;
 environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566/LIBRARY_PATH/operation=remove
 environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566/append=true

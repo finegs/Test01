@@ -3,27 +3,26 @@
 /* 1.  Changed header files.                                                   */
 /* 2.  Used WSAGetLastError() instead of perror().                             */ 
 
+#include <cstdlib>
 #include <iostream>
 #include <cstdio>    /* for fprintf() */
 #include <cstdlib>
 #include <errno.h>
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64)
 
-#ifndef WINNT 
-#define WINNT 0x0501 /* Windows XP */ 
-#endif
+//#ifndef WINNT
+#define WINNT 0x0501 /* Windows XP */
+//#endif
 
-#include <winsock2.h>  /* for WSAGetLastError() */
+#include <winsock2.h>
 #include <Ws2tcpip.h>
-
+#include <Windows.h>  /* for WSAGetLastError() */
 #else
-
 #include <sys/socket.h> // Socket Header
 #include <arpa/inet.h>  // Socket Inet
 #include <netdb.h>      // Needed for getaddrinfo() and freeaddrinfo()
 #include <unistd.h>     // Needed for close()
-
 #endif
 
 #include <cstdlib>   /* for exit() */
@@ -38,7 +37,7 @@ bool T_IS_DEBUG = true;
 
 void DieWithError(const char *errorMessage)
 {
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64)
     fprintf(stderr,"%s: %d\n", errorMessage, WSAGetLastError());
 #else
 	if(errorMessage)
@@ -56,7 +55,7 @@ int closeSocket(SOCKET sock)
 	int status = 0;
 #ifdef _WIN32
 	status = shutdown(sock, SD_BOTH);
-	if(status == 0) { status = closesocket(sock); }
+	if(status == 0) { status = closeSocket(sock); }
 #else
 	status = shutdown(sock, SHUT_RDWR);
 	if(status == 0) { status = close(sock); }
