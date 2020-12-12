@@ -1,6 +1,5 @@
 
 #include <iostream>
-#include <unordered_map>
 #include <algorithm>
 #include <utility>
 #include <exception>
@@ -13,6 +12,9 @@
 #include <bitset>
 #include <cstdlib>
 #include <ctime>
+#include <unordered_map>
+#include <map>
+
 
 #include "u.hpp"
 #include "uu1.hpp"
@@ -329,7 +331,7 @@ void MyUU1::testCode03()
 
 void MyUU1::testCode04()
 {
-	World::doTest();
+//	World::doTest();
 }
 
 void MyUU1::testCInWithAsyncReader()
@@ -414,7 +416,7 @@ void sleep(unsigned int n)
 void mtail2(FILE* in, int n) { 
     int count = 0;  // To count '\n' characters 
   
-    // unsigned long long pos (stores upto 2^64 �� 1 
+    // unsigned long long pos (stores upto 2^64 �� 1
     // chars) assuming that long long int takes 8  
     // bytes 
     unsigned long long pos; 

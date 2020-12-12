@@ -2,6 +2,7 @@
 #ifndef __U_HPP
 #define __U_HPP
 
+#include <iostream>
 #include <string>
 #include <set>
 #include <memory>
@@ -199,6 +200,8 @@ namespace my
 	};
 }
 
+#if 0
+
 class Door;
 class Room {
 	public:
@@ -217,14 +220,14 @@ public:
 };
 
 class World {
-	public:
+public:
 	std::set<std::shared_ptr<Room>> rooms;
-	World();
 
+	World();
 	~World() = default;
 
 	static int doTest();
 };
-
+#endif
 
 #endif
