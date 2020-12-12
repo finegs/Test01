@@ -5,6 +5,7 @@
 #include <functional>
 #include <any>
 #include <iomanip>
+#include <assert.h>
 
 using namespace std;
 
@@ -57,6 +58,43 @@ int f3(void* p) {
 	return 30;
 }
 
+class TTLCache {
+public:
+
+ //Initializes with a given ttl (in seconds)
+ TTLCache(uint32_t ttl):ttlSeconds(ttl){}
+
+ //Adds an item to the cache along with the current timestamp
+ bool add(const std::string& key, const std::any& value);
+
+ //Gets a value from cache if exists
+ // - otherwise returns empty std::any
+ std::any get(const std::string& key);
+
+ //Erases an item for a given key if exists
+ void erase(const std::string& key);
+
+ // Fires periodically in a separate thread and erases the items
+ //  - from cache that are older than the ttlSeconds
+ void onTimer();
+
+ //...more interfaces...
+
+private:
+
+ //Values stored along with timestamp
+ struct Item {
+  time_t timestamp;
+  std::any value;
+ };
+
+ //Expire time (ttl) of items in seconds
+ uint32_t ttlSeconds;
+
+ //Items are stored against keys along with timestamp
+ std::unordered_map<std::string, Item> items;
+};
+
 int main() {
 
 #if 0
@@ -74,6 +112,7 @@ int main() {
 
 #endif
 
+#if 0
 	std::unordered_map<std::string, std::function<int(void*)>> map;
 
 	map.insert(std::make_pair("f1", f1));
@@ -84,6 +123,36 @@ int main() {
 	cout << any_cast<std::function<int(void*)>>(map["f1"])(&a) << endl;
 	cout << any_cast<std::function<int(void*)>>(map["f2"])(&(++a)) << endl;
 	cout << any_cast<std::function<int(void*)>>(map["f3"])(&(++a)) << endl;
+#endif
+
+#if 0
+	std::any a = std::string("hello");
+
+	std::cout << std::any_cast<std::string>(a) << "\n";
+
+	auto str = std::any_cast<std::string&&>(std::move(a));
+
+	cout << "str:" << str << endl;
+	cout << "a:" << std::any_cast<std::string&>(a) << endl;
+
+
+	cout << boolalpha << a.has_value() << endl;
+
+	struct A {};
+	struct B : A {};
+
+	std::any a = B{};
+	A* ptrA = std::any_cast<A>(&a);
+	cout << (ptrA==nullptr ? "true" : "false") << endl;
+
+	std::any ai = 10;
+
+	try {
+		std::cout << std::any_cast<int64_t>(ai) << endl;
+	} catch (const std::bad_any_cast& e) {
+		cout << "Wrong Type!" << endl;
+	}
+#endif
 
 
 	return 0;
