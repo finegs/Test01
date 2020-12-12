@@ -1,0 +1,200 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "test/Debug/test_main.exe"
+		},
+		{
+			"path" : "test/Debug/test_main.pdb"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"ADD_EXECUTABLE",
+			"LINK_DIRECTORIES",
+			"TARGET_LINK_LIBRARIES",
+			"INCLUDE_DIRECTORIES",
+			"TARGET_INCLUDE_DIRECTORIES"
+		],
+		"files" : 
+		[
+			"test/CMakeLists.txt",
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 3,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 35,
+				"parent" : 2
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 12,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 25,
+				"parent" : 2
+			},
+			{
+				"command" : 3,
+				"file" : 1,
+				"line" : 26,
+				"parent" : 2
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 6,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-std=c++17 -g  "
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 5,
+					"path" : "D:/Programs/boost/include"
+				},
+				{
+					"backtrace" : 6,
+					"path" : "/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Dev/git/Test01/pjt05/include"
+				}
+			],
+			"language" : "CXX",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 4,
+			"id" : "my::@a4bd6818c32a8fbe1455"
+		}
+	],
+	"id" : "test_main::@36f028580bb02cc8272a",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-std=c++17 -g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "-LD:\\Programs\\boost\\lib",
+				"role" : "libraryPath"
+			},
+			{
+				"fragment" : "-lws2_32",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-pthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lm",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "..\\my\\Debug\\lib\\libmy.a",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lm",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lws2_32",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-pthread",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lm",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "test_main",
+	"nameOnDisk" : "test_main.exe",
+	"paths" : 
+	{
+		"build" : "test",
+		"source" : "test"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "test/test_main.cpp",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "EXECUTABLE"
+}
