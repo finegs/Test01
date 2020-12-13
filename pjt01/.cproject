@@ -269,7 +269,8 @@
 								<option id="gnu.cpp.compiler.option.dialect.flags.622584324" name="Other dialect flags" superClass="gnu.cpp.compiler.option.dialect.flags" useByScannerDiscovery="true" value="" valueType="string"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.compiler.option.include.paths.846898999" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${BOOST_INC}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WXWIDGETS_INC}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${WXWIN}\include\wx-3.1&quot;"/>
+									<listOptionValue builtIn="false" value="${WXWIN}\lib\wx\include\msw-unicode-3.1"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/include}&quot;"/>
 								</option>
@@ -282,7 +283,9 @@
 									<listOptionValue builtIn="false" value="_UNICODE"/>
 									<listOptionValue builtIn="false" value="HAVE_W32API_H"/>
 									<listOptionValue builtIn="false" value="NOPCH"/>
+									<listOptionValue builtIn="false" value="NDEBUG"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.warnings.wctordtorprivacy.1306764711" name="All ctor and dtor private (-Wctor-dtor-privacy)" superClass="gnu.cpp.compiler.option.warnings.wctordtorprivacy" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1927311131" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.552565859" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base">
@@ -301,21 +304,21 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.1197624624" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.1495801801" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.link.option.libs.1232448967" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value="wx_mswu_xrc-3.1"/>
-									<listOptionValue builtIn="false" value="wx_mswu_qa-3.1"/>
-									<listOptionValue builtIn="false" value="wx_mswu_html-3.1"/>
-									<listOptionValue builtIn="false" value="wx_mswu_adv-3.1"/>
-									<listOptionValue builtIn="false" value="wx_mswu_core-3.1"/>
-									<listOptionValue builtIn="false" value="wx_baseu_xml-3.1"/>
-									<listOptionValue builtIn="false" value="wx_baseu_net-3.1"/>
-									<listOptionValue builtIn="false" value="wx_baseu-3.1"/>
+									<listOptionValue builtIn="false" value="wx_mswud_xrc-3.1"/>
+									<listOptionValue builtIn="false" value="wx_mswud_qa-3.1"/>
+									<listOptionValue builtIn="false" value="wx_mswud_html-3.1"/>
+									<listOptionValue builtIn="false" value="wx_mswud_adv-3.1"/>
+									<listOptionValue builtIn="false" value="wx_mswud_core-3.1"/>
+									<listOptionValue builtIn="false" value="wx_baseud_xml-3.1"/>
+									<listOptionValue builtIn="false" value="wx_baseud_net-3.1"/>
+									<listOptionValue builtIn="false" value="wx_baseud-3.1"/>
 									<listOptionValue builtIn="false" value="pthread"/>
 									<listOptionValue builtIn="false" value="ws2_32"/>
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.link.option.paths.1377421912" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${BOOST_LIB}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;D:\Programs\msys64\mingw64\lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${WXWIN}\lib&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1687118427" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -326,7 +329,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry excluding="src|mutil|net|plot|algo|abc|t1.cpp|test_gnuplot.c|shared.c|ts.cpp|u.cpp|gnuplot_i.c|pGNUPlot.cpp|sm_c.cpp|bb.cpp|M_Linkedlist.c|MyTestCode.cpp|copcar.cpp|app.c|c.cpp|mbtree.cpp|uc.cpp|b_mpi.cpp|mu.c|udp_client.c|udp_echo_server.cpp|s2.cpp|T_LinkedList.cpp|u1.cpp|uu1.cpp|helloworld.cpp|ml.c|ts2.cpp|sm_p.cpp|udp_echo_client.cpp|tetris.cpp|tc.cpp|t_mbtree.cpp|tt02.cpp|algo01.cpp|b.cpp|sender.cpp|aa.c|udp_server.c|test01.cpp|listener.cpp|mipc.cpp|sm.cpp|tt01.cpp|gnuplot_ex.cpp|ul.c|s.cpp|**/CMake*.*" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
-						<entry excluding="net/udp_server.c|net/udp_client.c|mutil/MyTestCode.cpp|abc/a.c|abc/ul.c|abc/shared.c|abc/app.c|abc/u1.cpp|abc/tt02.cpp|abc/tt01.cpp|abc/test01.cpp|abc/sm.cpp|abc/helloworld.cpp|abc/bb.cpp|abc/b.cpp|abc/aa.c|plot|algo|net/uc.cpp|net/ts.cpp|net/tc.cpp|net/c.cpp|net/listener.cpp|abc/tetris.cpp|mutil/mipc.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="net|mutil|abc|net/udp_server.c|net/udp_client.c|mutil/MyTestCode.cpp|abc/a.c|abc/ul.c|abc/shared.c|abc/app.c|abc/u1.cpp|abc/tt02.cpp|abc/tt01.cpp|abc/test01.cpp|abc/sm.cpp|abc/helloworld.cpp|abc/bb.cpp|abc/b.cpp|abc/aa.c|plot|algo|net/uc.cpp|net/ts.cpp|net/tc.cpp|net/c.cpp|net/listener.cpp|abc/tetris.cpp|mutil/mipc.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
