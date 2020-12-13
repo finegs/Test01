@@ -96,7 +96,56 @@ private:
  std::unordered_map<std::string, Item> items;
 };
 
+#if 1
+struct Abstract {
+	// NG
+//	virtual void f() { cout << "Abstract.f()" << endl;}
+//	 OK
+	virtual void f() = 0;
+};
+void Abstract::f() { cout << "Abstract.f()" << endl; }
+struct Concrete : Abstract {
+	// NG
+//	void f() override { cout << "Concrete.f()" << endl;}
+	// OK
+//	virtual void f() {}
+	virtual void f();
+	virtual void ff();
+};
+void Concrete::f() { cout << "Concrete.f()" << endl; }
+void Concrete::ff() { cout << "Concrete.ff()" << endl; }
+
+struct Concrete2 : Concrete {
+	void ff() override = 0;
+};
+
+#endif
+
+#if 0
+struct Abstract {
+	virtual void f() = 0;
+};
+
+struct Concrete : Abstract {
+	void f() override {}
+	virtual void ff();
+};
+
+struct Concrete2 : Concrete {
+	void ff() override = 0;
+};
+#endif
+
 int main() {
+
+	Concrete b;
+	b.f();
+
+	Abstract& a = b;
+	a.f();
+
+//	Concrete2 c;
+//	c.ff();
 
 #if 0
 	Person* p;
