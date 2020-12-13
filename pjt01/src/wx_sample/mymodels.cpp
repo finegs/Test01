@@ -27,8 +27,8 @@
 // resources
 // ----------------------------------------------------------------------------
 
-#include <src/wx_sample/null.xpm>
-#include <src/wx_sample/wx_small.xpm>
+#include "null.xpm"
+#include "wx_small.xpm"
 
 
 // ----------------------------------------------------------------------------

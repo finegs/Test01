@@ -6,6 +6,7 @@
 #include <any>
 #include <iomanip>
 #include <assert.h>
+#include <cstring>
 
 using namespace std;
 
@@ -154,6 +155,9 @@ int main() {
 	}
 #endif
 
+	std::function<size_t(const char*)> mstrlen = [&](const char* str)->size_t { return strlen(str); };
+
+	cout << "strlen(\"aaa\")="<< mstrlen("aaa");
 
 	return 0;
 }

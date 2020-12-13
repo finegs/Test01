@@ -80,7 +80,8 @@
         "fstream": "cpp",
         "future": "cpp",
         "mutex": "cpp",
-        "scoped_allocator": "cpp"
+        "scoped_allocator": "cpp",
+        "random": "cpp"
     },
     "C_Cpp.default.cStandard": "c11",
     "C_Cpp.default.cppStandard": "c++20",
