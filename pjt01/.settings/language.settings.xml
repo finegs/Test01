@@ -5,7 +5,7 @@
 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
 			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
 			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuildCommandParser" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser" keep-relative-paths="false" name="CDT GCC Build Output Parser" parameter="(g?cc)|([gc]\+\+)|(clang)" prefer-non-shared="true"/>
-			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="528670922074817062" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="882704382274685932" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
 				<language-scope id="org.eclipse.cdt.core.gcc"/>
 				<language-scope id="org.eclipse.cdt.core.g++"/>
 			</provider>
@@ -16,8 +16,8 @@
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
 			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
-			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuildCommandParser" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser" keep-relative-paths="false" name="CDT GCC Build Output Parser" parameter="(g?cc)|([gc]\+\+)|(clang)" prefer-non-shared="true"/>
-			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="-613344631495179800" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+			<provider copy-of="extension" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser"/>
+			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="-1576490338152886684" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
 				<language-scope id="org.eclipse.cdt.core.gcc"/>
 				<language-scope id="org.eclipse.cdt.core.g++"/>
 			</provider>
@@ -28,8 +28,8 @@
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
 			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
-			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuildCommandParser" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser" keep-relative-paths="false" name="CDT GCC Build Output Parser" parameter="(g?cc)|([gc]\+\+)|(clang)" prefer-non-shared="true"/>
-			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="528672898327334975" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+			<provider copy-of="extension" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser"/>
+			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="882705016459042739" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
 				<language-scope id="org.eclipse.cdt.core.gcc"/>
 				<language-scope id="org.eclipse.cdt.core.g++"/>
 			</provider>
@@ -41,7 +41,7 @@
 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
 			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
 			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuildCommandParser" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser" keep-relative-paths="false" name="CDT GCC Build Output Parser" parameter="(g?cc)|([gc]\+\+)|(clang)" prefer-non-shared="true"/>
-			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="146240699118469802" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="-758468256602238273" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
 				<language-scope id="org.eclipse.cdt.core.gcc"/>
 				<language-scope id="org.eclipse.cdt.core.g++"/>
 			</provider>
@@ -53,12 +53,40 @@
 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
 			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
 			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuildCommandParser" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser" keep-relative-paths="false" name="CDT GCC Build Output Parser" parameter="(g?cc)|([gc]\+\+)|(clang)" prefer-non-shared="true"/>
-			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="528672898327334975" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="882705016459042739" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
 				<language-scope id="org.eclipse.cdt.core.gcc"/>
 				<language-scope id="org.eclipse.cdt.core.g++"/>
 			</provider>
 			<provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>
-			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector" console="false" env-hash="528672898327334975" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetector" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector" console="false" env-hash="882705016459042739" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetector" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+				<language-scope id="org.eclipse.cdt.core.gcc"/>
+				<language-scope id="org.eclipse.cdt.core.g++"/>
+			</provider>
+		</extension>
+	</configuration>
+	<configuration id="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.742065936.1010895890" name="wx_buidl2">
+		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
+			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
+			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
+			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuildCommandParser" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser" keep-relative-paths="false" name="CDT GCC Build Output Parser" parameter="(g?cc)|([gc]\+\+)|(clang)" prefer-non-shared="true"/>
+			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="-758468256602238273" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+				<language-scope id="org.eclipse.cdt.core.gcc"/>
+				<language-scope id="org.eclipse.cdt.core.g++"/>
+			</provider>
+			<provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>
+		</extension>
+	</configuration>
+	<configuration id="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.1658753007.1227375237" name="a">
+		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
+			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
+			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
+			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuildCommandParser" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser" keep-relative-paths="false" name="CDT GCC Build Output Parser" parameter="(g?cc)|([gc]\+\+)|(clang)" prefer-non-shared="true"/>
+			<provider class="org.eclipse.cdt.managedbuilder.internal.language.settings.providers.GCCBuiltinSpecsDetectorMinGW" console="false" env-hash="882705016459042739" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetectorMinGW" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings MinGW" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+				<language-scope id="org.eclipse.cdt.core.gcc"/>
+				<language-scope id="org.eclipse.cdt.core.g++"/>
+			</provider>
+			<provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>
+			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector" console="false" env-hash="882705016459042739" id="org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetector" keep-relative-paths="false" name="CDT GCC Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
 				<language-scope id="org.eclipse.cdt.core.gcc"/>
 				<language-scope id="org.eclipse.cdt.core.g++"/>
 			</provider>

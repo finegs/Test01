@@ -18,3 +18,7 @@ build
 **/CMakeFiles
 **/Makefiles
 /.settings/
+/wx_build/
+/b/
+/wx_buidl2/
+/a/
