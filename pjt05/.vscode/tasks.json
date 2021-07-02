@@ -20,7 +20,7 @@
     },
     "inputs":[
         {
-            "id":"MakeUserInput",
+            "id":"input1",
             "type": "promptString",
             "description": "type of input variables"
         }
@@ -38,6 +38,24 @@
             "problemMatcher": [
                 "$msCompile"
             ]
+        },        {
+            "label": "CMake --build \"UserInput\"",
+            "command": "cmake",
+            "type": "shell",
+            "args": [
+                "--build",
+                "Build",
+                "--",
+                "${input:input1}",
+                "-j4"
+            ],
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "CMake -G \".\"",
@@ -69,7 +87,7 @@
             "args": [
                 "-f",
                 "Makefile",
-                "${input:MakeUserInput}"
+                "${input:input1}"
             ],
             "problemMatcher": [
                 "$gcc"
