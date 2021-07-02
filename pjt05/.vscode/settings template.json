@@ -1,8 +1,8 @@
 {
-    "MINGW_HOME": "C:/Programs/msys2/mingw64",
-    "BOOST_HOME": "C:/Programs/boost",
-    "BOOST_INC": "C:/Programs/boost/include",
-    "BOOST_LIB": "C:/Programs/boost/lib",
+    "MINGW_HOME": "D:/Programs/mingw64/mingw64",
+    "BOOST_HOME": "D:/Programs/boost",
+    "BOOST_INC": "D:/Programs/boost/include",
+    "BOOST_LIB": "D:/Programs/boost/lib",
     "myDefaultSrc": [
         "my/my.cpp"
     ],

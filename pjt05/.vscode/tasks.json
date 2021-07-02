@@ -27,19 +27,36 @@
     ],
     "tasks": [
         {
-            "label": "CMake -G \"MinGW Makefiles\"",
+            "label": "cmake : Delete Build Folder",
+            "type": "shell",
+            "command": "Remove-item",
+            "args": [
+                "${workspaceFold\\Build",
+                "-recurse"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "CMake -G \"MinGW Makefiles\" -B Build .",
             "command": "cmake",
             "type": "shell",
             "args": [
                 "-G",
                 "\"MinGW Makefiles\"",
+                "-B",
+                "Build",
                 "."
             ],
             "problemMatcher": [
                 "$msCompile"
-            ]
+            ],
+            "group": "build",
         },        {
-            "label": "CMake --build \"UserInput\"",
+            "label": "CMake --build \"UserInput\" && Install to bin",
             "command": "cmake",
             "type": "shell",
             "args": [
@@ -47,6 +64,7 @@
                 "Build",
                 "--",
                 "${input:input1}",
+                "install",
                 "-j4"
             ],
             "problemMatcher": [
