@@ -16,20 +16,26 @@ class Widget {
 		// for(auto args : args_...) args.push_back(arg);
 	}
 
-	template<typename TT, typename ... Argss>
+//	template<typename TT, typename ... Args>
 	friend
-	std::ostream& operator<<(std::ostream& os, const Widget<TT, Argss...> o);
+	std::ostream& operator<<(std::ostream& os, const Widget<T, Args...> o);
 
 	std::vector<T> args;
 };
 
 
 template<typename T, typename ... Args>
-std::ostream operator<<(std::ostream& os, const Widget<T, Args...> o) {
+std::ostream& operator<<(std::ostream& os, const Widget<T, Args...>& o) {
 	int i = 0;
 	for(auto aa:o) os << (i==0?" ":",") << aa;
 	os<<'\n';
-	return o;
+	return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const std::vector<int>& o) {
+	int i = 0;
+	for(auto ii : o) os << (i==0? "" : ", ") << i;
+	return os;
 }
 
 template<typename ... Args>
