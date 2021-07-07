@@ -1,4 +1,117 @@
 #if 1
+#include <vector>
+#include <string>
+#include <iostream>
+#include <exception>
+
+using StrCIter = std::string::const_iterator;
+
+void printerHelper(StrCIter& fmtPos, StrCIter fmtEnd, std::vector<std::string>& vec)
+{
+  // if the vector is empty, we simply return without doing anything
+  // and instead print the next argument
+  auto vecIter = vec.begin ();
+
+  while(vecIter != vec.end () && fmtPos != fmtEnd)
+  {
+    if(*fmtPos == '%' && *(fmtPos + 1) == 's')
+    {
+      std::cout << *vecIter++;
+      fmtPos += 2;
+      continue;
+    }
+
+    std::cout << *fmtPos++;
+  }
+}
+
+template <typename T>
+void printerHelper(StrCIter& fmtPos, StrCIter fmtEnd, const T& value)
+{
+  std::cout << value;
+  fmtPos += 2;
+}
+
+void myPrintfHelper(StrCIter pos, StrCIter end)
+{
+  // end of expansion - no more format arguments, just print remaining characters
+  while(pos != end)
+  {
+    if(*pos == '%')
+    {
+      throw "More format specifiers than arguments provided!";
+    }
+
+    std::cout << *pos++;
+  }
+}
+
+template <typename Head, typename ... Tail>
+void myPrintfHelper(StrCIter pos, StrCIter end, Head&& head, Tail&&... tail)
+{
+  while(pos != end)
+  {
+    if(*pos == '%' && *(pos + 1) == 's')
+    {
+      printerHelper (pos, end, head);
+      return myPrintfHelper(pos, end, std::forward<Tail>(tail)...);
+    }
+
+    std::cout << *pos++;
+  }
+}
+
+template <typename ... Args>
+void myPrintf(const std::string& format, Args&& ... args)
+{
+  myPrintfHelper (format.begin(), format.end (), std::forward<Args>(args)...);
+}
+
+int main()
+{
+  std::vector<std::string> v = {"world", "magic"};
+  myPrintf("Hello, %s! Welcome to the %s of variadic template %s! This ... is ... C++%s!\n", "StackOverflow", v, 11);
+
+  system("pause");
+  return 0;
+}
+#endif
+
+#if 0
+
+#include <iostream>
+#include <typeinfo>
+
+template <typename T>
+struct A : T {
+	template <typename ...Args>
+	A(Args&&... params) : T(std::forward<Args>(params)...), x(0) {
+		std::cout << "Member 'x' was default constructed\n";
+	}
+
+	template <typename O, typename ...Args, typename = typename std::enable_if<std::is_constructible<int, O>::value>::type>
+	A(O o, Args&&... params) : T(std::forward<Args>(params)...), x(o) {
+		std::cout << "Member 'x' was constructed from argument\n";
+	}
+
+	int x;
+};
+
+struct B  {
+	B(const char* ) {}
+};
+
+
+int main() {
+	A<B> a{"test"};
+	A<B> y{3, "test"};
+
+	return 0;
+}
+
+#endif
+
+#if 0
 
 #include <iostream>
 #include <string>
