@@ -13,8 +13,8 @@ SET ( CMAKE_CXX_COMPILER g++)
 SET ( CMAKE_BUILD_TYPE Debug )
 SET ( CMAKE_VERBOSE_MAKEFILE true )
 
-SET (BOOST_INC "C:/Programs/boost/include")
-SET (BOOST_LIB "C:/Programs/boost/lib" )
+SET (BOOST_INC "D:/Programs/boost/include")
+SET (BOOST_LIB "D:/Programs/boost/lib" )
 
 
 # 빌드 대상 바이너리 파일명 및 소스파일 목록
