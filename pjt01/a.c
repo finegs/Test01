@@ -36,7 +36,7 @@ void f1(int case_n, int case_c, int case_idx, char arr[], char rarr[], int* cnt)
 	for(int i = 1;i <= case_n;i++) {
 		if((g_mode == MODE_EXCEPT) && arr[i]) continue;
 		arr[i]=1;
-		rarr[case_idx]=i;
+		rarr[case_idx]=(char)i;
 
 		f1(case_n, case_c, case_idx+1, arr, rarr, cnt);
 
@@ -46,13 +46,15 @@ void f1(int case_n, int case_c, int case_idx, char arr[], char rarr[], int* cnt)
 
 int main(int argc, char* argv[]) {
 
-	char filename[1024];
+	const size_t FILE_NAME_LEN = 1024;
+	char filename[1025];
 
 	int case_n;
 	int case_c;
 	int cnt;
 
-	memset(filename,0, 1024);
+	memset(filename,0, FILE_NAME_LEN);
+	filename[FILE_NAME_LEN] = '\0';
 	case_n = 6;
 	case_c = 3;
 	for(int i = 1;i < argc;i++) {
@@ -60,7 +62,7 @@ int main(int argc, char* argv[]) {
 			if(strlen(argv[i])>1) {
 				switch(argv[i][1]) {
 					case 'f': { 
-								  strcpy(filename, argv[i]+2); 
+								  strcpy_s(filename, FILE_NAME_LEN, argv[i]+2); 
 							  }
 						break;
 					case 'n': { 

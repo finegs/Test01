@@ -132,7 +132,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="aa.c|algo01.cpp|app.c|b_mpi.cpp|b.cpp|bb.cpp|c.cpp|copcar.cpp|gnuplot_ex.cpp|gnuplot_i.c|helloworld.cpp|listener.cpp|M_Linkedlist.c|mbtree.cpp|mipc.cpp|ml.c|mu.c|MyTestCode.cpp|pGNUPlot.cpp|s.cpp|s2.cpp|sender.cpp|shared.c|sm_c.cpp|sm_p.cpp|sm.cpp|T_LinkedList.cpp|t_mbtree.cpp|t.cpp|t1.cpp|tc.cpp|test_gnuplot.c|test01.cpp|tetris.cpp|ts.cpp|tt01.cpp|tt02.cpp|u.cpp|u.hpp|u1.cpp|uc.cpp|udp_client.c|udp_echo_client.cpp|udp_echo_server.cpp|udp_server.c|uu1.cpp|uu1.hpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
+						<entry excluding="minheap.cpp|a.c|aa.c|algo01.cpp|app.c|b_mpi.cpp|b.cpp|bb.cpp|c.cpp|copcar.cpp|gnuplot_ex.cpp|gnuplot_i.c|helloworld.cpp|listener.cpp|M_Linkedlist.c|mbtree.cpp|mipc.cpp|ml.c|mu.c|MyTestCode.cpp|pGNUPlot.cpp|s.cpp|s2.cpp|sender.cpp|shared.c|sm_c.cpp|sm_p.cpp|sm.cpp|T_LinkedList.cpp|t_mbtree.cpp|t.cpp|t1.cpp|tc.cpp|test_gnuplot.c|test01.cpp|tetris.cpp|ts.cpp|tt01.cpp|tt02.cpp|u.cpp|u.hpp|u1.cpp|uc.cpp|udp_client.c|udp_echo_client.cpp|udp_echo_server.cpp|udp_server.c|uu1.cpp|uu1.hpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -152,7 +152,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="exe" artifactName="${ConfigName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" description="" id="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566" name="t1" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=" parent="org.eclipse.cdt.build.core.emptycfg">
+				<configuration artifactExtension="exe" artifactName="${ConfigName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" description="" id="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566" name="t1" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="org.eclipse.cdt.build.core.emptycfg">
 					<folderInfo id="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.base.1223959049" name="MinGW GCC" nonInternalBuilderId="cdt.managedbuild.builder.gnu.cross" superClass="cdt.managedbuild.toolchain.gnu.mingw.base">
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.base.2023306133" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.mingw.base"/>
@@ -202,7 +202,80 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="aa.c|algo01.cpp|app.c|b_mpi.cpp|b.cpp|bb.cpp|c.cpp|copcar.cpp|gnuplot_ex.cpp|gnuplot_i.c|helloworld.cpp|listener.cpp|M_Linkedlist.c|mbtree.cpp|mipc.cpp|ml.c|mu.c|MyTestCode.cpp|pGNUPlot.cpp|s.cpp|s2.cpp|sender.cpp|shared.c|sm_c.cpp|sm_p.cpp|sm.cpp|T_LinkedList.cpp|t_mbtree.cpp|tc.cpp|test_gnuplot.c|test01.cpp|tetris.cpp|ts.cpp|ts2.cpp|tt01.cpp|tt02.cpp|u.cpp|u1.cpp|uc.cpp|udp_client.c|udp_echo_client.cpp|udp_echo_server.cpp|udp_server.c|ul.c|uu1.cpp|t.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
+						<entry excluding="minheap.cpp|a.c|aa.c|algo01.cpp|app.c|b_mpi.cpp|b.cpp|bb.cpp|c.cpp|copcar.cpp|gnuplot_ex.cpp|gnuplot_i.c|helloworld.cpp|listener.cpp|M_Linkedlist.c|mbtree.cpp|mipc.cpp|ml.c|mu.c|MyTestCode.cpp|pGNUPlot.cpp|s.cpp|s2.cpp|sender.cpp|shared.c|sm_c.cpp|sm_p.cpp|sm.cpp|T_LinkedList.cpp|t_mbtree.cpp|tc.cpp|test_gnuplot.c|test01.cpp|tetris.cpp|ts.cpp|ts2.cpp|tt01.cpp|tt02.cpp|u.cpp|u1.cpp|uc.cpp|udp_client.c|udp_echo_client.cpp|udp_echo_server.cpp|udp_server.c|ul.c|uu1.cpp|t.cpp|build/**/*.*|CMake*/**/*.*|bin/**/*.*|ncs_test.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+			<storageModule buildDir="build/${ConfigName}" moduleId="de.marw.cdt.cmake.core.settings">
+				<options/>
+			</storageModule>
+		</cconfiguration>
+		<cconfiguration id="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.2003359694">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.2003359694" moduleId="org.eclipse.cdt.core.settings" name="ncs_test">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="exe" artifactName="${ConfigName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" description="" id="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.2003359694" name="ncs_test" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="org.eclipse.cdt.build.core.emptycfg">
+					<folderInfo id="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.2003359694." name="/" resourcePath="">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.mingw.base.1296126274" name="MinGW GCC" nonInternalBuilderId="cdt.managedbuild.builder.gnu.cross" superClass="cdt.managedbuild.toolchain.gnu.mingw.base">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.PE" id="cdt.managedbuild.target.gnu.platform.mingw.base.439862805" name="Debug Platform" osList="win32" superClass="cdt.managedbuild.target.gnu.platform.mingw.base"/>
+							<builder autoBuildTarget="all" buildPath="${workspace_loc:/my.test01.pjt01}/T" cleanBuildTarget="clean" id="org.eclipse.cdt.build.core.internal.builder.214565615" incrementalBuildTarget="all" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="org.eclipse.cdt.build.core.internal.builder"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.base.597218690" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.base">
+								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.511605192" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.archiver.mingw.base.52713803" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.mingw.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.1008623592" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base">
+								<option id="gnu.cpp.compiler.option.dialect.std.778546056" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++1y" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.option.other.verbose.1860199664" name="Verbose (-v)" superClass="gnu.cpp.compiler.option.other.verbose" useByScannerDiscovery="false" value="false" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.dialect.flags.281615817" name="Other dialect flags" superClass="gnu.cpp.compiler.option.dialect.flags" useByScannerDiscovery="true" value="" valueType="string"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.compiler.option.include.paths.1290230223" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${BOOST_INC}&quot;"/>
+									<listOptionValue builtIn="false" value="D:\Programs\msys2\mingw64\include\ncurses"/>
+								</option>
+								<option id="gnu.cpp.compiler.option.warnings.pedantic.1123613417" name="Pedantic (-pedantic)" superClass="gnu.cpp.compiler.option.warnings.pedantic" useByScannerDiscovery="false" value="false" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.warnings.pedantic.error.1477116709" name="Pedantic warnings as errors (-pedantic-errors)" superClass="gnu.cpp.compiler.option.warnings.pedantic.error" useByScannerDiscovery="false" value="false" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.other.other.1602746156" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" useByScannerDiscovery="false" value="-c -fmessage-length=0" valueType="string"/>
+								<option id="gnu.cpp.compiler.option.warnings.syntax.1366322807" name="Check syntax only (-fsyntax-only)" superClass="gnu.cpp.compiler.option.warnings.syntax" useByScannerDiscovery="false" value="false" valueType="boolean"/>
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1902740819" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.mingw.base.788451789" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.mingw.base">
+								<option id="gnu.c.compiler.option.dialect.std.1091822500" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.c.compiler.dialect.c11" valueType="enumerated"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.compiler.option.include.paths.1045720490" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\Programs\msys2\mingw64\include\ncurses&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1828446447" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+							</tool>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.mingw.base.1831700170" name="MinGW C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.mingw.base"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base.1168903677" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.base">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.link.option.libs.976129537" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
+									<listOptionValue builtIn="false" value="pthread"/>
+									<listOptionValue builtIn="false" value="ncurses"/>
+									<listOptionValue builtIn="false" value="ws2_32"/>
+									<listOptionValue builtIn="false" value="m"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.link.option.paths.627825673" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${BOOST_LIB}&quot;"/>
+								</option>
+								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.58964059" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry excluding="t.cpp|minheap.cpp|a.c|aa.c|algo01.cpp|app.c|b_mpi.cpp|b.cpp|bb.cpp|c.cpp|copcar.cpp|gnuplot_ex.cpp|gnuplot_i.c|helloworld.cpp|listener.cpp|M_Linkedlist.c|mbtree.cpp|mipc.cpp|ml.c|mu.c|MyTestCode.cpp|pGNUPlot.cpp|s.cpp|s2.cpp|sender.cpp|shared.c|sm_c.cpp|sm_p.cpp|sm.cpp|T_LinkedList.cpp|t_mbtree.cpp|t1.cpp|tc.cpp|test_gnuplot.c|test01.cpp|tetris.cpp|ts.cpp|ts2.cpp|tt01.cpp|tt02.cpp|u.cpp|u1.cpp|uc.cpp|udp_client.c|udp_echo_client.cpp|udp_echo_server.cpp|udp_server.c|ul.c|uu1.cpp|**/CMake*.c|build/**/*.c|build/**/*.cpp|bin/**/*.*c*|CMake*/**/*.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -226,6 +299,8 @@
 		<configuration configurationName="T">
 			<resource resourceType="PROJECT" workspacePath="/pjt01"/>
 		</configuration>
+		<configuration configurationName="ncs_test"/>
+		<configuration configurationName="t1"/>
 		<configuration configurationName="Default">
 			<resource resourceType="PROJECT" workspacePath="/pjt01"/>
 		</configuration>
@@ -248,8 +323,15 @@
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566;cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1639670566.;cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.1362846145;cdt.managedbuild.tool.gnu.cpp.compiler.input.1843250769">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.2003359694;cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.2003359694.;cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.1008623592;cdt.managedbuild.tool.gnu.cpp.compiler.input.1902740819">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1233336484;cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.1233336484.;cdt.managedbuild.tool.gnu.cpp.compiler.mingw.base.427437737;cdt.managedbuild.tool.gnu.cpp.compiler.input.1963045589">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.2003359694;cdt.managedbuild.toolchain.gnu.mingw.base.1148277027.2003359694.;cdt.managedbuild.tool.gnu.c.compiler.mingw.base.788451789;cdt.managedbuild.tool.gnu.c.compiler.input.1828446447">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

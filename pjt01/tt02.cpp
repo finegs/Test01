@@ -52,7 +52,7 @@ int main() {
 	char** param = (char**)malloc(sizeof(char*)*paramLen);
 	param[0] = (char*)malloc(sizeof(char)*(strlength = strlen("Good")+1));
 	memset(param[0], '\0', strlength);
-	strncpy(param[0], "Good", strlength);
+	strncpy_s(param[0], strlength, "Good", strlength);
 	f2(paramLen, param);
 
 	fsvcmap["f2"](paramLen, param);
