@@ -12,7 +12,12 @@
         "initializer_list": "cpp",
         "string_view": "cpp",
         "optional": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "chrono": "cpp",
+        "forward_list": "cpp",
+        "queue": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp"
     }
 }
 

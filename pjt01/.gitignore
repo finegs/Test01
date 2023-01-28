@@ -17,3 +17,5 @@ build
 **/Makefile
 **/CMakeFiles
 **/Makefiles
+**/.settings/*.*
+**/target/*.*
