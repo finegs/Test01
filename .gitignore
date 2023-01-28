@@ -54,3 +54,5 @@ pjt05/Makefile
 pjt05/Project.sln
 pjt05/ZERO_CHECK.vcxproj
 pjt05/ZERO_CHECK.vcxproj.filters
+
+target/**/*.*
