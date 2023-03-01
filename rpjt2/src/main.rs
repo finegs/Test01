@@ -1,9 +1,16 @@
 
 use std::collections::HashMap;
+use std::collections::BTreeMap;
 
-#[derive(Clone)] // we'll be cloning it later on
+#[derive(Clone, Debug)] // we'll be cloning it later on
 struct Node<'a> {
     data: &'a i32 
+}
+
+impl<'a> Node<'a> {
+    fn set_data(&mut self, _data: &'a i32) {
+        self.data = _data;
+    }
 }
 
 
@@ -21,6 +28,7 @@ impl<'a> Test<'a> {
         node: Node<'a>) { // do not pass a reference
         self.hash_map.insert("test", node);  // inserting moves `node`
     }
+     
 }
 
 fn main() {
@@ -30,8 +38,22 @@ fn main() {
     test.join(stuff.clone());  // if we don't clone, `stuff` will get moved
 
     println!("{}", *test.hash_map["test"].data);  // outputs "12"
-}
+                                                  //
+    let mut tmap: BTreeMap<String, Node> = BTreeMap::new();
+    tmap.insert("bb".to_string(), Node{data : &200});
+    tmap.insert("aa".to_string(), Node{data : &100});
+    tmap.insert("2".to_string(), Node{data : &2});
+    tmap.insert("1".to_string(), Node{data : &1});
+    tmap.insert("0".to_string(), Node{data : &0});
 
+    let nv = *tmap["0"].data + 2;
+    if let Some(x) = tmap.get_mut("0") {
+        // let t = *x.data +2;
+        // x.data = &t;
+        x.set_data(&nv);
+    }
+    println!("btreemap len : {}, data : {:?}", tmap.len(), tmap);
+}
 /*
 use std::collections::HashMap;
 
