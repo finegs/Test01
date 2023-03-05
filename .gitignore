@@ -16,6 +16,8 @@
 *.idb
 .suo
 *.obj
+*/**/*.swp
+*/**/*.bak
 pjt01/git-clang-format
 pjt01/scan-view
 pjt01/scan-build
@@ -52,3 +54,6 @@ pjt05/Makefile
 pjt05/Project.sln
 pjt05/ZERO_CHECK.vcxproj
 pjt05/ZERO_CHECK.vcxproj.filters
+
+target/**/*.*
+*/**/*.swp
