@@ -16,6 +16,8 @@
 *.idb
 .suo
 *.obj
+*/**/*.swp
+*/**/*.bak
 pjt01/git-clang-format
 pjt01/scan-view
 pjt01/scan-build

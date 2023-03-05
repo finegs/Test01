@@ -1,8 +1,7 @@
-use std::{env, fmt, fmt::Display};
-struct Config {
-    query: String,
-    file_path : String,
-    ignore_case: bool
+use std::{env, fmt, fmt::Display, process};
+
+struct Config { query: String,
+    file_path : String, ignore_case: bool
 }
 
 impl Display for Config {
@@ -37,13 +36,61 @@ impl Config {
      }
 }
 fn main() {
-    let mut args: Vec<String> = env::args().collect();
-
-    match Config::build(args.clone().into_iter()) {
-        Ok(cnf) => println!("### query:{}, file_path:{}, ignore_case:{}", cnf.query, cnf.file_path, cnf.ignore_case),
-        Err(_) => eprintln!("Error : "),
+    
+    let mut args = env::args().skip(1).peekable();
+    let mut input  : Result<&str, &str> = Err("No input file"); 
+    let mut output : Result<&str, &str> = Err("No output file");
+    match args.peek().map(|x| x.as_ref()) {
+        None => {
+            eprintln!("Error args");
+            panic!("Error args");
+        }
+        Some("--in") => {
+            input = match args.next() {
+                Some(arg) => {
+                    Ok(arg.clone().as_str())
+                },
+                None => {
+                    eprintln!("No input file");
+                    std::process::exit(1);
+                }
+             };
+            // input = Ok(args.next().unwrap().as_str())
+        }
+        Some("--out") => {
+            output = Ok(args.next().unwrap().as_str())
+        }
+        _ => {
+            println!("Unsupported Options");
+        }
     }
 
-    args = args.into_iter().map(|arg| arg.to_ascii_lowercase()).collect();
-    args.iter().for_each(|s| println!("{s}"));
+    match input {
+        Ok(input_file) => {
+            println!("Input file : {input_file}");
+        }
+        Err(err_msg) => {
+            eprintln!("{}", err_msg);
+        }
+    }
+
+    match output {
+        Ok(output_file) => {
+            println!("Output file : {}", output_file);
+        }
+        Err(err_msg) => {
+            eprintln!("{}", err_msg);
+        }
+    }
+
+    // let mut args: Vec<String> = env::args().collect();
+
+
+    // match Config::build(args.clone().into_iter()) {
+    //     Ok(cnf) => println!("### query:{}, file_path:{}, ignore_case:{}", cnf.query, cnf.file_path, cnf.ignore_case),
+    //     Err(_) => eprintln!("Error : "),
+    // }
+
+    // args = args.into_iter().map(|arg| arg.to_ascii_lowercase()).collect();
+    // args.iter().for_each(|s| println!("{s}"));
 }
