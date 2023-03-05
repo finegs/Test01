@@ -1,9 +1,9 @@
-<<<<<<< HEAD
 use std::{env, fmt, fmt::Display, process};
 
-struct Config { query: String,
+struct Config { 
+    query: String,
     file_path : String, ignore_case: bool
-=======
+}
 
 use std::collections::HashMap;
 use std::collections::BTreeMap;
@@ -18,7 +18,6 @@ impl<'a> Node<'a> {
         self.data = _data;
     }
 }
-
 
 struct Test<'a> {
     hash_map: HashMap<&'a str, Node<'a>>  // the hash map owns the struct
@@ -100,7 +99,6 @@ struct Config {
     query: String,
     file_path : String,
     ignore_case: bool,
->>>>>>> 0642e2d (idc)
 }
 
 impl Display for Config {
@@ -175,7 +173,6 @@ fn main() {
         }
     }
 
-<<<<<<< HEAD
     match output {
         Ok(output_file) => {
             println!("Output file : {}", output_file);
@@ -183,12 +180,10 @@ fn main() {
         Err(err_msg) => {
             eprintln!("{}", err_msg);
         }
-=======
     match Config::build(args.clone().into_iter()) {
         Ok(cnf) => println!("### query:{}, file_path:{}, ignore_case:{}", 
                             cnf.query, cnf.file_path, cnf.ignore_case),
         Err(_) => eprintln!("Error : "),
->>>>>>> 0642e2d (idc)
     }
 
     // let mut args: Vec<String> = env::args().collect();

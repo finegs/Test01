@@ -56,3 +56,4 @@ pjt05/ZERO_CHECK.vcxproj
 pjt05/ZERO_CHECK.vcxproj.filters
 
 target/**/*.*
+*/**/*.swp

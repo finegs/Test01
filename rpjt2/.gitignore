@@ -1,2 +1,4 @@
 target
 */**/tags
+tags
+.rustc_info.json
