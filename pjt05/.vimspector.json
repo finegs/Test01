@@ -1,0 +1,29 @@
+{
+  "configurations": {
+    "Launch": {
+      "adapter": "vscode-cpptools",
+      "filetypes": [ "cpp" ], 
+      "configuration": {
+        "request": "launch",
+        "program": "build/a/Debug/a",
+        "args": [],
+        "environment": [],
+		"stopAtEntry": true,
+        "cwd": "${workspaceRoot}",
+        "externalConsole": true,
+        "MIMode": "/usr/bin/gdb"
+      }
+    },
+    "Attach": {
+      "adapter": "vscode-cpptools",
+      "filetypes": [ "cpp" ],
+      "configuration": {
+        "request": "attach",
+        "program": "build/a/Debug/a",
+		"stopAtEntry": true,
+        "cwd": "${workspaceRoot}",
+        "MIMode": "/usr/bin/gdb"
+      }
+    }
+  }
+}

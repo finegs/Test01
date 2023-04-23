@@ -13,8 +13,8 @@ struct is_void<void> : std::true_type
 
 int main() {
 
-    std::cout << is_void<char>::value << '\n';
-    std::cout << is_void<void>::value << '\n';
+	std::cout << is_void<char>::value << '\n';
+	std::cout << is_void<void>::value << '\n';
 
     return 0;
 }
