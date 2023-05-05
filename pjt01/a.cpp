@@ -70,20 +70,22 @@ void printQueue(FILE* fp, DynArrayQueue* q) {
 }
 
 int main() {
-    printf("###0###\n");
+
+	using namespace std;
+    cout << "###0###" << std::endl;
     DynArrayQueue* q = createDynQueue();
     enqueue(q, 1);
     enqueue(q, 2);
-    printf("###1###\n");
+    cout << "###1###" << std::endl;
     enqueue(q, 3);
     enqueue(q, 4);
-    printf("###2###\n");
+    cout << "###2###" << std::endl;
     enqueue(q, 5);
     enqueue(q, 6);
     
-    printf("###3###\n");
+    cout << "###3###" << std::endl;
 
-    printf("###4 ### : size(queue) : %d\n", queueSize(q));
+    cout << "###4 ### : size(queue) : " << queueSize(q) << std::endl;;
     printQueue(stdout, q);
 
     return 0;
