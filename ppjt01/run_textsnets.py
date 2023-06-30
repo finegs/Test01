@@ -1,6 +1,7 @@
 
 import textnets as tn
 
+tn.params["autodownload"] = True
 tn.params["seed"] = 42
 
 corpus = tn.Corpus(tn.examples.moon_landing)
