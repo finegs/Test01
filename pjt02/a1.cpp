@@ -50,11 +50,11 @@ int f2() {
 
 
 	std::cout << "ID : 1, "
-			<< "GPA: " <<  gpa1 << ", "
-			<< "Grade: " << grade1 << ", "
-			<< "Name: " <<  name1 << "\n";
+			  << "GPA: " <<  gpa1 << ", "
+			  << "Grade: " << grade1 << ", "
+			  << "Name: " <<  name1 << "\n";
 
-	std::cout << "Set    Grade: " << grade1 << std::endl;
+	std::cout << "Set\tGrade: " << grade1 << std::endl;
 
 	grade1 = 'G';
 

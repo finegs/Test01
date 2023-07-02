@@ -33,7 +33,28 @@ impl<'a> Test<'a> {
         node: Node<'a>) { // do not pass a reference
         self.hash_map.insert("test", node);  // inserting moves `node`
     }
-     
+}
+
+pub fn my_add(a:i32, b:i32) -> i32 {
+    return a+b;
+}
+
+pub fn my_bad_add(a:i32, b:i32) -> i32 { return a-b; }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_my_add() {
+        assert_eq!(my_add(1,2), 3);
+    }
+
+    #[test]
+    fn test_my_bad_add() {
+        assert_ne!(my_bad_add(1,2), 3);
+    }
 }
 
 fn main() {
@@ -51,12 +72,14 @@ fn main() {
     tmap.insert("1".to_string(), Node{data : &1});
     tmap.insert("0".to_string(), Node{data : &0});
 
-    let nv = *tmap["0"].data + 2;
+    let nv = tmap["0"].data + 2;
+    // tmap["0"].set_data(&(tmap["0"].data + 2));
     if let Some(x) = tmap.get_mut("0") {
         // let t = *x.data +2;
         // x.data = &t;
         x.set_data(&nv);
     }
+    println!("tmap[{}]={}", "0", 100 + tmap["0"].data);
     println!("btreemap len : {}, data : {:?}", tmap.len(), tmap);
 }
 /*
