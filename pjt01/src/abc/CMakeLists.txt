@@ -5,19 +5,28 @@ add_executable(aa aa.c)
 add_executable(a a.c)
 
 
-
 #TARGET_LINK_LIBRARIES(t ws2_32 stdc++ m pthread boost_thread boost_system boost_chrono)
-TARGET_LINK_LIBRARIES(t 
-	PUBLIC
-    ws2_32 
-    stdc++ 
-    m 
-    pthread 
-    boost_thread
-    boost_system
-    boost_chrono
-    mu
-    )
+IF (WIN32 OR WIN64)
+	TARGET_LINK_LIBRARIES(t 
+		PUBLIC
+		ws2_32 
+		stdc++ 
+		m 
+		pthread 
+		boost_thread
+		boost_system
+		boost_chrono
+		mu
+		)
+ELSE ()
+	TARGET_LINK_LIBRARIES(t 
+		PUBLIC
+		stdc++ 
+		m 
+		pthread 
+		mu
+		)
+ENDIF ()
 
 target_link_directories(t PUBLIC ${CMAKE_SOURCE_DIR}/mutil)
 
