@@ -15,13 +15,11 @@ IF (WIN32 OR WIN64)
 	ADD_DEFINITIONS("-Wall -Wextra -Wno-unused-parameter -Wpedantic-ms-format -posix")
 	INCLUDE_DIRECTORIES($ENV{BOOST_HOME}/../boost_inc include)
 	LINK_DIRECTORIES($ENV{BOOST_HOME}/lib lib mutil)
-
 ELSE()
 	ADD_DEFINITIONS("-Wall -Wextra -Wno-unused-parameter -posix")
 ENDIF()
 
 ADD_DEFINITIONS("-DUSE_NBOOST")
-
 
 
 #add_subdirectory(abc)
@@ -31,10 +29,34 @@ ADD_DEFINITIONS("-DUSE_NBOOST")
 #add_subdirectory(algo)
 
 add_executable(a a.cpp)
+add_executable(b b.cpp)
+add_executable(b1 b1.cpp)
 
 #TARGET_LINK_LIBRARIES(t ws2_32 stdc++ m pthread boost_thread boost_system boost_chrono)
 IF (WIN32 OR WIN64)
 	TARGET_LINK_LIBRARIES(a 
+		PUBLIC
+		ws2_32 
+		stdc++ 
+		m 
+		pthread 
+		boost_thread
+		boost_system
+		boost_chrono
+		mu
+	)
+	TARGET_LINK_LIBRARIES(b 
+		PUBLIC
+		ws2_32 
+		stdc++ 
+		m 
+		pthread 
+		boost_thread
+		boost_system
+		boost_chrono
+		mu
+	)
+	TARGET_LINK_LIBRARIES(b1 
 		PUBLIC
 		ws2_32 
 		stdc++ 
@@ -52,6 +74,19 @@ ELSE ()
 		m 
 		pthread 
 	)
+	TARGET_LINK_LIBRARIES(b 
+		PUBLIC
+		stdc++ 
+		m 
+		pthread 
+	)
+	TARGET_LINK_LIBRARIES(b1 
+		PUBLIC
+		stdc++ 
+		m 
+		pthread 
+	)
+ENDIF ()
 ENDIF ()
 
 # target_link_directories(a PUBLIC ${CMAKE_SOURCE_DIR}/mutil)
