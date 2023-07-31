@@ -87,7 +87,6 @@ ELSE ()
 		pthread 
 	)
 ENDIF ()
-ENDIF ()
 
 # target_link_directories(a PUBLIC ${CMAKE_SOURCE_DIR}/mutil)
 
