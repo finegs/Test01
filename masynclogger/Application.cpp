@@ -7,9 +7,9 @@
 
 using namespace std;
 
-std::atomic<int> AsyncLoggers::g_loggerId = 0;
+std::atomic<int> AsyncLoggers::g_loggerId{0};
 std::mutex AsyncLoggers::sMutex;
-std::atomic<int> WorkerThreadMsg::g_seq = 0;
+std::atomic<int> WorkerThreadMsg::g_seq{0};
 std::vector<WorkerThread> threads;
 
 int main(int argc, char* argv[])

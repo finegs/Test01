@@ -5,13 +5,11 @@
 
 using namespace std;
 
-AsyncLogger::AsyncLogger(int _loggerId, const std::string& _name) : m_loggerId(_loggerId), m_name(_name), m_pauseWaitMils(250) 
-{
-}
+AsyncLogger::AsyncLogger(int _loggerId, const std::string& _name) 
+		: m_loggerId(_loggerId), m_name(_name), m_pauseWaitMils(250) 
+		{}
 
-AsyncLogger::~AsyncLogger() 
-{
-}
+AsyncLogger::~AsyncLogger() {}
 
 bool AsyncLogger::createThread() {
 	if(!m_thread)
