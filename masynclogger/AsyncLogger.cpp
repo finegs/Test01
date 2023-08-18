@@ -6,8 +6,13 @@
 using namespace std;
 
 AsyncLogger::AsyncLogger(int _loggerId, const std::string& _name) 
+<<<<<<< HEAD
 	: m_loggerId(_loggerId), m_name(_name), m_pauseWaitMils(250) 
 {}
+=======
+		: m_loggerId(_loggerId), m_name(_name), m_pauseWaitMils(250) 
+		{}
+>>>>>>> 9b73d40acb4fd6776153dc648c1be8decd34b66b
 
 AsyncLogger::~AsyncLogger() {}
 
