@@ -17,7 +17,8 @@ WorkerThread::~WorkerThread()
 	//THREAD_NAME = nullptr;
 }
 
-WorkerThread::WorkerThread(const WorkerThread& o) {
+WorkerThread::WorkerThread(const WorkerThread& o)
+{
 	if(this==&o) return;
 	// std::copy(o.m_queue.front(), o.m_queue.back(), m_queue.front());
 	threadName = o.threadName;
