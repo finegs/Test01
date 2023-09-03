@@ -80,7 +80,10 @@ app.get("/books", (req, res) => {
 
 // GET /create
 app.get("/create", (req, res) => {
-    res.render("create", { model: {} });
+    const book = {
+        Author: "__Created Author"
+    };
+    res.render("create", { model: book });
 });
 
 // POST /create
