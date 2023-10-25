@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import net.m8m.batchdemo.model.Item;
 
-public class ItemResultRowwMapper  implements RowMapper<Item>{
+public class ItemResultRowMapper  implements RowMapper<Item>{
 
 	@Override
 	public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
