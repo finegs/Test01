@@ -2,7 +2,7 @@
 #add_executable(t t.cpp u.cpp mipc.cpp uu1.
 add_executable(t t.cpp)
 add_executable(aa aa.c)
-add_executable(a a.c)
+# add_executable(a a.c)
 
 
 #TARGET_LINK_LIBRARIES(t ws2_32 stdc++ m pthread boost_thread boost_system boost_chrono)

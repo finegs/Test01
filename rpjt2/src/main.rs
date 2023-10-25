@@ -1,3 +1,60 @@
+#![allow(unused)]
+
+use rand::Rng;
+use core::num;
+use std::fmt::Display;
+use std::io;
+use std::io::{Write, BufReader, BufRead, ErrorKind};
+use std::fs::File;
+use std::cmp::{Ordering, max_by_key};
+use std::collections::HashMap;
+
+mod restraurant;
+use crate::restraurant::order_food;
+
+fn main() {
+    let path = "lines.txt";
+    let output = File::create(path);
+    let mut output = match output {
+        Ok(file) => file,
+        Err(error) => panic!("Problem creating file : {:?}", error)
+    };
+
+    write!(output, "Just some\nRandom words").expect("Failed to write file");
+
+    let input = File::open(path).unwrap();
+    let buffered = BufReader::new(input);
+    for line in buffered.lines() {
+        println!("{}", line.unwrap());
+    }
+
+    let output2 = File::create("rand.txt");
+    let output2 = match output2 {
+        Ok(file) => file,
+        Err(error) => match error.kind() {
+            ErrorKind::NotFound => match File::create("rand.txt") {
+                Ok(fc) => fc,
+                Err(e) => panic!("Can't create file : {:?}", error),
+            }
+            _other_error => panic!("Problem opening file! : {:?}", error)
+        }
+    };
+
+}
+
+// use std::ops::Add;
+// fn main() {
+//     const ONE_MIL : u32 = 1_000_000;
+//     const PI: f32 = 3.141592;
+//     let age = "47";
+//     let mut age: u32 = age.trim().parse()
+//     .expect("Age was't assigned a number");
+//     age = age+1;
+//     println!("I'm {} and I want ${}", age, ONE_MIL);
+// }
+
+/*
+
 use std::{env, fmt, fmt::Display, process};
 
 struct Config { 
@@ -82,6 +139,9 @@ fn main() {
     println!("tmap[{}]={}", "0", 100 + tmap["0"].data);
     println!("btreemap len : {}, data : {:?}", tmap.len(), tmap);
 }
+
+*/
+
 /*
 use std::collections::HashMap;
 
