@@ -1,16 +1,17 @@
 package com.example.examplebatch.part3;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.JobScope;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
@@ -21,6 +22,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -31,14 +33,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChunkProcessingConfig {
 
-
-    private final StepBuilderFactory stepBuilderFactory;
-    private final JobBuilderFactory jobBuilderFactory;
-
+	private final JobRepository jobRepository;
+	private final PlatformTransactionManager platformTransactionManager;
 
     @Bean
     public Job chunkJob(){
-        return this.jobBuilderFactory.get("chunkProcessingJob")
+        return new JobBuilder("chunkProcessingJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(this.taskBaseStep())
                 .next(this.chunkBaseStep(null))
@@ -48,7 +48,7 @@ public class ChunkProcessingConfig {
     @Bean
     @JobScope
     public Step chunkBaseStep(@Value("#{jobParameters[chunkSize]}") String chunkSize){
-        return this.stepBuilderFactory.get("chunkBaseStep")
+        return new StepBuilder("chunkBaseStep", jobRepository)
                 .<String, String>chunk(StringUtils.hasText(chunkSize) ? Integer.parseInt(chunkSize) : 10)
                 .reader(itemReader())
                 .processor(itemProcessor())
@@ -71,8 +71,8 @@ public class ChunkProcessingConfig {
 
 
     @Bean
-    public Step taskBaseStep(){
-        return this.stepBuilderFactory.get("taskBaseStep")
+    public Step taskBaseStep(JobRepository jobRepository){
+        return new StepBuilder("taskBaseStep", jobRepository)
                 .tasklet(this.tasklet(null))
                 .build();
     }
@@ -86,8 +86,8 @@ public class ChunkProcessingConfig {
 
             int chunkSize = StringUtils.hasText(value) ? Integer.parseInt(value) : 10;
 
-            int fromIndex = stepExecution.getReadCount();
-            int toIndex = fromIndex + chunkSize;
+            long fromIndex = stepExecution.getReadCount();
+            long toIndex = fromIndex + chunkSize;
 
             if(fromIndex >= items.size()){
                 return RepeatStatus.FINISHED;

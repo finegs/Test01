@@ -19,7 +19,7 @@ public class SharedConfig {
 
     @Bean
     public Job shareJob(JobRepository jobRepository, PlatformTransactionManager transactionManager){
-        return new JobBuilder("shareJob")
+        return new JobBuilder("shareJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .repository(jobRepository)
                 .start(this.step(jobRepository, transactionManager))
@@ -29,9 +29,8 @@ public class SharedConfig {
 
     @Bean
     public Step step(JobRepository jobRepository, PlatformTransactionManager transactionManager){
-        return new StepBuilder("step")
+        return new StepBuilder("step", jobRepository)
                 .repository(jobRepository)
-                .transactionManager(transactionManager)
                 .tasklet((contribution, chunkContext) -> {
 
                     StepExecution stepExecution = contribution.getStepExecution();
@@ -49,15 +48,14 @@ public class SharedConfig {
                     log.info("parameter: {}", jobParameters.getString("run.id"));
 
                     return RepeatStatus.FINISHED;
-                })
+                }, transactionManager)
                 .build();
     }
 
     @Bean
     public Step step2(JobRepository jobRepository, PlatformTransactionManager transactionManager){
-        return new StepBuilder("step2")
+        return new StepBuilder("step2", jobRepository)
                 .repository(jobRepository)
-                .transactionManager(transactionManager)
                 .tasklet((contribution, chunkContext) -> {
 
                     StepExecution stepExecution = contribution.getStepExecution();
@@ -71,7 +69,7 @@ public class SharedConfig {
 
 
                     return RepeatStatus.FINISHED;
-                })
+                }, transactionManager)
                 .build();
     }
 
