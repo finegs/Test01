@@ -38,7 +38,7 @@ public class ItemProcessorConfig {
     @Bean
     public Step itemProcessorStep() {
         return new StepBuilder("itemProcessorStep", jobRepository)
-                .<Person, Person>chunk(10)
+                .<Person, Person>chunk(10, platformTransactionManager)
                 .reader(itemReader())
                 .processor(itemProcessor())
                 .writer(itemWriter())

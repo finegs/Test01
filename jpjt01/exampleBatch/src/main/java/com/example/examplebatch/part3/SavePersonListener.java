@@ -41,8 +41,8 @@ public class SavePersonListener {
 
         @Override
         public void afterJob(JobExecution jobExecution) {
-            int sum = jobExecution.getStepExecutions().stream()
-                    .mapToInt(StepExecution::getWriteCount)
+            long sum = jobExecution.getStepExecutions().stream()
+                    .mapToLong(StepExecution::getWriteCount)
                     .sum();
 
             log.info("afterJob : {}", sum);
@@ -58,8 +58,8 @@ public class SavePersonListener {
 
         @AfterJob
         public void afterJob(JobExecution jobExecution) {
-            int sum = jobExecution.getStepExecutions().stream()
-                    .mapToInt(StepExecution::getWriteCount)
+            long sum = jobExecution.getStepExecutions().stream()
+                    .mapToLong(StepExecution::getWriteCount)
                     .sum();
             log.info("annotation afterJob : {}", sum);
         }

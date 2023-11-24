@@ -35,7 +35,7 @@ public class UserConfigurationTest {
         //then
         assertThat(jobExecution.getStepExecutions().stream()
                 .filter(x -> x.getStepName().equals("userLevelUpStep"))
-                .mapToInt(StepExecution::getWriteCount)
+                .mapToLong(StepExecution::getWriteCount)
                 .sum())
                 .isEqualTo(size)
                 .isEqualTo(300);

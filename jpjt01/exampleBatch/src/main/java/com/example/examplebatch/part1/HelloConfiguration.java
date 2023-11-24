@@ -1,34 +1,32 @@
 package com.example.examplebatch.part1;
 
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.transaction.PlatformTransactionManager;
 
 
 @Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class HelloConfiguration {
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
 
-
-    public HelloConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory) {
-        this.jobBuilderFactory = jobBuilderFactory;
-        this.stepBuilderFactory = stepBuilderFactory;
-    }
+		private final JobRepository jobRepository;
+		private final PlatformTransactionManager platformTransactionManager;
 
 
     @Bean
     public Job helloJob() {
-        return jobBuilderFactory.get("helloJob")
+        return new JobBuilder("helloJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(helloStep())
                 .build();
@@ -36,16 +34,12 @@ public class HelloConfiguration {
 
     @Bean
     public Step helloStep(){
-        return stepBuilderFactory.get("helloStep")
+        return new StepBuilder("helloStep", jobRepository)
                 .tasklet((contribution, chunkContext) -> {
                     log.info("Hello Spring Batch");
                     return RepeatStatus.FINISHED;
-                })
+                }, platformTransactionManager)
                 .build();
     }
-
-
-
-
 
 }

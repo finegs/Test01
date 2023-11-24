@@ -4,15 +4,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.*;
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
 import org.springframework.batch.item.database.builder.JdbcPagingItemReaderBuilder;
 import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilder;
-import org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
@@ -20,13 +20,11 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.transaction.PlatformTransactionManager;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,18 +35,17 @@ import java.util.stream.Collectors;
 public class ItemReaderConfiguration {
 
 
-    private final StepBuilderFactory stepBuilderFactory;
-    private final JobBuilderFactory jobBuilderFactory;
     private final DataSource dataSource;
+		private final JobRepository jobRepository;
     private final EntityManagerFactory entityManagerFactory;
+		private final PlatformTransactionManager platformTransactionManager;
 
     private static final int chunkSize = 10;
 
 
-
     @Bean
     public Job itemReaderJob() throws Exception {
-        return this.jobBuilderFactory.get("itemReaderJob")
+        return new JobBuilder("itemReaderJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(this.customItemReaderStep())
                 .next(this.csvFileItemReaderStep())
@@ -61,8 +58,8 @@ public class ItemReaderConfiguration {
 
 
     private Step jdbcPagingItemReaderStep() throws Exception {
-        return this.stepBuilderFactory.get("jdbcPagingItemReaderStep")
-                .<Person, Person>chunk(chunkSize)
+        return new StepBuilder("jdbcPagingItemReaderStep", jobRepository)
+                .<Person, Person>chunk(chunkSize, platformTransactionManager)
                 .reader(jdbcPagingItemReader())
                 .writer(itemWriter())
                 .build();
@@ -74,7 +71,12 @@ public class ItemReaderConfiguration {
                 .fetchSize(5)
                 .pageSize(5)
                 .dataSource(dataSource)
-                .rowMapper(((rs, rowNum) -> new Person(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4))))
+                .rowMapper(((rs, rowNum) 
+											-> 
+													new Person(rs.getInt(1), 
+														rs.getString(2), 
+														rs.getString(3), 
+														rs.getString(4))))
                 .selectClause("id, name, age, address")
                 .fromClause("person")
                 .sortKeys(Map.of("id", Order.ASCENDING))
@@ -86,8 +88,8 @@ public class ItemReaderConfiguration {
     }
 
     private Step jdbcCursorItemReaderStep() {
-        return this.stepBuilderFactory.get("jdbcCursorItemReaderStep")
-                .<Person, Person>chunk(10)
+        return new StepBuilder("jdbcCursorItemReaderStep", jobRepository)
+                .<Person, Person>chunk(10, platformTransactionManager)
                 .reader(jdbcCursorItemReader())
                 .writer(itemWriter())
                 .build();
@@ -95,8 +97,8 @@ public class ItemReaderConfiguration {
 
     @Bean
     public Step customItemReaderStep() {
-        return this.stepBuilderFactory.get("customItemReaderStep")
-                .<Person, Person>chunk(10)
+        return new StepBuilder("customItemReaderStep", jobRepository)
+                .<Person, Person>chunk(10,  platformTransactionManager)
                 .reader(new CustomItemReader<>(getItems()))
                 .writer(itemWriter())
                 .build();
@@ -105,8 +107,8 @@ public class ItemReaderConfiguration {
 
     @Bean
     public Step csvFileItemReaderStep() throws Exception {
-        return this.stepBuilderFactory.get("csvFileItemReaderStep")
-                .<Person, Person>chunk(10)
+        return new StepBuilder("csvFileItemReaderStep", jobRepository)
+                .<Person, Person>chunk(10, platformTransactionManager)
                 .reader(csvFileItemReader())
                 .writer(itemWriter())
                 .build();
@@ -114,8 +116,8 @@ public class ItemReaderConfiguration {
 
     @Bean
     public Step jpaCursorItemReaderStep() throws Exception {
-        return this.stepBuilderFactory.get("jpaCursorItemReaderStep")
-                .<Person, Person>chunk(10)
+        return new StepBuilder("jpaCursorItemReaderStep", jobRepository)
+                .<Person, Person>chunk(10, platformTransactionManager)
                 .reader(this.jpaCursorItemReader())
                 .writer(itemWriter())
                 .build();
@@ -185,7 +187,8 @@ public class ItemReaderConfiguration {
     }
 
     private ItemWriter<Person> itemWriter() {
-        return items -> log.info(items.stream()
+        return items -> log.info(items.getItems()
+								.stream()
                 .map(Person::getName)
                 .collect(Collectors.joining(", ")));
     }

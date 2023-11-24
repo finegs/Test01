@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
@@ -60,8 +59,8 @@ public class HomeworkConfig {
     @JobScope
     public Step homeworkStep(@Value("#{jobParameters[allow_duplicate]}") String allowDuplicate) throws Exception{
 
-        return new StepBuilder("homeworkStep", platformTransactionManager)
-                .<Person, Person>chunk(10)
+        return new StepBuilder("homeworkStep", jobRepository)
+                .<Person, Person>chunk(10, platformTransactionManager)
                 .reader(csvFileReader())
                 .processor(itemProcessor(Boolean.parseBoolean(allowDuplicate)))
                 .writer(csvFileWriter())
@@ -108,7 +107,7 @@ public class HomeworkConfig {
     }
 
     private ItemWriter<? super Person> logItemWriter() {
-        return items -> items.stream().map(Person::getName).forEach(id -> log.info("PERSON.NAME : {}", id));
+        return items -> items.getItems().stream().map(Person::getName).forEach(id -> log.info("PERSON.NAME : {}", id));
     }
 
     private ItemWriter<? super Person> jdbcBatchItemWriter() {

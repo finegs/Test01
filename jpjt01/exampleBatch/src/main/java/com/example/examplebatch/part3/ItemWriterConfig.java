@@ -4,9 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
@@ -20,8 +21,8 @@ import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -34,15 +35,16 @@ import java.util.List;
 public class ItemWriterConfig {
 
 
-    private final StepBuilderFactory stepBuilderFactory;
-    private final JobBuilderFactory jobBuilderFactory;
-    private final EntityManagerFactory entityManagerFactory;
-    private final DataSource dataSource;
+	
+	private final DataSource dataSource; 
+	private final JobRepository jobRepository; 
+  private final EntityManagerFactory entityManagerFactory;
+	private final PlatformTransactionManager platformTransactionManager;
 
 
     @Bean
     public Job itemWriterJob() throws Exception {
-        return this.jobBuilderFactory.get("itemWriterJob")
+        return new JobBuilder("itemWriterJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(this.csvItemWriterStep())
 //                .next(this.JdbcBatchItemWriterStep())
@@ -52,8 +54,8 @@ public class ItemWriterConfig {
 
     @Bean
     public Step csvItemWriterStep() throws Exception {
-        return this.stepBuilderFactory.get("csvItemWriterStep")
-                .<Person, Person>chunk(10)
+        return new StepBuilder("csvItemWriterStep", jobRepository)
+                .<Person, Person>chunk(10, platformTransactionManager)
                 .reader(itemReader())
                 .writer(csvItemWriter())
                 .build();
@@ -62,8 +64,8 @@ public class ItemWriterConfig {
 
     @Bean
     public Step JdbcBatchItemWriterStep() throws Exception {
-        return this.stepBuilderFactory.get("JdbcBatchItemWriterStep")
-                .<Person, Person>chunk(10)
+        return new StepBuilder("JdbcBatchItemWriterStep", jobRepository)
+                .<Person, Person>chunk(10, platformTransactionManager)
                 .reader(itemReader())
                 .writer(JdbcBatchItemWriter())
                 .build();
@@ -71,8 +73,8 @@ public class ItemWriterConfig {
 
     @Bean
     public Step jpaItemWriterStep() throws Exception {
-        return this.stepBuilderFactory.get("jpaItemWriterStep")
-                .<Person, Person>chunk(10)
+        return new StepBuilder("jpaItemWriterStep", jobRepository)
+                .<Person, Person>chunk(10, platformTransactionManager)
                 .reader(itemReader())
                 .writer(jpaItemWriter())
                 .build();
