@@ -57,3 +57,5 @@ pjt05/ZERO_CHECK.vcxproj.filters
 
 target/**/*.*
 */**/*.swp
+
+**/.gradle
