@@ -6,8 +6,8 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.Collection;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -23,8 +23,8 @@ public class LevelUpJobExecutionListener implements JobExecutionListener {
     public void afterJob(JobExecution jobExecution) {
         Collection<User> users = userRepository.findAllByUpdatedDate(LocalDate.now());
 
-        long time = jobExecution.getEndTime().getTime() - jobExecution.getStartTime().getTime();
+        long time = jobExecution.getEndTime().getLong(ChronoField.MICRO_OF_DAY) - jobExecution.getStartTime().getLong(ChronoField.MICRO_OF_DAY);
 
-        log.info(" batch time : {}ms\", total data processed : {} user", time ,  users.size());
+        log.info(" batch time : {}us\", total data processed : {} user", time ,  users.size());
     }
 }

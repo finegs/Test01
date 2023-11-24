@@ -37,7 +37,7 @@ public class SavePersonConfigurationTest {
 
         //then
         assertThat(jobExecution.getStepExecutions().stream()
-                .mapToInt(StepExecution::getWriteCount)
+                .mapToLong(StepExecution::getWriteCount)
                 .sum())
                 .isEqualTo(personRepository.count())
                 .isEqualTo(5);
@@ -54,7 +54,7 @@ public class SavePersonConfigurationTest {
 
         //then
         assertThat(jobExecution.getStepExecutions().stream()
-                .mapToInt(StepExecution::getWriteCount)
+                .mapToLong(StepExecution::getWriteCount)
                 .sum())
                 .isEqualTo(personRepository.count())
                 .isEqualTo(5);
@@ -71,7 +71,7 @@ public class SavePersonConfigurationTest {
 
         //then
         assertThat(jobExecution.getStepExecutions().stream()
-                .mapToInt(StepExecution::getWriteCount)
+                .mapToLong(StepExecution::getWriteCount)
                 .sum())
                 .isEqualTo(personRepository.count())
                 .isEqualTo(14);

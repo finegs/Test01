@@ -1,19 +1,17 @@
 package com.example.examplebatch.part3;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -40,7 +38,7 @@ public class ChunkProcessingConfig {
     public Job chunkJob(){
         return new JobBuilder("chunkProcessingJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
-                .start(this.taskBaseStep())
+                .start(this.taskBaseStep(jobRepository))
                 .next(this.chunkBaseStep(null))
                 .build();
     }
@@ -49,7 +47,7 @@ public class ChunkProcessingConfig {
     @JobScope
     public Step chunkBaseStep(@Value("#{jobParameters[chunkSize]}") String chunkSize){
         return new StepBuilder("chunkBaseStep", jobRepository)
-                .<String, String>chunk(StringUtils.hasText(chunkSize) ? Integer.parseInt(chunkSize) : 10)
+                .<String, String>chunk(StringUtils.hasText(chunkSize) ? Integer.parseInt(chunkSize) : 10, platformTransactionManager)
                 .reader(itemReader())
                 .processor(itemProcessor())
                 .writer(itemWriter())
@@ -73,7 +71,7 @@ public class ChunkProcessingConfig {
     @Bean
     public Step taskBaseStep(JobRepository jobRepository){
         return new StepBuilder("taskBaseStep", jobRepository)
-                .tasklet(this.tasklet(null))
+                .tasklet(this.tasklet(null), platformTransactionManager)
                 .build();
     }
 
@@ -86,8 +84,8 @@ public class ChunkProcessingConfig {
 
             int chunkSize = StringUtils.hasText(value) ? Integer.parseInt(value) : 10;
 
-            long fromIndex = stepExecution.getReadCount();
-            long toIndex = fromIndex + chunkSize;
+            int fromIndex = java.lang.Math.toIntExact(stepExecution.getReadCount());
+            int toIndex = java.lang.Math.toIntExact(fromIndex + chunkSize);
 
             if(fromIndex >= items.size()){
                 return RepeatStatus.FINISHED;

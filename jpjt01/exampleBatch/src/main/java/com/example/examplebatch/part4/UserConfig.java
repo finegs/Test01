@@ -2,14 +2,16 @@ package com.example.examplebatch.part4;
 
 import com.example.examplebatch.part5.JobParametersDecide;
 import com.example.examplebatch.part5.OrderStatistics;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.JobScope;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -26,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -41,8 +44,8 @@ import java.util.Map;
 public class UserConfig {
 
 
-    private final StepBuilderFactory stepBuilderFactory;
-    private final JobBuilderFactory jobBuilderFactory;
+		private final JobRepository jobRepository;
+		private final PlatformTransactionManager platformTransactionManager;
     private final UserRepository userRepository;
     private final EntityManagerFactory entityManagerFactory;
     private final DataSource dataSource;
@@ -52,7 +55,7 @@ public class UserConfig {
 
     @Bean(JOB_NAME)
     public Job userJob() throws Exception {
-        return this.jobBuilderFactory.get(JOB_NAME)
+        return new JobBuilder(JOB_NAME, jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(this.saveUserStep())
                 .next(this.userLevelUpStep())
@@ -67,8 +70,8 @@ public class UserConfig {
     @Bean(JOB_NAME + "_orderStatisticsStep")
     @JobScope
     public Step orderStatisticsStep(@Value("#{jobParameters[date]}") String date) throws Exception {
-        return this.stepBuilderFactory.get(JOB_NAME + "_orderStatisticsStep")
-                .<OrderStatistics, OrderStatistics>chunk(CHUNKSIZE)
+        return new StepBuilder(JOB_NAME + "_orderStatisticsStep", jobRepository)
+                .<OrderStatistics, OrderStatistics>chunk(CHUNKSIZE, platformTransactionManager)
                 .reader(orderStatisticsItemReader(date))
                 .writer(orderStatisticsItemWriter(date))
                 .build();
@@ -133,15 +136,15 @@ public class UserConfig {
 
     @Bean(JOB_NAME + "_saveUserStep")
     public Step saveUserStep() {
-        return this.stepBuilderFactory.get(JOB_NAME + "_saveUserStep")
-                .tasklet(new SaveUserTasklet(userRepository))
+        return new StepBuilder(JOB_NAME + "_saveUserStep", jobRepository)
+                .tasklet(new SaveUserTasklet(userRepository), platformTransactionManager)
                 .build();
     }
 
     @Bean(JOB_NAME + "_userLevelUpStep")
     public Step userLevelUpStep() throws Exception {
-        return stepBuilderFactory.get(JOB_NAME + "_userLevelUpStep")
-                .<User, User>chunk(CHUNKSIZE)
+        return new StepBuilder(JOB_NAME + "_userLevelUpStep", jobRepository)
+                .<User, User>chunk(CHUNKSIZE, platformTransactionManager)
                 .reader(itemReader())
                 .processor(itemProcessor())
                 .writer(itemWriter())

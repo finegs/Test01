@@ -5,10 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.JobScope;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
@@ -38,15 +40,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Configuration
 public class HomeworkConfig {
 
-    private final JobBuilderFactory jobBuilderFactory;
-    private final StepBuilderFactory stepBuilderFactory;
     private final DataSource dataSource;
+		private final JobRepository jobRepository;
+		private  PlatformTransactionManager platformTransactionManager;
 
     private final static Map<String, Person> persons = new ConcurrentHashMap<>();
 
     @Bean
     public Job homeworkJob() throws Exception {
-        return this.jobBuilderFactory.get("homeworkJob")
+        return new JobBuilder("homeworkJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(this.homeworkStep(null))
                 .listener(new SavePersonListener.SavePersonJobExecutionListener())
@@ -58,7 +60,7 @@ public class HomeworkConfig {
     @JobScope
     public Step homeworkStep(@Value("#{jobParameters[allow_duplicate]}") String allowDuplicate) throws Exception{
 
-        return this.stepBuilderFactory.get("homeworkStep")
+        return new StepBuilder("homeworkStep", platformTransactionManager)
                 .<Person, Person>chunk(10)
                 .reader(csvFileReader())
                 .processor(itemProcessor(Boolean.parseBoolean(allowDuplicate)))
