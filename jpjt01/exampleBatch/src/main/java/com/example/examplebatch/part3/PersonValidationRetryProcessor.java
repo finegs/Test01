@@ -1,12 +1,15 @@
 package com.example.examplebatch.part3;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryListener;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.retry.support.RetryTemplateBuilder;
+
 
 
 @Slf4j
@@ -23,7 +26,8 @@ public class PersonValidationRetryProcessor implements ItemProcessor<Person, Per
     }
 
     @Override
-    public Person process(Person person) throws Exception {
+		@Nullable
+    public Person process(@NonNull Person person) throws Exception {
 
         return retryTemplate.execute(context -> {
             //retry callback 영향 (maxAttempts)

@@ -11,7 +11,10 @@ import com.example.examplebatch.part5.JobParametersDecide;
 import com.example.examplebatch.part5.OrderStatistics;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.integration.async.AsyncItemProcessor;
 import org.springframework.batch.integration.async.AsyncItemWriter;
@@ -32,6 +35,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -142,14 +146,14 @@ public class AsyncUserConfig {
 	@Bean(JOB_NAME + "_saveUserStep")
 	public Step saveUserStep() {
 			return new StepBuilder(JOB_NAME + "_saveUserStep", jobRepository)
-							.tasklet(new SaveUserTasklet(userRepository))
+							.tasklet(new SaveUserTasklet(userRepository), platformTransactionManager)
 							.build();
 	}
 
 	@Bean(JOB_NAME + "_userLevelUpStep")
 	public Step userLevelUpStep() throws Exception {
 			return new StepBuilder(JOB_NAME + "_userLevelUpStep", jobRepository)
-							.<User, Future<User>>chunk(CHUNKSIZE)
+							.<User, Future<User>>chunk(CHUNKSIZE, platformTransactionManager)
 							.reader(itemReader())
 							.processor(itemProcessor())
 							.writer(itemWriter())

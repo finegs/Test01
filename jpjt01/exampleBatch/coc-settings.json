@@ -34,17 +34,13 @@
 	"java.showBuildStatusOnStart.enabled": "notification",
 	"java.configuration.runtimes": [
 		{
-			"name":"JavaSE-11",
-			"path":"/usr/lib/jvm/java-11-openjdk-amd64"
-		},
-		{
 			"name":"JavaSE-17",
 			"path":"/usr/lib/jvm/java-17-openjdk-amd64",
 			"default":true
 		}
 	],
 	"java.jdt.ls.lombokSupport.enabled": false,
-	"java.jdt.ls.vmargs": "-javaagent:/usr/local/share/lombok/lombok-1.18.30.jar -XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms2G -Xlog:disable",
+	"java.jdt.ls.vmargs": "-javaagent:/usr/local/share/lombok/lombok-1.18.24.jar -XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms2G -Xlog:disable",
 	"java.quickfix.showAt": "line",
 	"java.completion.enabled": true,
 	"java.typeHierarchy.lazyLoad": true,
