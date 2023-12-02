@@ -29,15 +29,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
+	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
-	runtimeOnly 'org.h2database:h2'
-	// runtimeOnly 'org.hsqldb:hsqldb'
+	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-	// runtimeOnly 'org.postgresql:postgresql'
 
-	annotationProcessor 'org.projectlombok:lombok'
 
 	// Querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
@@ -53,8 +51,6 @@ dependencies {
 
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
-	// testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-	// testRuntimeOnly 'org.junit.jupiter:junit-vintage-engine'
 	// testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2'
 	// testImplementation 'org.springframework.batch:spring-batch-test'
 }
@@ -63,8 +59,6 @@ test {
 	filter {
 		excludeTestsMatching "org.quartz.*"
 	}
-}
-
-test.named('test') {
 	useJUnitPlatform()
 }
+
