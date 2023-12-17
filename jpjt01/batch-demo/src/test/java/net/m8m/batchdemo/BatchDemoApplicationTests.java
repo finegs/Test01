@@ -13,7 +13,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import lombok.extern.slf4j.Slf4j;
  // @SpringBootTest
+ @Slf4j
  @TestMethodOrder(OrderAnnotation.class)
 class BatchDemoApplicationTests {
 
@@ -25,7 +27,8 @@ class BatchDemoApplicationTests {
 		assertTrue(true, "contextLoads");	
 		// List<String> arr = Arrays.asList("aa","bbb", "ccc cc");
 		// AtomicInteger idx = new AtomicInteger(0);
-		// arr.stream().filter(s->  s.contains("aa")).forEach(s -> System.out.printf("[%d]:%s\n", idx.getAndIncrement(), s));
+		//
+	// arr.stream().filter(s->  s.contains("aa")).forEach(s -> System.out.printf("[%d]:%s\n", idx.getAndIncrement(), s));
 		// int expectedValue = 1;
 		// assertTrue(idx.get() == expectedValue, 
 		// 		String.format("filtered expected : %d, value : %d", expectedValue, idx.get()));
@@ -60,5 +63,9 @@ class BatchDemoApplicationTests {
 	@Test
 	@Order(5)
 	void stream_test() {
+		List<Integer> aa = Arrays.asList(1,2,3,4);
+
+		var sum_of_aa = aa.stream().reduce(0, (a,b) ->  a + b);
+		log.info("stream_test : {}", sum_of_aa);
 	}
 }
