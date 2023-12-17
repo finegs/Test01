@@ -2,8 +2,6 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.5'
 	id 'io.spring.dependency-management' version '1.1.3'
-    // querydsl관련 명령어를 gradle탭에 생성해준다. (권장사항)
-    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" 
 
 }
 
@@ -30,19 +28,24 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	
-    // === QueryDsl 시작 ===
+	// === QueryDsl 시작 ===
     
-	// == 스프링 부트 3.0 이상 ==
-	implementation group: 'com.querydsl', name: 'querydsl-jpa', classifier: 'jakarta'
+	// ⭐1. Spring boot 3.x이상에서 QueryDsl 패키지를 정의하는 방법
+  implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+  annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+  annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+  annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-	annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', classifier: 'jakarta'
-	annotationProcessor group: 'jakarta.annotation', name: 'jakarta.annotation-api'
-	annotationProcessor group: 'jakarta.persistence', name: 'jakarta.persistence-api'
-    // == 스프링 부트 3.0 미만 ==
-//  implementation 'com.querydsl:querydsl-jpa'
-//	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
-    
-    // === QueryDsl 끝 ===
+	// === QueryDsl 끝 ===
+
+
+	// === Test ===
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+	testCompileOnly 'junit:junit'
+	testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+
+	testRuntimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {
@@ -50,21 +53,21 @@ tasks.named('test') {
 }
 
 // === Querydsl 빌드 옵션 (선택사항) ===
-def querydslDir = "$buildDir/generated/querydsl"
+// def querydslDir = "$buildDir/generated/querydsl"
 
-querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
+// querydsl {
+// 	jpa = true
+// 	querydslSourcesDir = querydslDir
+// }
 
-sourceSets {
-	main.java.srcDir querydslDir
-}
+// sourceSets {
+// 	main.java.srcDir querydslDir
+// }
 
-configurations {
-	querydsl.extendsFrom compileClasspath
-}
+// configurations {
+// 	querydsl.extendsFrom compileClasspath
+// }
 
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
+// compileQuerydsl {
+// 	options.annotationProcessorPath = configurations.querydsl
+// }
