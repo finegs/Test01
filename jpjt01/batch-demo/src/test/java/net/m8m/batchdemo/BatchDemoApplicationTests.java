@@ -56,4 +56,9 @@ class BatchDemoApplicationTests {
 		int b =1;
 		assertTrue(a==b, "1==1 is equal");
 	}
+
+	@Test
+	@Order(5)
+	void stream_test() {
+	}
 }
