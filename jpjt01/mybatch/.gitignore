@@ -37,3 +37,6 @@ build/
 
 ## .gralde ##
 **/.gradle
+
+
+**/bin
