@@ -18,43 +18,48 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import static com.example.demo.DemoConstants.*;
+
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "primaryEntityManagerFactory",
-        transactionManagerRef = "primaryTransactionManager",
+        entityManagerFactoryRef = ENTITY_MANAGER_FACTORY_PRIMARY,
+        transactionManagerRef = TRANSACTION_MANAGER_PRIMARY,
         basePackages = { "com.example.demo.primary.repository" }
 )
 public class PrimaryDataSourceConfig {
     
     @Primary
     @Bean
-    @ConfigurationProperties("primary.datasource")
+    @ConfigurationProperties(PROPERTIES_DATASOURCE_PRIMARY)
     public DataSourceProperties primaryDataSourceProperties() {
         return new DataSourceProperties();
     }
 
     @Primary
     @Bean
-    @ConfigurationProperties("primary.datasource.configuration")
-    public DataSource primaryDataSource(@Qualifier("primaryDataSourceProperties") DataSourceProperties dataSourceProperties) {
+    @ConfigurationProperties(DATASOURCE_PRIMARY)
+    public DataSource primaryDataSource(
+				@Qualifier(PROPERTIES_DATASOURCE_PRIMARY) DataSourceProperties dataSourceProperties) {
         return dataSourceProperties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
 
     @Primary
-    @Bean
-    public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(EntityManagerFactoryBuilder builder,
-                                                                           @Qualifier("primaryDataSource") DataSource dataSource) {
+    @Bean(name = ENTITY_MANAGER_FACTORY_PRIMARY)
+    public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(
+				EntityManagerFactoryBuilder builder, 
+				@Qualifier(DATASOURCE_PRIMARY) DataSource dataSource) {
         return builder
-                        .dataSource(dataSource)
-                        .packages("com.example.demo.primary.model")
-                        .persistenceUnit("primaryEntityManager")
-                        .build();
+							.dataSource(dataSource)
+							.packages("com.example.demo.primary.model")
+							.persistenceUnit(ENTITY_MANAGER_PRIMARY)
+							.build();
     }
 
     @Primary
-    @Bean
-    public PlatformTransactionManager primaryTransactionManager(@Qualifier("primaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+    @Bean(name = TRANSACTION_MANAGER_PRIMARY)
+    public PlatformTransactionManager primaryTransactionManager(
+				@Qualifier(ENTITY_MANAGER_FACTORY_PRIMARY) EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 }

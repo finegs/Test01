@@ -17,39 +17,44 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import static com.example.demo.DemoConstants.*;
+
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "secondaryEntityManagerFactory",
-        transactionManagerRef = "secondaryTransactionManager",
+        entityManagerFactoryRef = ENTITY_MANAGER_FACTORY_SECONDARY,
+        transactionManagerRef = TRANSACTION_MANAGER_SECONDARY,
         basePackages = { "com.example.demo.secondary.repository" }
 )
 public class SecondaryDataSourceConfig {
     
-    @Bean
-    @ConfigurationProperties("secondary.datasource")
+    @Bean(name = PROPERTIES_DATASOURCE_SECONDARY)
+    @ConfigurationProperties(PROPERTIES_DATASOURCE_SECONDARY)
     public DataSourceProperties secondaryDataSourceProperties() {
         return new DataSourceProperties();
     }
 
-    @Bean
-    @ConfigurationProperties("spring.datasource.configuration")
-    public DataSource secondaryDataSource(@Qualifier("secondaryDataSourceProperties") DataSourceProperties dataSourceProperties) {
+    @Bean(name = DATASOURCE_SECONDARY)
+    @ConfigurationProperties(PROPERTIES_DATASOURCE_SECONDARY)
+		public DataSource secondaryDataSource(
+				@Qualifier(PROPERTIES_DATASOURCE_SECONDARY) DataSourceProperties dataSourceProperties) {
         return dataSourceProperties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(EntityManagerFactoryBuilder builder,
-                                                                           @Qualifier("secondaryDataSource") DataSource dataSource) {
+    @Bean(name = ENTITY_MANAGER_FACTORY_SECONDARY)
+    public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
+				EntityManagerFactoryBuilder builder,
+				@Qualifier(DATASOURCE_SECONDARY) DataSource dataSource) {
         return builder
-                        .dataSource(dataSource)
-                        .packages("com.example.demo.secondary.model")
-                        .persistenceUnit("secondaryEntityManager")
-                        .build();
+						.dataSource(dataSource)
+						.packages("com.example.demo.secondary.model")
+						.persistenceUnit(ENTITY_MANAGER_SECONDARY)
+						.build();
     }
 
-    @Bean
-    public PlatformTransactionManager secondaryTransactionManager(@Qualifier("secondaryEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+    @Bean(name = TRANSACTION_MANAGER_SECONDARY)
+		public PlatformTransactionManager secondaryTransactionManager(
+				@Qualifier(ENTITY_MANAGER_FACTORY_SECONDARY) EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 }

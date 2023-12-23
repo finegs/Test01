@@ -11,12 +11,15 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import static com.example.demo.DemoConstants.*;
+
 @Repository
 public class SecondTestEntityQueryDslRepository extends SecondaryQuerydslRepositorySupport {
 
     private final JPAQueryFactory factory;
 
-    public SecondTestEntityQueryDslRepository(@Qualifier("secondaryQueryFactory") JPAQueryFactory factory) {
+		public SecondTestEntityQueryDslRepository(
+				@Qualifier(QUERY_FACTORY_SECONDARY) JPAQueryFactory factory) {
         super(SecondTestEntity.class);
         this.factory = factory;
     }
