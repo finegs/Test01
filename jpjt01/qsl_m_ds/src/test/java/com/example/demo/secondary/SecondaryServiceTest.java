@@ -2,34 +2,35 @@ package com.example.demo.secondary;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 
 import com.example.demo.config.PrimaryDataSourceConfig;
+import com.example.demo.config.QuerydslConfig;
 import com.example.demo.config.SecondaryDataSourceConfig;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-import com.example.demo.config.QuerydslConfig;
-
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import static com.example.demo.DemoConstants.*;
 
 @Slf4j
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest
-@Import(
-	{
-		PrimaryDataSourceConfig.class,
-		SecondaryDataSourceConfig.class,
-		QuerydslConfig.class
-	}
+@ImportAutoConfiguration(
+	classes = {
+							SecondaryDataSourceConfig.class,
+							PrimaryDataSourceConfig.class,
+							QuerydslConfig.class
+						}
 )
 public class SecondaryServiceTest {
 
