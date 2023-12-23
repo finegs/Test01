@@ -16,23 +16,23 @@ import static com.example.demo.DemoConstants.*;
 @Repository
 public class SecondTestEntityQueryDslRepository extends SecondaryQuerydslRepositorySupport {
 
-    private final JPAQueryFactory factory;
+	private final JPAQueryFactory factory;
 
-		public SecondTestEntityQueryDslRepository(
-				@Qualifier(QUERY_FACTORY_SECONDARY) JPAQueryFactory factory) {
-        super(SecondTestEntity.class);
-        this.factory = factory;
-    }
+	public SecondTestEntityQueryDslRepository(
+		@Qualifier(QUERY_FACTORY_SECONDARY) JPAQueryFactory factory) {
+		super(SecondTestEntity.class);
+		this.factory = factory;
+	}
 
-    public List<SecondTestEntity> findAll(){
-        QSecondTestEntity entity = QSecondTestEntity.secondTestEntity;
-        
-        return factory.select(Projections.fields(
-            SecondTestEntity.class, 
-            entity.id,
-            entity.column
-            ))
-            .from(entity).fetch();
-    }
-    
+	public List<SecondTestEntity> findAll(){
+			QSecondTestEntity entity = QSecondTestEntity.secondTestEntity;
+		
+		return factory.select(Projections.fields(
+				SecondTestEntity.class, 
+				entity.id,
+				entity.column
+				))
+				.from(entity).fetch();
+	}
+	
 }
