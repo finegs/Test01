@@ -22,3 +22,6 @@ target/**/*.*
 **/.gradle
 *.swp
 **/node_modules
+**/build
+**/build
+**/build
