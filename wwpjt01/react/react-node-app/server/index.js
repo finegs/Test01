@@ -38,7 +38,8 @@ db.run(sql_create, err => {
     const sql_insert = `INSERT INTO Books (Book_ID, Title, Author, Comments) VALUES
   (1, 'Mrs. Bridge', 'Evan S. Connell', 'First in the serie'),
   (2, 'Mr. Bridge', 'Evan S. Connell', 'Second in the serie'),
-  (3, 'L''ingénue libertine', 'Colette', 'Minne + Les égarements de Minne');`;
+  (3, 'L''ingénue libertine', 'Colette', 'Minne + Les égarements de Minne') 
+  ON CONFLICT(Book_ID) DO NOTHING;`;
     db.run(sql_insert, err => {
         if (err) {
             return console.error(err.message);

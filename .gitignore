@@ -21,3 +21,4 @@
 target/**/*.*
 **/.gradle
 *.swp
+**/node_modules
