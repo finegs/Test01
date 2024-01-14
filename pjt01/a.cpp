@@ -56,13 +56,13 @@ class Item {
     void setName(const char* name) {
         size_t name_len = strlen(name)+1;
         this->name = new (name_arr+name_arr_pos++)char[strlen(name)+1]{0};
-        strncpy(this->name, name, name_len);
+        strncpy_s(this->name, name_len, name, name_len);
     }
    
     void setDesc(const char* desc) {
         size_t desc_len = strlen(desc)+1;
         this->desc = new (desc_arr+desc_arr_pos++)char[strlen(desc)+1]{0};
-        strncpy(this->desc, desc, desc_len);
+        strncpy_s(this->desc, desc_len, desc, desc_len);
     }
    
     friend std::ostream& operator<<(std::ostream& os, const Item& o) {
