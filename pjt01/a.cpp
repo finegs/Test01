@@ -1,4 +1,4 @@
-// Online C++ compiler to run C++ program online
+//a Online C++ compiler to run C++ program online
 #include <iostream>
 #include <string>
 #include <cstring>
@@ -19,6 +19,7 @@ size_t desc_arr_pos = 0;
 
 
 struct str_eq {
+
     bool operator()(const char* a, const char* b) const {
         return !strcmp(a,b);
     }
@@ -56,13 +57,21 @@ class Item {
     void setName(const char* name) {
         size_t name_len = strlen(name)+1;
         this->name = new (name_arr+name_arr_pos++)char[strlen(name)+1]{0};
+#if defined WIN32 || WIN64
         strncpy_s(this->name, name_len, name, name_len);
+#else
+        strncpy(this->name, name, name_len);
+#endif
     }
    
     void setDesc(const char* desc) {
         size_t desc_len = strlen(desc)+1;
         this->desc = new (desc_arr+desc_arr_pos++)char[strlen(desc)+1]{0};
+#if defined WIN32 || WIN64
         strncpy_s(this->desc, desc_len, desc, desc_len);
+#else
+        strncpy(this->desc, desc, desc_len);
+#endif
     }
    
     friend std::ostream& operator<<(std::ostream& os, const Item& o) {
