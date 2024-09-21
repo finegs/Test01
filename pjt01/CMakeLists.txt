@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.14)
 
 PROJECT(my.test.pjt01)
 
-
 SET(RUNTIME_OUTPUT_DIRECTORY bin)
 SET(LIBRARY_OUTPUT_DIRECTORY lib)
 SET(ARCHIVE_OUTPUT_DIRECTORY lib/static)
@@ -40,12 +39,11 @@ ENDIF()
 
 ADD_DEFINITIONS("-DUSE_NBOOST")
 
-
 #add_subdirectory(abc)
 #add_subdirectory(mutil)
 ##add_subdirectory(net)
 #add_subdirectory(plot)
-#add_subdirectory(algo)
+add_subdirectory(algo)
 
 add_executable(a a.cpp)
 add_executable(b b.cpp)
