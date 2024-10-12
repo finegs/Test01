@@ -127,7 +127,8 @@ int main() {
     string cmd;
     unordered_map<const char*, Item*, str_hash, str_eq> m;
     while(is_running) {
-        cout << "Command (-x/-q to quit, -a to add, -d to delete, -l to list) : ";         cout.flush();
+        cout << "Command (-x/--quit(-q) to quit, --add(-a) to add, --delete(-d) to delete, --list(-l) to list) : ";
+        cout.flush();
         cin >> cmd;
        
         if(!strncmp("-x", cmd.c_str(), 2)
