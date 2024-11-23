@@ -24,21 +24,50 @@ fn main() {
 
     let input = File::open(path).unwrap();
     let buffered = BufReader::new(input);
-    for line in buffered.lines() {
-        println!("{}", line.unwrap());
-    }
+    // for line in buffered.lines() {
+    //     println!("{}", line.unwrap());
+    // }
 
-    let output2 = File::create("rand.txt");
-    let output2 = match output2 {
-        Ok(file) => file,
-        Err(error) => match error.kind() {
-            ErrorKind::NotFound => match File::create("rand.txt") {
-                Ok(fc) => fc,
-                Err(e) => panic!("Can't create file : {:?}", error),
+    let output_file_name = "rand.txt";
+
+    let rs = File::create(output_file_name);
+    match rs {
+        Ok(mut output_file) => {
+            // write to file
+            for rlr in buffered.lines() {
+                match rlr {
+                    Ok(ll) =>  { writeln!(output_file, "{}", ll); },
+                    Err(err) =>  panic!("fail to read : {:?}, err : {:?}", output_file_name, err)
+                }
             }
-            _other_error => panic!("Problem opening file! : {:?}", error)
+        },
+        Err(err) => {
+            match err.kind() {
+                ErrorKind::AlreadyExists => {
+                    // Open Output File
+                    // Write to output file
+                    match File::options().append(true).open(output_file_name) { 
+                        Ok(mut output_file) => {
+                            for rlr in buffered.lines() {
+                                match rlr {
+                                    Ok(ll) =>  { writeln!(output_file, "{}", ll); },
+                                    Err(err) =>  panic!("fail to read : {:?}, err : {:?}", output_file_name, err)
+                                }
+                            }
+                        },
+                        Err(err) => {
+                            panic!("Fail to open already exist : {:?}", output_file_name);
+                        }
+                    }
+                },
+                _err_kind => {
+                    panic!("Fail to create output file : {:?}", output_file_name);
+                }
+            };
         }
     };
+
+
 
 }
 
