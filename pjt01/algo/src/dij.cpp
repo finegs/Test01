@@ -1,14 +1,13 @@
 // C++ program for the above approach
 #include <bits/stdc++.h>
+#include <utility>
 using namespace std;
 #define INF 1e9
 
 // Function for Dijkstra Algorithm to
 // find single source shortest path
 void dijkstra(int source, int n,
-			vector<pair<int,
-						int> >
-				adj[],
+			vector<pair<int, int> > adj[],
 			vector<int>& dist)
 {
 	// Resize dist[] to N and assign
@@ -17,28 +16,23 @@ void dijkstra(int source, int n,
 
 	// Initialise distance of source
 	// node as 0
-	dist = 0;
+	dist[0] = 0;
 
 	// Using min-heap priority_queue
 	// for sorting wrt edges_cost
-	priority_queue<pair<int, int>,
-				vector<pair<int,
-							int> >,
-				greater<pair<int,
-								int> > >
-		pq;
+	///  pair.first  : const, pair :  second
+	priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int>>> pq;
 
 	// Push the current dist
 	// and source to pq
-	pq.push({ dist, source });
+	pq.push({ 0, 0 });
 
 	// Until priority queue is empty
 	while (!pq.empty()) {
 
 		// Store the cost of linked
-		// node to edges
+		// node(u) to edges
 		int u = pq.top().second;
-		// int d = pq.top().first;
 
 		// Pop the top node
 		pq.pop();
@@ -48,16 +42,15 @@ void dijkstra(int source, int n,
 
 			// Find the starting and
 			// ending vertex of edge
-			int v = edge.first;
-			int w = edge.second;
+			int node = edge.first;  			// first : node
+			int distance = edge.second;  	// second : distance
 
-			// Update the distance of
-			// node v to minimum of
+			// Update the distance of node v to minimum of
 			// dist[u] + w if it is
 			// minimum
-			if (dist[u] + w < dist[v]) {
-				dist[v] = dist[u] + w;
-				pq.push({ dist[v], v });
+			if (dist[u] + distance < dist[node]) {
+				dist[node] = dist[u] + distance;
+				pq.push({ dist[node], node });
 			}
 		}
 	}
