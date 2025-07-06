@@ -26,3 +26,10 @@
 **/.vim
 **/.vscode
 **/.venv
+**/CMakeFiles
+**/*.cmake
+**/CMakeCache.txt
+**/*.class
+**/*.swo
+**/tags
+**/Makefile
