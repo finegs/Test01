@@ -1,7 +1,13 @@
 #if 1
+#include <cstdio>
 #include <iostream>
 
-int main(int argc, char **argv) { return 0; }
+int main(int argc, char **argv) {
+  for (int i = 1; i < argc; i++) {
+    printf("argv[%d]=%s\n", i, argv[i]);
+  }
+  return 0;
+}
 #endif
 
 #if 0 /// ProblemE:트리전구3
