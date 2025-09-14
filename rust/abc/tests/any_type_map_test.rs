@@ -2,17 +2,17 @@
 // rustc 1.60.0-nightly (b17226fcc 2022-02-18)
 //
 #![feature(box_into_inner)]
- 
+
 use std::any::{Any, TypeId};
 use std::cmp::Eq;
 use std::collections::HashMap;
 use std::hash::Hash;
- 
+
 type HashKey<K> = (K, TypeId);
 type Anything = Box<dyn Any>;
- 
+
 pub struct AnyMap<K: Eq + Hash>(HashMap<HashKey<K>, Anything>);
- 
+
 impl<K: Eq + Hash> AnyMap<K> {
     /// Creates a new hashmap that can store
     /// any data which can be tagged with the
@@ -20,13 +20,13 @@ impl<K: Eq + Hash> AnyMap<K> {
     pub fn new() -> Self {
         Self(HashMap::new())
     }
- 
+
     /// Creates a new hashmap that can store
     /// at least the capacity given.
     pub fn new_with_capacity(capacity: usize) -> Self {
         Self(HashMap::with_capacity(capacity))
     }
- 
+
     /// Inserts the provided value under the key.  Keys
     /// are tracked with their type; meaning you can
     /// have the same key used multiple times with different
@@ -40,10 +40,10 @@ impl<K: Eq + Hash> AnyMap<K> {
             .insert((key, val.type_id()), Box::new(val))?
             .downcast::<V>()
             .ok()?;
- 
+
         Some(Box::into_inner(boxed))
     }
- 
+
     /// Fetch a reference for the type given under a
     /// given key.  Note that the key needs to be provided
     /// with ownership.  This may change in the future if
@@ -52,7 +52,7 @@ impl<K: Eq + Hash> AnyMap<K> {
     pub fn get<V: Any>(&self, key: K) -> Option<&V> {
         self.0.get(&(key, TypeId::of::<V>()))?.downcast_ref::<V>()
     }
- 
+
     /// A mutable reference for the type given under
     /// a given key.  Note that the key needs to be provided
     /// with ownership.
@@ -61,7 +61,7 @@ impl<K: Eq + Hash> AnyMap<K> {
             .get_mut(&(key, TypeId::of::<V>()))?
             .downcast_mut::<V>()
     }
- 
+
     /// Removes the data of the given type under they key
     /// if it's found.  The data found is returned in an
     /// Option after it's removed.
@@ -71,51 +71,33 @@ impl<K: Eq + Hash> AnyMap<K> {
             .remove(&(key, TypeId::of::<V>()))?
             .downcast::<V>()
             .ok()?;
- 
+
         Some(Box::into_inner(boxed))
     }
 }
- 
+
 #[cfg(test)]
 mod test {
     use super::*;
- 
+
     #[test]
     fn you_can_add_different_types_and_work_with_them() {
         let mut storage = AnyMap::new();
         storage.insert("pie", 3.142);
         storage.insert("pie", "apple");
- 
-        assert_eq!(
-            &3.142,
-            storage.get::<f64>("pie").unwrap()
-        );
- 
-        assert_eq!(
-            &"apple",
-            storage.get::<&str>("pie").unwrap()
-        );
- 
+
+        assert_eq!(&3.142, storage.get::<f64>("pie").unwrap());
+
+        assert_eq!(&"apple", storage.get::<&str>("pie").unwrap());
+
         *storage.get_mut("pie").unwrap() = 3.14159;
- 
-        assert_eq!(
-            &3.14159,
-            storage.get::<f64>("pie").unwrap()
-        );
- 
-        assert_eq!(
-            None,
-            storage.get::<f32>("pie")
-        );
- 
-        assert_eq!(
-            3.14159,
-            storage.remove::<f64>("pie").unwrap()
-        );
- 
-        assert_eq!(
-            None,
-            storage.get::<f64>("pie")
-        );
+
+        assert_eq!(&3.14159, storage.get::<f64>("pie").unwrap());
+
+        assert_eq!(None, storage.get::<f32>("pie"));
+
+        assert_eq!(3.14159, storage.remove::<f64>("pie").unwrap());
+
+        assert_eq!(None, storage.get::<f64>("pie"));
     }
 }

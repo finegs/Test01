@@ -2,6 +2,8 @@ use std::cell::{RefCell, RefMut};
 use std::collections::HashMap;
 use std::rc::Rc;
 
+use crate::tlog::{telog, tlog};
+
 mod tlog;
 
 pub fn main() {

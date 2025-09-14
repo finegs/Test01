@@ -1,6 +1,7 @@
 use chrono::Local;
 
-use abc::tlog::tlog;
+use abc::tlog;
+use abc::tlog::{telog, tlog};
 
 #[test]
 fn t01() {
@@ -14,5 +15,5 @@ fn t01() {
 /// @desc test macro tlog!
 #[test]
 fn t02() {
-    tlog!(1 + 1, 2 + 2, "tail mesg");
+    tlog!("{} {} {}", 1 + 1, 2 + 2, "tail mesg");
 }
