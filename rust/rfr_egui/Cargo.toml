@@ -4,12 +4,16 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+hashbrown = "0.16.0"
 winit = "0.30.5"
 eframe = { version = ">=0.29.1", features = [
-	"default",
-	"__screenshot", # __screenshot is so we can dump a screenshot using EFRAME_SCREENSHOT_TO
+  "default",
+  "__screenshot", # __screenshot is so we can dump a screenshot using EFRAME_SCREENSHOT_TO
 ] }
 env_logger = { version = "0.10", default-features = false, features = [
-	"auto-color",
-	"humantime",
-]  }
+  "auto-color",
+  "humantime",
+] }
+
+[dev-dependencies]
+hashbrown = "0.16.0"
