@@ -22,6 +22,7 @@ struct MaxY(f64);
 #[cfg(windows)]
 struct WmiFilter(Box<dyn Fn(&LhmSensor) -> bool + Send + Sync>);
 struct ComponentFilter(Box<dyn Fn(&(String, f32)) -> bool + Send + Sync>);
+struct DiskFilter(String);
 
 #[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "PascalCase")]
@@ -69,7 +70,8 @@ struct HwMonitorApp {
     #[allow(dead_code)]
     wmi_receiver: Receiver<Vec<LhmSensor>>,
     is_dark_mode: bool,
-    last_network_total: u64,
+    last_net_rx: u64,
+    last_net_tx: u64,
 }
 
 impl HwMonitorApp {
@@ -77,7 +79,7 @@ impl HwMonitorApp {
         let mut world = World::new();
         
         hardware.refresh();
-        let (initial_data, _) = hardware.collect_data(0);
+        let (initial_data, _, _) = hardware.collect_data(0, 0);
 
         // CPU Usage
         world.spawn((
@@ -99,13 +101,23 @@ impl HwMonitorApp {
             MaxY(initial_data.total_ram_gb),
         ));
 
-        // Network Speed
+        // Network Download
         world.spawn((
             MetricName("03_Network Download".to_string()),
             MetricValue(0.0),
             History(VecDeque::with_capacity(60)),
             Unit("MB/s".to_string()),
             PlotColor(egui::Color32::from_rgb(100, 200, 255)),
+            MaxY(10.0),
+        ));
+
+        // Network Upload
+        world.spawn((
+            MetricName("04_Network Upload".to_string()),
+            MetricValue(0.0),
+            History(VecDeque::with_capacity(60)),
+            Unit("MB/s".to_string()),
+            PlotColor(egui::Color32::from_rgb(200, 100, 255)),
             MaxY(10.0),
         ));
 
@@ -147,6 +159,19 @@ impl HwMonitorApp {
         #[cfg(not(windows))]
         let _ = gpu_temp_entity;
 
+        // Disks
+        for disk in &initial_data.disks {
+            world.spawn((
+                MetricName(format!("10_Disk ({})", disk.mount_point)),
+                MetricValue(0.0),
+                History(VecDeque::with_capacity(60)),
+                Unit("GB".to_string()),
+                PlotColor(egui::Color32::GRAY),
+                MaxY(disk.total_gb),
+                DiskFilter(disk.mount_point.clone()),
+            ));
+        }
+
         let (wmi_sender, wmi_receiver) = mpsc::channel();
         #[cfg(windows)]
         {
@@ -184,7 +209,8 @@ impl HwMonitorApp {
             start_time: Instant::now(),
             wmi_receiver,
             is_dark_mode: true,
-            last_network_total: 0,
+            last_net_rx: 0,
+            last_net_tx: 0,
         }
     }
 
@@ -200,8 +226,9 @@ impl HwMonitorApp {
 
         // 1. Hardware System
         self.hardware.refresh();
-        let (data, net_total) = self.hardware.collect_data(self.last_network_total);
-        self.last_network_total = net_total;
+        let (data, net_rx, net_tx) = self.hardware.collect_data(self.last_net_rx, self.last_net_tx);
+        self.last_net_rx = net_rx;
+        self.last_net_tx = net_tx;
 
         for (_entity, (name, val, history)) in self.world.query_mut::<(&MetricName, &mut MetricValue, &mut History)>() {
             if name.0.contains("CPU Utilization") {
@@ -210,6 +237,8 @@ impl HwMonitorApp {
                 val.0 = data.ram_used_gb;
             } else if name.0.contains("Network Download") {
                 val.0 = data.net_rx_mb;
+            } else if name.0.contains("Network Upload") {
+                val.0 = data.net_tx_mb;
             } else {
                 continue;
             }
@@ -247,7 +276,15 @@ impl HwMonitorApp {
             }
         }
 
-        // 4. UI System (Only if context provided)
+        // 4. Disk System
+        for (_entity, (filter, val, history)) in self.world.query_mut::<(&DiskFilter, &mut MetricValue, &mut History)>() {
+            if let Some(disk) = data.disks.iter().find(|d| d.mount_point == filter.0) {
+                val.0 = disk.used_gb;
+                Self::push_history(history, elapsed, val.0);
+            }
+        }
+
+        // 5. UI System (Only if context provided)
         if let Some(ctx) = ctx {
             if self.is_dark_mode { ctx.set_visuals(egui::Visuals::dark()); }
             else { ctx.set_visuals(egui::Visuals::light()); }
@@ -325,8 +362,14 @@ mod tests {
         let mock = Box::new(MockHardware {
             cpu: 45.0,
             ram: 12.0,
-            net: 5.5,
+            net_rx: 5.5,
+            net_tx: 1.2,
             temps: vec![("CPU Temperature".to_string(), 55.0)],
+            disks: vec![hardware::DiskData {
+                mount_point: "/".to_string(),
+                used_gb: 100.0,
+                total_gb: 500.0,
+            }],
         });
         let mut app = HwMonitorApp::new(mock);
         
@@ -334,6 +377,8 @@ mod tests {
 
         let mut found_cpu = false;
         let mut found_temp = false;
+        let mut found_upload = false;
+        let mut found_disk = false;
         for (_entity, (name, val)) in app.world.query_mut::<(&MetricName, &MetricValue)>() {
             if name.0.contains("CPU Utilization") {
                 assert_eq!(val.0, 45.0);
@@ -343,8 +388,18 @@ mod tests {
                 assert_eq!(val.0, 55.0);
                 found_temp = true;
             }
+            if name.0.contains("Network Upload") {
+                assert_eq!(val.0, 1.2);
+                found_upload = true;
+            }
+            if name.0.contains("Disk (/)") {
+                assert_eq!(val.0, 100.0);
+                found_disk = true;
+            }
         }
         assert!(found_cpu);
         assert!(found_temp);
+        assert!(found_upload);
+        assert!(found_disk);
     }
 }

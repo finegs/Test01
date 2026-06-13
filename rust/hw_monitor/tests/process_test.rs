@@ -1,6 +1,5 @@
 use std::process::{Command, Stdio};
 use std::io::{BufRead, BufReader};
-use std::time::Duration;
 
 #[test]
 fn test_headless_execution() {
