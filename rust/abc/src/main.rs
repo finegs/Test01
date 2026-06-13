@@ -48,9 +48,28 @@ pub fn main() {
         // RefCell::borrow in a block is ok when other borrow_mut/borrow is not  in a same block(
         // parent or child block is ok)
         {
+            // IMPORTANT: modify for a RefCell with **refcell.borrow_mut()**
+            *c.borrow_mut() += 100;
+            // if c0.is_some() {
+            //     match c.try_borrow_mut() {
+            //         Ok(mut cc) => {
+            //             cc = c0 + 100;
+            //         }
+            //         Err(_) => {
+            //             telog!("fail to self increment");
+            //         }
+            //     }
+            // }
+            // *c.borrow_mut() = *c.borrow() + 100;
+            tlog!("*c.borrow() += 100 is executed.");
+        }
+
+        {
             let m = c.borrow();
+            tlog!("c.borrow() : {}", m);
         }
 
         let b = c.borrow_mut(); // this causes a panic
+        tlog!("c.borrow_mut() : {}", b);
     }
 }
