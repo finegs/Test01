@@ -1,0 +1,8 @@
+# .markdownlint.yaml
+default: true
+
+MD013:
+  line_length: 250
+  code_line_length: 150
+  tables: true
+  headings: false
