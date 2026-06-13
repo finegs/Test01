@@ -1,0 +1,18 @@
+# .marksman.toml
+
+[core]
+# Add extra file extensions if necessary
+markdown.file_extensions = ["md", "markdown", "wiki"]
+
+# Enable GLFM (GitLab Flavored Markdown) heading ID generation
+# markdown.glfm_heading_ids.enable = true
+
+[code_action]
+# Automatically generate a table of contents
+toc.enable = true
+# Enable creating a new file when clicking on a broken wiki-link
+create_missing_file.enable = true
+
+[completion]
+# Wiki link style: "title-slug" or "filename"
+wiki.style = "title-slug"
