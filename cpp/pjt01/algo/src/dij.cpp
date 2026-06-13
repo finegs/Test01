@@ -1,7 +1,10 @@
 // C++ program for the above approach
 
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <iostream>
+#include <queue>
 #include <utility>
+#include <vector>
 
 using namespace std;
 #define INF 1e9
@@ -115,7 +118,7 @@ void minCostPath(vector<pair<int, pair<int, int>>> &edges, int n, int M) {
   }
 
   // Print the minimum cost
-  cout << min_cost << '\n';
+  std::cout << min_cost << '\n';
 }
 
 // Driver Code
