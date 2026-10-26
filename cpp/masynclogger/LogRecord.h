@@ -15,26 +15,21 @@ enum LogRecordType {
 
 class LogRecord {
 public:
-    LogRecord(const std::string&& _msg) {
-        m_msg.assign(_msg);
-        m_type = LOG_MSG;
-        m_detailMsg = nullptr;
-    };
-    LogRecord(LogRecordType _type, const std::string&& _msg) {
-        m_msg.assign(_msg);
-        m_type = _type;
-        m_detailMsg = nullptr;
-    };
-    LogRecord(LogRecordType _type, const std::string&& _msg, LogDetailMsg* _dMsg) {
-        m_msg.assign(_msg);
-        m_type = _type;
-        m_detailMsg = _dMsg;
-    };
+    LogRecord(const std::string& _msg)
+        : m_type(LOG_MSG), m_msg(_msg), m_detailMsg(nullptr) {}
+    LogRecord(std::string&& _msg)
+        : m_type(LOG_MSG), m_msg(std::move(_msg)), m_detailMsg(nullptr) {}
+    LogRecord(LogRecordType _type, LogDetailMsg* _dMsg = nullptr)
+        : m_type(_type), m_msg(""), m_detailMsg(_dMsg) {}
+    LogRecord(LogRecordType _type, const std::string& _msg, LogDetailMsg* _dMsg = nullptr)
+        : m_type(_type), m_msg(_msg), m_detailMsg(_dMsg) {}
+    LogRecord(LogRecordType _type, std::string&& _msg, LogDetailMsg* _dMsg = nullptr)
+        : m_type(_type), m_msg(std::move(_msg)), m_detailMsg(_dMsg) {}
     ~LogRecord() {
         m_msg.clear();
         if (!m_detailMsg) return;
         delete m_detailMsg;
-        m_detailMsg = 0;
+        m_detailMsg = nullptr;
     };
     std::string getMsg() const { return m_msg; }
     LogRecordType getLogRecordType() const { return m_type; }

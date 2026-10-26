@@ -16,7 +16,7 @@ class ThreadPool {
 
   // job 을 추가한다.
   template <class F, class... Args>
-  std::future<typename std::result_of<F(Args...)>::type> EnqueueJob(
+  std::future<typename std::invoke_result<F, Args...>::type> EnqueueJob(
     F&& f, Args&&... args);
 
  private:
@@ -73,13 +73,13 @@ ThreadPool::~ThreadPool() {
 }
 
 template <class F, class... Args>
-std::future<typename std::result_of<F(Args...)>::type> ThreadPool::EnqueueJob(
+std::future<typename std::invoke_result<F, Args...>::type> ThreadPool::EnqueueJob(
   F&& f, Args&&... args) {
   if (stop_all) {
     throw std::runtime_error("ThreadPool 사용 중지됨");
   }
 
-  using return_type = typename std::result_of<F(Args...)>::type;
+  using return_type = typename std::invoke_result<F, Args...>::type;
   auto job = std::make_shared<std::packaged_task<return_type()>>(
     std::bind(std::forward<F>(f), std::forward<Args>(args)...));
   std::future<return_type> job_result_future = job->get_future();

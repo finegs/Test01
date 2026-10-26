@@ -73,7 +73,7 @@ public:
     void setPauseDelayMils(int _pauseWaitMils) { m_pauseWaitMils = _pauseWaitMils;    }
 
 	std::thread::id getThreadId() {
-		if (m_thread) m_thread->get_id();
+		if (m_thread) return m_thread->get_id();
 		return std::thread::id();
 	}
 

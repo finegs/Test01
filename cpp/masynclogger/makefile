@@ -46,7 +46,7 @@ ifeq ($(OS), Windows_NT)
 	endif
 
 #if TARGET isn't Application, exclude SRC_INCs
-	ifneq ($(strip, $(TARGET)), $(TARGET_DEFAULT))
+	ifneq ($(strip $(TARGET)), $(TARGET_DEFAULT))
 		SRC_INC :=	
 		SRC     :=
 	endif
@@ -61,7 +61,7 @@ else
 	endif
 
 #if TARGET isn't Application, exclude SRC_INCs
-	ifneq ($(strip, $(TARGET)), $(TARGET_DEFAULT))
+	ifneq ($(strip $(TARGET)), $(TARGET_DEFAULT))
 		SRC_INC :=	
 		SRC     :=
 	endif
